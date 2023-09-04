@@ -10,6 +10,16 @@ public class Schedule {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "")
+    @JoinColumn(name = "id_object")
     private Objects object;
+
+    @ManyToOne
+    @JoinColumn(name = "id_group_chart")
+    private GroupChart groupChart;
+
+    @ManyToOne
+    @JoinColumn(name = "id_week")
+    private Week week;
+
+    private Integer couple;
 }

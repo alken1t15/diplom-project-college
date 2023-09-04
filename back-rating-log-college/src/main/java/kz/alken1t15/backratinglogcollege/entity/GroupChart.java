@@ -3,6 +3,7 @@ package kz.alken1t15.backratinglogcollege.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "group_chart")
@@ -24,4 +25,7 @@ public class GroupChart {
 
     @Column(name = "date_end")
     private LocalDate dateEnd;
+
+    @OneToMany(mappedBy = "groupChart")
+    private List<Schedule> schedules;
 }
