@@ -1,11 +1,17 @@
 package kz.alken1t15.backratinglogcollege.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "evaluations")
+@Getter
+@Setter
+@ToString
 public class Evaluations {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
