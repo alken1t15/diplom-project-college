@@ -21,4 +21,7 @@ public class Groups {
 
     @OneToMany(mappedBy = "group")
     private List<Students> students;
+
+    @OneToMany(mappedBy = "groups")
+    private List<GroupChart> groupCharts;
 }

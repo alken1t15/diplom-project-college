@@ -22,7 +22,7 @@ public class GroupChart {
 
     @ManyToOne
     @JoinColumn(name = "id_group")
-    private GroupChart groupChart;
+    private Groups groups;
 
     private Long curse;
 
