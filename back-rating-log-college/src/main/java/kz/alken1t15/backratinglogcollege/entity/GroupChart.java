@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "group_chart")
@@ -34,4 +35,17 @@ public class GroupChart {
 
     @OneToMany(mappedBy = "groupChart")
     private List<Schedule> schedules;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GroupChart that = (GroupChart) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(groups, that.groups) && Objects.equals(curse, that.curse) && Objects.equals(dateStart, that.dateStart) && Objects.equals(dateEnd, that.dateEnd);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, groups, curse, dateStart);
+    }
 }

@@ -33,4 +33,17 @@ public class Evaluations {
 
     @Column(name = "date_grade")
     private LocalDate dateGrade;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Evaluations that = (Evaluations) o;
+        return java.util.Objects.equals(student, that.student) && java.util.Objects.equals(object, that.object) && java.util.Objects.equals(week, that.week) && java.util.Objects.equals(grade, that.grade) && java.util.Objects.equals(dateGrade, that.dateGrade);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(student, object, week, grade, dateGrade);
+    }
 }
