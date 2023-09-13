@@ -15,13 +15,17 @@ import java.time.LocalDate;
 @Setter
 public class Student {
 
-    private Groups group;
+    private Long groupId;
 
     private String firstName;
 
     private String secondName;
 
     private String middleName;
+
+    private String login;
+
+    private String password;
 
     private LocalDate bornDate;
 }

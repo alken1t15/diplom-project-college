@@ -31,6 +31,10 @@ public class Students {
     @Column(name = "middle_name")
     private String middleName;
 
+    private String login;
+
+    private String password;
+
     @Column(name = "born_date")
     private LocalDate bornDate;
 

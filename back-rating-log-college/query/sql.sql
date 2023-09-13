@@ -37,6 +37,8 @@ create table students(
   first_name varchar(255) not null,
   second_name varchar(255) not null,
   middle_name varchar(255),
+  login varchar(255) not null,
+  password varchar(255) not null,
   born_date date not null
 );
 

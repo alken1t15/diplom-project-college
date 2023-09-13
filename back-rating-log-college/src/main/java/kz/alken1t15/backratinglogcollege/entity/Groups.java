@@ -2,6 +2,7 @@ package kz.alken1t15.backratinglogcollege.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -13,6 +14,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class Groups {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +27,10 @@ public class Groups {
 
     @OneToMany(mappedBy = "groups")
     private List<GroupChart> groupCharts;
+
+    public Groups(String name) {
+        this.name = name;
+    }
 
     @Override
     public boolean equals(Object o) {
