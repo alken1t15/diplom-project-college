@@ -1,7 +1,5 @@
 package kz.alken1t15.backratinglogcollege.dto;
 
-import jakarta.persistence.Column;
-import kz.alken1t15.backratinglogcollege.entity.Groups;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

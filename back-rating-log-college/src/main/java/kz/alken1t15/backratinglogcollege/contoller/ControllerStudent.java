@@ -1,7 +1,6 @@
 package kz.alken1t15.backratinglogcollege.contoller;
 
 import kz.alken1t15.backratinglogcollege.dto.Student;
-import kz.alken1t15.backratinglogcollege.entity.Groups;
 import kz.alken1t15.backratinglogcollege.entity.Students;
 import kz.alken1t15.backratinglogcollege.service.ServiceStudents;
 import lombok.AllArgsConstructor;
@@ -19,8 +18,8 @@ public class ControllerStudent {
     private final ServiceStudents serviceStudents;
 
     @PostMapping("/id")
-    public ResponseEntity<Students> getStudent(@RequestBody Long id){
-        return  serviceStudents.findById(id);
+    public ResponseEntity<Students> getStudent(@RequestBody Long id) {
+        return serviceStudents.findById(id);
     }
 
     @PostMapping("/add")
