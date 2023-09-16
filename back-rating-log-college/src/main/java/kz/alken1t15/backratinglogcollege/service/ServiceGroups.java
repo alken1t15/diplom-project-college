@@ -32,8 +32,7 @@ public class ServiceGroups {
             if (groups == null) {
                 repositoryGroups.save(new Groups(name));
                 return HttpStatus.OK;
-            }
-            else {
+            } else {
                 return HttpStatus.CONFLICT;
             }
         }
