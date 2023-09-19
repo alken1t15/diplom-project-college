@@ -1,3 +1,12 @@
+create table teachers(
+    id serial primary key,
+    first_name varchar(255) not null,
+    second_name varchar(255) not null,
+    middle_name varchar(255),
+    login varchar(255) not null,
+    password varchar(255) not null,
+    born_date date not null
+);
 create table objects (
   id serial primary key,
   name varchar(255) not null
@@ -53,7 +62,7 @@ create table students(
 );
 
 insert into students (id_group, first_name, second_name, middle_name, login, password, born_date) values (1,'Максим','Кораблев','Игорович',
-                                                                                                          'kramzos222','maxim22','2.04.2004')
+                                                                                                          'kramzos222','maxim22','2.04.2004');
 create table evaluations(
   id serial primary key,
   id_student int references students(id),
