@@ -27,6 +27,11 @@ create table groups(
   name varchar(255) not null
 );
 
+create table teacher_groups(
+    id_teacher int references teachers(id) not null ,
+    id_group int references groups(id) not null
+);
+
 insert into groups (name) value ('П-20-51б');
 
 create table group_chart(
