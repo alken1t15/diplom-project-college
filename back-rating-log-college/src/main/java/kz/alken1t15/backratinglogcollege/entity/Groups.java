@@ -22,6 +22,10 @@ public class Groups {
 
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "id_teacher")
+    private Teachers teachers;
+
     @OneToMany(mappedBy = "group")
     private List<Students> students;
 

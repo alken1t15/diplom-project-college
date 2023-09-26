@@ -15,21 +15,18 @@ create table objects (
 insert into objects (name) value ('АиП'),('ООП'),('Веб программирование'),('Стандартизации'),('Основы философии'),('Методы защиты информации'),('Физкультура')
 ,('Моделирование');
 
-create table week(
-    id serial primary key ,
-    name varchar(255) not null
-);
-
-insert into week(name)value ('Понедельник'),('Вторник'),('Среда'),('Четверг'),('Пятница'),('Суббота');
+# Удалить
+# create table week(
+#     id serial primary key ,
+#     name varchar(255) not null
+# );
+#
+# insert into week(name)value ('Понедельник'),('Вторник'),('Среда'),('Четверг'),('Пятница'),('Суббота');
 
 create table groups(
   id serial primary key,
+  id_teacher int references teachers(id) not null ,
   name varchar(255) not null
-);
-
-create table teacher_groups(
-    id_teacher int references teachers(id) not null ,
-    id_group int references groups(id) not null
 );
 
 insert into groups (name) value ('П-20-51б');

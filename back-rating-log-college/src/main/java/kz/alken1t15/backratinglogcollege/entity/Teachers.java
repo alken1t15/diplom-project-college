@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "teachers")
@@ -30,4 +31,7 @@ public class Teachers {
 
     @Column(name = "born_date")
     private LocalDate bornDate;
+
+    @OneToMany(mappedBy = "teachers")
+    private List<Groups> groups;
 }
