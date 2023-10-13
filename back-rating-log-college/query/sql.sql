@@ -63,6 +63,14 @@ create table students(
   born_date date not null
 );
 
+create table pass (
+  id serial primary key,
+  id_student int references students (id),
+  name_file varchar(255),
+  date_start date,
+  date_end date
+);
+
 insert into students (id_group, first_name, second_name, middle_name, login, password, born_date) values (1,'Максим','Кораблев','Игорович',
                                                                                                           'kramzos222','maxim22','2.04.2004');
 create table evaluations(
