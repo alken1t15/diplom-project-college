@@ -46,11 +46,12 @@ create table schedule(
   id serial primary key,
   id_object int references objects(id),
   id_group_chart int references group_chart(id),
-  id_week int references  week(id),
+ # id_week int references  week(id),
   couple int not null
 );
 
-insert into schedule (id_object, id_group_chart, id_week, couple) values (1,1,1,2),(2,1,1,3),(1,1,1,3);
+#insert into schedule (id_object, id_group_chart, id_week, couple) values (1,1,1,2),(2,1,1,3),(1,1,1,3);
+insert into schedule (id_object, id_group_chart,  couple) values (1,1,2),(2,1,3),(1,1,3);
 
 create table students(
   id serial primary key,
@@ -77,7 +78,7 @@ create table evaluations(
   id serial primary key,
   id_student int references students(id),
   id_object int references objects(id),
-  id_week int references week(id),
+ # id_week int references week(id),
   grade int not null,
   date_grade date not null
 );
