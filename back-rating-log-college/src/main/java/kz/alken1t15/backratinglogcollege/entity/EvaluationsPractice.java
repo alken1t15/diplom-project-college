@@ -7,12 +7,12 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "evaluations")
 @Getter
 @Setter
+@Entity
+@Table(name = "evaluations_practice")
 @ToString
-public class Evaluations {
+public class EvaluationsPractice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,8 +21,8 @@ public class Evaluations {
     @JoinColumn(name = "id_student")
     private Students student;
 
-    @JoinColumn(name = "name_object")
-    private String nameObject;
+    @JoinColumn(name = "name_practice")
+    private String namePractice;
 
     @Column(name = "date_evaluation")
     private LocalDate dateEvaluation;

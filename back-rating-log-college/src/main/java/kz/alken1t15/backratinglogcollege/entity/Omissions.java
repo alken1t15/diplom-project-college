@@ -1,18 +1,19 @@
 package kz.alken1t15.backratinglogcollege.entity;
 
 import jakarta.persistence.*;
+import kz.alken1t15.backratinglogcollege.dto.Status;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "evaluations")
 @Getter
 @Setter
+@Entity
+@Table(name = "omissions")
 @ToString
-public class Evaluations {
+public class Omissions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,11 +22,9 @@ public class Evaluations {
     @JoinColumn(name = "id_student")
     private Students student;
 
-    @JoinColumn(name = "name_object")
-    private String nameObject;
+    @Column(name = "date_omissions")
+    private LocalDate dateOmissions;
 
-    @Column(name = "date_evaluation")
-    private LocalDate dateEvaluation;
-
-    private Long ball;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 }

@@ -5,27 +5,29 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDate;
-
 @Entity
-@Table(name = "evaluations")
+@Table(name = "teachers_group")
 @Getter
 @Setter
 @ToString
-public class Evaluations {
+public class TeachersGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "id_student")
-    private Students student;
+    @JoinColumn(name = "id_teacher")
+    private Teachers teachers;
 
-    @JoinColumn(name = "name_object")
+    @ManyToOne
+    @JoinColumn(name = "id_group")
+    private Groups groups;
+
+    @Column(name = "name_object")
     private String nameObject;
 
-    @Column(name = "date_evaluation")
-    private LocalDate dateEvaluation;
+    private Long course;
 
-    private Long ball;
+    private Long semester;
+
 }
