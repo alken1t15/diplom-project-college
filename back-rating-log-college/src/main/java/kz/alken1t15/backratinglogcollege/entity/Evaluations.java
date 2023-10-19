@@ -2,6 +2,7 @@ package kz.alken1t15.backratinglogcollege.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class Evaluations {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +30,11 @@ public class Evaluations {
     private LocalDate dateEvaluation;
 
     private Long ball;
+
+    public Evaluations(Students student, String nameObject, LocalDate dateEvaluation, Long ball) {
+        this.student = student;
+        this.nameObject = nameObject;
+        this.dateEvaluation = dateEvaluation;
+        this.ball = ball;
+    }
 }

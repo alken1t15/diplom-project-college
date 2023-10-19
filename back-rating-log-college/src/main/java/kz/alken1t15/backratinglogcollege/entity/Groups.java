@@ -13,7 +13,6 @@ import java.util.Objects;
 @Table(name = "groups")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 public class Groups {
     @Id
@@ -33,5 +32,11 @@ public class Groups {
         this.name = name;
     }
 
-
+    @Override
+    public String toString() {
+        return "Groups{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

@@ -1,5 +1,6 @@
 package kz.alken1t15.backratinglogcollege.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,14 +13,14 @@ import java.util.List;
 @Table(name = "students")
 @Getter
 @Setter
-@ToString
 public class Students {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_group")
+    @JsonIgnore
     private Groups group;
 
     @Column(name = "first_name")
@@ -39,5 +40,6 @@ public class Students {
     private LocalDate bornDate;
 
     @OneToMany(mappedBy = "student")
+    @JsonIgnore
     private List<Evaluations> evaluations;
 }
