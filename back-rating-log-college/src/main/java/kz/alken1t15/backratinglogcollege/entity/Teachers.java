@@ -2,6 +2,7 @@ package kz.alken1t15.backratinglogcollege.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -11,6 +12,7 @@ import java.util.List;
 @Table(name = "teachers")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Teachers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,4 +36,13 @@ public class Teachers {
 
     @OneToMany(mappedBy = "teachers")
     private List<Groups> groups;
+
+    public Teachers(String firstName, String secondName, String middleName, String login, String password, LocalDate bornDate) {
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.middleName = middleName;
+        this.login = login;
+        this.password = password;
+        this.bornDate = bornDate;
+    }
 }

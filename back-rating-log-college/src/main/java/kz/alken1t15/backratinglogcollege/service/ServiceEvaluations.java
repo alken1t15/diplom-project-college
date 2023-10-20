@@ -19,7 +19,7 @@ public class ServiceEvaluations{
     public HttpStatus save(ControllerEvaluations.Evaluation evaluation) {
         Students students = repositoryStudents.findById(evaluation.idStudent()).orElse(null);
         if (students== null){
-            return HttpStatus.NOT_FOUND;
+            return HttpStatus.FORBIDDEN;
         }
         else if (!StringUtils.isBlank(evaluation.nameObject()) ||evaluation.dateEvaluation()!=null || evaluation.ball() != 0){
             repositoryEvaluations.save(new Evaluations(students,evaluation.nameObject(),evaluation.dateEvaluation(),evaluation.ball()));

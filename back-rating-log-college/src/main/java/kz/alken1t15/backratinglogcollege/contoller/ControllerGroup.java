@@ -30,4 +30,11 @@ public class ControllerGroup {
         return new ResponseEntity<List<Groups>>(serviceGroups.findAll(), HttpStatus.OK);
     }
 
+    @PostMapping("/add/student")
+    public HttpStatus addNewStudentInGroup(@RequestBody StudentAndGroup studentAndGroup) {
+        return serviceGroups.addNewStudent(studentAndGroup);
+    }
+
+    public record StudentAndGroup(String idStudent, String idGroup){}
+
 }
