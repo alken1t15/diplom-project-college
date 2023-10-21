@@ -27,7 +27,7 @@ public class ServiceStudents {
     }
 
     //TODO Добавить проверку на уникальность студента мб через ИИН или другой вариант
-    public HttpStatus save(Student studentDTO) {
+    public ResponseEntity save(Student studentDTO) {
         ModelMapper modelMapper = new ModelMapper();
         Students students = modelMapper.map(studentDTO, Students.class);
         Groups groups = serviceGroups.findById(studentDTO.getGroupId()).getBody();
@@ -35,14 +35,14 @@ public class ServiceStudents {
             if (StringUtils.isBlank(students.getFirstName()) || StringUtils.isBlank(students.getSecondName())
                     || StringUtils.isBlank(students.getLogin())
                     || StringUtils.isBlank(students.getPassword()) || students.getBornDate() == null) {
-                return HttpStatus.BAD_REQUEST;
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             } else {
                 students.setGroup(groups);
                 repositoryStudents.save(students);
-                return HttpStatus.OK;
+                return ResponseEntity.status(HttpStatus.OK).build();
             }
         }
-        return HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
 

@@ -31,10 +31,10 @@ public class ControllerGroup {
     }
 
     @PostMapping("/add/student")
-    public HttpStatus addNewStudentInGroup(@RequestBody StudentAndGroup studentAndGroup) {
+    public ResponseEntity addNewStudentInGroup(@RequestBody StudentAndGroup studentAndGroup) {
         return serviceGroups.addNewStudent(studentAndGroup);
     }
 
-    public record StudentAndGroup(String idStudent, String idGroup){}
+    public record StudentAndGroup(Long idStudent, Long idGroup){}
 
 }

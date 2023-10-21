@@ -47,23 +47,23 @@ public class ServiceGroups {
         return repositoryGroups.findAll();
     }
 
-    public HttpStatus addNewStudent(ControllerGroup.StudentAndGroup studentAndGroup) {
-        if (StringUtils.isBlank(studentAndGroup.idStudent()) || StringUtils.isBlank(studentAndGroup.idGroup())){
-            return HttpStatus.BAD_REQUEST;
+    public ResponseEntity addNewStudent(ControllerGroup.StudentAndGroup studentAndGroup) {
+        if (studentAndGroup.idStudent() == null || studentAndGroup.idGroup() == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        Students students = repositoryStudents.findById(Long.parseLong(studentAndGroup.idStudent())).orElse(null);
-        Groups groups = repositoryGroups.findById(Long.parseLong(studentAndGroup.idGroup())).orElse(null);
+        Students students = repositoryStudents.findById(studentAndGroup.idStudent()).orElse(null);
+        Groups groups = repositoryGroups.findById(studentAndGroup.idGroup()).orElse(null);
         if (students == null || groups == null){
             System.out.println(students);
             System.out.println(groups);
-            return HttpStatus.FORBIDDEN;
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         else {
             groups.getStudents().add(students);
             students.setGroup(groups);
             repositoryStudents.save(students);
             repositoryGroups.save(groups);
-            return HttpStatus.OK;
+            return ResponseEntity.status(HttpStatus.OK).build();
         }
     }
 }

@@ -3,6 +3,7 @@ package kz.alken1t15.backratinglogcollege.contoller;
 import kz.alken1t15.backratinglogcollege.service.ServiceTeachers;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +19,7 @@ public class ControllerTeacher {
     private final ServiceTeachers serviceTeachers;
 
     @PostMapping(path = "/add")
-    public HttpStatus addEvaluation(@RequestBody Teacher teacher){
+    public ResponseEntity addEvaluation(@RequestBody Teacher teacher){
         return serviceTeachers.save(teacher);
     }
 

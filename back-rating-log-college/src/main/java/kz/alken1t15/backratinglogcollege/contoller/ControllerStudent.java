@@ -20,7 +20,7 @@ public class ControllerStudent {
     }
 
     @PostMapping(path = "/add")
-    public HttpStatus addNewGroup(@RequestBody Student student) {
+    public ResponseEntity addNewGroup(@RequestBody Student student) {
         return serviceStudents.save(student);
     }
 }
