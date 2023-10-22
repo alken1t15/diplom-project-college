@@ -32,6 +32,11 @@ public class Groups {
         this.name = name;
     }
 
+    public Groups(String name, Teachers teachers) {
+        this.name = name;
+        this.teachers = teachers;
+    }
+
     @Override
     public String toString() {
         return "Groups{" +

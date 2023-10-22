@@ -30,4 +30,11 @@ public class TeachersGroup {
 
     private Long semester;
 
+    public TeachersGroup(Teachers teachers, Groups groups, String nameObject, Long course, Long semester) {
+        this.teachers = teachers;
+        this.groups = groups;
+        this.nameObject = nameObject;
+        this.course = course;
+        this.semester = semester;
+    }
 }

@@ -1,6 +1,6 @@
 package kz.alken1t15.backratinglogcollege.contoller;
 
-import kz.alken1t15.backratinglogcollege.dto.Student;
+import kz.alken1t15.backratinglogcollege.dto.StudentDTO;
 import kz.alken1t15.backratinglogcollege.entity.Students;
 import kz.alken1t15.backratinglogcollege.service.ServiceStudents;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ public class ControllerStudent {
     }
 
     @PostMapping(path = "/add")
-    public ResponseEntity addNewGroup(@RequestBody Student student) {
+    public ResponseEntity addNewGroup(@RequestBody StudentDTO student) {
         return serviceStudents.save(student);
     }
 }

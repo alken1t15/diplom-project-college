@@ -1,5 +1,6 @@
 package kz.alken1t15.backratinglogcollege.contoller;
 
+import kz.alken1t15.backratinglogcollege.dto.GroupDTO;
 import kz.alken1t15.backratinglogcollege.entity.Groups;
 import kz.alken1t15.backratinglogcollege.service.ServiceGroups;
 import lombok.AllArgsConstructor;
@@ -15,19 +16,19 @@ import java.util.List;
 public class ControllerGroup {
     private final ServiceGroups serviceGroups;
 
-    @PostMapping("/id")
-    public ResponseEntity<Groups> getGroupById(@RequestBody Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<GroupDTO> getGroupById(@PathVariable Long id) {
         return serviceGroups.findById(id);
     }
 
     @PostMapping("/add")
-    public HttpStatus addNewGroup(@RequestBody String name) {
-        return serviceGroups.save(name);
+    public ResponseEntity addNewGroup(@RequestBody Group group) {
+        return serviceGroups.save(group);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Groups>> getAllGroups() {
-        return new ResponseEntity<List<Groups>>(serviceGroups.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<GroupDTO>> getAllGroups() {
+        return new ResponseEntity<List<GroupDTO>>(serviceGroups.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("/add/student")
@@ -36,5 +37,7 @@ public class ControllerGroup {
     }
 
     public record StudentAndGroup(Long idStudent, Long idGroup){}
+
+    public record Group(Long id, String name){}
 
 }

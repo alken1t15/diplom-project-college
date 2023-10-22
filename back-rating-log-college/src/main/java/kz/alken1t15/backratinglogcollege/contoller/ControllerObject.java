@@ -17,8 +17,8 @@ import java.util.List;
 public class ControllerObject {
     private final ServiceObjects serviceObjects;
 
-    @PostMapping("/id")
-    public ResponseEntity<Objects> getOneObject(@RequestParam Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<Objects> getOneObject(@PathVariable Long id){
         return serviceObjects.findById(id);
     }
 
