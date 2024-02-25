@@ -14,7 +14,6 @@ import java.util.List;
 @Service
 public class ServiceObjects {
     private final RepositoryObjects repositoryObjects;
-
     public ResponseEntity<Objects> findById(Long id) {
         Objects object = repositoryObjects.findById(id).orElse(null);
         if (object == null) {
