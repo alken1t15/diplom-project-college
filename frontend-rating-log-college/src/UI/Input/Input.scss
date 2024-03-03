@@ -1,0 +1,43 @@
+.input-container {
+  position: relative;
+  margin-top: 45px;
+}
+
+input {
+  padding: 8px 15px;
+  width: 100%;
+  transition: border-color 0.3s ease;
+  background-color: var(--total-black);
+  border-radius: 10px;
+  color: white;
+  border: 1px solid #F5F5F5;
+}
+
+label {
+  position: absolute;
+
+  top: 8px;
+  //left: 8px;
+  left: 11px;
+  font-size: 14px;
+  pointer-events: none;
+  color: var(--gray);
+  transition: top 0.3s, font-size 0.3s;
+  z-index: 9999;
+}
+
+.focused label {
+  top: -8px;
+  //left: 2px;
+  font-size: 12px;
+  z-index: 9999;
+  color: white;
+  padding: 0 2px 0 2px;
+  background-color: var(--total-black);
+}
+
+.focused label, input:not(:placeholder-shown) + label {
+  color: white;
+  padding: 0 2px 0 2px;
+  background-color: var(--total-black);
+}
