@@ -1,6 +1,7 @@
 export const SHOP_ROUTE = '/'
 export const SIGN_IN_ROUTE = '/signIn'
-export const PROFILE_ROUTE = '/profile'
+export const STUDENT_ROUTE = "/student"
+export const MAIN_PAGE_STUDENT_ROUTE = '/student/mainPage'
 export const GRADE_ROUTE = '/grade'
 export const COURSES_ROUTE = '/courses'
 export const TASK_ROUTE = '/task'
