@@ -18,6 +18,9 @@ function App() {
 
               <Route path={STUDENT_ROUTE} element={<StudentLayout/>}>
                 <Route path={MAIN_PAGE_STUDENT_ROUTE} element={<MainPageStudent/>}/>
+                <Route path={MAIN_PAGE_STUDENT_ROUTE} element={<MainPageStudent/>}/>
+                <Route path={MAIN_PAGE_STUDENT_ROUTE} element={<MainPageStudent/>}/>
+                <Route path={MAIN_PAGE_STUDENT_ROUTE} element={<MainPageStudent/>}/>
               </Route>
 
 

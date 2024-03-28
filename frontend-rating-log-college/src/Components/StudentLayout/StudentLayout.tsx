@@ -12,9 +12,10 @@ import {
 } from "../../Utils/Routes";
 import './StudentLayout.scss';
 import {log} from "util";
+import InitialsImage from "../InitialsImage/InitialsImage";
 
 const Logo = require('../../assets/images/Logo.png');
-
+const LogOut = require('../../assets/images/ExitPng.png');
 
 const StudentLayout: React.FC = () => {
 
@@ -58,15 +59,17 @@ const StudentLayout: React.FC = () => {
 
         else if(currentIndex < id){
 
-            linkButtons.forEach((el, index) => {
+            for(let index = currentIndex; index !< linkButtons.length; index++ ){
+
                 setTimeout(() => {
-                    setLinkButtons(prevState => {
-                        const updatedTabs = [...prevState];
-                        updatedTabs[index].active = updatedTabs[index].id <= id;
-                        return updatedTabs;
-                    });
-                }, index * 100);
-            });
+                        setLinkButtons(prevState => {
+                            const updatedTabs = [...prevState];
+                            updatedTabs[index].active = updatedTabs[index].id <= id;
+                            return updatedTabs;
+                        });
+                        }, index * 100);
+
+            }
 
             linkButtons.forEach((el, index) => {
                 setTimeout(() => {
@@ -82,16 +85,16 @@ const StudentLayout: React.FC = () => {
 
         else{
 
-            [...linkButtons].reverse().forEach((el, i) => {
-
+            for(let index = currentIndex-1; index > id-1; index-- ){
                 setTimeout(() => {
                     setLinkButtons(prevState => {
                         const updatedTabs = [...prevState];
-                        updatedTabs[i].active = !(updatedTabs[i].id <= id);
+                        updatedTabs[index].active = updatedTabs[index].id >= id;
                         return updatedTabs;
                     });
-                }, (linkButtons.length - i - 1) * 100);
-            });
+                }, (linkButtons.length - index - 1) * 100);
+
+            }
 
             [...linkButtons].reverse().forEach((el, i) => {
                 setTimeout(() => {
@@ -131,7 +134,10 @@ const StudentLayout: React.FC = () => {
                         ))}
                         </div>
                         <div className="nav-other">
-
+                            <button className="nav-other-user">
+                                <InitialsImage initials="МК" width={50} height={50} fontSize={24} textColor="#fff" backgroundColor="#d9d9d9" />
+                            </button>
+                            <button className="nav-other-logout"><img src={LogOut} alt="logout"/></button>
                         </div>
                     </nav>
                 </div>
