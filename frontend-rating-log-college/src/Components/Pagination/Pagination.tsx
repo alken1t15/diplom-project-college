@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {CSSProperties, useEffect, useState} from 'react';
 import './Pagination.scss';
 interface IDataArrayItem{
     id: number,
@@ -9,6 +9,7 @@ interface IDataArrayItem{
 
 interface IPagination{
     onChange: (value: number) => void;
+    styles?: CSSProperties
 }
 const Pagination: React.FC<IPagination> = (props) => {
     let [dataArray, setDataArray] = useState<IDataArrayItem[]>([
@@ -86,7 +87,7 @@ const Pagination: React.FC<IPagination> = (props) => {
     }
 
     return (
-        <div className={'pagination-block'}>
+        <div className={'pagination-block'} style={props.styles}>
             {dataArray.map((el, index) =>(
                 <button onClick={(e)=>{
                     changeCurrentPage(el.id)

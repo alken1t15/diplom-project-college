@@ -3,23 +3,81 @@ import './MainPageStudent.scss';
 import InitialsImage from "../../Components/InitialsImage/InitialsImage";
 import GradeLine from "../../Components/GradeLine/GradeLine";
 import Pagination from "../../Components/Pagination/Pagination";
+import LatenessItem, {ITardinessItem} from "../../Components/Lateness/LatenessItem";
+import ScheduleItem from "../../Components/Schedule/ScheduleItem";
 
 const infoImg = require('../../assets/images/InformationImgg.png');
 const gradeImg = require('../../assets/images/GradesImg.png');
 const houseImg = require('../../assets/images/School.png');
+const teachImg = require('../../assets/images/TeacherImg.png');
 const MainPageStudent: React.FC = () => {
 
     let[currentPage, setCurrentPage] = useState(7);
 
     function updateCurrentPage(value: any){
         setCurrentPage(value)
-        console.log(value)
     }
 
-    let[tardinessItem, setTardinessItem] = useState<object[]>([
+    let[tardinessItem, setTardinessItem] = useState<ITardinessItem[]>([
         {
             date: "2 сентября",
             nameOfDay: "Вторник",
+            tardiness: [ {
+                id: 1,
+                type: 'yellow',
+                text: 'С опозданием',
+                subject: 'Веб-программирование'
+            },
+                {
+                    id: 2,
+                    type: 'green',
+                    text: 'Без опозданий',
+                    subject: 'Основа право'
+                },
+                {
+                    id: 3,
+                    type: 'red',
+                    text: 'Отсутвует',
+                    subject: 'Комп сети'
+                },
+                {
+                    id: 4,
+                    type: 'cyan',
+                    text: 'С справкой',
+                    subject: 'Комп сети'
+                }]
+        } ,
+        {
+            date: "2 сентября",
+            nameOfDay: "Среда",
+            tardiness: [ {
+                id: 1,
+                type: 'yellow',
+                text: 'С опозданием',
+                subject: 'Веб-программирование'
+            },
+                {
+                    id: 2,
+                    type: 'yellow',
+                    text: 'Без опозданий',
+                    subject: 'Основа право'
+                },
+                {
+                    id: 3,
+                    type: 'red',
+                    text: 'Отсутвует',
+                    subject: 'Комп сети'
+                },
+                {
+                    id: 4,
+                    type: 'cyan',
+                    text: 'С справкой',
+                    subject: 'Комп сети'
+                }]
+        },
+        {
+            date: "2 сентября",
+            nameOfDay: "Среда",
             tardiness: [ {
                 id: 1,
                 type: 'yellow',
@@ -47,6 +105,24 @@ const MainPageStudent: React.FC = () => {
         }
         ]
     )
+
+    let[schedule, setSchedule] = useState({
+        date: '3 сентября',
+        nameOfDay: 'Среда',
+        schedules: [
+            {
+                id: 1,
+                time: '9:00 10:30',
+                subject: 'Веб-программирование',
+
+            },  {
+                id: 2,
+                time: '9:00 10:30',
+                subject: 'Веб-программирование',
+
+            },
+        ]
+    })
 
     return (
         <div className={'main-page'}>
@@ -91,10 +167,21 @@ const MainPageStudent: React.FC = () => {
                     <img src={houseImg} alt="Info img"/>
                     Посещяемость
                 </p>
-                <Pagination  onChange={updateCurrentPage}/>
-                {/*<TardinessItem It*/}
+                <Pagination  onChange={updateCurrentPage} styles={{marginBottom: 15}}/>
+                <div className="lateness-block">
+                    {tardinessItem.map((el, index)=>(
+                        <LatenessItem key={index} styles={{marginTop: 30}} tardiness={el.tardiness} date={el.date} nameOfDay={el.nameOfDay}/>
+                    ))}
+                </div>
+
             </div>
-            <div className={'block-right'}></div>
+            <div className={'block-right'}>
+                <p className={'block-right__text'}>
+                    <img src={teachImg} alt="Info img"/>
+                    Расписание на сегодня
+                </p>
+                <ScheduleItem date={schedule.date} nameOfDay={schedule.nameOfDay} schedules={schedule.schedules}/>
+            </div>
         </div>
     );
 };
