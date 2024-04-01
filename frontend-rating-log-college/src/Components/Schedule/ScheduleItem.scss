@@ -1,0 +1,59 @@
+.schedule{
+  &-item{
+    background-color: #434C59;
+    width: 374px;
+    padding: 15px 18px;
+    border-radius: 10px;
+    border: none;
+    &__date{
+      font-weight: 700;
+      font-size: 20px;
+    }
+    &__day{
+      margin-top: 5px;
+      font-weight: 400;
+      font-size: 16px;
+      color: var(--gray);
+      margin-bottom: 10px;
+    }
+    &__info-block{
+      padding: 6px 9px;
+      display: flex;
+      align-items: center;
+      border-top: 1px solid var(--gray);
+      & > span{
+        font-weight: 400;
+        font-size: 16px;
+      }
+      &-span-first{
+        width: 60px;
+        display: flex;
+        flex-direction: column;
+        font-weight: 400;
+        font-size: 16px;
+        margin-top: 5px;
+      }
+      &-span-second{
+        margin-left: 45px;
+        font-weight: 500;
+        font-size: 16px;
+        word-wrap: break-word;
+      }
+    }
+  }
+}
+
+.text{
+  &-green{
+    color: var(--green);
+  }
+  &-yellow{
+    color: var(--yellow);
+  }
+  &-cyan{
+    color: var(--cyan);
+  }
+  &-red{
+    color: var(--red);
+  }
+}

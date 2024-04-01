@@ -5,6 +5,11 @@
   --gray: #B4B7BC;
   --purple: #8383FF;
   --blue: #1D90F5;
+  --green: #05ff00;
+  --dark-green: #337943;
+  --yellow: #F0C64B;
+  --red: #FF3A3A;
+  --cyan: #00FFC2;
 }
 body{
   background-color: var(--total-black);
@@ -121,9 +126,12 @@ body{
 
 
 *{
-  color: #fff;
   font-family: 'Inter', sans-serif;
   font-weight: 200;
   font-style: normal;
+  color: white;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
