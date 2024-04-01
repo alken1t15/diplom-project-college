@@ -1,27 +1,44 @@
 -- # Рефакторинг №2
+-- create database diplom_project;
+create table users(
+                      id serial primary key ,
+                      login       varchar(255) not null,
+                      password    varchar(255) not null
+);
+
+insert into users(login, password) values ('fdsfew',
+                                           'fsdfsdfsdf');
+
 create table teachers
 (
-    id          serial primary key,
+    id          int references users(id) not null primary key ,
     first_name  varchar(255) not null,
     second_name varchar(255) not null,
     middle_name varchar(255),
-    login       varchar(255) not null,
-    password    varchar(255) not null,
     born_date   date         not null
 );
-insert into teachers (first_name, second_name, middle_name, login, password, born_date) VALUES ('Денис', 'Попов',
-                                                                                               'Валентинович', 'fdsfew',
-                                                                                               'fsdfsdfsdf',
-                                                                                               '1993.04.22');
+insert into teachers (id,first_name, second_name, middle_name, born_date)
+VALUES (1,'Денис', 'Попов',
+        'Валентинович',
+        '1993.04.22');
+
+create table curator
+(
+    id         serial primary key,
+    id_teacher int references teachers (id) not null
+);
+insert into curator (id_teacher)
+VALUES (1);
 
 create table groups
 (
     id         serial primary key,
-    id_teacher int references teachers (id) not null,
-    name       varchar(255)                 not null
+    id_curator int references curator (id) not null,
+    name       varchar(255)                not null
 );
 
-insert into groups (id_teacher, name) VALUES (1, 'П-20-51б');
+insert into groups (id_curator, name)
+VALUES (1, 'П-20-51б');
 
 create table teachers_group
 (
@@ -36,7 +53,7 @@ create table teachers_group
 -- # Первая часть
 create table students
 (
-    id          serial primary key,
+    id          int references users(id) not null primary key ,
     id_group    int references groups (id),
     first_name  varchar(255) not null,
     second_name varchar(255) not null,
@@ -46,12 +63,13 @@ create table students
     born_date   date         not null
 );
 
-insert into students (id_group, first_name, second_name, middle_name, login, password, born_date) VALUES (1, 'Максим',
-                                                                                                         'Кораблев',
-                                                                                                         'Игоревич',
-                                                                                                         'fdsfsd',
-                                                                                                         'fsdfsdf',
-                                                                                                         '2004.04.02');
+-- insert into students (id_group, first_name, second_name, middle_name, login, password, born_date)
+-- VALUES (1, 'Максим',
+--         'Кораблев',
+--         'Игоревич',
+--         'fdsfsd',
+--         'fsdfsdf',
+--         '2004.04.02');
 
 create table evaluations
 (
@@ -61,13 +79,25 @@ create table evaluations
     date_evaluation date         not null,
     ball            int          not null
 );
-create table evaluations_practice
+create table evaluations_between
 (
     id              serial primary key,
     id_student      int references students (id),
-    name_practice   varchar(255) not null,
-    date_evaluation date         not null,
-    ball            int          not null
+    name_object     varchar(255) not null,
+    course          int          not null,
+    semester        int          not null,
+    month varchar(255),
+    final_total     int
+);
+create table evaluations_total
+(
+    id              serial primary key,
+    id_student      int references students (id),
+    name_object     varchar(255) not null,
+    course          int          not null,
+    first_semester  int,
+    second_semester int,
+    final_total     int
 );
 
 create table omissions
@@ -75,41 +105,66 @@ create table omissions
     id             serial primary key,
     id_student     int references students (id),
     date_omissions date         not null,
-    status         varchar(255) not null
+    status         varchar(255) not null,
+    name_object    varchar(255) not null
 );
 -- # Вторая часть
 
-create table graph
+create table study_process
 (
     id         serial primary key,
     id_group   int references groups (id),
     semester   int  not null,
+    course     int  not null,
     date_start date not null,
     date_end   date not null
 );
-insert into graph (id_group, semester, date_start, date_end) VALUES (1, 1, '02.09.2023', '10.10.2023');
-
-create table week_study
+insert into study_process (id_group, semester, course, date_start, date_end)
+VALUES (1, 2, 1, '02.09.2023', '10.10.2023');
+-- Изменения было
+-- create table week_study
+-- (
+--     id          serial primary key,
+--     id_graph    int references graph (id),
+--     name        varchar(255) not null,
+--     first_para  varchar(255),
+--     second_para varchar(255),
+--     third_para  varchar(255),
+--     fourth_para varchar(255),
+--     fifth_para  varchar(255),
+--     sixth_para  varchar(255)
+-- );
+--
+-- create table practice_study
+-- (
+--     id         serial primary key,
+--     id_graph    int references graph (id),
+--     name       varchar(255) not null,
+--     date_start date         not null,
+--     date_end   date         not null
+-- );
+-- Стало
+create table type_study
 (
-    id          serial primary key,
-    id_graph    int references graph (id),
-    name        varchar(255) not null,
-    first_para  varchar(255),
-    second_para varchar(255),
-    third_para  varchar(255),
-    fourth_para varchar(255),
-    fifth_para  varchar(255),
-    sixth_para  varchar(255)
+    id               serial primary key,
+    id_study_process int references study_process (id),
+    name             varchar(255) not null, -- Прописываем: учеба, практика, учебная практика
+        date_start       date         not null,
+    date_end         date         not null
 );
-
-create table practice_study
+create table time_study
 (
-    id         serial primary key,
-    id_graph    int references graph (id),
-    name       varchar(255) not null,
-    date_start date         not null,
-    date_end   date         not null
-);
+    id            serial primary key,
+    id_type_study int references type_study (id),
+    name          varchar(255) not null, -- День недели
+    first_para    varchar(255),
+    second_para   varchar(255),
+    third_para    varchar(255),
+    fourth_para   varchar(255),
+    fifth_para    varchar(255),
+    sixth_para    varchar(255)
+    );
+-- Конец
 create table objects
 (
     id   serial primary key,
