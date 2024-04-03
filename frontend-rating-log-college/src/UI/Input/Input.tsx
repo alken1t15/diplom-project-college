@@ -16,6 +16,7 @@ const Input: React.FC<InputProps> = ({ placeholder,onChange, type ,styles}) => {
         setIsFocused(true);
     };
 
+
     function inputChange(e: React.ChangeEvent<HTMLInputElement>){
         setValue(e.target.value)
         onChange(e.target.value)

@@ -10,6 +10,7 @@ const infoImg = require('../../assets/images/InformationImgg.png');
 const gradeImg = require('../../assets/images/GradesImg.png');
 const houseImg = require('../../assets/images/School.png');
 const teachImg = require('../../assets/images/TeacherImg.png');
+const backImg = require('../../assets/images/bac');
 const MainPageStudent: React.FC = () => {
 
     let[currentPage, setCurrentPage] = useState(7);
@@ -124,6 +125,8 @@ const MainPageStudent: React.FC = () => {
         ]
     })
 
+    let[active, setIsActive] = useState(false)
+
     return (
         <div className={'main-page'}>
             <div className={'block-left'}>
@@ -181,6 +184,21 @@ const MainPageStudent: React.FC = () => {
                     Расписание на сегодня
                 </p>
                 <ScheduleItem date={schedule.date} nameOfDay={schedule.nameOfDay} schedules={schedule.schedules}/>
+                <button className="block-right__button" onClick={
+                    (e)=>{
+                        setIsActive(true)
+                    }
+                }>
+                    <div className={`image-block ${active ? 'image-block-active' : ''} `}>
+                        <div className="image-block-top">
+                            <button className="image-block__button-close">
+                                <img src="" alt=""/>
+                            </button>
+                        </div>
+                    </div>
+                    <img src={infoImg} alt="Information img"/>
+                    Сообщить об отсутвия занятие
+                </button>
             </div>
         </div>
     );
