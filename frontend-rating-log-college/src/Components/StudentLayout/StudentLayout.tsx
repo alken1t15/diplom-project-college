@@ -3,7 +3,7 @@ import {ReactComponent as sImage} from "../../assets/images/NavbarS.svg";
 import {ReactComponent as tImage} from "../../assets/images/NavbarT.svg";
 import {ReactComponent as foImage} from "../../assets/images/NavbarFo.svg";
 import React, {useState} from 'react';
-import {Link, Outlet, Route, Routes} from "react-router-dom";
+import {Link, Outlet} from "react-router-dom";
 import {
     COURSES_STUDENT_ROUTE,
     GRADE_STUDENT_ROUTE,
@@ -11,7 +11,6 @@ import {
     MAIN_PAGE_STUDENT_ROUTE
 } from "../../Utils/Routes";
 import './StudentLayout.scss';
-import {log} from "util";
 import InitialsImage from "../InitialsImage/InitialsImage";
 
 const Logo = require('../../assets/images/Logo.png');

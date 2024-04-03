@@ -1,0 +1,117 @@
+.card{
+  border-radius: 5px;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  & .select{
+    color: white;
+    margin-left: 5px;
+    cursor: pointer;
+    transition: .4s;
+    width: 351px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 22px;
+    text-align: center;
+    & > p{
+      margin-top: 100px;
+    }
+    & > img{
+      margin-bottom: 25px;
+    }
+    &:hover{
+      opacity: 0.6;
+
+    }
+  }
+  & > .top{
+    text-align: center;
+  }
+  & > p {
+    font-weight: 600;
+    color: white;
+  }
+
+  & > button{
+    outline: none;
+    border: 0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 400;
+    width: 100%;
+    background-color: var(--purple);
+  }
+  & > .drag-area{
+    min-height: 370px;
+    border-radius: 10px;
+    border: 3px dashed white;
+    color: white;
+    font-weight: 700;
+    font-size: 22px;
+    background-color: rgba(67, 76, 89, 1);
+    border-spacing: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: pointer;
+    transition: .25s;
+    &:hover{
+    background-color: rgba(67, 76, 89, .5);
+      transition: .25s;
+    }
+    & .visible{
+      font-size: 18px;
+    }
+
+
+    & > input{
+      opacity: 0;
+    }
+  }
+}
+
+.drag-container{
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  flex-direction: column;
+  margin-top: 10px;
+  & .image{
+    width: 75px;
+    margin-top: 5px;
+    height: 75px;
+    position: relative;
+    & span{
+      position: absolute;
+      top: -2px;
+      right: 9px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    & img{
+      width: 100%;
+      height: 100%;
+      border-right: 5px;
+    }
+  }
+}
+
+.card input,
+.card .drag-area .on-drop,
+.card .drag-area.dragover .visible{
+  display: none;
+}
+
+.delete{
+  z-index: 999;
+  color: #0086fe;
+}
+
+

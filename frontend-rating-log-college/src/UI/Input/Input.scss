@@ -1,34 +1,25 @@
 .input-container {
   position: relative;
-  margin-top: 25px;
-  max-width: 100%;
+  margin-top: 45px;
 }
 
 input {
   padding: 8px 15px;
-  max-width: 100%;
-  width: 94%;
+  width: 100%;
   transition: border-color 0.3s ease;
   background-color: var(--total-black);
   border-radius: 10px;
   color: white;
-  height: 32px;
   border: 1px solid #F5F5F5;
-  font-size: 20px;
-  letter-spacing: -0.02em;
-  font-weight: 300;
-
-  &:focus{
-    outline: transparent;
-  }
-  &::-webkit-input-placeholder {color:#b4b7bc;}
 }
 
 label {
   position: absolute;
-  font-size: 20px;
-  top: 13px;
-  left: 16px;
+
+  top: 8px;
+  //left: 8px;
+  left: 11px;
+  font-size: 14px;
   pointer-events: none;
   color: var(--gray);
   transition: top 0.3s, font-size 0.3s;
