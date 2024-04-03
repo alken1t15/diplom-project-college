@@ -1,6 +1,7 @@
 package kz.alken1t15.backratinglogcollege.contoller;
 
 import kz.alken1t15.backratinglogcollege.dto.LoginAuth;
+import kz.alken1t15.backratinglogcollege.entity.User;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryUser;
 import kz.alken1t15.backratinglogcollege.security.JWTUtil;
 import lombok.AllArgsConstructor;
@@ -17,18 +18,18 @@ import java.util.Map;
 @RequestMapping("/login")
 @AllArgsConstructor
 public class Test {
-    private RepositoryUser userRepo;
+    private RepositoryUser repositoryUser;
     private JWTUtil jwtUtil;
-  //  private PasswordEncoder passwordEncoder;
 
     @PostMapping("/auth")
     public Map<String, Object> loginHandler(@RequestBody LoginAuth loginAuth) {
-
-        System.out.println("test");
-      //  UsernamePasswordAuthenticationToken authInputToken =
-      //          new UsernamePasswordAuthenticationToken(email,password);
-        String token = jwtUtil.generateToken(loginAuth.getLogin());
-        return Collections.singletonMap("jwt-token", token);
+        User user = repositoryUser.findByLoginAndPassword(loginAuth.getLogin(), loginAuth.getPassword()).orElse(null);
+        if (user != null) {
+            String token = jwtUtil.generateToken(loginAuth.getLogin(),loginAuth.getPassword());
+            return Collections.singletonMap("jwt-token", token);
+        } else {
+            return Collections.singletonMap("Ошибка", "ошибка");
+        }
     }
 
     @GetMapping("/test")
