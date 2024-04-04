@@ -1,5 +1,6 @@
 package kz.alken1t15.backratinglogcollege.security;
 
+import kz.alken1t15.backratinglogcollege.entity.User;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryUser;
 import lombok.AllArgsConstructor;
 
@@ -20,8 +21,8 @@ public class UserDetailsServiceImpl implements UserDetailsService
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("авторизация");
-        return null;
+     User user = repositoryUser.findByLogin(username).orElse(null);
+     return new UserDetailsImp(user);
     }
 
 //    @Override

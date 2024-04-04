@@ -1,19 +1,21 @@
 package kz.alken1t15.backratinglogcollege.security;
 
+import kz.alken1t15.backratinglogcollege.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @AllArgsConstructor
 public class UserDetailsImp implements UserDetails {
     private User user;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList<>();
+        GrantedAuthorityImpl grantedAuthority = new GrantedAuthorityImpl("rolell", true);
+        return List.of(grantedAuthority);
     }
 
     @Override
@@ -23,7 +25,7 @@ public class UserDetailsImp implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return user.getLogin();
     }
 
     @Override

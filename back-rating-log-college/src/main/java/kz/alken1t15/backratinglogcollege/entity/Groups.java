@@ -21,21 +21,19 @@ public class Groups {
 
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "id_teacher")
-    private Teachers teachers;
+//    @ManyToOne
+//    @JoinColumn(name = "id_teacher")
+//    private Teachers teachers;
 
     @OneToMany(mappedBy = "group")
     private List<Students> students;
+
+    private Integer year;
 
     public Groups(String name) {
         this.name = name;
     }
 
-    public Groups(String name, Teachers teachers) {
-        this.name = name;
-        this.teachers = teachers;
-    }
 
     @Override
     public String toString() {

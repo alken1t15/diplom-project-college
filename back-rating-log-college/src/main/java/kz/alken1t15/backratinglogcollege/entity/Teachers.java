@@ -34,8 +34,8 @@ public class Teachers {
     @Column(name = "born_date")
     private LocalDate bornDate;
 
-    @OneToMany(mappedBy = "teachers")
-    private List<Groups> groups;
+//    @OneToMany(mappedBy = "teachers")
+//    private List<Groups> groups;
 
     public Teachers(String firstName, String secondName, String middleName, String login, String password, LocalDate bornDate) {
         this.firstName = firstName;

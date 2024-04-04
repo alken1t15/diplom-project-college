@@ -40,37 +40,37 @@ public class JWTFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String headerAuth = request.getHeader("Authorization");
-        if (headerAuth != null) {
-            if (headerAuth.startsWith("Bearer ")) {
-                String token = headerAuth.substring(7);
-                LoginAuth loginAuth = jwtUtil.validateTokenAndRetrieveSubject(token);
-                String login = loginAuth.getLogin();
-                String password = loginAuth.getLogin();
-                SecurityContext securityContext = SecurityContextHolder.getContext();
-                String anonymous = securityContext.getAuthentication().getName();
-                if (anonymous.equals("anonymousUser")) {
-                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(login,password);
-                    System.out.println(usernamePasswordAuthenticationToken.isAuthenticated());
-                    System.out.println("Авторизация");
-                    System.out.println(usernamePasswordAuthenticationToken.getName());
-                    Principal principal = (Principal) usernamePasswordAuthenticationToken.getPrincipal();
-                    System.out.println(principal.getName());
-                    if (serverLogin.equals(login) && serverPassword.equals(password)) {
-//                        Authentication authentication = new TestingAuthenticationToken(serverLogin, serverPassword, "ROLE_USER");
-//                        securityContext.setAuthentication(authentication);
-//                        SecurityContextHolder.setContext(securityContext);
-                        filterChain.doFilter(request, response);
-                    } else {
-                        response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                        response.getWriter().write("Не правильный JWT токен");
-                        response.getWriter().flush();
-                        response.getWriter().close();
-                        return;
-                    }
-                }
-            }
-        }
+//        String headerAuth = request.getHeader("Authorization");
+//        if (headerAuth != null) {
+//            if (headerAuth.startsWith("Bearer ")) {
+//                String token = headerAuth.substring(7);
+//                LoginAuth loginAuth = jwtUtil.validateTokenAndRetrieveSubject(token);
+//                String login = loginAuth.getLogin();
+//                String password = loginAuth.getLogin();
+//                SecurityContext securityContext = SecurityContextHolder.getContext();
+//                String anonymous = securityContext.getAuthentication().getName();
+//                if (anonymous.equals("anonymousUser")) {
+//                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(login,password);
+//                    System.out.println(usernamePasswordAuthenticationToken.isAuthenticated());
+//                    System.out.println("Авторизация");
+//                    System.out.println(usernamePasswordAuthenticationToken.getName());
+//                    Principal principal = (Principal) usernamePasswordAuthenticationToken.getPrincipal();
+//                    System.out.println(principal.getName());
+//                    if (serverLogin.equals(login) && serverPassword.equals(password)) {
+////                        Authentication authentication = new TestingAuthenticationToken(serverLogin, serverPassword, "ROLE_USER");
+////                        securityContext.setAuthentication(authentication);
+////                        SecurityContextHolder.setContext(securityContext);
+//                        filterChain.doFilter(request, response);
+//                    } else {
+//                        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+//                        response.getWriter().write("Не правильный JWT токен");
+//                        response.getWriter().flush();
+//                        response.getWriter().close();
+//                        return;
+//                    }
+//                }
+//            }
+//        }
         filterChain.doFilter(request, response);
     }
 }
