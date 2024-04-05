@@ -1,65 +1,76 @@
 package kz.alken1t15.backratinglogcollege.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.Jwts;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import kz.alken1t15.backratinglogcollege.dto.LoginAuth;
 import lombok.AllArgsConstructor;
 
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
+import java.security.Principal;
 
 @Component
-@AllArgsConstructor
-public class JWTFilter implements Filter {
+public class JWTFilter extends OncePerRequestFilter {
 
-    //extends OncePerRequestFilter
-
-  //  private UserDetailsServiceImpl userDetailsService;
+    @Autowired
     private JWTUtil jwtUtil;
+    @Value("${server.login}")
+    private String serverLogin;
+    @Value("${server.password}")
+    private String serverPassword;
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        JwtParser jwtParser = Jwts.parser().setSigningKey("alex0410");
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
-        String bearerToken = request.getHeader("TOKEN_HEADER");
-        if (bearerToken != null){
-            Claims claims = jwtParser.parseClaimsJws(bearerToken).getBody();
-        System.out.println(claims.getSubject());
-        System.out.println("filter");
-    }
-        System.out.println(request.getHeader("Authorization"));
-        filterChain.doFilter(request, response);
-    }
-
-//    @Override
-//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-//        System.out.println(request);
-//        String authHeader = request.getHeader("Authorization");
-//        if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith("Bearer ")) {
-//            String jwt = authHeader.substring(7);
-//            if (jwt == null || jwt.isBlank()) {
-//                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token in Bearer Header");
-//            } else {
-//                try {
-//                    String login = jwtUtil.validateTokenAndRetrieveSubject(jwt);
-//                    UserDetails userDetails = userDetailsService.loadUserByUsername(login);
-//                    UsernamePasswordAuthenticationToken authToken =
-//                            new UsernamePasswordAuthenticationToken(login, userDetails.getPassword(), userDetails.getAuthorities());
-//                    if (SecurityContextHolder.getContext().getAuthentication() == null) {
-//                        SecurityContextHolder.getContext().setAuthentication(authToken);
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+//        String headerAuth = request.getHeader("Authorization");
+//        if (headerAuth != null) {
+//            if (headerAuth.startsWith("Bearer ")) {
+//                String token = headerAuth.substring(7);
+//                LoginAuth loginAuth = jwtUtil.validateTokenAndRetrieveSubject(token);
+//                String login = loginAuth.getLogin();
+//                String password = loginAuth.getLogin();
+//                SecurityContext securityContext = SecurityContextHolder.getContext();
+//                String anonymous = securityContext.getAuthentication().getName();
+//                if (anonymous.equals("anonymousUser")) {
+//                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(login,password);
+//                    System.out.println(usernamePasswordAuthenticationToken.isAuthenticated());
+//                    System.out.println("Авторизация");
+//                    System.out.println(usernamePasswordAuthenticationToken.getName());
+//                    Principal principal = (Principal) usernamePasswordAuthenticationToken.getPrincipal();
+//                    System.out.println(principal.getName());
+//                    if (serverLogin.equals(login) && serverPassword.equals(password)) {
+////                        Authentication authentication = new TestingAuthenticationToken(serverLogin, serverPassword, "ROLE_USER");
+////                        securityContext.setAuthentication(authentication);
+////                        SecurityContextHolder.setContext(securityContext);
+//                        filterChain.doFilter(request, response);
+//                    } else {
+//                        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+//                        response.getWriter().write("Не правильный JWT токен");
+//                        response.getWriter().flush();
+//                        response.getWriter().close();
+//                        return;
 //                    }
-//                } catch (JWTVerificationException exc) {
-//                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token");
 //                }
 //            }
 //        }
-
-       // filterChain.doFilter(request, response);
-
+        filterChain.doFilter(request, response);
+    }
 }

@@ -31,6 +31,9 @@ public class Evaluations {
 
     private Long ball;
 
+    @Column(name = "name_teacher")
+    private String nameTeacher;
+
     public Evaluations(Students student, String nameObject, LocalDate dateEvaluation, Long ball) {
         this.student = student;
         this.nameObject = nameObject;

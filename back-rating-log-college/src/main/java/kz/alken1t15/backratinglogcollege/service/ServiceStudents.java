@@ -47,4 +47,8 @@ public class ServiceStudents {
     }
 
 
+    public Students findByIdStudent(Long id){
+        return repositoryStudents.findByIdCustom(id).orElseThrow();
+    }
+
 }

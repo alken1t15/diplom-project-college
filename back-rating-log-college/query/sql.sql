@@ -9,7 +9,7 @@ create table users
 
 insert into users(login, password)
 values ('fdsfew',
-        'fsdfsdfsdf');
+        'fsdfsdfsdf'),('alex','$2y$10$QsmdOGpTOpn4qWLD3jSIY.8C8bwMIR8PFXuIkpf5aejT2xCpO0pji');
 
 create table teachers
 (
@@ -37,11 +37,12 @@ create table groups
     id                  serial primary key,
     id_curator          int references curator (id) not null,
     name                varchar(255)                not null,
-    specialization_name varchar(255)                not null
+    specialization_name varchar(255)                not null,
+    year int not null
 );
 
-insert into groups (id_curator, name, specialization_name)
-VALUES (1, 'П-20-51б', 'Вычислительная техника и программное обеспечение');
+insert into groups (id_curator, name, specialization_name,year)
+VALUES (1, 'П-20-51б', 'Вычислительная техника и программное обеспечение',2020);
 
 -- create table teachers_group
 -- (
@@ -67,6 +68,10 @@ create table students
     subgroup_name varchar(255)              not null
 );
 
+insert into students (id, id_group, first_name, second_name, middle_name, login, password, born_date, subgroup_name) VALUES (1,1,'fdsf','fsdfsd','fsdfsd',
+                                                                                                                             'fdsf','fsdfsd',
+                                                                                        '12.08.2004','Б');
+
 -- insert into students (id_group, first_name, second_name, middle_name, login, password, born_date)
 -- VALUES (1, 'Максим',
 --         'Кораблев',
@@ -81,7 +86,8 @@ create table evaluations
     id_student      int references students (id),
     name_object     varchar(255) not null,
     date_evaluation date         not null,
-    ball            int          not null
+    ball            int          not null,
+    name_teacher varchar(255) not null
 );
 create table evaluations_between
 (
@@ -110,8 +116,77 @@ create table omissions
     id_student     int references students (id),
     date_omissions date         not null,
     status         varchar(255) not null,
-    name_object    varchar(255) not null
+    name_object    varchar(255) not null,
+    number_couple int not null,
+    number_month int not null
 );
+
+
+INSERT INTO omissions (id_student, date_omissions, status, name_object, number_couple, number_month)
+VALUES (1, '2024-04-01', 'Пропущено', 'Математика', 3, 9);
+
+INSERT INTO omissions (id_student, date_omissions, status, name_object, number_couple, number_month)
+VALUES (1, '2024-09-01', 'Пропущено', 'Физика', 4, 9);
+
+INSERT INTO omissions (id_student, date_omissions, status, name_object, number_couple, number_month)
+VALUES (1, '2024-09-01', 'Без опозданий', 'Основа право', 5, 9);
+
+INSERT INTO omissions (id_student, date_omissions, status, name_object, number_couple, number_month)
+VALUES (1, '2024-09-01', 'Отсутвует', 'Комп сети', 2, 9);
+
+INSERT INTO omissions (id_student, date_omissions, status, name_object, number_couple, number_month)
+VALUES (1, '2024-04-03', 'Пропущено', 'Физика', 5, 9);
+
+INSERT INTO omissions (id_student, date_omissions, status, name_object, number_couple, number_month)
+VALUES (1, '2024-04-05', 'Пропущено', 'История', 2, 9);
+
+INSERT INTO omissions (id_student, date_omissions, status, name_object, number_couple, number_month)
+VALUES (1, '2024-04-07', 'Пропущено', 'Биология', 4, 9);
+
+INSERT INTO omissions (id_student, date_omissions, status, name_object, number_couple, number_month)
+VALUES (1, '2024-04-09', 'Пропущено', 'География', 1, 9);
+
+INSERT INTO omissions (id_student, date_omissions, status, name_object, number_couple, number_month)
+VALUES (1, '2024-04-11', 'Пропущено', 'Химия', 3, 9);
+
+INSERT INTO omissions (id_student, date_omissions, status, name_object, number_couple, number_month)
+VALUES (1, '2024-04-13', 'Пропущено', 'Литература', 5, 9);
+
+INSERT INTO omissions (id_student, date_omissions, status, name_object, number_couple, number_month)
+VALUES (1, '2024-04-15', 'Пропущено', 'Иностранный язык', 2, 9);
+
+INSERT INTO omissions (id_student, date_omissions, status, name_object, number_couple, number_month)
+VALUES (1, '2024-04-17', 'Пропущено', 'Искусство', 4, 9);
+
+INSERT INTO omissions (id_student, date_omissions, status, name_object, number_couple, number_month)
+VALUES (1, '2024-04-19', 'Пропущено', 'Спорт', 1, 9);
+
+INSERT INTO omissions (id_student, date_omissions, status, name_object, number_couple, number_month)
+VALUES (1, '2024-04-21', 'Пропущено', 'Экономика', 3, 9);
+
+INSERT INTO omissions (id_student, date_omissions, status, name_object, number_couple, number_month)
+VALUES (1, '2024-04-23', 'Пропущено', 'Психология', 5, 9);
+
+INSERT INTO omissions (id_student, date_omissions, status, name_object, number_couple, number_month)
+VALUES (1, '2024-04-25', 'Пропущено', 'Политология', 2, 9);
+
+INSERT INTO omissions (id_student, date_omissions, status, name_object, number_couple, number_month)
+VALUES (1, '2024-04-27', 'Пропущено', 'Религия', 4, 9);
+
+INSERT INTO omissions (id_student, date_omissions, status, name_object, number_couple, number_month)
+VALUES (1, '2024-04-29', 'Пропущено', 'Философия', 1, 9);
+
+INSERT INTO omissions (id_student, date_omissions, status, name_object, number_couple, number_month)
+VALUES (1, '2024-05-01', 'Пропущено', 'Астрономия', 3, 9);
+
+INSERT INTO omissions (id_student, date_omissions, status, name_object, number_couple, number_month)
+VALUES (1, '2024-05-03', 'Пропущено', 'Анатомия', 5, 9);
+
+INSERT INTO omissions (id_student, date_omissions, status, name_object, number_couple, number_month)
+VALUES (1, '2024-05-05', 'Пропущено', 'Ботаника', 2, 9);
+
+INSERT INTO omissions (id_student, date_omissions, status, name_object, number_couple, number_month)
+VALUES (1, '2024-05-07', 'Пропущено', 'Зоология', 4, 9);
 -- # Вторая часть
 
 create table study_process

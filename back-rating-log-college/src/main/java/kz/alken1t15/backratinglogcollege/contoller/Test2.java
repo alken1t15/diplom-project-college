@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class Test2 {
     @GetMapping("/arr")
     public String test(){
-        System.out.println("fsdfsd");
+        System.out.println("попал в защищенный метод");
         return "trsaf";
     }
 }

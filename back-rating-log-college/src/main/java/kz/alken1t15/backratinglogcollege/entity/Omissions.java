@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -25,6 +26,16 @@ public class Omissions {
     @Column(name = "date_omissions")
     private LocalDate dateOmissions;
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
+//    @Enumerated(EnumType.STRING)
+    private String status;
+
+    @Column(name = "name_object")
+    private String nameObject;
+
+    @Column(name = "number_couple")
+    private Integer numberCouple;
+
+    @Column(name = "number_month")
+    private Integer numberMonth;
+
 }

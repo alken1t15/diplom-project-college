@@ -41,7 +41,7 @@ public class ServiceGroups {
            Groups groups = repositoryGroups.findByName(group.name()).orElse(null);
             Teachers teachers = repositoryTeachers.findById(group.id()).orElse(null);
             if (groups == null && teachers!=null) {
-                repositoryGroups.save(new Groups(group.name(),teachers));
+//                repositoryGroups.save(new Groups(group.name(),teachers));
                 return ResponseEntity.status(HttpStatus.OK).build();
             }
             else if (groups!= null){

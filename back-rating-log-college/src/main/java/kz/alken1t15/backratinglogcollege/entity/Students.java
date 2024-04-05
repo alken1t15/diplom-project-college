@@ -18,9 +18,8 @@ public class Students {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_group")
-    @JsonIgnore
     private Groups group;
 
     @Column(name = "first_name")
@@ -42,4 +41,16 @@ public class Students {
     @OneToMany(mappedBy = "student")
     @JsonIgnore
     private List<Evaluations> evaluations;
+
+    @Override
+    public String toString() {
+        return "Students{" +
+                "firstName='" + firstName + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", bornDate=" + bornDate +
+                '}';
+    }
 }
