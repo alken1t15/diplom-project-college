@@ -17,7 +17,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.logging.LoggerConfiguration;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -36,46 +39,55 @@ import java.util.Map;
 public class ControllerMain {
     private Logger logger = LoggerFactory.getLogger(ControllerMain.class);
     @Autowired
-    private RepositoryUser repositoryUser;
-    @Autowired
     private JWTUtil jwtUtil;
     @Autowired
     private final AuthenticationManager authenticationManager;
-//    @Autowired
-//    private ControllerStudent controllerStudent;
+    @Autowired
+    private final RepositoryUser repositoryUser;
 
-    public ControllerMain(RepositoryUser repositoryUser, JWTUtil jwtUtil, AuthenticationManager authenticationManager) {
-        this.repositoryUser = repositoryUser;
+
+    public ControllerMain(JWTUtil jwtUtil, AuthenticationManager authenticationManager,RepositoryUser repositoryUser) {
         this.jwtUtil = jwtUtil;
         this.authenticationManager = authenticationManager;
+        this.repositoryUser = repositoryUser;
     }
 
     @PostMapping("/jwt")
     public Map<String, Object> loginHandler(@RequestBody LoginAuth loginAuth) {
-        User user = repositoryUser.findByLoginAndPassword(loginAuth.getLogin(), loginAuth.getPassword()).orElse(null);
-        if (user != null) {
-            String token = jwtUtil.generateToken(loginAuth.getLogin(),loginAuth.getPassword());
-            return Collections.singletonMap("jwt-token", token);
-        } else {
-            return Collections.singletonMap("Ошибка", "ошибка");
+        if (StringUtils.isBlank(loginAuth.getPassword()) || StringUtils.isBlank(loginAuth.getPassword())) {
+            throw new BadCredentialsException("Одно из полей пустое");
         }
+        logger.info(String.format("Авторизация пользваоетяля: логин: %s пароль: %s", loginAuth.getLogin(), loginAuth.getPassword()));
+        Authentication token = UsernamePasswordAuthenticationToken.unauthenticated(loginAuth.getLogin(), loginAuth.getPassword());
+        Authentication authenticationResponse = this.authenticationManager.authenticate(token);
+        User user = repositoryUser.findByLogin(loginAuth.getLogin()).orElseThrow();
+        if (!StringUtils.isBlank(user.getJwt())){
+            throw new BadCredentialsException("Токен уже был получен ранее");
+        }
+        logger.info(String.format("Пользователь который хочет получить jwt токен: %s", authenticationResponse));
+        String jwt = jwtUtil.generateToken(loginAuth.getLogin(), loginAuth.getPassword());
+        user.setJwt(jwt);
+        repositoryUser.save(user);
+        logger.info(String.format("JWT: %s", jwt));
+        return Collections.singletonMap("jwt-token", jwt);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity errorAuthentication(BadCredentialsException ex) {
+        return new ResponseEntity(ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping("/auth")
     public String authorizationUser(@RequestBody LoginAuth loginAuth, HttpServletRequest request, HttpServletResponse response) {
         SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
-        logger.info(String.format("Авторизация пользваоетяля: логин: %s пароль: %s",loginAuth.getLogin(),loginAuth.getPassword()));
-        Authentication token  = UsernamePasswordAuthenticationToken.unauthenticated(loginAuth.getLogin(), loginAuth.getPassword());
-        System.out.println(token );
-        Authentication authenticationResponse = this.authenticationManager.authenticate(token);
-        System.out.println(authenticationResponse);
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        context.setAuthentication(authenticationResponse);
-        SecurityContextHolder.setContext(context);
-        securityContextRepository.saveContext(context,request,response);
-//        securityContext.setAuthentication(authenticationResponse);
-//        SecurityContextHolder.setContext(securityContext);
-//      String str =  HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
+        logger.info(String.format("Авторизация пользваоетяля: логин: %s пароль: %s", loginAuth.getLogin(), loginAuth.getPassword()));
+        Authentication token = UsernamePasswordAuthenticationToken.unauthenticated(loginAuth.getLogin(), loginAuth.getPassword());
+//        Authentication authenticationResponse = this.authenticationManager.authenticate(token);
+//        System.out.println(authenticationResponse);
+//        SecurityContext context = SecurityContextHolder.createEmptyContext();
+//        context.setAuthentication(authenticationResponse);
+//        SecurityContextHolder.setContext(context);
+//        securityContextRepository.saveContext(context,request,response);
 
         return "jwt-token";
     }

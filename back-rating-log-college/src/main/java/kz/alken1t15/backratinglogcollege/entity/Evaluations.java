@@ -20,8 +20,8 @@ public class Evaluations {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "id_student")
-    private Students student;
+    @JoinColumn(name = "id_course")
+    private StudentsCourse studentsCourse;
 
     @JoinColumn(name = "name_object")
     private String nameObject;
@@ -34,10 +34,4 @@ public class Evaluations {
     @Column(name = "name_teacher")
     private String nameTeacher;
 
-    public Evaluations(Students student, String nameObject, LocalDate dateEvaluation, Long ball) {
-        this.student = student;
-        this.nameObject = nameObject;
-        this.dateEvaluation = dateEvaluation;
-        this.ball = ball;
-    }
 }

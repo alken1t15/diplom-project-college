@@ -18,7 +18,8 @@ public class ControllerEvaluations {
 
     @PostMapping(path = "/add")
     public HttpStatus addEvaluation(@RequestBody Evaluation evaluation){
-       return serviceEvaluations.save(evaluation);
+//       return serviceEvaluations.save(evaluation);
+        return null;
     }
 
     public record Evaluation(Long idStudent, String nameObject, LocalDate dateEvaluation, Long ball){ }

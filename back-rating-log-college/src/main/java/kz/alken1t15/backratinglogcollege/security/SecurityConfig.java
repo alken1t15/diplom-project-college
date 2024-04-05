@@ -29,31 +29,13 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @AllArgsConstructor
 public class SecurityConfig {
     private JWTFilter filter;
-    private UserDetailsServiceImpl userDetailsService;
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable()).addFilterBefore(filter, AuthorizationFilter.class)
-                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/login/auth")
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/login/jwt")
                         .permitAll().anyRequest().authenticated())
                 .build();
     }
-
-    @Bean
-    AuthenticationManager authenticationManager(UserDetailsServiceImpl userDetailsService, PasswordEncoder passwordEncoder) {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService);
-        authenticationProvider.setPasswordEncoder(passwordEncoder);
-        ProviderManager providerManager = new ProviderManager(authenticationProvider);
-        providerManager.setEraseCredentialsAfterAuthentication(false);
-        return providerManager;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
 }

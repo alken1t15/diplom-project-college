@@ -38,9 +38,12 @@ public class Students {
     @Column(name = "born_date")
     private LocalDate bornDate;
 
+//    @OneToMany(mappedBy = "student")
+//    @JsonIgnore
+//    private List<Evaluations> evaluations;
+
     @OneToMany(mappedBy = "student")
-    @JsonIgnore
-    private List<Evaluations> evaluations;
+    private List<StudentsCourse> studentsCourses;
 
     @Override
     public String toString() {

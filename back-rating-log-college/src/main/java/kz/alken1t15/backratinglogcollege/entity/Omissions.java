@@ -20,8 +20,8 @@ public class Omissions {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "id_student")
-    private Students student;
+    @JoinColumn(name = "id_course")
+    private StudentsCourse studentsCourse;
 
     @Column(name = "date_omissions")
     private LocalDate dateOmissions;

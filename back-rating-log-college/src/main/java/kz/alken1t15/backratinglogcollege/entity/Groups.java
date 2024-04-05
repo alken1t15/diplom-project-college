@@ -30,6 +30,8 @@ public class Groups {
 
     private Integer year;
 
+    private Integer course;
+
     public Groups(String name) {
         this.name = name;
     }

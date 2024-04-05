@@ -42,8 +42,9 @@ public class ControllerStudent {
     public StudentInfoMainPageDTO getInfoForMainPage(@RequestBody UserId userId) {
         Students students = serviceStudents.findByIdStudent(userId.getId());
         Groups groups = students.getGroup();
+        Integer course = groups.getCourse();
         List<Evaluations> evaluations = serviceEvaluations.findByDateEvaluation(LocalDate.now());
-        MonthDTO monthDTO = serviceOmissions.findByMonth(userId.getNumberOfMonth());
+        MonthDTO monthDTO = serviceOmissions.findByMonth(userId.getNumberOfMonth(),course);
 
         return new StudentInfoMainPageDTO(students.getFirstName(), students.getSecondName(), groups.getName(), groups.getYear(), evaluations,monthDTO);
     }

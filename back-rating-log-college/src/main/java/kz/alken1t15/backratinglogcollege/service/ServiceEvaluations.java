@@ -19,17 +19,17 @@ public class ServiceEvaluations {
     private final RepositoryEvaluations repositoryEvaluations;
     private final RepositoryStudents repositoryStudents;
 
-    public HttpStatus save(ControllerEvaluations.Evaluation evaluation) {
-        Students students = repositoryStudents.findById(evaluation.idStudent()).orElse(null);
-        if (students == null) {
-            return HttpStatus.FORBIDDEN;
-        } else if (!StringUtils.isBlank(evaluation.nameObject()) || evaluation.dateEvaluation() != null || evaluation.ball() != 0) {
-            repositoryEvaluations.save(new Evaluations(students, evaluation.nameObject(), evaluation.dateEvaluation(), evaluation.ball()));
-            return HttpStatus.OK;
-        } else {
-            return HttpStatus.BAD_REQUEST;
-        }
-    }
+//    public HttpStatus save(ControllerEvaluations.Evaluation evaluation) {
+//        Students students = repositoryStudents.findById(evaluation.idStudent()).orElse(null);
+//        if (students == null) {
+//            return HttpStatus.FORBIDDEN;
+//        } else if (!StringUtils.isBlank(evaluation.nameObject()) || evaluation.dateEvaluation() != null || evaluation.ball() != 0) {
+//            repositoryEvaluations.save(new Evaluations(students, evaluation.nameObject(), evaluation.dateEvaluation(), evaluation.ball()));
+//            return HttpStatus.OK;
+//        } else {
+//            return HttpStatus.BAD_REQUEST;
+//        }
+//    }
 
     public List<Evaluations> findByDateEvaluation(LocalDate date) {
         return repositoryEvaluations.findByDateEvaluation(date);

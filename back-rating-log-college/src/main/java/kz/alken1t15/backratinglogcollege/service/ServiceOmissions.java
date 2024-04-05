@@ -18,9 +18,9 @@ import java.util.List;
 public class ServiceOmissions {
     private RepositoryOmissions repositoryOmissions;
 
-    public MonthDTO findByMonth(Integer numberMonth) {
+    public MonthDTO findByMonth(Integer numberMonth, Integer course) {
         List<DayDTO> dayDTOs = new ArrayList<>();
-        List<Omissions> omissions = repositoryOmissions.findByMonth(numberMonth);
+        List<Omissions> omissions = repositoryOmissions.findByMonth(numberMonth,course);
         String[] russianDayOfWeekNames = {"Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"};
         String[] russianMonthNames = {
                 "января", "февраля", "марта", "апреля", "мая", "июня",

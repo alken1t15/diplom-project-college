@@ -1,6 +1,7 @@
 package kz.alken1t15.backratinglogcollege.entity;
 
 import jakarta.persistence.*;
+import kz.alken1t15.backratinglogcollege.entity.study.PlanStudy;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,6 +37,9 @@ public class Teachers {
 
 //    @OneToMany(mappedBy = "teachers")
 //    private List<Groups> groups;
+
+    @OneToMany(mappedBy = "teacher")
+    private List<PlanStudy> planStudies;
 
     public Teachers(String firstName, String secondName, String middleName, String login, String password, LocalDate bornDate) {
         this.firstName = firstName;
