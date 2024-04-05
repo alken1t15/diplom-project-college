@@ -1,6 +1,7 @@
 import React, {useRef, useState} from 'react';
 import './FileUploader.scss'
 const uploadImg = require('../../assets/images/UploadImg.png');
+const fileImg = require('../../assets/images/FileImg.png');
 
 
 interface IFileUploader{
@@ -9,10 +10,10 @@ interface IFileUploader{
 }
 const FileUploader: React.FC<IFileUploader> = (props) => {
 
-    let [images, setImages] = useState<{ name: string, url: string }[]>([]);
+    let [images, setImages] = useState<{ name: string, url: string, active: boolean }[]>([]);
     let [isDragging, setIsDragging] = useState(false);
     let fileInputRef = useRef<HTMLInputElement>(null)
-
+    let containerRef = useRef<HTMLDivElement>(null);
 
     function selectFiles(){
         if (fileInputRef.current) {
@@ -35,6 +36,7 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
                     {
                         name: files[i].name,
                         url: URL.createObjectURL(files[i]),
+                        active: true
 
                     },
                 ]);
@@ -74,7 +76,7 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
                     {
                         name: files[i].name,
                         url: URL.createObjectURL(files[i]),
-
+                        active: true
                     },
                 ]);
             }
@@ -82,6 +84,17 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
 
         }
     }
+
+
+
+    const handleImageLoad = (index: number) => {
+        if (containerRef.current) {
+            const imageElement = containerRef.current.children[index] as HTMLElement;
+            if (imageElement) {
+                imageElement.classList.remove('loading');
+            }
+        }
+    };
 
 
     return (
@@ -117,16 +130,28 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
                        }}
                 />
 
+
             </div>
-            <div className="drag-container">
+            <div className="drag-container" ref={containerRef}>
+
+
                 {images.map((el, index) => (
-                    <div className="image" key={index}>
-                        <span className="delete" onClick={()=>{
-                            deleteImage(index)
-                        }}>&times;</span>
-                        <img src={el.url} alt={el.name}/>
+                    <div className="image loading" key={index}>
+                        {/*<div className="loader" >*/}
+                            <img className={'loaded-img'} src={el.url} alt={el.name} onLoad={() => handleImageLoad(index)} />
+                            <div className="loader-info">
+                                <p className={'loader-text'}>{el.name}</p>
+                                <div className={'loader-line'}>
+                                    <div></div>
+                                </div>
+                            </div>
+
+                        {/*</div>*/}
+                        <p className="delete" onClick={() => deleteImage(index)}>&times;</p>
+
                     </div>
                 ))}
+
 
 
             </div>
