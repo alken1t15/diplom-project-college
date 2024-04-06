@@ -1,0 +1,12 @@
+.block {
+  &-middle{
+    &-wrapper{
+      background-color: var(--light-black);
+    }
+    &-grade{
+      width: 75vw;
+      padding-top: 83px;
+      background-color: var(--total-black);
+    }
+  }
+}

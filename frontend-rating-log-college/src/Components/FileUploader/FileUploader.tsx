@@ -1,7 +1,6 @@
 import React, {useRef, useState} from 'react';
 import './FileUploader.scss'
 const uploadImg = require('../../assets/images/UploadImg.png');
-const fileImg = require('../../assets/images/FileImg.png');
 
 
 interface IFileUploader{
@@ -96,12 +95,9 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
         }
     };
 
-
     return (
         <div className="card">
-            <div className="top">
 
-            </div>
             <div className="drag-area"
                  onClick={selectFiles}
                  onDragOver={(e)=>{
@@ -111,7 +107,7 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
                 {
                     isDragging ? (
                         <span className="select">
-                                    Перетащите файлы или нажмите для загрузки
+                                    Перетащите файлы
                                 </span>
                     ) : (
                         <span className="select">
@@ -138,24 +134,23 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
                 {images.map((el, index) => (
                     <div className="image loading" key={index}>
                         {/*<div className="loader" >*/}
-                            <img className={'loaded-img'} src={el.url} alt={el.name} onLoad={() => handleImageLoad(index)} />
-                            <div className="loader-info">
-                                <p className={'loader-text'}>{el.name}</p>
-                                <div className={'loader-line'}>
-                                    <div></div>
-                                </div>
+                        <img className={'loaded-img'} src={el.url} alt={el.name} onLoad={() => handleImageLoad(index)}/>
+                        <div className="loader-info">
+                            <p className={'loader-text'}>{el.name}</p>
+                            <div className={'loader-line'}>
+                                <div></div>
                             </div>
+                        </div>
 
-                        {/*</div>*/}
-                        <p className="delete" onClick={() => deleteImage(index)}>&times;</p>
+                        <p className={`delete`} onClick={() => deleteImage(index)}>&times;</p>
+
 
                     </div>
                 ))}
 
 
-
             </div>
-            <button className="button">
+            <button className={`button ${images.length === 0 ? 'none' : ' '}`}>
                 Отправить
             </button>
         </div>

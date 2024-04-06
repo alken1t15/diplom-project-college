@@ -18,7 +18,6 @@ const ScheduleItem: React.FC<ITardinessItem> = (props) => {
 
     useEffect(()=>{
         setItem(props)
-        console.log(props.schedules[0].time.split(' ')[0])
     }, [props])
 
     return (
