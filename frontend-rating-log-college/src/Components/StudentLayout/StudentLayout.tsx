@@ -2,7 +2,7 @@ import {ReactComponent as fImage} from "../../assets/images/NavbarF.svg";
 import {ReactComponent as sImage} from "../../assets/images/NavbarS.svg";
 import {ReactComponent as tImage} from "../../assets/images/NavbarT.svg";
 import {ReactComponent as foImage} from "../../assets/images/NavbarFo.svg";
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link, Outlet, useNavigate, useParams} from "react-router-dom";
 import {
     COURSES_STUDENT_ROUTE,
@@ -50,8 +50,14 @@ const StudentLayout: React.FC = () => {
         }
     ])
     let navigator = useNavigate();
-    let params = useParams();
-    console.log(params)
+
+    useEffect(()=>{
+        let newArr = linkButtons.map((el, index)=>{
+            el.active = el.link == window.location.href.split('3000')[1];
+            return el;
+        })
+        setLinkButtons(newArr)
+    }, [])
 
     function changeActiveTab(id: number) {
         const currentIndex = linkButtons.findIndex(el => el.active) + 1;
