@@ -119,19 +119,30 @@ const GradePageStudent: React.FC = () => {
             name: 'Ит.оценки'
         },
     ]);
-
     let[currentTable, setCurrentTable] = useState([
         {
             id: 1,
-            items: ['Предметы\\Даты', '1 Пн', '2 Вт', '3 Ср', '4 Чт', '5 Пт', '8 Пн', '9 Пн', '10 Вт', '11 Ср', '12 Чт', '15 Пт', '16 Пн', '17 Чт', '18 Пт', '19 Пн', '21 Пн', '22 Вт', '23 Ср', '24 Чт', '25 Пт']
+            items: ['Предметы\\Даты', '01 Пн', '02 Вт', '03 Ср', '04 Чт', '05 Пт', '08 Пн', '09 Пн', '10 Вт', '11 Ср', '12 Чт', '15 Пт', '16 Пн', '17 Чт', '18 Пт', '19 Пн', '21 Пн', '22 Вт', '23 Ср', '24 Чт', '25 Пт']
         },
         {
             id: 2,
-            items: ['Веб-программирование', '90%', '92%', '0', '0', '20%', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
+            items: ['Веб-программирование', '89', '92', '0', '0', '20', '65', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
         },
     ])
-
-    let[currentBody, setCurrentBody] = useState([]);
+    let[currentBody, setCurrentBody] = useState([{
+        id: 2,
+        items: ['Веб-программирование', '90', '92', '0', '0', '20', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
+    },]);
+    let[teachers, setTeacher] = useState([
+        {
+            name: 'Денис Валентинович',
+            subject: 'Веб-программирования'
+        },
+        {
+            name: 'Марина Галимовна',
+            subject: 'Философия'
+        },
+    ])
 
     function updateCurrentPage(value: any){
         setCurrentPage(value)
@@ -160,8 +171,9 @@ const GradePageStudent: React.FC = () => {
     };
 
     useEffect(() => {
-        // let arrBody = currentTable.splice(0, 1);
-        // console.log(arrBody)
+        let arrBody = [...currentTable].slice(1);
+        setCurrentBody(arrBody);
+
     }, [currentTable]);
 
     return (
@@ -212,14 +224,32 @@ const GradePageStudent: React.FC = () => {
                         <thead>
                         <tr>
                             {currentTable[0].items.map((el, index)=>(
-                                <th className={`${index === 0 ? 'first-column' : 'column-text'} `}>{el}</th>
+                                <th key={index} className={`${index === 0 ? 'first-column ' : 'column-text'}
+                                 ${index === 1 ? 'break-item' : ''} `}>{el}</th>
                             ))}
                         </tr>
                         </thead>
                         <tbody>
-                        {/*{currentBody.map((el, index)=> {*/}
+                        {currentBody.map((el, index)=> (
+                            <tr key={index}>
+                                {el.items.map((childEl, chileIndex)=> (
+                                    <td key={chileIndex} className={`${chileIndex === 0 ? 'first-column' : 'column-text'} 
+                                       ${
+                                        Number(childEl) >= 90 ? 'table-item-green' :
+                                            Number(childEl) > 70 && Number(childEl) < 90 ? 'table-item-dark-green' :
+                                                Number(childEl) > 40 && Number(childEl) < 70 ? 'table-item-yellow' : 
+                                                    Number(childEl) < 40 && Number(childEl) !== 0 ? 'table-item-red' :
+                                                        Number(childEl) == 0 ? 'table-item-zero' :
+                                                            chileIndex == 1 ? '' : ''
 
-                        {/*})}*/}
+
+                                    }
+                                    `}>{childEl}{chileIndex !== 0 ? '%' : ''}</td>
+                                    // <></>
+                                ))}
+
+                            </tr>
+                        ))}
 
 
                         </tbody>
@@ -230,11 +260,22 @@ const GradePageStudent: React.FC = () => {
             </div>
 
 
-            <div className={'block-right'}>
+            <div className={'block-right block-right-grade'}>
                 <p className={'block-right__text'}>
                 <img src={teachImg} alt="Info img"/>
                     Список учителей
                 </p>
+                {teachers.map((el, index)=>(
+                    <div key={index} className={`teachers-block`}>
+                        <div className="teachers-block-left">
+                            <InitialsImage initials={String(el.name.split(' ')[0].slice(0, 1)) + String(el.name.split(' ')[1].slice(0, 1))} width={50} height={50} fontSize={24} textColor="#fff" backgroundColor="#d9d9d9" />
+                        </div>
+                        <div className="teachers-block-right">
+                            <p className={`teachers-block-right__title`}>{el.name}</p>
+                            <p className={`teachers-block-right__text`}>Предмет: {el.subject}</p>
+                        </div>
+                    </div>
+                ))}
 
             </div>
         </div>

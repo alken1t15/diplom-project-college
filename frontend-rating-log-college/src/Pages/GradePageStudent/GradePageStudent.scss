@@ -88,18 +88,30 @@
 .my-table {
   border-collapse: separate;
   border-spacing: 0;
+  display: block;
+  width: 100%;
+  padding-bottom: 20px;
+  overflow: auto;
+  & thead, tbody{
+    max-width: 100%;
+    overflow: auto;
+  }
 }
+
+
 
 .my-table th,
 .my-table td {
   border-right: 1px solid #B4B7BC;
   border-bottom: 1px solid #B4B7BC;
-  padding: 10px;
+  padding: 19px 10px;
 }
 
 .my-table .first-column {
   min-width: 220px;
   border-left: none;
+  font-weight: 400;
+  font-size: 18px;
 }
 
 .my-table th:last-child,
@@ -108,9 +120,65 @@
 }
 
 .column-text{
-  width: 53px;
   font-weight: 400;
-  font-size: 20px;
+  font-size: 16px;
   text-align: center;
   word-wrap: break-word;
+}
+
+.my-table{
+  & tr{
+    max-width: 100%;
+  }
+}
+
+.table-item{
+  &-green{
+    background-color: rgba(5, 255, 0, 0.4);
+    color: var(--green);
+  }
+  &-dark-green{
+    background-color: rgba(51, 121, 67, 0.4);
+    color: var(--dark-green);
+  }
+  &-yellow{
+    background-color: rgba(240, 198, 75, 0.4);
+    color: var(--yellow);
+  }
+  &-red{
+    background-color: rgba(255, 82, 82, 0.4);
+    color: var(--red);
+  }
+  &-zero{
+    color: transparent;
+  }
+}
+
+.break-item{
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.teachers-block{
+  margin-top: 30px;
+  width: 340px;
+  display: flex;
+  align-items: center;
+  &-left{
+    margin-right: 20px;
+  }
+  &-right{
+    &__title{
+      font-weight: 700;
+      font-size: 18px;
+      word-wrap: break-word;
+    }
+    &__text{
+      word-wrap: break-word;
+      font-weight: 400;
+      font-size: 14px;
+      margin-top: 3px;
+      color: #b4b7bc;
+    }
+  }
 }

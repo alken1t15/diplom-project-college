@@ -16,6 +16,8 @@ body{
 }
 
 
+
+
 @font-face {
   font-family: 'Inter';
   src: url('./assets/fonts/Inter/Inter-ExtraLight.eot');
@@ -133,5 +135,20 @@ body{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  &::-webkit-scrollbar {
+    height: 5px;
+    width: 7px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #B4B7BC;
+
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #8383FF;
+    border-radius: 20px;
+
+  }
 }
 
