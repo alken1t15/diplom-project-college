@@ -120,7 +120,18 @@ const GradePageStudent: React.FC = () => {
         },
     ]);
 
+    let[currentTable, setCurrentTable] = useState([
+        {
+            id: 1,
+            items: ['Предметы\\Даты', '1 Пн', '2 Вт', '3 Ср', '4 Чт', '5 Пт', '8 Пн', '9 Пн', '10 Вт', '11 Ср', '12 Чт', '15 Пт', '16 Пн', '17 Чт', '18 Пт', '19 Пн', '21 Пн', '22 Вт', '23 Ср', '24 Чт', '25 Пт']
+        },
+        {
+            id: 2,
+            items: ['Веб-программирование', '90%', '92%', '0', '0', '20%', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
+        },
+    ])
 
+    let[currentBody, setCurrentBody] = useState([]);
 
     function updateCurrentPage(value: any){
         setCurrentPage(value)
@@ -148,18 +159,21 @@ const GradePageStudent: React.FC = () => {
         setCourses(newItems);
     };
 
+    useEffect(() => {
+        // let arrBody = currentTable.splice(0, 1);
+        // console.log(arrBody)
+    }, [currentTable]);
 
     return (
         <div className={'main-page'}>
             <div className={'block-middle block-middle-grade'}>
 
 
-
                 <div className="block-middle-wrapper">
                     <div className="block-middle-tabs">
-                        {quarters.map((el, index)=>(
+                        {quarters.map((el, index) => (
                             <button
-                                onClick={(e)=>{
+                                onClick={(e) => {
                                     updateActiveQuarter(el.id)
                                 }}
                                 className={`block-middle-tabs__text 
@@ -170,9 +184,46 @@ const GradePageStudent: React.FC = () => {
                         ))}
                     </div>
                     <div className="block-middle-top">
-                        <TextCarousel items={courses} onChange={handleCarouselChange} />
+                        <TextCarousel items={courses} onChange={handleCarouselChange}/>
                     </div>
-                    <Pagination items={dateArray} onChange={updateCurrentPage} styles={{marginBottom: 15}}/>
+                    <Pagination items={dateArray} onChange={updateCurrentPage}
+                                styles={{marginBottom: 15, marginTop: 23}}/>
+
+                    <div className="block-middle-grades">
+                        <div className="block-middle-grades-item">
+                            <div className="block-middle-grades-item__red"></div>
+                            <p className="block-middle-grades-item__text">0-40</p>
+                        </div>
+                        <div className="block-middle-grades-item">
+                            <div className="block-middle-grades-item__yellow"></div>
+                            <p className="block-middle-grades-item__text">40-70</p>
+                        </div>
+                        <div className="block-middle-grades-item">
+                            <div className="block-middle-grades-item__dark-green"></div>
+                            <p className="block-middle-grades-item__text">70-90</p>
+                        </div>
+                        <div className="block-middle-grades-item">
+                            <div className="block-middle-grades-item__green"></div>
+                            <p className="block-middle-grades-item__text">90-100</p>
+                        </div>
+                    </div>
+
+                    <table className="my-table">
+                        <thead>
+                        <tr>
+                            {currentTable[0].items.map((el, index)=>(
+                                <th className={`${index === 0 ? 'first-column' : 'column-text'} `}>{el}</th>
+                            ))}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {/*{currentBody.map((el, index)=> {*/}
+
+                        {/*})}*/}
+
+
+                        </tbody>
+                    </table>
                 </div>
 
 
@@ -181,7 +232,7 @@ const GradePageStudent: React.FC = () => {
 
             <div className={'block-right'}>
                 <p className={'block-right__text'}>
-                    <img src={teachImg} alt="Info img"/>
+                <img src={teachImg} alt="Info img"/>
                     Список учителей
                 </p>
 
