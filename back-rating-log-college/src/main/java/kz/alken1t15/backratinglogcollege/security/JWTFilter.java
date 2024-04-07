@@ -86,9 +86,6 @@ public class JWTFilter extends OncePerRequestFilter {
         } else {
 //            if (request.getRequestURL().equals("http://localhost:8080/login/jwt")) {
                 filterChain.doFilter(request, response);
-//                return;
-//            }
-//            else {
 //                response.setStatus(HttpStatus.UNAUTHORIZED.value());
 //                response.getWriter().write("Вы не ввели JWT токен");
 //                response.setCharacterEncoding("UTF-8");
