@@ -2,8 +2,8 @@ import {ReactComponent as fImage} from "../../assets/images/NavbarF.svg";
 import {ReactComponent as sImage} from "../../assets/images/NavbarS.svg";
 import {ReactComponent as tImage} from "../../assets/images/NavbarT.svg";
 import {ReactComponent as foImage} from "../../assets/images/NavbarFo.svg";
-import React, {useState} from 'react';
-import {Link, Outlet} from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {Link, Outlet, useNavigate, useParams} from "react-router-dom";
 import {
     COURSES_STUDENT_ROUTE,
     GRADE_STUDENT_ROUTE,
@@ -12,6 +12,7 @@ import {
 } from "../../Utils/Routes";
 import './StudentLayout.scss';
 import InitialsImage from "../InitialsImage/InitialsImage";
+import button from "../../UI/Button/Button";
 
 const Logo = require('../../assets/images/Logo.png');
 const LogOut = require('../../assets/images/ExitPng.png');
@@ -48,6 +49,15 @@ const StudentLayout: React.FC = () => {
             img: foImage
         }
     ])
+    let navigator = useNavigate();
+
+    useEffect(()=>{
+        let newArr = linkButtons.map((el, index)=>{
+            el.active = el.link == window.location.href.split('3000')[1];
+            return el;
+        })
+        setLinkButtons(newArr)
+    }, [])
 
     function changeActiveTab(id: number) {
         const currentIndex = linkButtons.findIndex(el => el.active) + 1;
@@ -75,10 +85,17 @@ const StudentLayout: React.FC = () => {
                     setLinkButtons(prevState => {
                         const updatedTabs = [...prevState];
                         updatedTabs[index].active = updatedTabs[index].id == id;
+
+
                         return updatedTabs;
                     });
                 }, index * 200);
             });
+
+            setTimeout(() => {
+                navigator(linkButtons[id-1].link)
+            }, 4 * 200);
+
         }
 
 
@@ -100,10 +117,16 @@ const StudentLayout: React.FC = () => {
                     setLinkButtons(prevState => {
                         const updatedTabs = [...prevState];
                         updatedTabs[i].active = updatedTabs[i].id == id;
+
                         return updatedTabs;
                     });
                 }, (linkButtons.length - i - 1) * 200);
             });
+
+            setTimeout(() => {
+                navigator(linkButtons[id-1].link)
+            }, 4 * 200);
+
 
         }
 

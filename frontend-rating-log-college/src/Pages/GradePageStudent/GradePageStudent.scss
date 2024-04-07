@@ -1,0 +1,116 @@
+.block {
+  &-middle{
+    &-wrapper{
+      background-color: var(--light-black);
+      position: relative;
+      padding: 17px 20px;
+    }
+    &-grades{
+      position: absolute;
+      right: 32px;
+      top: 32px;
+      &-item{
+        margin-top: 11px;
+        display: flex;
+        align-items: center;
+        &__red{
+          background-color: var(--red);
+          border-radius: 50%;
+          border: none;
+          width: 15px;
+          height: 15px;
+          margin-right: 14px;
+        }
+        &__yellow{
+          background-color: var(--yellow);
+          border-radius: 50%;
+          border: none;
+          width: 15px;
+          height: 15px;
+          margin-right: 14px;
+        }
+        &__dark-green{
+          background-color: var(--dark-green);
+          border-radius: 50%;
+          border: none;
+          width: 15px;
+          height: 15px;
+          margin-right: 14px;
+        }
+        &__green{
+          background-color: var(--green);
+          border-radius: 50%;
+          border: none;
+          width: 15px;
+          height: 15px;
+          margin-right: 14px;
+        }
+        &__text{
+          font-weight: 400;
+          font-size: 12px;
+        }
+      }
+    }
+    &-grade{
+      width: 75vw;
+      padding-top: 133px;
+      background-color: var(--total-black);
+    }
+    &-tabs{
+      background-color: var(--light-black);
+      padding: 5px 24px;
+      top: -46px;
+      left: 0;
+      position: absolute;
+      display: flex;
+      border-radius: 10px 10px 0 0;
+      &__text{
+        border-radius: 10px;
+        background: transparent;
+        border: none;
+        padding: 8px 23px;
+        margin-left: 36px;
+        font-weight: 400;
+        font-size: 18px;
+        transition: .25s;
+        &:first-child{
+          margin-left: 0;
+        }
+        &-active{
+          background: #434c59;
+          transition: .25s;
+        }
+      }
+    }
+  }
+}
+
+.my-table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.my-table th,
+.my-table td {
+  border-right: 1px solid #B4B7BC;
+  border-bottom: 1px solid #B4B7BC;
+  padding: 10px;
+}
+
+.my-table .first-column {
+  min-width: 220px;
+  border-left: none;
+}
+
+.my-table th:last-child,
+.my-table td:last-child {
+  border-right: none;
+}
+
+.column-text{
+  width: 53px;
+  font-weight: 400;
+  font-size: 20px;
+  text-align: center;
+  word-wrap: break-word;
+}

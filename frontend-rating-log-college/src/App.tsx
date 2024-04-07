@@ -3,9 +3,10 @@ import './App.scss';
 import {Route, Routes} from "react-router-dom";
 import NotFound from "./Pages/NotFound/NotFound";
 import SignIn from "./Pages/SignIn/SignIn";
-import {MAIN_PAGE_STUDENT_ROUTE, SIGN_IN_ROUTE, STUDENT_ROUTE} from "./Utils/Routes";
+import {GRADE_STUDENT_ROUTE, MAIN_PAGE_STUDENT_ROUTE, SIGN_IN_ROUTE, STUDENT_ROUTE} from "./Utils/Routes";
 import MainPageStudent from "./Pages/MainPageStudent/MainPageStudent";
 import StudentLayout from "./Components/StudentLayout/StudentLayout";
+import GradePageStudent from "./Pages/GradePageStudent/GradePageStudent";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
 
               <Route path={STUDENT_ROUTE} element={<StudentLayout/>}>
                 <Route path={MAIN_PAGE_STUDENT_ROUTE} element={<MainPageStudent/>}/>
-                <Route path={MAIN_PAGE_STUDENT_ROUTE} element={<MainPageStudent/>}/>
+                <Route path={GRADE_STUDENT_ROUTE} element={<GradePageStudent/>}/>
                 <Route path={MAIN_PAGE_STUDENT_ROUTE} element={<MainPageStudent/>}/>
                 <Route path={MAIN_PAGE_STUDENT_ROUTE} element={<MainPageStudent/>}/>
               </Route>

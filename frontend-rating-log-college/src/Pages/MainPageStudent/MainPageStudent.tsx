@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import './MainPageStudent.scss';
 import InitialsImage from "../../Components/InitialsImage/InitialsImage";
 import GradeLine from "../../Components/GradeLine/GradeLine";
-import Pagination from "../../Components/Pagination/Pagination";
+import Pagination, {IDataArrayItem} from "../../Components/Pagination/Pagination";
 import LatenessItem, {ITardinessItem} from "../../Components/Lateness/LatenessItem";
 import ScheduleItem from "../../Components/Schedule/ScheduleItem";
 import FileUploader from "../../Components/FileUploader/FileUploader";
@@ -15,7 +15,68 @@ const backImg = require('../../assets/images/backImg.png');
 const MainPageStudent: React.FC = () => {
 
     let[currentPage, setCurrentPage] = useState(7);
-
+    let [dateArray, setDateArray] = useState<IDataArrayItem[]>([
+        {
+            id: 1,
+            isActive: true,
+            date: 'Янв',
+            number: "01"
+        },
+        {
+            id: 2,
+            isActive: false,
+            date: 'Фев',
+            number: "02"
+        },
+        {
+            id: 3,
+            isActive: false,
+            date: 'Март',
+            number: "03"
+        },
+        {
+            id: 4,
+            isActive: false,
+            date: 'Апр',
+            number: "04"
+        },
+        {
+            id: 5,
+            isActive: false,
+            date: 'Май',
+            number: "05"
+        },
+        {
+            id: 6,
+            isActive: false,
+            date: 'Июн',
+            number: "06"
+        },
+        {
+            id: 9,
+            isActive: false,
+            date: 'Сен',
+            number: "09"
+        },
+        {
+            id: 10,
+            isActive: false,
+            date: 'Окт',
+            number: "10"
+        },
+        {
+            id: 11,
+            isActive: false,
+            date: 'Нояб',
+            number: "11"
+        },
+        {
+            id: 12,
+            isActive: false,
+            date: 'Дек',
+            number: "12"
+        },
+    ])
     function updateCurrentPage(value: any){
         setCurrentPage(value)
     }
@@ -171,7 +232,7 @@ const MainPageStudent: React.FC = () => {
                     <img src={houseImg} alt="Info img"/>
                     Посещяемость
                 </p>
-                <Pagination  onChange={updateCurrentPage} styles={{marginBottom: 15}}/>
+                <Pagination items={dateArray} onChange={updateCurrentPage} styles={{marginBottom: 15}}/>
                 <div className="lateness-block">
                     {tardinessItem.map((el, index)=>(
                         <LatenessItem key={index} styles={{marginTop: 30}} tardiness={el.tardiness} date={el.date} nameOfDay={el.nameOfDay}/>
