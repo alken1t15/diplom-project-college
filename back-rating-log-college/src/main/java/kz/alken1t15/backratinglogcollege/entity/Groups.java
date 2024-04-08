@@ -1,6 +1,7 @@
 package kz.alken1t15.backratinglogcollege.entity;
 
 import jakarta.persistence.*;
+import kz.alken1t15.backratinglogcollege.entity.study.process.StudyProcess;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,12 +22,11 @@ public class Groups {
 
     private String name;
 
-//    @ManyToOne
-//    @JoinColumn(name = "id_teacher")
-//    private Teachers teachers;
-
     @OneToMany(mappedBy = "group")
     private List<Students> students;
+
+    @OneToMany(mappedBy = "group")
+    private List<StudyProcess> studyProcesses;
 
     private Integer year;
 

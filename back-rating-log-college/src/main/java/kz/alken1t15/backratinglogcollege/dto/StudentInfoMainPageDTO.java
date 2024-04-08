@@ -1,6 +1,7 @@
 package kz.alken1t15.backratinglogcollege.dto;
 
 import kz.alken1t15.backratinglogcollege.entity.Evaluations;
+import kz.alken1t15.backratinglogcollege.entity.study.PlanStudy;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,4 +18,5 @@ public class StudentInfoMainPageDTO {
     private Integer yearGroup;
     private List<Evaluations> evaluations;
     private MonthDTO monthDTO;
+    private PlanStudyDTO planStudyDTO;
 }

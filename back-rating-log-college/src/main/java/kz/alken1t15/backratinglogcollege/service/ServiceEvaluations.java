@@ -31,7 +31,7 @@ public class ServiceEvaluations {
 //        }
 //    }
 
-    public List<Evaluations> findByDateEvaluation(LocalDate date) {
-        return repositoryEvaluations.findByDateEvaluation(date);
+    public List<Evaluations> findByDateEvaluation(LocalDate date,Long idStudent) {
+        return repositoryEvaluations.findByDateEvaluation(date,idStudent);
     }
 }

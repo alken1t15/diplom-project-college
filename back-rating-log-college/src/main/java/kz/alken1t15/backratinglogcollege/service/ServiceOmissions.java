@@ -6,6 +6,7 @@ import kz.alken1t15.backratinglogcollege.dto.TardinessDTO;
 import kz.alken1t15.backratinglogcollege.entity.Omissions;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryOmissions;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,28 +15,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class ServiceOmissions {
+    @Autowired
     private RepositoryOmissions repositoryOmissions;
+    private final String[] russianDayOfWeekNames = {"Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"};
+    private final String[] russianMonthNames = {
+            "января", "февраля", "марта", "апреля", "мая", "июня",
+            "июля", "августа", "сентября", "октября", "ноября", "декабря"
+    };
 
-    public MonthDTO findByMonth(Integer numberMonth, Integer course) {
+    public MonthDTO findByMonth(Integer numberMonth, Integer course,Long idStudent) {
         List<DayDTO> dayDTOs = new ArrayList<>();
-        List<Omissions> omissions = repositoryOmissions.findByMonth(numberMonth,course);
-        String[] russianDayOfWeekNames = {"Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"};
-        String[] russianMonthNames = {
-                "января", "февраля", "марта", "апреля", "мая", "июня",
-                "июля", "августа", "сентября", "октября", "ноября", "декабря"
-        };
-//        int countDay=0;
-//        for (Omissions o : omissions){
-//            String statusText = o.getStatus();
-//            String nameObject = o.getNameObject();
-//            LocalDate localDate = o.getDateOmissions();
-//            String nameOfDay = localDate.getDayOfWeek().name();
-//            if (dayDTO==null){
-//
-//            }
-//        }
+        List<Omissions> omissions = repositoryOmissions.findByMonth(numberMonth,course,idStudent);
+
         for (Omissions o : omissions) {
             LocalDate localDate = o.getDateOmissions();
 

@@ -247,8 +247,11 @@ create table type_study
     date_end         date         not null
 );
 
-insert into type_study (id_study_process, name, date_start, date_end) VALUES (1,'учеба','02.09.2023', '10.10.2023');
-insert into type_study (id_study_process, name, date_start, date_end) VALUES (2,'учеба','02.11.2023', '10.10.2024');
+insert into type_study (id_study_process, name, date_start, date_end) VALUES (1,'учеба','02.11.2023', '10.02.2024');
+-- insert into type_study (id_study_process, name, date_start, date_end) VALUES (1,'практика','11.02.2024', '10.06.2024');
+insert into type_study (id_study_process, name, date_start, date_end) VALUES (2,'учеба','02.11.2023', '10.02.2024');
+insert into type_study (id_study_process, name, date_start, date_end) VALUES (2,'практика','11.02.2024', '10.06.2024');
+insert into type_study (id_study_process, name, date_start, date_end) VALUES (2,'учебная практика','11.06.2024', '10.10.2024');
 -- create table time_study
 -- (
 --     id            serial primary key,
@@ -323,7 +326,7 @@ create table plan_study
 );
 
 insert into plan_study (id_type_study, id_time_study, id_subject_study, id_teacher, id_auditorium, id_week, number_of_couple) VALUES
-                                                                                                                                  (2,1,1,3,1,5,1),
-                                                                                                                                  (2,2,2,3,2,5,2),
-                                                                                                                                  (2,3,3,3,3,5,3)
+                                                                                                                                  (3,1,1,3,1,1,1),
+                                                                                                                                  (3,2,2,3,2,1,2),
+                                                                                                                                  (3,3,3,3,3,1,3)
 -- Конец

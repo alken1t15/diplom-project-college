@@ -28,25 +28,19 @@ public class Teachers {
     @Column(name = "middle_name")
     private String middleName;
 
-    private String login;
-
-    private String password;
-
     @Column(name = "born_date")
     private LocalDate bornDate;
 
 //    @OneToMany(mappedBy = "teachers")
 //    private List<Groups> groups;
 
-    @OneToMany(mappedBy = "teacher")
+    @OneToMany(mappedBy = "teacher",fetch = FetchType.LAZY)
     private List<PlanStudy> planStudies;
 
     public Teachers(String firstName, String secondName, String middleName, String login, String password, LocalDate bornDate) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.middleName = middleName;
-        this.login = login;
-        this.password = password;
         this.bornDate = bornDate;
     }
 }

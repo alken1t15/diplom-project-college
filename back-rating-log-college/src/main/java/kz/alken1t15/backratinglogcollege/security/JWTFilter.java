@@ -84,14 +84,14 @@ public class JWTFilter extends OncePerRequestFilter {
                 }
             }
         } else {
-//            if (request.getRequestURL().equals("http://localhost:8080/login/jwt")) {
+            String url = request.getRequestURL().toString();
+            if (url.equals("http://localhost:8080/login/jwt")) {
                 filterChain.doFilter(request, response);
-//                response.setStatus(HttpStatus.UNAUTHORIZED.value());
-//                response.getWriter().write("Вы не ввели JWT токен");
-//                response.setCharacterEncoding("UTF-8");
-//                response.getWriter().flush();
-//                response.getWriter().close();
-//            }
+                return;
+            }
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.getWriter().write("Вы не ввели JWT токен");
+            response.setCharacterEncoding("UTF-8");
         }
     }
 }

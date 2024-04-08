@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface RepositoryOmissions extends JpaRepository<Omissions, Long> {
-    @Query("select o from Omissions o where o.numberMonth = ?1 and o.studentsCourse.course = ?2 order by o.dateOmissions , o.numberCouple")
-    List<Omissions> findByMonth(Integer numberMonth,Integer course);
+    @Query("select o from Omissions o where o.numberMonth = ?1 and o.studentsCourse.course = ?2 and o.studentsCourse.student.id = ?3 order by o.dateOmissions , o.numberCouple")
+    List<Omissions> findByMonth(Integer numberMonth,Integer course,Long idStudent);
 }

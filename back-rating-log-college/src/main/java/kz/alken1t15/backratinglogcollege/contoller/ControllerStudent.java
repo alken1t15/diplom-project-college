@@ -1,15 +1,14 @@
 package kz.alken1t15.backratinglogcollege.contoller;
 
-import kz.alken1t15.backratinglogcollege.dto.MonthDTO;
-import kz.alken1t15.backratinglogcollege.dto.StudentDTO;
-import kz.alken1t15.backratinglogcollege.dto.StudentInfoMainPageDTO;
-import kz.alken1t15.backratinglogcollege.dto.UserId;
+import kz.alken1t15.backratinglogcollege.dto.*;
 import kz.alken1t15.backratinglogcollege.entity.Evaluations;
 import kz.alken1t15.backratinglogcollege.entity.Groups;
 import kz.alken1t15.backratinglogcollege.entity.Omissions;
 import kz.alken1t15.backratinglogcollege.entity.Students;
+import kz.alken1t15.backratinglogcollege.entity.study.PlanStudy;
 import kz.alken1t15.backratinglogcollege.service.ServiceEvaluations;
 import kz.alken1t15.backratinglogcollege.service.ServiceOmissions;
+import kz.alken1t15.backratinglogcollege.service.ServicePlanStudy;
 import kz.alken1t15.backratinglogcollege.service.ServiceStudents;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +26,7 @@ public class ControllerStudent {
     private final ServiceStudents serviceStudents;
     private final ServiceEvaluations serviceEvaluations;
     private final ServiceOmissions serviceOmissions;
+    private final ServicePlanStudy servicePlanStudy;
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<Students> getStudent(@PathVariable("id") Long id) {
@@ -43,9 +43,10 @@ public class ControllerStudent {
         Students students = serviceStudents.findByIdStudent(userId.getId());
         Groups groups = students.getGroup();
         Integer course = groups.getCourse();
-        List<Evaluations> evaluations = serviceEvaluations.findByDateEvaluation(LocalDate.now());
-        MonthDTO monthDTO = serviceOmissions.findByMonth(userId.getNumberOfMonth(),course);
+        List<Evaluations> evaluations = serviceEvaluations.findByDateEvaluation(LocalDate.now(),students.getId());
+        MonthDTO monthDTO = serviceOmissions.findByMonth(userId.getNumberOfMonth(),course,students.getId());
+        PlanStudyDTO planStudyDTO = servicePlanStudy.findByOfDate(groups.getId());
 
-        return new StudentInfoMainPageDTO(students.getFirstName(), students.getSecondName(), groups.getName(), groups.getYear(), evaluations,monthDTO);
+        return new StudentInfoMainPageDTO(students.getFirstName(), students.getSecondName(), groups.getName(), groups.getYear(), evaluations,monthDTO,planStudyDTO);
     }
 }
