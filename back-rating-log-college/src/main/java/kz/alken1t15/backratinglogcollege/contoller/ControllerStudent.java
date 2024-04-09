@@ -42,7 +42,7 @@ public class ControllerStudent {
     public StudentInfoMainPageDTO getInfoForMainPage(@RequestBody UserId userId) {
         Students students = serviceStudents.findByIdStudent(userId.getId());
         Groups groups = students.getGroup();
-        Integer course = groups.getCourse();
+        Integer course = groups.getCurrentCourse();
         List<Evaluations> evaluations = serviceEvaluations.findByDateEvaluation(LocalDate.now(),students.getId());
         MonthDTO monthDTO = serviceOmissions.findByMonth(userId.getNumberOfMonth(),course,students.getId());
         PlanStudyDTO planStudyDTO = servicePlanStudy.findByOfDate(groups.getId());

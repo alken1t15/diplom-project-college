@@ -42,10 +42,10 @@ create table groups
     name                varchar(255)                not null,
     specialization_name varchar(255)                not null,
     year                int                         not null,
-    course int not null
+    current_course int not null
 );
 
-insert into groups (id_curator, name, specialization_name, year,course)
+insert into groups (id_curator, name, specialization_name, year,current_course)
 VALUES (1, 'П-20-51б', 'Вычислительная техника и программное обеспечение', 2020,1);
 
 -- create table teachers_group
@@ -57,6 +57,16 @@ VALUES (1, 'П-20-51б', 'Вычислительная техника и про�
 --     course      int          not null,
 --     semester    int          not null
 -- );
+
+create table courses(
+    id serial primary key,
+    id_groups int references groups(id),
+    course int  not null,
+    year int not null
+);
+
+insert into courses (id_groups, course, year) VALUES (1,1,2024);
+
 
 -- # Первая часть
 create table students
@@ -73,7 +83,7 @@ create table students
 );
 
 insert into students (id, id_group, first_name, second_name, middle_name, login, password, born_date, subgroup_name)
-VALUES (1, 1, 'fdsf', 'fsdfsd', 'fsdfsd',
+VALUES (2, 1, 'fdsf', 'fsdfsd', 'fsdfsd',
         'fdsf', 'fsdfsd',
         '12.08.2004', 'Б');
 
@@ -83,7 +93,7 @@ create table students_course(
     course int not null
 );
 
-insert into students_course(id_students,course) values (1,1);
+insert into students_course(id_students,course) values (2,1);
 
 -- insert into students (id_group, first_name, second_name, middle_name, login, password, born_date)
 -- VALUES (1, 'Максим',

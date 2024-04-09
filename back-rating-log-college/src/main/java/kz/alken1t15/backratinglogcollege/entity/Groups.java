@@ -29,8 +29,10 @@ public class Groups {
     private List<StudyProcess> studyProcesses;
 
     private Integer year;
-
-    private Integer course;
+    @Column(name = "current_course")
+    private Integer currentCourse;
+    @OneToMany(mappedBy = "group")
+    private List<Courses> courses;
 
     public Groups(String name) {
         this.name = name;
