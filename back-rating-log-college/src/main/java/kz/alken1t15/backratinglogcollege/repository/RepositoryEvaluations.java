@@ -10,4 +10,7 @@ import java.util.List;
 public interface RepositoryEvaluations extends JpaRepository<Evaluations,Long> {
     @Query("select e from Evaluations e where e.dateEvaluation = ?1 and e.studentsCourse.student.id = ?2")
     List<Evaluations> findByDateEvaluation(LocalDate dateEvaluation,Long idStudent);
+
+    @Query("select e from Evaluations  e where  ?1 >= e.dateEvaluation and  ?2<=e.dateEvaluation  and  e.studentsCourse.course = ?3 and e.studentsCourse.student.id = ?4")
+    List<Evaluations> findByDateStudentCourse(LocalDate start, LocalDate end, Integer course, Long idStudent);
 }

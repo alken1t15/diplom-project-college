@@ -4,9 +4,11 @@ import kz.alken1t15.backratinglogcollege.dto.MonthDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.MonthReturnDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.ProcessDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.ProcessReturnDTO;
+import kz.alken1t15.backratinglogcollege.entity.Evaluations;
 import kz.alken1t15.backratinglogcollege.entity.Students;
 import kz.alken1t15.backratinglogcollege.entity.User;
 import kz.alken1t15.backratinglogcollege.entity.study.process.StudyProcess;
+import kz.alken1t15.backratinglogcollege.repository.RepositoryEvaluations;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryStudents;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryStudyProcess;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryUser;
@@ -27,6 +29,7 @@ public class ServiceStudyProcess {
     private RepositoryStudyProcess repositoryStudyProcess;
     private RepositoryStudents repositoryStudents;
     private RepositoryUser repositoryUser;
+    private RepositoryEvaluations repositoryEvaluation;
 
 
     public ProcessReturnDTO getStudyProcess(ProcessDTO process) {
@@ -55,6 +58,8 @@ public class ServiceStudyProcess {
         List<MonthReturnDTO> months = getAllMonths(studyProcess.getDateStart(),studyProcess.getDateEnd());
 
         processReturnDTO.setMonths(months);
+
+        List<Evaluations> evaluations = repositoryEvaluation.
 
         return processReturnDTO;
     }
