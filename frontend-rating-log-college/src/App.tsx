@@ -5,7 +5,7 @@ import NotFound from "./Pages/NotFound/NotFound";
 import SignIn from "./Pages/SignIn/SignIn";
 import {
     COURSES_STUDENT_ROUTE,
-    GRADE_STUDENT_ROUTE,
+    GRADE_STUDENT_ROUTE, HW_STUDENT_ROUTE,
     MAIN_PAGE_STUDENT_ROUTE,
     SIGN_IN_ROUTE,
     STUDENT_ROUTE
@@ -14,6 +14,7 @@ import MainPageStudent from "./Pages/MainPageStudent/MainPageStudent";
 import StudentLayout from "./Components/StudentLayout/StudentLayout";
 import GradePageStudent from "./Pages/GradePageStudent/GradePageStudent";
 import CoursesPageStudent from "./Pages/CoursesPageStudent/CoursesPageStudent";
+import HomeworkPageStudent from "./Pages/HomeworkPageStudent/HomeworkPageStudent";
 
 function App() {
   return (
@@ -28,7 +29,7 @@ function App() {
                 <Route path={MAIN_PAGE_STUDENT_ROUTE} element={<MainPageStudent/>}/>
                 <Route path={GRADE_STUDENT_ROUTE} element={<GradePageStudent/>}/>
                 <Route path={COURSES_STUDENT_ROUTE} element={<CoursesPageStudent/>}/>
-                <Route path={MAIN_PAGE_STUDENT_ROUTE} element={<MainPageStudent/>}/>
+                <Route path={HW_STUDENT_ROUTE} element={<HomeworkPageStudent/>}/>
               </Route>
 
 

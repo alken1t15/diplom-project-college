@@ -1,17 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import './CoursesPageStudent.scss';
+import CoursesItem, {CourseItem} from "../../Components/CoursesItem/CoursesItem";
 
 const fileImg = require('../../assets/images/PDF.png');
 
-interface ICoursesBlock{
-    id: number,
-    name: string,
-    date: string,
-    active?: boolean
-}
+
 const CoursesPageStudent: React.FC = () => {
 
-    let[courses, setCourses] = useState<ICoursesBlock[]>([
+    let[courses, setCourses] = useState<CourseItem[]>([
         {
             id: 1,
             name: '1 Курс',
@@ -37,13 +33,7 @@ const CoursesPageStudent: React.FC = () => {
             active: false
         },
     ])
-    let[currentCourse, setCurrentCourse] = useState<ICoursesBlock>(
-        {
-            id: 1,
-            name: '1 Курс',
-            date: 'Год: 2020'
-        }
-    )
+    let[currentCourse, setCurrentCourse] = useState<CourseItem>(courses[0])
     let[fileItems, setFileItems] = useState([
         {
             id: 1,
@@ -68,7 +58,7 @@ const CoursesPageStudent: React.FC = () => {
 
         const currentIndex = courses.findIndex(el => el.active) + 1;
 
-        if(id == currentIndex){
+        if(id === currentIndex){
 
         }
 
@@ -90,7 +80,7 @@ const CoursesPageStudent: React.FC = () => {
                 setTimeout(() => {
                     setCourses(prevState => {
                         const updatedTabs = [...prevState];
-                        updatedTabs[index].active = updatedTabs[index].id == id;
+                        updatedTabs[index].active = updatedTabs[index].id === id;
 
 
                         return updatedTabs;
@@ -119,14 +109,12 @@ const CoursesPageStudent: React.FC = () => {
                 setTimeout(() => {
                     setCourses(prevState => {
                         const updatedTabs = [...prevState];
-                        updatedTabs[i].active = updatedTabs[i].id == id;
+                        updatedTabs[i].active = updatedTabs[i].id === id;
 
                         return updatedTabs;
                     });
                 }, (courses.length - i - 1) * 200);
             });
-
-
 
         }
 
@@ -143,12 +131,8 @@ const CoursesPageStudent: React.FC = () => {
                         </p>
                     </div>
                     {[...courses].map((el, index) => (
-                        <button onClick={(e)=>{
-                            setActiveCourse(el.id)
-                        }} key={index} className={`courses-block ${el.active ? `courses-block-active` : ''}`}>
-                            <p className={`courses-block__title`}>{el.name}</p>
-                            <p className={`courses-block__text`}>{el.date}</p>
-                        </button>
+                        <CoursesItem item={el} key={index} onClick={setActiveCourse}/>
+
                     ))}
 
 
@@ -157,12 +141,12 @@ const CoursesPageStudent: React.FC = () => {
 
             </div>
             <div className={'block-middle block-middle-full block-middle-full-t-0'}>
-                <p className={'block-middle__text'}>
+                <div className={'block-middle__text'}>
                     <div className={`courses-block courses-block-l`}>
                         <p className={`courses-block__title courses-block__title-l`}>{currentCourse.name}</p>
                         <p className={`courses-block__text`}>{currentCourse.date}</p>
                     </div>
-                </p>
+                </div>
 
                 <div className="file-box">
                     {fileItems.map((el, index)=> (

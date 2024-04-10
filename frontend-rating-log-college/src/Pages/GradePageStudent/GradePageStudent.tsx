@@ -126,12 +126,12 @@ const GradePageStudent: React.FC = () => {
         },
         {
             id: 2,
-            items: ['Веб-программирование', '89', '92', '0', '0', '20', '65', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
+            items: ['Веб-программирование', '89', '92', '\u00A0', '\u00A0', '\u00A0', '\u00A0', '95', '40', '65', '\u00A0', '\u00A0', '\u00A0', '\u00A0', '\u00A0', '\u00A0', '\u00A0', '\u00A0', '\u00A0', '\u00A0', '\u00A0']
         },
     ])
     let[currentBody, setCurrentBody] = useState([{
         id: 2,
-        items: ['Веб-программирование', '90', '92', '0', '0', '20', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
+        items: ['Веб-программирование', ' ', ' ', '0', '0', '20', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
     },]);
     let[teachers, setTeacher] = useState([
         {
@@ -238,8 +238,7 @@ const GradePageStudent: React.FC = () => {
                                         Number(childEl) >= 90 ? 'table-item-green' :
                                             Number(childEl) > 70 && Number(childEl) < 90 ? 'table-item-dark-green' :
                                                 Number(childEl) > 40 && Number(childEl) < 70 ? 'table-item-yellow' : 
-                                                    Number(childEl) < 40 && Number(childEl) !== 0 ? 'table-item-red' :
-                                                        Number(childEl) == 0 ? 'table-item-zero' :
+                                                    Number(childEl) <= 40 && Number(childEl) !== 0 ? 'table-item-red' :
                                                             chileIndex == 1 ? '' : ''
 
 

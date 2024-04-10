@@ -1,0 +1,45 @@
+
+
+.courses-block{
+  padding: 7px 25px;
+  background-color: transparent;
+  transition: .2s;
+  border: none;
+  width: 100%;
+  display: block;
+  text-align: left;
+  margin-top: 20px;
+  cursor: pointer;
+  &-l{
+    margin-top: 0;
+    padding-left: 0;
+  }
+  &-active{
+    background-color: #4A535F;
+    transition: .2s;
+    position: relative;
+    &:after{
+      content: '';
+      position: absolute;
+      right: -2px;
+      top: 0;
+      width: 2px;
+      background-color: var(--purple);
+      height: 100%;
+    }
+  }
+  &__title{
+    font-weight: 700;
+    font-size: 17px;
+    &-l{
+      text-align: left;
+    }
+  }
+  &__text{
+    font-weight: 400;
+    font-size: 15px;
+    color: #b4b7bc;
+    margin-top: 8px;
+  }
+
+}
