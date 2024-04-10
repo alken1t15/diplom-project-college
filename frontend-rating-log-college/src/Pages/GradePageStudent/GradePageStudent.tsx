@@ -7,6 +7,7 @@ import LatenessItem, {ITardinessItem} from "../../Components/Lateness/LatenessIt
 import ScheduleItem from "../../Components/Schedule/ScheduleItem";
 import FileUploader from "../../Components/FileUploader/FileUploader";
 import TextCarousel from "../../Components/TextCarousel/TextCarousel";
+import TeachersBlock, {ITeachersItem} from "../../Components/TeachersBlock/TeachersBlock";
 
 const infoImg = require('../../assets/images/InformationImgg.png');
 const gradeImg = require('../../assets/images/GradesImg.png');
@@ -133,12 +134,14 @@ const GradePageStudent: React.FC = () => {
         id: 2,
         items: ['Веб-программирование', ' ', ' ', '0', '0', '20', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
     },]);
-    let[teachers, setTeacher] = useState([
+    let[teachers, setTeacher] = useState<ITeachersItem[]>([
         {
+            id: 1,
             name: 'Денис Валентинович',
             subject: 'Веб-программирования'
         },
         {
+            id: 2,
             name: 'Марина Галимовна',
             subject: 'Философия'
         },
@@ -244,7 +247,6 @@ const GradePageStudent: React.FC = () => {
 
                                     }
                                     `}>{childEl}{chileIndex !== 0 ? '%' : ''}</td>
-                                    // <></>
                                 ))}
 
                             </tr>
@@ -265,15 +267,7 @@ const GradePageStudent: React.FC = () => {
                     Список учителей
                 </p>
                 {teachers.map((el, index)=>(
-                    <div key={index} className={`teachers-block`}>
-                        <div className="teachers-block-left">
-                            <InitialsImage initials={String(el.name.split(' ')[0].slice(0, 1)) + String(el.name.split(' ')[1].slice(0, 1))} width={50} height={50} fontSize={24} textColor="#fff" backgroundColor="#d9d9d9" />
-                        </div>
-                        <div className="teachers-block-right">
-                            <p className={`teachers-block-right__title`}>{el.name}</p>
-                            <p className={`teachers-block-right__text`}>Предмет: {el.subject}</p>
-                        </div>
-                    </div>
+                    <TeachersBlock item={el} />
                 ))}
 
             </div>

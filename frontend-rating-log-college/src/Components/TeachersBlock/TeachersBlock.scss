@@ -1,0 +1,23 @@
+.teachers-block{
+  margin-top: 30px;
+  width: 340px;
+  display: flex;
+  align-items: center;
+  &-left{
+    margin-right: 20px;
+  }
+  &-right{
+    &__title{
+      font-weight: 700;
+      font-size: 18px;
+      word-wrap: break-word;
+    }
+    &__text{
+      word-wrap: break-word;
+      font-weight: 400;
+      font-size: 14px;
+      margin-top: 3px;
+      color: #b4b7bc;
+    }
+  }
+}

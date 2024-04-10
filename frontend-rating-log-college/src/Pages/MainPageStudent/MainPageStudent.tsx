@@ -77,98 +77,92 @@ const MainPageStudent: React.FC = () => {
             number: "12"
         },
     ])
-    function updateCurrentPage(value: any){
-        setCurrentPage(value)
-    }
-
     let[tardinessItem, setTardinessItem] = useState<ITardinessItem[]>([
-        {
-            date: "2 сентября",
-            nameOfDay: "Вторник",
-            tardiness: [ {
-                id: 1,
-                type: 'yellow',
-                text: 'С опозданием',
-                subject: 'Веб-программирование'
-            },
-                {
-                    id: 2,
-                    type: 'green',
-                    text: 'Без опозданий',
-                    subject: 'Основа право'
-                },
-                {
-                    id: 3,
-                    type: 'red',
-                    text: 'Отсутвует',
-                    subject: 'Комп сети'
-                },
-                {
-                    id: 4,
-                    type: 'cyan',
-                    text: 'С справкой',
-                    subject: 'Комп сети'
-                }]
-        } ,
-        {
-            date: "2 сентября",
-            nameOfDay: "Среда",
-            tardiness: [ {
-                id: 1,
-                type: 'yellow',
-                text: 'С опозданием',
-                subject: 'Веб-программирование'
-            },
-                {
-                    id: 2,
+            {
+                date: "2 сентября",
+                nameOfDay: "Вторник",
+                tardiness: [ {
+                    id: 1,
                     type: 'yellow',
-                    text: 'Без опозданий',
-                    subject: 'Основа право'
+                    text: 'С опозданием',
+                    subject: 'Веб-программирование'
                 },
-                {
-                    id: 3,
-                    type: 'red',
-                    text: 'Отсутвует',
-                    subject: 'Комп сети'
-                },
-                {
-                    id: 4,
-                    type: 'cyan',
-                    text: 'С справкой',
-                    subject: 'Комп сети'
-                }]
-        },
-        {
-            date: "2 сентября",
-            nameOfDay: "Среда",
-            tardiness: [ {
-                id: 1,
-                type: 'yellow',
-                text: 'С опозданием',
-                subject: 'Веб-программирование'
-            },
-                {
-                    id: 2,
+                    {
+                        id: 2,
+                        type: 'green',
+                        text: 'Без опозданий',
+                        subject: 'Основа право'
+                    },
+                    {
+                        id: 3,
+                        type: 'red',
+                        text: 'Отсутвует',
+                        subject: 'Комп сети'
+                    },
+                    {
+                        id: 4,
+                        type: 'cyan',
+                        text: 'С справкой',
+                        subject: 'Комп сети'
+                    }]
+            } ,
+            {
+                date: "2 сентября",
+                nameOfDay: "Среда",
+                tardiness: [ {
+                    id: 1,
                     type: 'yellow',
-                    text: 'Без опозданий',
-                    subject: 'Основа право'
+                    text: 'С опозданием',
+                    subject: 'Веб-программирование'
                 },
-                {
-                    id: 3,
-                    type: 'red',
-                    text: 'Отсутвует',
-                    subject: 'Комп сети'
+                    {
+                        id: 2,
+                        type: 'yellow',
+                        text: 'Без опозданий',
+                        subject: 'Основа право'
+                    },
+                    {
+                        id: 3,
+                        type: 'red',
+                        text: 'Отсутвует',
+                        subject: 'Комп сети'
+                    },
+                    {
+                        id: 4,
+                        type: 'cyan',
+                        text: 'С справкой',
+                        subject: 'Комп сети'
+                    }]
+            },
+            {
+                date: "2 сентября",
+                nameOfDay: "Среда",
+                tardiness: [ {
+                    id: 1,
+                    type: 'yellow',
+                    text: 'С опозданием',
+                    subject: 'Веб-программирование'
                 },
-                {
-                    id: 4,
-                    type: 'cyan',
-                    text: 'С справкой',
-                    subject: 'Комп сети'
-                }]
-        }
-        ]
-    )
-
+                    {
+                        id: 2,
+                        type: 'yellow',
+                        text: 'Без опозданий',
+                        subject: 'Основа право'
+                    },
+                    {
+                        id: 3,
+                        type: 'red',
+                        text: 'Отсутвует',
+                        subject: 'Комп сети'
+                    },
+                    {
+                        id: 4,
+                        type: 'cyan',
+                        text: 'С справкой',
+                        subject: 'Комп сети'
+                    }]
+            }
+        ])
     let[schedule, setSchedule] = useState({
         date: '3 сентября',
         nameOfDay: 'Среда',
@@ -186,8 +180,38 @@ const MainPageStudent: React.FC = () => {
             },
         ]
     })
-
     let[active, setIsActive] = useState(false)
+    let[gradeLine, setGradeLine] = useState([
+        {
+            teacherName: 'Денис Валентинович',
+            subject: 'Веб-программирования',
+            date: '3 сентября 2023',
+            grade: 5
+        },
+        {
+            teacherName: 'Денис Валентинович',
+            subject: 'Веб-программирования',
+            date: '3 сентября 2023',
+            grade: 4
+        },
+        {
+            teacherName: 'Денис Валентинович',
+            subject: 'Веб-программирования',
+            date: '3 сентября 2023',
+            grade: 3
+        },
+        {
+            teacherName: 'Денис Валентинович',
+            subject: 'Веб-программирования',
+            date: '3 сентября 2023',
+            grade: 2
+        },
+        ]);
+
+    function updateCurrentPage(value: any){
+        setCurrentPage(value)
+    }
+
 
     return (
         <div className={'main-page'}>
@@ -213,15 +237,15 @@ const MainPageStudent: React.FC = () => {
                             </p>
                         </div>
                     </div>
-                    <div className="block-left-grades" style={{marginTop: 70}}>
+                    <div className="block-left-grades" >
                         <p className={'block-left__text'}>
                             <img src={gradeImg} alt="Info img"/>
                             Оценки полученные сегодня
                         </p>
-                        <GradeLine teacherName={'Денис Валентинович'} subject={'Веб-программирования'} date={'3 сентября 2023'} grade={5}/>
-                        <GradeLine teacherName={'Денис Валентинович'} subject={'Веб-программирования'} date={'3 сентября 2023'} grade={4}/>
-                        <GradeLine teacherName={'Денис Валентинович'} subject={'Веб-программирования'} date={'3 сентября 2023'} grade={3}/>
-                        <GradeLine teacherName={'Денис Валентинович'} subject={'Веб-программирования'} date={'3 сентября 2023'} grade={2}/>
+                        {gradeLine.map((el, index)=>(
+                            <GradeLine item={el} styles={{marginTop: 0}} teachersBlock={true}/>
+                        ))}
+
                     </div>
                 </div>
 

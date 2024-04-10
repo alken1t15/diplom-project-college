@@ -1,95 +1,89 @@
 import React, {useEffect, useState} from 'react';
 import './HomeworkPageStudent.scss';
+import HomeworkBlock, {HomeworkItem} from "../../Components/HomeworkBlock/HomeworkBlock";
+import TeachersBlock from "../../Components/TeachersBlock/TeachersBlock";
 
 const fileImg = require('../../assets/images/PDF.png');
 
-interface ICoursesBlock{
-    id: number,
-    name: string,
-    date: string,
-    active?: boolean
-}
+
 const HomeworkPageStudent: React.FC = () => {
 
-    let[courses, setCourses] = useState<ICoursesBlock[]>([
+    let[homeWork, setHomeWork] = useState<HomeworkItem[]>([
         {
             id: 1,
-            name: '1 Курс',
-            date: 'Год: 2020',
-            active: true
+            active: true,
+            name: 'Наименования задания',
+            date: '15 Сен',
+            expiresAt: '9 сен - 15 сен',
+            teacher: 'Денис Валентинович Попов',
+            subject: 'Веб-программирования'
         },
         {
             id: 2,
-            name: '2 Курс',
-            date: 'Год: 2022',
-            active: false
+            active: false,
+            name: 'Наименования задания',
+            date: '10 Сен',
+            expiresAt: '9 сен - 10 сен',
+            teacher: 'Марина Галимовна',
+            subject: 'Философия'
         },
-        {
-            id: 3,
-            name: '3 Курс',
-            date: 'Год: 2023',
-            active: false
-        },
-        {
-            id: 4,
-            name: '4 Курс',
-            date: 'Год: 2024',
-            active: false
-        },
-    ])
-    let[currentCourse, setCurrentCourse] = useState<ICoursesBlock>(
-        {
-            id: 1,
-            name: '1 Курс',
-            date: 'Год: 2020'
-        }
-    )
-    function setActiveCourse(id: number){
 
+    ])
+    let[currentCourse, setCurrentCourse] = useState<HomeworkItem>(homeWork[0])
+    let[currentHomework, setCurrentHomework] = useState({
+        id: 1,
+        name: 'Наименования задания',
+        expires: '9 сентября - 15 сентября',
+        teacher: {
+            id: 1,
+            name: 'Денис Валентинович',
+            subject: 'Веб-программирования'
+        }
+
+    })
+    function setActiveHomeWork(id: number){
+        let curArr = [...homeWork];
+        let newArr = curArr.map((el, index)=>{
+            el.active = el.id === id;
+            return el;
+        })
+        setHomeWork(newArr)
     }
 
 
     return (
         <div className={'main-page main-page-courses'}>
-            <div className={'block-left block-left-courses'}>
-                <div className="block-left-header">
-                    <div className="block-left-main">
-                        <p className={'block-left__text block-left__text-c'}>
+            <div className={'block-left block-left-courses block-left-homework'}>
+                <div className="block-left-header block-left-header-p">
+                    <div className="block-left-main block-left-header-homework">
+                        <p className={'block-left__text block-left__text-c block-left__text-c-hw'}>
                             Задания
                         </p>
                     </div>
-                    {[...courses].map((el, index) => (
-                        <button onClick={(e)=>{
-                            setActiveCourse(el.id)
-                        }} key={index} className={`courses-block ${el.active ? `courses-block-active` : ''}`}>
-                            <p className={`courses-block__title`}>{el.name}</p>
-                            <p className={`courses-block__text`}>{el.date}</p>
-                        </button>
-                    ))}
+                    <div className="homeworks-block">
+                        {[...homeWork].map((el, index) => (
+                            <HomeworkBlock item={el} onClick={setActiveHomeWork} key={el.id}/>
+                        ))}
+                    </div>
 
 
                 </div>
 
 
             </div>
-            <div className={'block-middle block-middle-full block-middle-full-t-0'}>
-                <p className={'block-middle__text'}>
+            <div className={'block-middle block-middle-full block-middle-full-t-0 block-middle-full-t-hw'}>
+                <div className={'block-middle__text'}>
                     <div className={`courses-block courses-block-l`}>
-                        <p className={`courses-block__title courses-block__title-l`}>{currentCourse.name}</p>
-                        <p className={`courses-block__text`}>{currentCourse.date}</p>
+                        <p className={`courses-block__title courses-block__title-l block-left__text-hw`}>{currentCourse.name}</p>
                     </div>
-                </p>
+                </div>
+                <div className="block-middle-info">
+                    {/*<p className="block-middle-info__expires"><span>Срок задание: </span>{el.name}</p>*/}
+                    <TeachersBlock item={currentHomework.teacher}/>
+                </div>
 
                 <div className="file-box">
-                    {/*{fileItems.map((el, index)=> (*/}
-                    {/*    <div className="file-item" key={el.id}>*/}
-                    {/*        <img src={el.img} alt={el.text}/>*/}
-                    {/*        <div className="file-item-block">*/}
-                    {/*            <p className={`courses-block__title courses-block__title-l file-item-block__title`}>{el.text}</p>*/}
-                    {/*            <p className={`courses-block__text file-item-block__text`}>{el.date}</p>*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*))}*/}
+
                 </div>
 
             </div>

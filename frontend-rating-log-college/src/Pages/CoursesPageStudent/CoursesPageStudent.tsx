@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import './CoursesPageStudent.scss';
 import CoursesItem, {CourseItem} from "../../Components/CoursesItem/CoursesItem";
+import FileItem, {IFileItem} from "../../Components/FileItem/FileItem";
 
 const fileImg = require('../../assets/images/PDF.png');
 
@@ -34,7 +35,7 @@ const CoursesPageStudent: React.FC = () => {
         },
     ])
     let[currentCourse, setCurrentCourse] = useState<CourseItem>(courses[0])
-    let[fileItems, setFileItems] = useState([
+    let[fileItems, setFileItems] = useState<IFileItem[]>([
         {
             id: 1,
             text: 'Учебник истории',
@@ -132,9 +133,7 @@ const CoursesPageStudent: React.FC = () => {
                     </div>
                     {[...courses].map((el, index) => (
                         <CoursesItem item={el} key={index} onClick={setActiveCourse}/>
-
                     ))}
-
 
                 </div>
 
@@ -150,13 +149,7 @@ const CoursesPageStudent: React.FC = () => {
 
                 <div className="file-box">
                     {fileItems.map((el, index)=> (
-                        <div className="file-item" key={el.id}>
-                            <img src={el.img} alt={el.text}/>
-                            <div className="file-item-block">
-                                <p className={`courses-block__title courses-block__title-l file-item-block__title`}>{el.text}</p>
-                                <p className={`courses-block__text file-item-block__text`}>{el.date}</p>
-                            </div>
-                        </div>
+                      <FileItem item={el} key={el.id}/>
                     ))}
                 </div>
 
