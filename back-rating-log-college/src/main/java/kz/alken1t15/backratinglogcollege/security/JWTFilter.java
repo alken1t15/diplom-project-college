@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import kz.alken1t15.backratinglogcollege.contoller.ControllerMain;
 import kz.alken1t15.backratinglogcollege.dto.LoginAuth;
 
+import kz.alken1t15.backratinglogcollege.entity.User;
+import kz.alken1t15.backratinglogcollege.repository.RepositoryUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,8 @@ public class JWTFilter extends OncePerRequestFilter {
     private Logger logger = LoggerFactory.getLogger(ControllerMain.class);
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private RepositoryUser repositoryUser;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -62,7 +66,14 @@ public class JWTFilter extends OncePerRequestFilter {
                 Authentication authentication = new UsernamePasswordAuthenticationToken(login, password);
                 Authentication authenticationUser = authenticationManager.authenticate(authentication);
                 if (authenticationUser.isAuthenticated()) {
-                    if (date.isAfter(LocalDate.now())) {
+                    User user = repositoryUser.findByLogin(login).orElseThrow();
+                    if (!user.getJwt().equals(token)){
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        response.getWriter().write("Истек срок JWT токен");
+                        response.setCharacterEncoding("UTF-8");
+                        return;
+                    }
+                   else if (date.isAfter(LocalDate.now())) {
                         SecurityContext securityContext = SecurityContextHolder.getContext();
                         securityContext.setAuthentication(authenticationUser);
                         SecurityContextHolder.setContext(securityContext);

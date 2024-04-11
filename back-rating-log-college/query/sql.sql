@@ -46,7 +46,7 @@ create table groups
 );
 
 insert into groups (id_curator, name, specialization_name, year,current_course)
-VALUES (1, 'П-20-51б', 'Вычислительная техника и программное обеспечение', 2020,1);
+VALUES (1, 'П-20-51б', 'Вычислительная техника и программное обеспечение', 2023,1);
 
 -- create table teachers_group
 -- (
@@ -65,8 +65,7 @@ create table courses(
     year int not null
 );
 
-insert into courses (id_groups, course, year) VALUES (1,1,2024);
-
+insert into courses (id_groups, course, year) VALUES (1,1,2023);
 
 -- # Первая часть
 create table students
@@ -112,6 +111,33 @@ create table evaluations
     ball            int          not null,
     name_teacher    varchar(255) not null
 );
+
+INSERT INTO evaluations (id_course, name_object, date_evaluation, ball, name_teacher)
+VALUES
+    (1, 'Математика', '2024-04-01', 85, 'Иванова'),
+    (1, 'Физика', '2024-04-02', 78, 'Петров'),
+    (1, 'Литература', '2024-04-03', 90, 'Сидорова'),
+    (1, 'История', '2024-04-04', 92, 'Козлов'),
+    (1, 'Биология', '2024-04-05', 87, 'Смирнов'),
+    (1, 'Химия', '2024-04-06', 80, 'Васильева'),
+    (1, 'География', '2024-04-07', 95, 'Николаев'),
+    (1, 'Иностранный язык', '2024-04-08', 88, 'Морозов'),
+    (1, 'Информатика', '2024-04-09', 91, 'Белов'),
+    (1, 'Искусство', '2024-04-10', 82, 'Горбунова'),
+    (1, 'Математика', '2024-04-11', 75, 'Иванова'),
+    (1, 'Физика', '2024-04-11', 80, 'Петров'),
+    (1, 'Литература', '2024-04-11', 85, 'Сидорова'),
+    (1, 'История', '2024-04-11', 90, 'Козлов'),
+    (1, 'Биология', '2024-04-11', 88, 'Смирнов'),
+    (1, 'Химия', '2024-04-11', 79, 'Васильева'),
+    (1, 'География', '2024-04-11', 92, 'Николаев'),
+    (1, 'Иностранный язык', '2024-04-11', 89, 'Морозов'),
+    (1, 'Информатика', '2024-04-11', 93, 'Белов'),
+    (1, 'Искусство', '2024-04-11', 81, 'Горбунова');
+
+
+
+
 create table evaluations_between
 (
     id          serial primary key,
@@ -224,7 +250,7 @@ create table study_process
 insert into study_process (id_group, semester, course, date_start, date_end)
 VALUES (1, 1, 1, '02.09.2023', '10.10.2023');
 insert into study_process (id_group, semester, course, date_start, date_end)
-VALUES (1, 2, 1, '02.11.2023', '10.10.2024');
+VALUES (1, 2, 1, '02.11.2023', '30.06.2024');
 -- Изменения было
 -- create table week_study
 -- (

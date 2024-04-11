@@ -16,4 +16,5 @@ public class ProcessReturnDTO {
     private Integer totalCourse;
     private Integer currentSemester;
     private List<MonthReturnDTO> months;
+    private List<String[]> evaluations;
 }
