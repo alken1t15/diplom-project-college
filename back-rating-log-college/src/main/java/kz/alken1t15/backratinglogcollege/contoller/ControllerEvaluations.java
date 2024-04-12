@@ -16,11 +16,11 @@ import java.time.LocalDate;
 public class ControllerEvaluations {
     private final ServiceEvaluations serviceEvaluations;
 
-    @PostMapping(path = "/add")
-    public HttpStatus addEvaluation(@RequestBody Evaluation evaluation){
-//       return serviceEvaluations.save(evaluation);
-        return null;
-    }
-
-    public record Evaluation(Long idStudent, String nameObject, LocalDate dateEvaluation, Long ball){ }
+//    @PostMapping(path = "/add")
+//    public HttpStatus addEvaluation(@RequestBody Evaluation evaluation){
+////       return serviceEvaluations.save(evaluation);
+//        return null;
+//    }
+//
+//    public record Evaluation(Long idStudent, String nameObject, LocalDate dateEvaluation, Long ball){ }
 }

@@ -33,34 +33,26 @@ public class ServiceStudyProcess {
 
 
     public ProcessReturnDTO getStudyProcess(ProcessDTO process) {
+        ProcessReturnDTO processReturnDTO = new ProcessReturnDTO();
         Students student = serviceStudents.getStudent();
         StudyProcess studyProcess;
         if (process.getSemester() != null && process.getCourse() != null) {
-            studyProcess = repositoryStudyProcess.findByCourseSemesterGroup(process.getCourse(), process.getSemester(), student.getGroup().getId());
-        } else {
-            studyProcess = repositoryStudyProcess.findByCourseSemesterGroup(student.getGroup().getCurrentCourse(), 1, student.getGroup().getId());
-        }
-        ProcessReturnDTO processReturnDTO = new ProcessReturnDTO();
-
-        if (process.getSemester() != null && process.getCourse() != null) {
+            studyProcess = getStudyProcessForSemester(process.getCourse(), process.getSemester(), student.getGroup().getId());
             processReturnDTO.setCurrentCourse(process.getCourse());
             processReturnDTO.setCurrentSemester(process.getSemester());
         } else {
+            studyProcess = getStudyProcessForSemester(student.getGroup().getCurrentCourse(), 1, student.getGroup().getId());
             processReturnDTO.setCurrentCourse(student.getGroup().getCurrentCourse());
             processReturnDTO.setCurrentSemester(1);
         }
         processReturnDTO.setTotalCourse(student.getGroup().getCourses().size());
-
         List<MonthReturnDTO> months = getAllMonths(studyProcess.getDateStart(), studyProcess.getDateEnd());
-
         processReturnDTO.setMonths(months);
-        List<Evaluations> evaluations;
         List<String> nameObjects;
         List<Evaluations> evaluationsObjects;
         LocalDate yearStart;
         int daysInMonth;
         List<String[]> evalStudy = new ArrayList<>();
-
         if (process.getMonth() != null && process.getCourse() != null) {
             Courses courses = repositoryCourses.findByCourseGroup(process.getCourse(), student.getGroup().getId());
             YearMonth yearMonth;
@@ -138,7 +130,7 @@ public class ServiceStudyProcess {
     }
 
 
-    private static List<MonthReturnDTO> getAllMonths(LocalDate startDate, LocalDate endDate) {
+    public  List<MonthReturnDTO> getAllMonths(LocalDate startDate, LocalDate endDate) {
         String[] arrMonth = new String[]{"01 Янв", "02 Фев", "03 Март", "04 Апр", "05 Май", "06 Июн", "", "", "09 Сен", "10 Окт", "11 Нояб", "12 Дек"};
 
         List<MonthReturnDTO> months = new ArrayList<>();
@@ -151,4 +143,19 @@ public class ServiceStudyProcess {
 
         return months;
     }
+
+    public StudyProcess getStudyProcessForSemester(Integer course,Integer semester,Long idGroup){
+     return  repositoryStudyProcess.findByCourseSemesterGroup(course, semester, idGroup);
+    }
+
+    public List<MonthReturnDTO> getStudyProcessAll(Integer course,Long idGroup){
+        List<StudyProcess> processes = repositoryStudyProcess.findByCourseGroup(course,  idGroup);
+        StudyProcess studyProcess = processes.get(0);
+        StudyProcess studyProcess2 = processes.get(1);
+        List<MonthReturnDTO> arr1 = getAllMonths(studyProcess.getDateStart(),studyProcess.getDateEnd());
+        List<MonthReturnDTO> arr2 = getAllMonths(studyProcess2.getDateStart(),studyProcess2.getDateEnd());
+        arr1.addAll(arr2);
+        return arr1;
+    }
+
 }

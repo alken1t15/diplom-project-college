@@ -17,18 +17,18 @@ import java.util.List;
 public class ControllerObject {
     private final ServiceObjects serviceObjects;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Objects> getOneObject(@PathVariable Long id){
-        return serviceObjects.findById(id);
-    }
-
-    @GetMapping("/all")
-    public ResponseEntity<List<Objects>> getAllObject(){
-        return serviceObjects.getAllObject();
-    }
-
-    @GetMapping("/add")
-    public ResponseEntity addNewObject(@RequestParam String name){
-        return  serviceObjects.save(name);
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<Objects> getOneObject(@PathVariable Long id){
+//        return serviceObjects.findById(id);
+//    }
+//
+//    @GetMapping("/all")
+//    public ResponseEntity<List<Objects>> getAllObject(){
+//        return serviceObjects.getAllObject();
+//    }
+//
+//    @GetMapping("/add")
+//    public ResponseEntity addNewObject(@RequestParam String name){
+//        return  serviceObjects.save(name);
+//    }
 }

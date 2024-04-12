@@ -11,12 +11,12 @@ import java.time.LocalDate;
 @RequestMapping("/evaluations/practice")
 @AllArgsConstructor
 public class ControllerEvaluationsPractice {
-    private final ServiceEvaluationsPractice serviceEvaluationsPractice;
-
-    @PostMapping("/add")
-    public ResponseEntity addEvaluationsPractice(@RequestBody EvaluationsPractice evaluationsPractice){
-        return serviceEvaluationsPractice.addNewEvaluationsPractice(evaluationsPractice);
-    }
-
-    public record EvaluationsPractice(Long idStudent, String namePractice, LocalDate dateEvaluation, Long ball){ }
+//    private final ServiceEvaluationsPractice serviceEvaluationsPractice;
+//
+//    @PostMapping("/add")
+//    public ResponseEntity addEvaluationsPractice(@RequestBody EvaluationsPractice evaluationsPractice){
+//        return serviceEvaluationsPractice.addNewEvaluationsPractice(evaluationsPractice);
+//    }
+//
+//    public record EvaluationsPractice(Long idStudent, String namePractice, LocalDate dateEvaluation, Long ball){ }
 }

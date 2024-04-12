@@ -2,15 +2,14 @@ package kz.alken1t15.backratinglogcollege.contoller;
 
 import kz.alken1t15.backratinglogcollege.dto.*;
 import kz.alken1t15.backratinglogcollege.dto.work.EvaluationsReturnDTO;
+import kz.alken1t15.backratinglogcollege.dto.work.MonthReturnDTO;
 import kz.alken1t15.backratinglogcollege.entity.Evaluations;
 import kz.alken1t15.backratinglogcollege.entity.Groups;
 import kz.alken1t15.backratinglogcollege.entity.Omissions;
 import kz.alken1t15.backratinglogcollege.entity.Students;
 import kz.alken1t15.backratinglogcollege.entity.study.PlanStudy;
-import kz.alken1t15.backratinglogcollege.service.ServiceEvaluations;
-import kz.alken1t15.backratinglogcollege.service.ServiceOmissions;
-import kz.alken1t15.backratinglogcollege.service.ServicePlanStudy;
-import kz.alken1t15.backratinglogcollege.service.ServiceStudents;
+import kz.alken1t15.backratinglogcollege.entity.study.process.StudyProcess;
+import kz.alken1t15.backratinglogcollege.service.*;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -31,6 +30,7 @@ public class ControllerStudent {
     private final ServiceEvaluations serviceEvaluations;
     private final ServiceOmissions serviceOmissions;
     private final ServicePlanStudy servicePlanStudy;
+    private final ServiceStudyProcess serviceStudyProcess;
 
 //    @GetMapping(path = "/{id}")
 //    public ResponseEntity<Students> getStudent(@PathVariable("id") Long id) {
@@ -45,18 +45,18 @@ public class ControllerStudent {
     @PostMapping(path = "/main")
     public StudentInfoMainPageDTO getInfoForMainPage(@RequestBody UserId userId) {
         ModelMapper modelMapper = new ModelMapper();
-        Students students = serviceStudents.getStudent();
-        Groups groups = students.getGroup();
+        Students student = serviceStudents.getStudent();
+        Groups groups = student.getGroup();
         Integer course = groups.getCurrentCourse();
-        List<Evaluations> evaluations = serviceEvaluations.findByDateEvaluation(LocalDate.now(), students.getId());
+        List<Evaluations> evaluations = serviceEvaluations.findByDateEvaluation(LocalDate.now(), student.getId());
         List<EvaluationsReturnDTO> evaluationsReturnDTOS = new ArrayList<>();
         for (Evaluations e : evaluations) {
             EvaluationsReturnDTO evaluationsReturnDTO = modelMapper.map(e, EvaluationsReturnDTO.class);
             evaluationsReturnDTOS.add(evaluationsReturnDTO);
         }
-        MonthDTO monthDTO = serviceOmissions.findByMonth(userId.getNumberOfMonth(), course, students.getId());
+        MonthDTO monthDTO = serviceOmissions.findByMonth(userId.getNumberOfMonth(), course, student.getId());
         PlanStudyDTO planStudyDTO = servicePlanStudy.findByOfDate(groups.getId());
-
-        return new StudentInfoMainPageDTO(students.getFirstName(), students.getSecondName(), groups.getName(), groups.getYear(), evaluationsReturnDTOS, monthDTO, planStudyDTO);
+        List<MonthReturnDTO> months = serviceStudyProcess.getStudyProcessAll(student.getGroup().getCurrentCourse(), student.getGroup().getId());
+        return new StudentInfoMainPageDTO(student.getFirstName(), student.getSecondName(), groups.getName(), groups.getYear(), evaluationsReturnDTOS, monthDTO, planStudyDTO,months);
     }
 }

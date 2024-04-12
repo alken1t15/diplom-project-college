@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class ServiceEvaluationsPractice {
     private RepositoryEvaluationsPractice evaluationsPractice;
 
-    public ResponseEntity addNewEvaluationsPractice(ControllerEvaluationsPractice.EvaluationsPractice evaluationsPractice) {
-        return null;
-    }
+//    public ResponseEntity addNewEvaluationsPractice(ControllerEvaluationsPractice.EvaluationsPractice evaluationsPractice) {
+//        return null;
+//    }
 }
