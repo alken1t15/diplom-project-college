@@ -17,4 +17,5 @@ public class ProcessReturnDTO {
     private Integer currentSemester;
     private List<MonthReturnDTO> months;
     private List<String[]> evaluations;
+    List<PlanStudyFindDTO> teachers;
 }

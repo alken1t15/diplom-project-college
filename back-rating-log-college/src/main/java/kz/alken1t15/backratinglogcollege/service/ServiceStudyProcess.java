@@ -2,6 +2,7 @@ package kz.alken1t15.backratinglogcollege.service;
 
 import kz.alken1t15.backratinglogcollege.dto.MonthDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.MonthReturnDTO;
+import kz.alken1t15.backratinglogcollege.dto.work.PlanStudyFindDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.ProcessDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.ProcessReturnDTO;
 import kz.alken1t15.backratinglogcollege.entity.Courses;
@@ -9,6 +10,7 @@ import kz.alken1t15.backratinglogcollege.entity.Evaluations;
 import kz.alken1t15.backratinglogcollege.entity.Students;
 import kz.alken1t15.backratinglogcollege.entity.User;
 import kz.alken1t15.backratinglogcollege.entity.study.process.StudyProcess;
+import kz.alken1t15.backratinglogcollege.entity.study.process.TypeStudy;
 import kz.alken1t15.backratinglogcollege.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContext;
@@ -30,21 +32,32 @@ public class ServiceStudyProcess {
     private RepositoryEvaluations repositoryEvaluation;
     private RepositoryCourses repositoryCourses;
     private ServiceStudents serviceStudents;
+    private RepositoryTypeStudy repositoryTypeStudy;
+    private RepositoryPlanStudy repositoryPlanStudy;
 
 
     public ProcessReturnDTO getStudyProcess(ProcessDTO process) {
         ProcessReturnDTO processReturnDTO = new ProcessReturnDTO();
         Students student = serviceStudents.getStudent();
         StudyProcess studyProcess;
+        List<Long> typeStudiesId;
         if (process.getSemester() != null && process.getCourse() != null) {
             studyProcess = getStudyProcessForSemester(process.getCourse(), process.getSemester(), student.getGroup().getId());
             processReturnDTO.setCurrentCourse(process.getCourse());
             processReturnDTO.setCurrentSemester(process.getSemester());
+            typeStudiesId = repositoryTypeStudy.findByIdStudyProcess(studyProcess.getId());
         } else {
             studyProcess = getStudyProcessForSemester(student.getGroup().getCurrentCourse(), 1, student.getGroup().getId());
             processReturnDTO.setCurrentCourse(student.getGroup().getCurrentCourse());
             processReturnDTO.setCurrentSemester(1);
+            typeStudiesId = repositoryTypeStudy.findByIdStudyProcess(studyProcess.getId());
         }
+        List<PlanStudyFindDTO> teachers = new ArrayList<>();
+        for (Long id : typeStudiesId){
+            List<PlanStudyFindDTO> temp = repositoryPlanStudy.findByIdTypeStudy(id);
+            teachers.addAll(temp);
+        }
+        processReturnDTO.setTeachers(teachers);
         processReturnDTO.setTotalCourse(student.getGroup().getCourses().size());
         List<MonthReturnDTO> months = getAllMonths(studyProcess.getDateStart(), studyProcess.getDateEnd());
         processReturnDTO.setMonths(months);
@@ -125,6 +138,9 @@ public class ServiceStudyProcess {
         evalStudy.add(0, stringArray);
 
         processReturnDTO.setEvaluations(evalStudy);
+
+
+
 
         return processReturnDTO;
     }

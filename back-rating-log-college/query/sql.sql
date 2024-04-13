@@ -67,6 +67,16 @@ create table courses(
 
 insert into courses (id_groups, course, year) VALUES (1,1,2023);
 
+create table files_group(
+    id  serial primary key,
+    id_courses int references courses(id),
+    name varchar(255) not null ,
+    file bytea not null ,
+    date_create date not null
+);
+
+insert into files_group (id_courses, name, file, date_create) VALUES (1,'История','0YvQsNCy0YvQsNGL0LLRi9Cw0LLRi9Cw0LLQu9GC0LvRi9Cw0LLQu9GC0LTRi9Cy0YLRi9Cw0LLRgtC00YvQstGC0LTRi9GC0LTQu9Cy0LDRi9Cy0LDRi9Cy0LDRi9Cy0LDQstGL0LA=','2024-04-13');
+
 -- # Первая часть
 create table students
 (
@@ -85,6 +95,14 @@ insert into students (id, id_group, first_name, second_name, middle_name, login,
 VALUES (2, 1, 'fdsf', 'fsdfsd', 'fsdfsd',
         'fdsf', 'fsdfsd',
         '12.08.2004', 'Б');
+
+create table files_student(
+                              id  serial primary key,
+                              id_students int references students(id),
+                              name varchar(255) not null ,
+                              file bytea not null ,
+                              date_create date not null
+);
 
 create table students_course(
     id serial primary key,
@@ -364,5 +382,6 @@ create table plan_study
 insert into plan_study (id_type_study, id_time_study, id_subject_study, id_teacher, id_auditorium, id_week, number_of_couple) VALUES
                                                                                                                                   (3,1,1,3,1,1,1),
                                                                                                                                   (3,2,2,3,2,1,2),
-                                                                                                                                  (3,3,3,3,3,1,3)
+                                                                                                                                  (3,3,3,3,3,1,3),
+                                                                                                                                  (3,1,1,3,1,2,2)
 -- Конец

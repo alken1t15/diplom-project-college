@@ -1,12 +1,8 @@
 package kz.alken1t15.backratinglogcollege.contoller;
 
 import kz.alken1t15.backratinglogcollege.dto.*;
-import kz.alken1t15.backratinglogcollege.dto.work.EvaluationsReturnDTO;
-import kz.alken1t15.backratinglogcollege.dto.work.MonthReturnDTO;
-import kz.alken1t15.backratinglogcollege.entity.Evaluations;
-import kz.alken1t15.backratinglogcollege.entity.Groups;
-import kz.alken1t15.backratinglogcollege.entity.Omissions;
-import kz.alken1t15.backratinglogcollege.entity.Students;
+import kz.alken1t15.backratinglogcollege.dto.work.*;
+import kz.alken1t15.backratinglogcollege.entity.*;
 import kz.alken1t15.backratinglogcollege.entity.study.PlanStudy;
 import kz.alken1t15.backratinglogcollege.entity.study.process.StudyProcess;
 import kz.alken1t15.backratinglogcollege.service.*;
@@ -31,6 +27,8 @@ public class ControllerStudent {
     private final ServiceOmissions serviceOmissions;
     private final ServicePlanStudy servicePlanStudy;
     private final ServiceStudyProcess serviceStudyProcess;
+    private final ServiceFilesGroup serviceFilesGroup;
+    private final ServiceFilesStudent serviceFilesStudent;
 
 //    @GetMapping(path = "/{id}")
 //    public ResponseEntity<Students> getStudent(@PathVariable("id") Long id) {
@@ -57,6 +55,21 @@ public class ControllerStudent {
         MonthDTO monthDTO = serviceOmissions.findByMonth(userId.getNumberOfMonth(), course, student.getId());
         PlanStudyDTO planStudyDTO = servicePlanStudy.findByOfDate(groups.getId());
         List<MonthReturnDTO> months = serviceStudyProcess.getStudyProcessAll(student.getGroup().getCurrentCourse(), student.getGroup().getId());
-        return new StudentInfoMainPageDTO(student.getFirstName(), student.getSecondName(), groups.getName(), groups.getYear(), evaluationsReturnDTOS, monthDTO, planStudyDTO,months);
+        return new StudentInfoMainPageDTO(student.getFirstName(), student.getSecondName(), groups.getName(), groups.getYear(), evaluationsReturnDTOS, monthDTO, planStudyDTO, months);
+    }
+
+    @PostMapping(path = "/grade")
+    public ProcessReturnDTO getStudyProcess(@RequestBody ProcessDTO process) {
+        return serviceStudyProcess.getStudyProcess(process);
+    }
+
+    @PostMapping(path = "/courses")
+    public FilesReturnDTO getFiles(@RequestBody FileRequestDTO fileDTO) {
+        return serviceFilesGroup.getFiles(fileDTO);
+    }
+
+    @PostMapping(path = "/file/add")
+    public HttpStatus saveFile(FilesStudentRequestDTO file) {
+        return serviceFilesStudent.save(file);
     }
 }
