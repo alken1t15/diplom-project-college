@@ -11,4 +11,5 @@ import java.time.LocalDate;
 public class FilesStudentRequestDTO {
     private String name;
     private String file;
+    private String typeFile;
 }

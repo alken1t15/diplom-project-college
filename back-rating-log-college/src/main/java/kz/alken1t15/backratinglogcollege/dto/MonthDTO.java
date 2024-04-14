@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class MonthDTO  {
-    private String name;
+    private String nameMonth;
     private List<DayDTO> days;
 
 }

@@ -19,7 +19,7 @@ public class StudentInfoMainPageDTO {
     private String groupName;
     private Integer yearGroup;
     private List<EvaluationsReturnDTO> evaluations;
-    private MonthDTO monthDTO;
-    private PlanStudyDTO planStudyDTO;
-    private List<MonthReturnDTO> monthReturnDTOS;
+    private MonthDTO omissions;
+    private PlanStudyDTO planStudy;
+    private List<MonthReturnDTO> monthsStudy;
 }

@@ -86,10 +86,15 @@ public class ServiceStudyProcess {
                 evaluationsObjects = repositoryEvaluation.findByDateStudentCourseNameObject(yearStart, yearEnd, process.getCourse(), student.getId(), name);
                 String[] tempArr = new String[daysInMonth + 1];
                 tempArr[0] = name;
+                long total = 0;
+                int count =0;
                 for (Evaluations e : evaluationsObjects) {
+                    total = e.getBall() + total;
                     LocalDate localDate = e.getDateEvaluation();
                     tempArr[localDate.getDayOfMonth()] = String.valueOf(e.getBall());
+                    count++;
                 }
+                tempArr[tempArr.length-1] = String.valueOf(total/count);
                 evalStudy.add(tempArr);
             }
         } else {
@@ -113,10 +118,15 @@ public class ServiceStudyProcess {
                 evaluationsObjects = repositoryEvaluation.findByDateStudentCourseNameObject(yearStart, yearEnd, student.getGroup().getCurrentCourse(), student.getId(), name);
                 String[] tempArr = new String[daysInMonth + 1];
                 tempArr[0] = name;
+                int count =0;
+                long total = 0;
                 for (Evaluations e : evaluationsObjects) {
                     LocalDate localDate = e.getDateEvaluation();
+                    total = e.getBall() + total;
                     tempArr[localDate.getDayOfMonth()] = String.valueOf(e.getBall());
+                    count++;
                 }
+                tempArr[tempArr.length-1] = String.valueOf(total/count);
                 evalStudy.add(tempArr);
             }
         }

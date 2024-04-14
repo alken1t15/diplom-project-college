@@ -69,7 +69,7 @@ public class ControllerStudent {
     }
 
     @PostMapping(path = "/file/add")
-    public HttpStatus saveFile(FilesStudentRequestDTO file) {
+    public ResponseEntity saveFile(FilesStudentRequestDTO file) {
         return serviceFilesStudent.save(file);
     }
 }

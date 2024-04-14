@@ -48,4 +48,12 @@ public class ServicePlanStudy {
         }
         return new PlanStudyDTO(date.getDayOfMonth() + " " + monthName, dayOfWeekName, subjects);
     }
+
+    public List<PlanStudy> getPlanStudyToday(Long idGroup){
+        LocalDate date = LocalDate.now();
+
+        int dayOfWeekIndex = date.getDayOfWeek().getValue() - 1;
+
+        return repositoryPlanStudy.findByOfDate(date, dayOfWeekIndex + 1,idGroup);
+    }
 }
