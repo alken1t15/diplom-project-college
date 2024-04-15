@@ -223,7 +223,7 @@ const MainPageStudent: React.FC = () => {
                     </p>
                     <div className="block-left-header-personal">
                         <div className="block-left-header-personal-l">
-                            <InitialsImage initials="МК" width={100} height={100} fontSize={48} textColor="#fff" backgroundColor="#d9d9d9" />
+                            <InitialsImage initials="МК" width={70} height={70} fontSize={30} textColor="#fff" backgroundColor="#d9d9d9" />
                         </div>
                         <div className="block-left-header-personal-r">
                             <p className="block-left-header-personal-r__header">Кораблев Максим</p>

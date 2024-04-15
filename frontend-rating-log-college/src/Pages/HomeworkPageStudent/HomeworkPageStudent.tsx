@@ -2,6 +2,9 @@ import React, {useEffect, useState} from 'react';
 import './HomeworkPageStudent.scss';
 import HomeworkBlock, {HomeworkItem} from "../../Components/HomeworkBlock/HomeworkBlock";
 import TeachersBlock from "../../Components/TeachersBlock/TeachersBlock";
+import FileItem from "../../Components/FileItem/FileItem";
+import ScheduleItem from "../../Components/Schedule/ScheduleItem";
+import FileUploader from "../../Components/FileUploader/FileUploader";
 
 const fileImg = require('../../assets/images/PDF.png');
 
@@ -34,11 +37,38 @@ const HomeworkPageStudent: React.FC = () => {
         id: 1,
         name: 'Наименования задания',
         expires: '9 сентября - 15 сентября',
+        status: 'Выполняется',
+        work
         teacher: {
             id: 1,
             name: 'Денис Валентинович',
             subject: 'Веб-программирования'
-        }
+        },
+        files: [
+            {
+
+                id: 1,
+                text: 'Учебник истории',
+                date: '3 сентября',
+                img: fileImg,
+                size: '5.3 мб'
+            },
+            {
+                id: 2,
+                text: 'Учебник истории 2',
+                date: '4 сентября',
+                img: fileImg,
+                size: '5.3 мб'
+            },
+            {
+                id: 3,
+                text: 'Учебник истории 3',
+                date: '5 сентября',
+                img: fileImg,
+                size: '5.3 мб'
+            },
+
+        ]
 
     })
     function setActiveHomeWork(id: number){
@@ -49,6 +79,7 @@ const HomeworkPageStudent: React.FC = () => {
         })
         setHomeWork(newArr)
     }
+
 
 
     return (
@@ -71,6 +102,7 @@ const HomeworkPageStudent: React.FC = () => {
 
 
             </div>
+
             <div className={'block-middle block-middle-full block-middle-full-t-0 block-middle-full-t-hw'}>
                 <div className={'block-middle__text'}>
                     <div className={`courses-block courses-block-l`}>
@@ -78,14 +110,55 @@ const HomeworkPageStudent: React.FC = () => {
                     </div>
                 </div>
                 <div className="block-middle-info">
-                    {/*<p className="block-middle-info__expires"><span>Срок задание: </span>{el.name}</p>*/}
-                    <TeachersBlock item={currentHomework.teacher}/>
+                    <p className="block-middle-info__expires"><span>Срок задание: </span>{currentHomework.expires}</p>
+                    <TeachersBlock item={currentHomework.teacher} styles={{marginTop: 20}}/>
+                    <p className="status">
+                        Статус:&nbsp;
+                        <span
+                            className={`status-color ${currentHomework.status == "Выполняется" || currentHomework.status == "Сдано" ? "status-color__purple" :
+                                currentHomework.status === "Назначенно" ? "status-color__green" :
+                                    currentHomework.status === "Просрочено" ? "status-color__red" : ''
+                            }`}>
+                         {currentHomework.status}
+                    </span></p>
+                    <p className="block-middle-info__text">
+                        Дневник-отчёт Вы должны распечатать, в местах где согласно инструкции должны проставить печати с
+                        предприятия ОБЯЗАТЕЛЬНО должны поставить. Потом Вы сканируете дневник-отчёт и в pdf формате
+                        прикрепляете в GoogleClassRoom, также туда прикрепляете Отчёт и Презентацию. Срок сдачи
+                        ПОНЕДЕЛЬНИК 20 ИЮНЯ ДО 17:30!!!
+                    </p>
                 </div>
 
-                <div className="file-box">
-
+                <div className="block-middle-info__files-block">
+                    <p className="block-middle-info__files-block__text">Приклепленные файлы</p>
+                    <div className="file-box block-middle-info__files-file-box">
+                        {currentHomework.files.map((el, index) => (
+                            <FileItem item={el} key={index}/>
+                        ))}
+                    </div>
                 </div>
 
+            </div>
+
+            <div className={'block-right block-right-hw'}>
+                <div className={`image-block image-block-active image-block-hw`}>
+                    <div className="image-block-top">
+                        <p className={'image-block-top__text'}>
+                            Мои задания
+                            <span
+                                className={`status-color ${currentHomework.status == "Выполняется" || currentHomework.status == "Сдано" ? "status-color__purple" :
+                                    currentHomework.status === "Назначенно" ? "status-color__green" :
+                                        currentHomework.status === "Просрочено" ? "status-color__red" : ''
+                                }`}>
+                    {currentHomework.status}</span>
+                        </p>
+
+
+                        <FileUploader/>
+
+
+                    </div>
+                </div>
             </div>
         </div>
     );

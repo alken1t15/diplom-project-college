@@ -5,6 +5,9 @@
     width: 420px;
     flex-grow: 1;
     max-height: 100%;
+    &-grades{
+      margin-top: 50px;
+    }
     &__text{
       padding-bottom: 8px;
       display: flex;

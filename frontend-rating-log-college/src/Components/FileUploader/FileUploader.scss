@@ -14,10 +14,16 @@
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 22px;
+    font-size: 18px;
     text-align: center;
+
+
+    &-light{
+      padding: 0;
+    }
     & > p{
-      margin-top: 100px;
+      margin-top: 60px;
+      font-size: 16px;
     }
     & > img{
       margin-bottom: 25px;
@@ -46,7 +52,7 @@
     background-color: var(--purple);
   }
   & > .drag-area{
-    min-height: 370px;
+    min-height: 340px;
     border-radius: 10px;
     border: 3px dashed white;
     color: white;
@@ -55,7 +61,6 @@
     background-color: rgba(67, 76, 89, 1);
     border-spacing: 45px;
     display: flex;
-    align-items: center;
     justify-content: center;
     user-select: none;
     -webkit-user-select: none;
@@ -91,9 +96,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    & > img{
 
-    }
     & span{
       position: absolute;
       top: -2px;
@@ -142,10 +145,7 @@
   border-radius: 10px;
   border: none;
   z-index: 9999;
-  & > img{
-    width: 30px;
-    height: 33px;
-  }
+
 }
 
 .loaded-img{
@@ -227,3 +227,20 @@
 }
 
 
+.select-top{
+  margin-top: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  & > span{
+    margin-top: 15px;
+    padding: 0 45px;
+    font-weight: 500;
+    font-size: 20px;
+  }
+  & > img{
+    width: 50px;
+    height: 50px;
+  }
+}

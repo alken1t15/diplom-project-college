@@ -110,10 +110,12 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
                                     Перетащите файлы
                                 </span>
                     ) : (
-                        <span className="select">
-                            <img src={uploadImg} alt=""/>
-                                    Перетащите файлы или нажмите для загрузки
-                                    <p>Загружайте файлы не больше 20 мб</p>
+                        <span className="select ">
+                          <span className="select-top">
+                                <img src={uploadImg} alt=""/>
+                                    <span>Перетащите файлы или нажмите для загрузки</span>
+                          </span>
+                                    <p className={`select-light`}>Загружайте файлы не больше 20 мб</p>
                                 </span>
                     )
                 }
@@ -133,7 +135,6 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
 
                 {images.map((el, index) => (
                     <div className="image loading" key={index}>
-                        {/*<div className="loader" >*/}
                         <img className={'loaded-img'} src={el.url} alt={el.name} onLoad={() => handleImageLoad(index)}/>
                         <div className="loader-info">
                             <p className={'loader-text'}>{el.name}</p>
