@@ -61,13 +61,6 @@ create table howe_work
     name_subject varchar(255) not null
 );
 
-create table task_students
-(
-    id               serial primary key,
-    id_howe_work     int references howe_work (id),
-    id_students      int references students (id),
-    id_file_students int references files_student (id)
-);
 
 -- create table teachers_group
 -- (
@@ -123,6 +116,7 @@ VALUES (2, 1, 'fdsf', 'fsdfsd', 'fsdfsd',
         'fdsf', 'fsdfsd',
         '12.08.2004', 'Б');
 
+
 create table files_student
 (
     id          serial primary key,
@@ -131,6 +125,15 @@ create table files_student
     file        bytea        not null,
     date_create date         not null,
     type_file   varchar(255) not null
+);
+
+create table task_students
+(
+    id               serial primary key,
+    id_howe_work     int references howe_work (id),
+    id_students      int references students (id),
+    id_file_students int references files_student (id),
+        status       varchar(255) not null
 );
 
 create table students_course

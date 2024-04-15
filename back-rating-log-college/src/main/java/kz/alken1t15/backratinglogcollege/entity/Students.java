@@ -46,6 +46,8 @@ public class Students {
     private List<StudentsCourse> studentsCourses;
     @OneToMany(mappedBy = "student")
     private List<FilesStudent> filesStudents;
+    @OneToMany(mappedBy = "student")
+    private List<TaskStudents> taskStudents;
 
     @Override
     public String toString() {

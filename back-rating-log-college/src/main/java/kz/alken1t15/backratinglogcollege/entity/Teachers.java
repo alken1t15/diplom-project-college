@@ -37,6 +37,9 @@ public class Teachers {
     @OneToMany(mappedBy = "teacher",fetch = FetchType.LAZY)
     private List<PlanStudy> planStudies;
 
+    @OneToMany(mappedBy = "teacher")
+    private List<HoweWork> howeWorks;
+
     public Teachers(String firstName, String secondName, String middleName, String login, String password, LocalDate bornDate) {
         this.firstName = firstName;
         this.secondName = secondName;
