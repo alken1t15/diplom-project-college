@@ -38,7 +38,7 @@ const HomeworkPageStudent: React.FC = () => {
         name: 'Наименования задания',
         expires: '9 сентября - 15 сентября',
         status: 'Выполняется',
-        work
+        workStatus: 'Назначенно',
         teacher: {
             id: 1,
             name: 'Денис Валентинович',
@@ -68,8 +68,14 @@ const HomeworkPageStudent: React.FC = () => {
                 size: '5.3 мб'
             },
 
+        ],
+        homeWorkFiles: [
+            {
+                name: 'File_name.pdf',
+                size: '5.3 мб',
+                url: fileImg
+            }
         ]
-
     })
     function setActiveHomeWork(id: number){
         let curArr = [...homeWork];
@@ -115,9 +121,9 @@ const HomeworkPageStudent: React.FC = () => {
                     <p className="status">
                         Статус:&nbsp;
                         <span
-                            className={`status-color ${currentHomework.status == "Выполняется" || currentHomework.status == "Сдано" ? "status-color__purple" :
-                                currentHomework.status === "Назначенно" ? "status-color__green" :
-                                    currentHomework.status === "Просрочено" ? "status-color__red" : ''
+                            className={`status-color ${currentHomework.status == "Выполняется" ? "status-color__purple" :
+                                currentHomework.status == "Назначенно" ? "status-color__green" :
+                                    currentHomework.status == "Просрочено" ? "status-color__red" : ''
                             }`}>
                          {currentHomework.status}
                     </span></p>
@@ -146,15 +152,15 @@ const HomeworkPageStudent: React.FC = () => {
                         <p className={'image-block-top__text'}>
                             Мои задания
                             <span
-                                className={`status-color ${currentHomework.status == "Выполняется" || currentHomework.status == "Сдано" ? "status-color__purple" :
-                                    currentHomework.status === "Назначенно" ? "status-color__green" :
-                                        currentHomework.status === "Просрочено" ? "status-color__red" : ''
+                                className={`status-color ${currentHomework.workStatus == "Сдано" ? "status-color__purple" :
+                                    currentHomework.workStatus == "Назначенно" ? "status-color__green" :
+                                        currentHomework.workStatus == "Просрочено" ? "status-color__red" : ' '
                                 }`}>
-                    {currentHomework.status}</span>
+                    {currentHomework.workStatus}</span>
                         </p>
 
 
-                        <FileUploader/>
+                        <FileUploader status={currentHomework.workStatus}/>
 
 
                     </div>
