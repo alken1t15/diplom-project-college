@@ -66,6 +66,9 @@
     -webkit-user-select: none;
     cursor: pointer;
     transition: .25s;
+    &-none{
+      display: none;
+    }
     &:hover{
     background-color: rgba(67, 76, 89, .5);
       transition: .25s;

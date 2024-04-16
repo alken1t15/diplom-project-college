@@ -2,17 +2,26 @@ import React, {useRef, useState} from 'react';
 import './FileUploader.scss'
 const uploadImg = require('../../assets/images/UploadImg.png');
 
+interface IImage{
+    name: string;
+    url: string;
+    size?: string;
+}
 
 interface IFileUploader{
     dayId?: number,
     func?: () => void;
+    items?: [],
+    status?: string,
+
 }
 const FileUploader: React.FC<IFileUploader> = (props) => {
 
-    let [images, setImages] = useState<{ name: string, url: string, active: boolean }[]>([]);
+    let [images, setImages] = useState<IImage[]>(props.items ? props.items : []);
     let [isDragging, setIsDragging] = useState(false);
     let fileInputRef = useRef<HTMLInputElement>(null)
     let containerRef = useRef<HTMLDivElement>(null);
+    let [active, isActive] = useState()
 
     function selectFiles(){
         if (fileInputRef.current) {
@@ -34,8 +43,7 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
                     ...prevState,
                     {
                         name: files[i].name,
-                        url: URL.createObjectURL(files[i]),
-                        active: true
+                        url: URL.createObjectURL(files[i])
 
                     },
                 ]);
@@ -74,8 +82,7 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
                     ...prevState,
                     {
                         name: files[i].name,
-                        url: URL.createObjectURL(files[i]),
-                        active: true
+                        url: URL.createObjectURL(files[i])
                     },
                 ]);
             }
@@ -83,7 +90,6 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
 
         }
     }
-
 
 
     const handleImageLoad = (index: number) => {
@@ -94,11 +100,10 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
             }
         }
     };
-
     return (
         <div className="card">
 
-            <div className="drag-area"
+            <div className={`drag-area ${props.status === "Сдано" ? 'drag-area-none' : ' '}`}
                  onClick={selectFiles}
                  onDragOver={(e)=>{
                 onDragOver(e)
@@ -138,9 +143,7 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
                         <img className={'loaded-img'} src={el.url} alt={el.name} onLoad={() => handleImageLoad(index)}/>
                         <div className="loader-info">
                             <p className={'loader-text'}>{el.name}</p>
-                            <div className={'loader-line'}>
-                                <div></div>
-                            </div>
+                            {props.status === 'Сдано'}
                         </div>
 
                         <p className={`delete`} onClick={() => deleteImage(index)}>&times;</p>
@@ -152,7 +155,11 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
 
             </div>
             <button className={`button ${images.length === 0 ? 'none' : ' '}`}>
-                Отправить
+                {props.status === "Назначенно" ? 'Сдать' :
+                    props.status === "Сдано" ? 'Пересдать':
+                        props.status === "Просрочено" ? 'Сдать с опозданием':
+                            'Отправить'
+                }
             </button>
         </div>
     );
