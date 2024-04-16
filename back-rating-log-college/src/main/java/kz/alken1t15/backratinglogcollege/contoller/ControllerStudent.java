@@ -72,4 +72,10 @@ public class ControllerStudent {
     public ResponseEntity saveFile(FilesStudentRequestDTO file) {
         return serviceFilesStudent.save(file);
     }
+
+    @PostMapping(path = "/home/task")
+    public ResponseEntity getHomeTask(){
+
+        return null;
+    }
 }

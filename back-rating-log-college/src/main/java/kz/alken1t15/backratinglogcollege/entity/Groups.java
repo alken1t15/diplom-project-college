@@ -33,6 +33,8 @@ public class Groups {
     private Integer currentCourse;
     @OneToMany(mappedBy = "group")
     private List<Courses> courses;
+    @OneToMany(mappedBy = "group")
+    private List<HoweWork> howeWorks;
 
     public Groups(String name) {
         this.name = name;
