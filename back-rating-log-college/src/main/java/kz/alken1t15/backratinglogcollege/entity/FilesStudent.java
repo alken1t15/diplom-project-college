@@ -34,5 +34,6 @@ public class FilesStudent {
         this.file = file;
         this.dateCreate = dateCreate;
         this.student = student;
+        this.typeFile = typeFile;
     }
 }

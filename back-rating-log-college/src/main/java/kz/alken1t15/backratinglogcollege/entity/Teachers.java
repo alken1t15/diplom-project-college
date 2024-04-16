@@ -38,7 +38,7 @@ public class Teachers {
     private List<PlanStudy> planStudies;
 
     @OneToMany(mappedBy = "teacher")
-    private List<HoweWork> howeWorks;
+    private List<HomeWork> howeWorks;
 
     public Teachers(String firstName, String secondName, String middleName, String login, String password, LocalDate bornDate) {
         this.firstName = firstName;

@@ -8,14 +8,16 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "howe_work")
+@Table(name = "home_work")
 @Getter
 @Setter
-public class HoweWork {
+public class HomeWork {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "start_date")
     private LocalDate startDate;
+    @Column(name = "end_date")
     private LocalDate endDate;
     private String name;
     private String status;
@@ -30,4 +32,6 @@ public class HoweWork {
     private Teachers teacher;
     @OneToMany(mappedBy = "howeWork")
     private List<TaskStudents> taskStudents;
+    @OneToMany(mappedBy = "homeWork")
+    private List<FileHomeTask> fileHomeTasks;
 }

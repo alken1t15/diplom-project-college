@@ -67,6 +67,12 @@ public class JWTFilter extends OncePerRequestFilter {
                 Authentication authenticationUser = authenticationManager.authenticate(authentication);
                 if (authenticationUser.isAuthenticated()) {
                     User user = repositoryUser.findByLogin(login).orElseThrow();
+                    if (user.getJwt()==null){
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        response.getWriter().write("Не правильный JWT токен");
+                        response.setCharacterEncoding("UTF-8");
+                        return;
+                    }
                     if (!user.getJwt().equals(token)){
                         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                         response.getWriter().write("Истек срок JWT токен");

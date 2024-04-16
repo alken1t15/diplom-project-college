@@ -48,17 +48,31 @@ create table groups
 insert into groups (id_curator, name, specialization_name, year, current_course)
 VALUES (1, 'П-20-51б', 'Вычислительная техника и программное обеспечение', 2023, 1);
 
-create table howe_work
+create table home_work
 (
     id           serial primary key,
     id_groups    int references groups (id),
     id_teacher   int references teachers (id),
-    startDate    date         not null,
-    endDate      date         not null,
+    start_date   date         not null,
+    end_date     date         not null,
     name         varchar(255) not null,
     status       varchar(255) not null,
     description  text,
     name_subject varchar(255) not null
+);
+insert into home_work (id_groups, id_teacher, start_date, end_date, name, status, description, name_subject)
+VALUES (1, 3, '2024-04-16', '2024-04-28', 'Тест', 'Назначено',
+        'ыавщлывалывалдлдывалдыавлдыавьлыавьлываьлывьлыавьлдывьл', 'Самопознание');
+
+
+create table file_home_task
+(
+    id           serial primary key,
+    id_home_task int references home_work (id),
+    name         varchar(255) not null,
+    file         text         not null,
+    date_create  date         not null
+
 );
 
 
@@ -88,7 +102,7 @@ create table files_group
     id          serial primary key,
     id_courses  int references courses (id),
     name        varchar(255) not null,
-    file        bytea        not null,
+    file        text         not null,
     date_create date         not null
 );
 
@@ -122,7 +136,7 @@ create table files_student
     id          serial primary key,
     id_students int references students (id),
     name        varchar(255) not null,
-    file        bytea        not null,
+    file        text         not null,
     date_create date         not null,
     type_file   varchar(255) not null
 );
@@ -130,11 +144,17 @@ create table files_student
 create table task_students
 (
     id               serial primary key,
-    id_howe_work     int references howe_work (id),
+    id_howe_work     int references home_work (id),
     id_students      int references students (id),
     id_file_students int references files_student (id),
-        status       varchar(255) not null
+    status           varchar(255) not null,
+    time_completed   timestamp
 );
+
+insert into task_students(id_howe_work, id_students, status)
+values (1, 2, 'Не выполнено');
+
+
 
 create table students_course
 (

@@ -29,6 +29,7 @@ public class ControllerStudent {
     private final ServiceStudyProcess serviceStudyProcess;
     private final ServiceFilesGroup serviceFilesGroup;
     private final ServiceFilesStudent serviceFilesStudent;
+    private final ServiceHoweWork serviceHoweWork;
 
 //    @GetMapping(path = "/{id}")
 //    public ResponseEntity<Students> getStudent(@PathVariable("id") Long id) {
@@ -69,13 +70,12 @@ public class ControllerStudent {
     }
 
     @PostMapping(path = "/file/add")
-    public ResponseEntity saveFile(FilesStudentRequestDTO file) {
+    public ResponseEntity saveFile(@RequestBody FilesStudentRequestDTO file) {
         return serviceFilesStudent.save(file);
     }
 
     @PostMapping(path = "/home/task")
-    public ResponseEntity getHomeTask(){
-
-        return null;
+    public HomeWorkReturnDTO getHomeTask(@RequestBody HomeWorkRequest homeWorkRequest) {
+        return serviceHoweWork.getAllHomeWordNotCompleted(homeWorkRequest);
     }
 }

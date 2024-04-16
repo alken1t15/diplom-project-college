@@ -34,7 +34,7 @@ public class Groups {
     @OneToMany(mappedBy = "group")
     private List<Courses> courses;
     @OneToMany(mappedBy = "group")
-    private List<HoweWork> howeWorks;
+    private List<HomeWork> howeWorks;
 
     public Groups(String name) {
         this.name = name;
