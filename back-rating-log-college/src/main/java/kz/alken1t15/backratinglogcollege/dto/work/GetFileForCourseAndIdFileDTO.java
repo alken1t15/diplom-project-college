@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class FileRequestDTO {
+public class GetFileForCourseAndIdFileDTO {
     private Integer course;
     private Integer id;
 }

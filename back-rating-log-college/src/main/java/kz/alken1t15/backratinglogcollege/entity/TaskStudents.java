@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "task_students")
@@ -22,12 +23,11 @@ public class TaskStudents {
     @JoinColumn(name = "id_students")
     private Students student;
 
-    @ManyToOne
-    @JoinColumn(name = "id_file_students")
-    private FilesStudent filesStudent;
-
     private String status;
     @Column(name = "time_completed")
     private LocalDateTime timeCompleted;
+
+    @OneToMany(mappedBy = "taskStudent")
+    private List<TaskStudentsFiles> taskStudentsFiles;
 
 }

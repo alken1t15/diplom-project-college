@@ -27,7 +27,7 @@ public class FilesStudent {
     @OneToMany(mappedBy = "filesStudent")
     private List<Omissions> omissions;
     @OneToMany(mappedBy = "filesStudent")
-    private List<TaskStudents> taskStudents;
+    private List<TaskStudentsFiles> taskStudentsFiles;
 
     public FilesStudent(String name, String file, LocalDate dateCreate, Students student,String typeFile) {
         this.name = name;

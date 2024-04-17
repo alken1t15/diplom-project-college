@@ -1,6 +1,7 @@
 package kz.alken1t15.backratinglogcollege.contoller;
 
 import kz.alken1t15.backratinglogcollege.dto.*;
+import kz.alken1t15.backratinglogcollege.dto.file.FileListRequestHomeWorkDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.*;
 import kz.alken1t15.backratinglogcollege.entity.*;
 import kz.alken1t15.backratinglogcollege.entity.study.PlanStudy;
@@ -65,8 +66,8 @@ public class ControllerStudent {
     }
 
     @PostMapping(path = "/courses")
-    public FilesReturnDTO getFiles(@RequestBody FileRequestDTO fileDTO) {
-        return serviceFilesGroup.getFiles(fileDTO);
+    public FilesReturnDTO getFiles(@RequestBody GetFileForCourseAndIdFileDTO file) {
+        return serviceFilesGroup.getFiles(file);
     }
 
     @PostMapping(path = "/file/add")
@@ -77,5 +78,10 @@ public class ControllerStudent {
     @PostMapping(path = "/home/task")
     public HomeWorkReturnDTO getHomeTask(@RequestBody HomeWorkRequest homeWorkRequest) {
         return serviceHoweWork.getAllHomeWordNotCompleted(homeWorkRequest);
+    }
+
+    @PostMapping(path = "/home/add")
+    public ResponseEntity addFileForHomeTask(@RequestBody FileListRequestHomeWorkDTO files) {
+        return serviceHoweWork.addNewFileHomeTask(files);
     }
 }

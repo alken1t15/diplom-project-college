@@ -1,16 +1,23 @@
 package kz.alken1t15.backratinglogcollege.service;
 
+import io.micrometer.common.util.StringUtils;
 import kz.alken1t15.backratinglogcollege.dto.FileHomeTaskDTO;
 import kz.alken1t15.backratinglogcollege.dto.HomeWorkRequest;
+import kz.alken1t15.backratinglogcollege.dto.file.FileListRequestHomeWorkDTO;
+import kz.alken1t15.backratinglogcollege.dto.file.FileRequestDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.HomeWorkDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.HomeWorkReturnDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.HomeWorkReturnListDTO;
 import kz.alken1t15.backratinglogcollege.entity.*;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryHoweWork;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryTaskStudents;
+import kz.alken1t15.backratinglogcollege.repository.RepositoryTaskStudentsFiles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,11 +29,17 @@ public class ServiceHoweWork {
     private final ServiceStudents serviceStudent;
     @Autowired
     private final RepositoryTaskStudents repositoryTaskStudent;
+    @Autowired
+    private final ServiceFilesStudent serviceFilesStudent;
+    @Autowired
+    private final RepositoryTaskStudentsFiles repositoryTaskStudentsFiles;
 
-    public ServiceHoweWork(RepositoryHoweWork repositoryHoweWork, ServiceStudents serviceStudent, RepositoryTaskStudents repositoryTaskStudent) {
+    public ServiceHoweWork(RepositoryHoweWork repositoryHoweWork, ServiceStudents serviceStudent, RepositoryTaskStudents repositoryTaskStudent, ServiceFilesStudent serviceFilesStudent, RepositoryTaskStudentsFiles taskStudentsFiles) {
         this.repositoryHoweWork = repositoryHoweWork;
         this.serviceStudent = serviceStudent;
         this.repositoryTaskStudent = repositoryTaskStudent;
+        this.serviceFilesStudent = serviceFilesStudent;
+        this.repositoryTaskStudentsFiles = taskStudentsFiles;
     }
 
     private final String[] arrMonth = new String[]{"янв", "фев", "мар", "апр", "май", "июн", "", "", "сен", "окт", "нояб", "дек"};
@@ -73,5 +86,27 @@ public class ServiceHoweWork {
 
     public List<TaskStudents> getAllTaskWorkNotCompleted(Long idStudent) {
         return repositoryTaskStudent.findByStudentAndStatus(idStudent, "Не выполнено");
+    }
+
+    public ResponseEntity addNewFileHomeTask(FileListRequestHomeWorkDTO file) {
+        if (file.getFiles() == null){
+            return  new  ResponseEntity<>("Список файлов пустой",HttpStatus.BAD_REQUEST);
+        }
+        if (file.getFiles().isEmpty()){
+            return  new  ResponseEntity<>("Нету файлов для сохранения",HttpStatus.BAD_REQUEST);
+        }
+        Students student = serviceStudent.getStudent();
+        for (FileRequestDTO f: file.getFiles()) {
+            if (StringUtils.isBlank(f.getName())|| StringUtils.isBlank(f.getTypeFile())||StringUtils.isBlank(f.getFile())){
+                return  new  ResponseEntity<>("Одно из полей не соблюбает условия",HttpStatus.BAD_REQUEST);
+            }
+            FilesStudent fileStudent = serviceFilesStudent.saveFileForHomeWork(f,student);
+            TaskStudents taskStudent = repositoryTaskStudent.findByIdWorkAndIdStudent(file.getIdHomeTask(), student.getId());
+            taskStudent.setStatus("Сдано");
+            taskStudent.setTimeCompleted(LocalDateTime.now());
+            repositoryTaskStudent.save(taskStudent);
+            repositoryTaskStudentsFiles.save(new TaskStudentsFiles(fileStudent,taskStudent));
+        }
+        return new  ResponseEntity<>(HttpStatus.OK);
     }
 }

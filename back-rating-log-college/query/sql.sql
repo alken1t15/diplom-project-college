@@ -146,7 +146,6 @@ create table task_students
     id               serial primary key,
     id_howe_work     int references home_work (id),
     id_students      int references students (id),
-    id_file_students int references files_student (id),
     status           varchar(255) not null,
     time_completed   timestamp
 );
@@ -154,6 +153,13 @@ create table task_students
 insert into task_students(id_howe_work, id_students, status)
 values (1, 2, 'Не выполнено');
 
+
+create table task_students_files
+(
+    id               serial primary key,
+    id_task_students int references task_students (id),
+    id_file_students int references files_student (id)
+);
 
 
 create table students_course

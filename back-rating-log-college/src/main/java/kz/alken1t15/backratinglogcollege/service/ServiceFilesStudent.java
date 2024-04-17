@@ -1,6 +1,7 @@
 package kz.alken1t15.backratinglogcollege.service;
 
 import io.micrometer.common.util.StringUtils;
+import kz.alken1t15.backratinglogcollege.dto.file.FileRequestDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.FilesStudentRequestDTO;
 import kz.alken1t15.backratinglogcollege.entity.FilesStudent;
 import kz.alken1t15.backratinglogcollege.entity.Omissions;
@@ -28,6 +29,7 @@ public class ServiceFilesStudent {
     private final RepositoryOmissions repositoryOmissions;
 
 
+
     public ResponseEntity save(FilesStudentRequestDTO file) {
         Students student = serviceStudent.getStudent();
         StudentsCourse studentsCourse = new StudentsCourse();
@@ -47,5 +49,10 @@ public class ServiceFilesStudent {
         } else {
             return new ResponseEntity<>("Не правильный запрос", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    public FilesStudent saveFileForHomeWork(FileRequestDTO f, Students student) {
+    FilesStudent filesStudent =  repositoryFilesStudent.saveAndFlush(new FilesStudent(f.getName(),f.getFile(),f.getDate(),student,"дз"));
+    return filesStudent;
     }
 }

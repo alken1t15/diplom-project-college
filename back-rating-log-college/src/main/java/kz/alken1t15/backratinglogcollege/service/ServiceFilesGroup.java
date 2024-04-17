@@ -2,8 +2,8 @@ package kz.alken1t15.backratinglogcollege.service;
 
 import kz.alken1t15.backratinglogcollege.dto.work.CourseDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.FileDTO;
-import kz.alken1t15.backratinglogcollege.dto.work.FileRequestDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.FilesReturnDTO;
+import kz.alken1t15.backratinglogcollege.dto.work.GetFileForCourseAndIdFileDTO;
 import kz.alken1t15.backratinglogcollege.entity.Courses;
 import kz.alken1t15.backratinglogcollege.entity.Groups;
 import kz.alken1t15.backratinglogcollege.entity.Students;
@@ -22,7 +22,7 @@ public class ServiceFilesGroup {
     private final ServiceStudents serviceStudents;
 
 
-    public FilesReturnDTO getFiles(FileRequestDTO file) {
+    public FilesReturnDTO getFiles(GetFileForCourseAndIdFileDTO file) {
         FilesReturnDTO filesReturnDTO = new FilesReturnDTO();
         Students student = serviceStudents.getStudent();
         List<CourseDTO> courses = new ArrayList<>();

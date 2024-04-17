@@ -6,7 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface RepositoryTaskStudents extends JpaRepository<TaskStudents,Long> {
+public interface RepositoryTaskStudents extends JpaRepository<TaskStudents, Long> {
     @Query("select t from TaskStudents t where t.student.id=?1 and  t.status=?2")
-    List<TaskStudents> findByStudentAndStatus(Long idStudent,String textStatus);
+    List<TaskStudents> findByStudentAndStatus(Long idStudent, String textStatus);
+
+    @Query("select t from  TaskStudents t where t.howeWork.id = ?1 and  t.student.id = ?2")
+    TaskStudents findByIdWorkAndIdStudent(Long idHomeWord, Long idStudentId);
 }
