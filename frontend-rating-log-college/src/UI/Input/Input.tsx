@@ -30,9 +30,9 @@ const Input: React.FC<InputProps> = ({ placeholder,onChange, type ,styles}) => {
     };
 
     return (
-        <div className={`input-container ${isFocused ? 'focused' : ''}`}>
+        <div className={`input-container ${isFocused ? 'focused' : ''}`} style={styles}>
             <input
-                style={styles}
+
                 type={type}
                 value={value}
                 onFocus={handleFocus}
