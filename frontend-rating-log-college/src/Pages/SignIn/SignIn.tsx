@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import "./SignIn.scss";
 import Input from "../../UI/Input/Input";
 import Button from "../../UI/Button/Button";
+import {login} from "../../Http/SignIn";
 const logoImg = require("../../assets/images/Logo.png");
 const signInImg = require("../../assets/images/SignInImage.png");
 
@@ -14,6 +15,17 @@ const SignIn: React.FC = () => {
     function getPassword(value: string) {
         setPassword(value);
     }
+
+    function sendUserData(email: string, password: string){
+        login(email, password)
+            .then((data)=>{console.log(data)})
+            .catch((error)=>{
+                console.log(error)
+            })
+
+    }
+
+
     return (
         <div className={'sign-in-block'}>
             <div className="wrapper sign-in-wrapper">
@@ -22,7 +34,7 @@ const SignIn: React.FC = () => {
                     <p className={'title-big'}>Добро пожаловать! <br/> <span>Авторизация</span></p>
                     <Input type={"text"} onChange={getEmail} placeholder={'Email'}/>
                     <Input type={"text"} onChange={getPassword} placeholder={'Password'}/>
-                    <Button style={{marginTop: 40}} name={'Войти'}  ></Button>
+                    <Button style={{marginTop: 40}} name={'Войти'} onClick={sendUserData(email, password)}/>
                 </form>
                 <div className="sign-in-right-block">
                     <div>

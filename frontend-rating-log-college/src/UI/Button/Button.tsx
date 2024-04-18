@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 interface BlueButtonProps{
     link?: number | string;
     name: string;
-    onClick?: () => void;
+    onClick?: (email: string, password: string) => void;
     active?: boolean;
     style?: React.CSSProperties;
 }
@@ -22,7 +22,10 @@ const Button: React.FC<BlueButtonProps> = ({link,
         setLinkValue(link);
         setNameValue(name);
         setIsActive(active);
-    }, [link, name, active])
+        if(onClick){
+            console.log(onClick)
+        }
+    }, [link, name, active, onClick])
 
     return (
         <>
@@ -36,7 +39,6 @@ const Button: React.FC<BlueButtonProps> = ({link,
                 </Link>
             ) : (
                 <a
-                    onClick={onClick}
                     style={style}
                     className={`standard-btn`}
                 >
