@@ -31,10 +31,6 @@ public class Students {
     @Column(name = "middle_name")
     private String middleName;
 
-    private String login;
-
-    private String password;
-
     @Column(name = "born_date")
     private LocalDate bornDate;
 
@@ -49,15 +45,4 @@ public class Students {
     @OneToMany(mappedBy = "student")
     private List<TaskStudents> taskStudents;
 
-    @Override
-    public String toString() {
-        return "Students{" +
-                "firstName='" + firstName + '\'' +
-                ", secondName='" + secondName + '\'' +
-                ", middleName='" + middleName + '\'' +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", bornDate=" + bornDate +
-                '}';
-    }
 }

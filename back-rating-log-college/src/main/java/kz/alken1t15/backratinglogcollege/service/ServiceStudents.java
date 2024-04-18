@@ -38,9 +38,7 @@ public class ServiceStudents {
         Students students = modelMapper.map(studentDTO, Students.class);
         Groups groups = repositoryGroups.findById(studentDTO.getGroupId()).orElse(null);
         if (groups != null) {
-            if (StringUtils.isBlank(students.getFirstName()) || StringUtils.isBlank(students.getSecondName())
-                    || StringUtils.isBlank(students.getLogin())
-                    || StringUtils.isBlank(students.getPassword()) || students.getBornDate() == null) {
+            if (StringUtils.isBlank(students.getFirstName()) || StringUtils.isBlank(students.getSecondName()) || students.getBornDate() == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             } else {
                 students.setGroup(groups);
