@@ -14,7 +14,6 @@ public class FilesStudent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String file;
     @Column(name = "date_create")
     private LocalDate dateCreate;
     @ManyToOne
@@ -29,9 +28,8 @@ public class FilesStudent {
     @OneToMany(mappedBy = "filesStudent")
     private List<TaskStudentsFiles> taskStudentsFiles;
 
-    public FilesStudent(String name, String file, LocalDate dateCreate, Students student,String typeFile) {
+    public FilesStudent(String name, LocalDate dateCreate, Students student,String typeFile) {
         this.name = name;
-        this.file = file;
         this.dateCreate = dateCreate;
         this.student = student;
         this.typeFile = typeFile;

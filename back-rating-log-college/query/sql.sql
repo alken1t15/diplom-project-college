@@ -90,7 +90,6 @@ create table files_group
     id          serial primary key,
     id_courses  int references courses (id),
     name        varchar(255) not null,
-    file        text         not null,
     date_create date         not null
 );
 
@@ -121,7 +120,6 @@ create table files_student
     id          serial primary key,
     id_students int references students (id),
     name        varchar(255) not null,
-    file        text         not null,
     date_create date         not null,
     type_file   varchar(255) not null
 );

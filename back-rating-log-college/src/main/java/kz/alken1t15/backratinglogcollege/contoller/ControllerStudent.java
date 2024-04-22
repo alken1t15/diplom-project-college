@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -70,13 +71,13 @@ public class ControllerStudent {
         return serviceFilesGroup.getFiles(file);
     }
 
-    @PostMapping(path = "/file/add")
-    public ResponseEntity saveFile(@RequestBody FilesStudentRequestDTO file) {
-        return serviceFilesStudent.save(file);
+    @PostMapping(path = "/certificate/add")
+    public ResponseEntity saveFileCertificate(@RequestParam MultipartFile file) {
+        return serviceFilesStudent.saveCertificate(file);
     }
 
     @PostMapping(path = "/home/task")
-    public HomeWorkReturnDTO getHomeTask(@RequestBody HomeWorkRequest homeWorkRequest) {
+    public HomeWorkReturnDTO getHomeTask(@RequestParam HomeWorkRequest homeWorkRequest) {
         return serviceHoweWork.getAllHomeWordNotCompleted(homeWorkRequest);
     }
 

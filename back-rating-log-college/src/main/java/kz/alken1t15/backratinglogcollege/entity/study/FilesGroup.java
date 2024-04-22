@@ -16,7 +16,6 @@ public class FilesGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String file;
     @Column(name = "date_create")
     private LocalDate dateCreate;
     @ManyToOne

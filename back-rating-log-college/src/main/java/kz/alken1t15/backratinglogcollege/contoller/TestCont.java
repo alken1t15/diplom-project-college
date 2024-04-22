@@ -8,6 +8,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/file")
@@ -16,15 +19,12 @@ public class TestCont {
     @PostMapping("/test")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void test(@RequestParam("file") MultipartFile file){
-        System.out.println(file.getName());
-        System.out.println(file.getSize());
-        System.out.println(file.getContentType());
         if (!file.isEmpty()){
             try {
-                byte[] bytes = file.getBytes();
-                System.out.println(file.getOriginalFilename());
-                File saveFile = new File(file.getOriginalFilename());
-                file.transferTo(saveFile);
+                String path= "C:\\fileDiplomProject\\";
+                String uniqueFileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+                Path filePath = Paths.get(path,uniqueFileName);
+                file.transferTo(filePath);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
