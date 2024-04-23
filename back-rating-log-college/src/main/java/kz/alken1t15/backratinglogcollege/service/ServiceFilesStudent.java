@@ -13,6 +13,8 @@ import kz.alken1t15.backratinglogcollege.repository.RepositoryOmissions;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryPlanStudy;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,12 +27,25 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class ServiceFilesStudent {
+    @Autowired
     private final RepositoryFilesStudent repositoryFilesStudent;
+    @Autowired
     private final ServiceStudents serviceStudent;
+    @Autowired
     private final ServicePlanStudy servicePlanStudy;
+    @Autowired
     private final RepositoryOmissions repositoryOmissions;
+
+    public ServiceFilesStudent(RepositoryFilesStudent repositoryFilesStudent, ServiceStudents serviceStudent, ServicePlanStudy servicePlanStudy, RepositoryOmissions repositoryOmissions) {
+        this.repositoryFilesStudent = repositoryFilesStudent;
+        this.serviceStudent = serviceStudent;
+        this.servicePlanStudy = servicePlanStudy;
+        this.repositoryOmissions = repositoryOmissions;
+    }
+
+    @Value("${path.save.file}")
+    private String pathSaveFile;
 
 
 //    public ResponseEntity save(FilesStudentRequestDTO file) {
@@ -69,9 +84,8 @@ public class ServiceFilesStudent {
         }
         if (!file.isEmpty()) {
             try {
-                String path = "C:\\fileDiplomProject\\";
                 String uniqueFileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-                Path filePath = Paths.get(path, uniqueFileName);
+                Path filePath = Paths.get(pathSaveFile, uniqueFileName);
                 file.transferTo(filePath);
                 FilesStudent filesStudent = repositoryFilesStudent.saveAndFlush(new FilesStudent(uniqueFileName, LocalDate.now(), student, "Cправка"));
                 List<PlanStudy> planStudies = servicePlanStudy.getPlanStudyToday(student.getGroup().getId());

@@ -3,6 +3,7 @@ package kz.alken1t15.backratinglogcollege.dto.work;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.core.io.Resource;
 
 import java.time.LocalDate;
 
@@ -13,4 +14,5 @@ public class FileDTO {
     private Long id;
     private String name;
     private String date;
+    private byte[] file;
 }

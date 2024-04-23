@@ -14,4 +14,5 @@ public class FileHomeTaskDTO {
     private Long id;
     private String name;
     private LocalDate dateCreate;
+    private byte[] file;
 }

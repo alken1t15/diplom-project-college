@@ -69,7 +69,6 @@ create table file_home_task
     id           serial primary key,
     id_home_task int references home_work (id),
     name         varchar(255) not null,
-    file         text         not null,
     date_create  date         not null
 
 );
@@ -93,10 +92,8 @@ create table files_group
     date_create date         not null
 );
 
-insert into files_group (id_courses, name, file, date_create)
-VALUES (1, 'История',
-        '0YvQsNCy0YvQsNGL0LLRi9Cw0LLRi9Cw0LLQu9GC0LvRi9Cw0LLQu9GC0LTRi9Cy0YLRi9Cw0LLRgtC00YvQstGC0LTRi9GC0LTQu9Cy0LDRi9Cy0LDRi9Cy0LDRi9Cy0LDQstGL0LA=',
-        '2024-04-13');
+-- insert into files_group (id_courses, name,  date_create)
+-- VALUES (1, 'История', '2024-04-13');
 
 -- # Первая часть
 create table students

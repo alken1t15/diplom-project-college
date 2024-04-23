@@ -8,11 +8,13 @@ import kz.alken1t15.backratinglogcollege.entity.study.PlanStudy;
 import kz.alken1t15.backratinglogcollege.entity.study.process.StudyProcess;
 import kz.alken1t15.backratinglogcollege.service.*;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -77,12 +79,13 @@ public class ControllerStudent {
     }
 
     @PostMapping(path = "/home/task")
-    public HomeWorkReturnDTO getHomeTask(@RequestParam HomeWorkRequest homeWorkRequest) {
+    public HomeWorkReturnDTO getHomeTask(@RequestBody HomeWorkRequest homeWorkRequest) {
         return serviceHoweWork.getAllHomeWordNotCompleted(homeWorkRequest);
     }
 
+
     @PostMapping(path = "/home/add")
-    public ResponseEntity addFileForHomeTask(@RequestBody FileListRequestHomeWorkDTO files) {
-        return serviceHoweWork.addNewFileHomeTask(files);
+    public ResponseEntity addFileForHomeTask(@RequestParam List<MultipartFile> files,@Validated @NonNull @RequestParam Long id) {
+        return serviceHoweWork.addNewFileHomeTask(files,id);
     }
 }
