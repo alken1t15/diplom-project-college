@@ -31,6 +31,9 @@ public class Teachers {
     @Column(name = "born_date")
     private LocalDate bornDate;
 
+    @Column(name = "start_work")
+    private LocalDate startWork;
+
 //    @OneToMany(mappedBy = "teachers")
 //    private List<Groups> groups;
 

@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 public class ServiceStudents {
     private final RepositoryStudents repositoryStudents;
     private final RepositoryGroups repositoryGroups;
-    private final RepositoryUser repositoryUser;
+    private final ServiceUsers serviceUser;
 
     public ResponseEntity<Students> findById(Long id) {
         Students students = repositoryStudents.findById(id).orElse(null);
@@ -50,8 +50,7 @@ public class ServiceStudents {
     }
 
     public Students getStudent() {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        User user = repositoryUser.findByLogin(securityContext.getAuthentication().getName()).orElseThrow();
+        User user = serviceUser.getUser();
         return repositoryStudents.findById(user.getId()).orElseThrow();
     }
 

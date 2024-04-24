@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.naming.AuthenticationException;
 import java.util.Collections;
 import java.util.Map;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/login")
 public class ControllerMain {

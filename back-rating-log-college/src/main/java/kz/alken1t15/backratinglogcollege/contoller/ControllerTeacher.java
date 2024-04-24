@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/teacher")
 @AllArgsConstructor
@@ -36,6 +36,10 @@ public class ControllerTeacher {
     @PostMapping(path = "/courses/add")
     public ResponseEntity addNewFile(@Validated @RequestParam List<MultipartFile> files, @NonNull @RequestParam("id") Long id) {
         return serviceFilesGroup.addNewFile(files,id);
+    }
+    @PostMapping(path = "/main")
+    private Object getMainPageTeacher(){
+        return serviceTeachers.getMainPageTeacher();
     }
 
     public record Teacher(String firstName, String secondName, String middleName, String login, String password, String bornDate){}

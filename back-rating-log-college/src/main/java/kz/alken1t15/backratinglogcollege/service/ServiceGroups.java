@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -83,4 +84,9 @@ public class ServiceGroups {
 //        GroupDTO groupDTO = modelMapper.map(groups, GroupDTO.class);
 //        return groupDTO;
 //    }
+
+
+    public List<Groups> findByAllGroupForTeacher(Long idTeacher, LocalDate date){
+        return repositoryGroups.findByAllGroupForTeacher(idTeacher,date);
+    }
 }
