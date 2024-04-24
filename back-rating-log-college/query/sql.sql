@@ -20,11 +20,12 @@ create table teachers
     first_name  varchar(255)              not null,
     second_name varchar(255)              not null,
     middle_name varchar(255),
-    born_date   date                      not null
+    born_date   date                      not null,
+    start_work date not null
 );
-insert into teachers (id, first_name, second_name, middle_name, born_date)
-VALUES (3, 'Денис', 'Попов', 'Валентинович', '1993.04.22'),
-       (4, 'Марина', 'Галимовна', 'Игоревна', '1980.07.23');
+insert into teachers (id, first_name, second_name, middle_name, born_date,start_work)
+VALUES (3, 'Денис', 'Попов', 'Валентинович', '1993.04.22',current_date),
+       (4, 'Марина', 'Галимовна', 'Игоревна', '1980.07.23',current_date);
 
 create table curator
 (
