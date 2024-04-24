@@ -16,15 +16,13 @@ const SignIn: React.FC = () => {
         setPassword(value);
     }
 
-    function sendUserData(email: string, password: string){
+    function sendUserData(email: string, password: string): void{
         login(email, password)
             .then((data)=>{console.log(data)})
             .catch((error)=>{
                 console.log(error)
             })
-
     }
-
 
     return (
         <div className={'sign-in-block'}>
@@ -34,7 +32,7 @@ const SignIn: React.FC = () => {
                     <p className={'title-big'}>Добро пожаловать! <br/> <span>Авторизация</span></p>
                     <Input type={"text"} onChange={getEmail} placeholder={'Email'}/>
                     <Input type={"text"} onChange={getPassword} placeholder={'Password'}/>
-                    <Button style={{marginTop: 40}} name={'Войти'} onClick={sendUserData(email, password)}/>
+                    <Button style={{marginTop: 40}} name={'Войти'} data={{email, password}} onClick={(e)=>{sendUserData(email, password)}}/>
                 </form>
                 <div className="sign-in-right-block">
                     <div>
