@@ -16,15 +16,13 @@ const SignIn: React.FC = () => {
         setPassword(value);
     }
 
-    function sendUserData(email: string, password: string){
+    function sendUserData(email: string, password: string): void{
         login(email, password)
             .then((data)=>{console.log(data)})
             .catch((error)=>{
                 console.log(error)
             })
-
     }
-
 
     return (
         <div className={'sign-in-block'}>
