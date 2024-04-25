@@ -54,7 +54,7 @@ public class ControllerMain {
 
     @PostMapping("/jwt")
     public Map<String, Object> loginHandler(@RequestBody LoginAuth loginAuth) {
-        if (StringUtils.isBlank(loginAuth.getPassword()) || StringUtils.isBlank(loginAuth.getPassword())) {
+        if (StringUtils.isBlank(loginAuth.getLogin()) || StringUtils.isBlank(loginAuth.getPassword())) {
             throw new BadCredentialsException("Одно из полей пустое");
         }
         logger.info(String.format("Авторизация пользваоетяля: логин: %s пароль: %s", loginAuth.getLogin(), loginAuth.getPassword()));
