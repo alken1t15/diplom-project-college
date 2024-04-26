@@ -32,7 +32,7 @@ public class ServicePlanStudy {
         Month month = date.getMonth();
         String monthName = russianMonthNames[month.getValue() - 1];
 
-        List<PlanStudy> planStudies = repositoryPlanStudy.findByOfDate(date, dayOfWeekIndex + 1,idGroup);
+        List<PlanStudy> planStudies = repositoryPlanStudy.findByOfDate(date, dayOfWeekIndex + 1, idGroup);
 
         List<PlanStudySubjectDTO> subjects = new ArrayList<>();
 
@@ -49,11 +49,16 @@ public class ServicePlanStudy {
         return new PlanStudyDTO(date.getDayOfMonth() + " " + monthName, dayOfWeekName, subjects);
     }
 
-    public List<PlanStudy> getPlanStudyToday(Long idGroup){
+    public List<PlanStudy> getPlanStudyToday(Long idGroup) {
         LocalDate date = LocalDate.now();
+        int dayOfWeekIndex = date.getDayOfWeek().getValue();
+        return repositoryPlanStudy.findByOfDate(date, dayOfWeekIndex, idGroup);
+    }
 
-        int dayOfWeekIndex = date.getDayOfWeek().getValue() - 1;
 
-        return repositoryPlanStudy.findByOfDate(date, dayOfWeekIndex + 1,idGroup);
+    public List<PlanStudy> getPlanStudyByGroupIdAndCurrentDay(Long idGroup) {
+        LocalDate date = LocalDate.now();
+        long idWeek = date.getDayOfWeek().getValue();
+        return repositoryPlanStudy.findByGroupIdNameOfDay(idGroup, idWeek, date);
     }
 }
