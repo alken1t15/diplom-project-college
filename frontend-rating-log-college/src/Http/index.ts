@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const $api = axios.create({
-    baseURL: process.env.REACT_APP_API_URL
+    baseURL: process.env.REACT_APP_API_URL,
+    withCredentials: true
 })
 
 
@@ -12,7 +13,7 @@ $api.interceptors.request.use(
             config.headers.Authorization = `Bearer ${token}`;
             return config;
         }
-        config.headers.Authorization = `Bearer ' '`;
+        config.headers.Authorization = `Bearer 333`;
         return config;
     },
     (error) => {

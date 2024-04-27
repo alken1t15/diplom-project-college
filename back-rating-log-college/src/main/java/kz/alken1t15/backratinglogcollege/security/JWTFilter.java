@@ -28,6 +28,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -48,7 +51,20 @@ public class JWTFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String headerAuth = request.getHeader("Authorization");
+        response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.addHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
+        response.addHeader("Access-Control-Allow-Credentials", "true");
         if (headerAuth != null) {
+            String url = request.getRequestURL().toString();
+            if (url.equals("http://localhost:8080/login/jwt")) {
+                if (request.getMethod().equals("OPTIONS")) {
+                    response.setStatus(HttpServletResponse.SC_OK);
+                } else {
+                    filterChain.doFilter(request, response);
+                }
+                return;
+            }
             if (headerAuth.startsWith("Bearer ")) {
                 String token = headerAuth.substring(7);
                 logger.info(String.format("JWT который был получен: %s", token));
@@ -103,8 +119,11 @@ public class JWTFilter extends OncePerRequestFilter {
         } else {
             String url = request.getRequestURL().toString();
             if (url.equals("http://localhost:8080/login/jwt")) {
-                filterChain.doFilter(request,response);
-                filterChain.doFilter(request, response);
+                if (request.getMethod().equals("OPTIONS")) {
+                    response.setStatus(HttpServletResponse.SC_OK);
+                } else {
+                    filterChain.doFilter(request, response);
+                }
                 return;
             }
             response.setStatus(HttpStatus.UNAUTHORIZED.value());

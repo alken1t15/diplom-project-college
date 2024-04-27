@@ -54,16 +54,16 @@ public class ControllerMain {
 
     @PostMapping("/jwt")
     public Map<String, Object> loginHandler(@RequestBody LoginAuth loginAuth) {
-        if (StringUtils.isBlank(loginAuth.getPassword()) || StringUtils.isBlank(loginAuth.getPassword())) {
+        if (StringUtils.isBlank(loginAuth.getLogin()) || StringUtils.isBlank(loginAuth.getPassword())) {
             throw new BadCredentialsException("Одно из полей пустое");
         }
         logger.info(String.format("Авторизация пользваоетяля: логин: %s пароль: %s", loginAuth.getLogin(), loginAuth.getPassword()));
         Authentication token = UsernamePasswordAuthenticationToken.unauthenticated(loginAuth.getLogin(), loginAuth.getPassword());
         Authentication authenticationResponse = this.authenticationManager.authenticate(token);
         User user = repositoryUser.findByLogin(loginAuth.getLogin()).orElseThrow();
-        if (!StringUtils.isBlank(user.getJwt())){
-            throw new BadCredentialsException("Токен уже был получен ранее");
-        }
+//        if (!StringUtils.isBlank(user.getJwt())){
+//            throw new BadCredentialsException("Токен уже был получен ранее");
+//        }
         logger.info(String.format("Пользователь который хочет получить jwt токен: %s", authenticationResponse));
         String jwt = jwtUtil.generateToken(loginAuth.getLogin(), loginAuth.getPassword());
         user.setJwt(jwt);

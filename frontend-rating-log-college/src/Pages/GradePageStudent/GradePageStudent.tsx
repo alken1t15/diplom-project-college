@@ -107,18 +107,13 @@ const GradePageStudent: React.FC = () => {
         {
             id: 1,
             active: true,
-            name: '1 четверть'
+            name: '1 семестр'
         },
         {
             id: 2,
             active: false,
-            name: '2 четверть'
-        },
-        {
-            id: 3,
-            active: false,
-            name: 'Ит.оценки'
-        },
+            name: '2 семестр'
+        }
     ]);
     let[currentTable, setCurrentTable] = useState([
         {

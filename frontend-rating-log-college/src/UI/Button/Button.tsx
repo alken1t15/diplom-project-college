@@ -27,7 +27,6 @@ const Button: React.FC<BlueButtonProps> = ({link,
         setLinkValue(link);
         setNameValue(name);
         setIsActive(active);
-        console.log(data)
     }, [link, name, active, onClick])
 
     return (

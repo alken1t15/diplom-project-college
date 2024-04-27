@@ -1,6 +1,6 @@
 import {$api} from './index';
 
-export const login = async (email: string, password: string) => {
-    let res = await $api.post(`login/jwt`, {email, password});
+export const login = async (login: string, password: string) => {
+    let res = await $api.post(`login/jwt`, {"login": login, "password": password});
     return res;
 };

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './MainPageStudent.scss';
 import InitialsImage from "../../Components/InitialsImage/InitialsImage";
 import GradeLine from "../../Components/GradeLine/GradeLine";
@@ -6,6 +6,7 @@ import Pagination, {IDataArrayItem} from "../../Components/Pagination/Pagination
 import LatenessItem, {ITardinessItem} from "../../Components/Lateness/LatenessItem";
 import ScheduleItem from "../../Components/Schedule/ScheduleItem";
 import FileUploader from "../../Components/FileUploader/FileUploader";
+import {mainPageData} from "../../Http/MainPage";
 
 const infoImg = require('../../assets/images/InformationImgg.png');
 const gradeImg = require('../../assets/images/GradesImg.png');
@@ -212,6 +213,16 @@ const MainPageStudent: React.FC = () => {
         setCurrentPage(value)
     }
 
+    useEffect(()=>{
+        mainPageData()
+            .then(response=>{
+                console.log(response.data)
+            })
+            .catch(error=>{
+
+            })
+    }, [])
+
 
     return (
         <div className={'main-page'}>
@@ -243,7 +254,7 @@ const MainPageStudent: React.FC = () => {
                             Оценки полученные сегодня
                         </p>
                         {gradeLine.map((el, index)=>(
-                            <GradeLine item={el} styles={{marginTop: 0}} teachersBlock={true}/>
+                                <GradeLine item={el} styles={{marginTop: 0}} teachersBlock={true} key={index}/>
                         ))}
 
                     </div>
