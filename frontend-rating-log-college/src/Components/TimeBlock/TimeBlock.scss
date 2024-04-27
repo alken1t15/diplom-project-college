@@ -1,0 +1,40 @@
+.time-block{
+  border-radius: 10px;
+  border: none;
+  display: flex;
+  text-align: center;
+  &-left{
+    background-color: #434C59;
+    padding: 14px 20px;
+    border-radius: 10px 0 0 10px;
+    font-weight: 600;
+    font-size: 18px;
+    & > span{
+      line-height: 170%;
+      display: block;
+      font-size: 14px;
+      font-weight: 300;
+    }
+  }
+  &-right{
+    padding: 14px 20px;
+    background-color: #B4B7BC;
+    border-radius: 0 10px 10px 0;
+    border: none;
+    font-size: 18px;
+
+    &-span{
+      display: block;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 170%;
+    }
+    & > p{
+      font-weight: 400;
+      & > span{
+        font-weight: 700;
+        font-size: 18px;
+      }
+    }
+  }
+}

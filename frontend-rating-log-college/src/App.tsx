@@ -8,13 +8,15 @@ import {
     GRADE_STUDENT_ROUTE, HW_STUDENT_ROUTE,
     MAIN_PAGE_STUDENT_ROUTE,
     SIGN_IN_ROUTE,
-    STUDENT_ROUTE
+    STUDENT_ROUTE, TEACHER_GRADES_PAGE_ROUTE, TEACHER_HOMEWORKS_PAGE_ROUTE, TEACHER_MAIN_PAGE_ROUTE, TEACHER_ROUTE
 } from "./Utils/Routes";
 import MainPageStudent from "./Pages/MainPageStudent/MainPageStudent";
 import StudentLayout from "./Components/StudentLayout/StudentLayout";
 import GradePageStudent from "./Pages/GradePageStudent/GradePageStudent";
 import CoursesPageStudent from "./Pages/CoursesPageStudent/CoursesPageStudent";
 import HomeworkPageStudent from "./Pages/HomeworkPageStudent/HomeworkPageStudent";
+import TeacherLayout from "./Components/TeacherLayout/TeacherLayout";
+import MainPageTeacher from "./Pages/MainPageTeacher/MainPageTeacher";
 
 function App() {
   return (
@@ -29,6 +31,12 @@ function App() {
                 <Route path={GRADE_STUDENT_ROUTE} element={<GradePageStudent/>}/>
                 <Route path={COURSES_STUDENT_ROUTE} element={<CoursesPageStudent/>}/>
                 <Route path={HW_STUDENT_ROUTE} element={<HomeworkPageStudent/>}/>
+              </Route>
+
+              <Route path={TEACHER_ROUTE} element={<TeacherLayout/>}>
+                  <Route path={TEACHER_MAIN_PAGE_ROUTE} element={<MainPageTeacher/>}/>
+                  <Route path={TEACHER_HOMEWORKS_PAGE_ROUTE} element={<MainPageTeacher/>}/>
+                  <Route path={TEACHER_GRADES_PAGE_ROUTE} element={<MainPageTeacher/>}/>
               </Route>
 
 

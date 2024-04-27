@@ -1,0 +1,40 @@
+.schedule-teacher-block{
+  padding: 15px;
+  background-color: #434C59;
+  border-radius: 10px;
+  border: none;
+  margin-top: 29px;
+  display: inline-block;
+  &-time{
+    padding-bottom: 50px;
+  }
+  &-active{
+    background-color: var(--purple);
+  }
+  &-top{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 7px;
+    &-left-text{
+      font-weight: 700;
+      font-size: 18px;
+    }
+    &-right-text{
+      font-weight: 300;
+      font-size: 14px;
+    }
+  }
+  &-subject{
+    font-weight: 300;
+    font-size: 18px;
+    word-wrap: break-word;
+    word-break: break-word;
+  }
+  &-next{
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 190%;
+
+  }
+}

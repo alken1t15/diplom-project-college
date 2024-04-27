@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import "./SignIn.scss";
 import Input from "../../UI/Input/Input";
 import Button from "../../UI/Button/Button";
-import {login} from "../../Http/SignIn";
+import {login} from "../../Http/User";
 import {useNavigate} from "react-router-dom";
 import {MAIN_PAGE_STUDENT_ROUTE} from "../../Utils/Routes";
 const logoImg = require("../../assets/images/Logo.png");

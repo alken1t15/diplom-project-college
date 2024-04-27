@@ -9,11 +9,14 @@ export interface HomeworkItem{
     expiresAt: string;
     teacher: string;
     subject: string;
+    scholar?: string;
+    dueDate?: string;
 }
 
 interface IHomeworkBlock{
     item: HomeworkItem;
-    onClick: (id: number) => void;
+    onClick?: (id: number) => void;
+    forTeacher?: boolean;
 }
 const HomeworkBlock: React.FC<IHomeworkBlock> = (props) => {
     let[curItem, setCurItem] = useState<HomeworkItem>(props.item)
@@ -21,23 +24,47 @@ const HomeworkBlock: React.FC<IHomeworkBlock> = (props) => {
         setCurItem(props.item)
     }, [props.item]);
     return (
-        <div onClick={(e)=>{
-            props.onClick(curItem.id)
-        }} className={`homework-item ${curItem.active ? 'homework-item-active' : ''}`}>
-            <div className="homework-item-l">
-                <p className={`homework-item-l__text`}>{curItem.date}</p>
-            </div>
-            <div className="homework-item-r">
-                <div className="homework-item-r-top">
-                    <p className="homework-item-r-top__title">{curItem.name}</p>
-                    <p className="homework-item__text" style={{marginTop: 5}}>{curItem.expiresAt}</p>
+        <>
+            {props.forTeacher ?
+                <div className={`homework-item`}>
+                    <div className="homework-item-l">
+                        <p className={`homework-item-l__text`}>{curItem.date}</p>
+                    </div>
+                    <div className="homework-item-r">
+                        <div className="homework-item-r-top">
+                            <p className="homework-item-r-top__title">{curItem.name}</p>
+                            <p className="homework-item__text homework-item__text-t" style={{marginTop: 5}}>Сданно: <span>{curItem.dueDate}</span></p>
+                        </div>
+                        <div className="homework-item-r-bot">
+                            <p className="homework-item__text homework-item__text-t">Обучающийся: <span>{curItem.scholar}</span></p>
+                        </div>
+                    </div>
                 </div>
-                <div className="homework-item-r-bot">
-                    <p className="homework-item__text">{curItem.teacher}</p>
-                    <p className="homework-item__text">{curItem.subject}</p>
+                :
+                <div
+                    onClick={(e)=>{
+                        if (props.onClick) {
+                        props.onClick(curItem.id)
+                        } else {
+                        }
+                        }}
+                     className={`homework-item ${curItem.active ? 'homework-item-active' : ''}`}>
+                    <div className="homework-item-l">
+                        <p className={`homework-item-l__text`}>{curItem.date}</p>
+                    </div>
+                    <div className="homework-item-r">
+                        <div className="homework-item-r-top">
+                            <p className="homework-item-r-top__title">{curItem.name}</p>
+                            <p className="homework-item__text" style={{marginTop: 5}}>{curItem.expiresAt}</p>
+                        </div>
+                        <div className="homework-item-r-bot">
+                            <p className="homework-item__text">{curItem.teacher}</p>
+                            <p className="homework-item__text">{curItem.subject}</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+            }
+        </>
     );
 };
 

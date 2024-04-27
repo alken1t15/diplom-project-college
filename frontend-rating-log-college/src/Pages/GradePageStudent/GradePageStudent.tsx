@@ -241,7 +241,7 @@ const GradePageStudent: React.FC = () => {
 
 
                                     }
-                                    `}>{childEl}{chileIndex !== 0 ? '%' : ''}</td>
+                                    `}>{childEl}{chileIndex !== 0 && childEl != '\u00A0' ? '%' : '\u00A0'}</td>
                                 ))}
 
                             </tr>

@@ -1,9 +1,10 @@
 export const SIGN_IN_ROUTE = '/signIn'
 export const STUDENT_ROUTE = "/student"
-export const MAIN_PAGE_STUDENT_ROUTE = '/student/main'
-export const GRADE_STUDENT_ROUTE = '/student/grade'
-export const COURSES_STUDENT_ROUTE = '/student/courses'
-export const HW_STUDENT_ROUTE = '/student/homework'
-export const TEACHER_PROFILE_ROUTE = '/teacherProfile'
-export const TEACHER_TASK_ROUTE = '/teacherTask'
-export const TEACHER_DATE_GRADE_ROUTE = '/teacherDateGrade'
+export const TEACHER_ROUTE = "/teacher"
+export const MAIN_PAGE_STUDENT_ROUTE = `${STUDENT_ROUTE}/main`
+export const GRADE_STUDENT_ROUTE = `${STUDENT_ROUTE}/grades`
+export const COURSES_STUDENT_ROUTE = `${STUDENT_ROUTE}/courses`
+export const HW_STUDENT_ROUTE = `${STUDENT_ROUTE}/homework`
+export const TEACHER_MAIN_PAGE_ROUTE = `${TEACHER_ROUTE}/main`
+export const TEACHER_HOMEWORKS_PAGE_ROUTE = `${TEACHER_ROUTE}/homeworks`
+export const TEACHER_GRADES_PAGE_ROUTE = `${TEACHER_ROUTE}/grades`

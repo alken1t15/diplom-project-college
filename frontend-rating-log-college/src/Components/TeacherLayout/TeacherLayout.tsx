@@ -1,4 +1,4 @@
-import {ReactComponent as fImage} from "../../assets/images/NavbarF.svg";
+import {ReactComponent as fImage} from "../../assets/images/TeacherMainPage.svg";
 import {ReactComponent as sImage} from "../../assets/images/NavbarS.svg";
 import {ReactComponent as tImage} from "../../assets/images/NavbarT.svg";
 import {ReactComponent as foImage} from "../../assets/images/NavbarFo.svg";
@@ -8,9 +8,13 @@ import {
     COURSES_STUDENT_ROUTE,
     GRADE_STUDENT_ROUTE,
     HW_STUDENT_ROUTE,
-    MAIN_PAGE_STUDENT_ROUTE, SIGN_IN_ROUTE
+    MAIN_PAGE_STUDENT_ROUTE,
+    SIGN_IN_ROUTE,
+    TEACHER_GRADES_PAGE_ROUTE,
+    TEACHER_HOMEWORKS_PAGE_ROUTE,
+    TEACHER_MAIN_PAGE_ROUTE
 } from "../../Utils/Routes";
-import './StudentLayout.scss';
+import './TeacherLayout.scss';
 import InitialsImage from "../InitialsImage/InitialsImage";
 import button from "../../UI/Button/Button";
 import {logOut} from "../../Http/User";
@@ -18,34 +22,27 @@ import {logOut} from "../../Http/User";
 const Logo = require('../../assets/images/Logo.png');
 const LogOut = require('../../assets/images/ExitPng.png');
 
-const StudentLayout: React.FC = () => {
+const TeacherLayout: React.FC = () => {
 
     let [linkButtons, setLinkButtons] = useState([
         {
             id: 1,
             name: 'Main page icon',
-            link: MAIN_PAGE_STUDENT_ROUTE,
+            link: TEACHER_MAIN_PAGE_ROUTE,
             active: true,
             img: fImage
         },
         {
             id: 2,
-            name: 'Grade page icon',
-            link: GRADE_STUDENT_ROUTE,
+            name: 'Homework page icon',
+            link: TEACHER_HOMEWORKS_PAGE_ROUTE,
             active: false,
             img: sImage
         },
         {
             id: 3,
-            name: 'Courses page icon',
-            link: COURSES_STUDENT_ROUTE,
-            active: false,
-            img: tImage
-        },
-        {
-            id: 4,
-            name: 'Homework page icon',
-            link: HW_STUDENT_ROUTE,
+            name: 'Grades page icon',
+            link: TEACHER_GRADES_PAGE_ROUTE,
             active: false,
             img: foImage
         }
@@ -147,12 +144,12 @@ const StudentLayout: React.FC = () => {
         <div className={'student-layout'}>
                 <div className={"navigation-block"}>
                     <div className={'link-main'}>
-                        <Link to={MAIN_PAGE_STUDENT_ROUTE}>
+                        <Link to={TEACHER_MAIN_PAGE_ROUTE}>
                             <img className={'link-logo'} src={Logo} alt="logo img"/>
                         </Link>
                     </div>
                     <nav className={"nav"}>
-                        <div className={'nav-list'}>
+                        <div className={'nav-list nav-list-t'}>
                         {linkButtons.map((el, index)=>(
                             <button key={el.id} onClick={(e)=>{
                                 changeActiveTab(el.id)
@@ -182,4 +179,4 @@ const StudentLayout: React.FC = () => {
     );
 };
 
-export default StudentLayout;
+export default TeacherLayout;
