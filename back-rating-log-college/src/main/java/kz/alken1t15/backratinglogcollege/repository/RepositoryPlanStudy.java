@@ -14,4 +14,8 @@ public interface RepositoryPlanStudy extends JpaRepository<PlanStudy, Long> {
 
     @Query("SELECT distinct  new kz.alken1t15.backratinglogcollege.dto.work.PlanStudyFindDTO(pt.subjectStudy.name, pt.teacher.firstName,pt.teacher.secondName) from PlanStudy pt where pt.typeStudy.id=?1")
     List<PlanStudyFindDTO> findByIdTypeStudy(Long id);
+
+
+    @Query("select p from PlanStudy p join TypeStudy ts on ts.id = p.typeStudy.id join StudyProcess sp on sp.id = ts.studyProcess.id where sp.group.id = ?1 and p.week=?2 and ?3 between ts.dateStart and  ts.dateEnd")
+    List<PlanStudy> findByGroupIdNameOfDay(Long idGroup,Long idWeek,LocalDate date);
 }
