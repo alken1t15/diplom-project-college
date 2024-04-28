@@ -10,6 +10,7 @@ export interface IScheduleTeacherBlock{
     nextItem: ISchedule | undefined;
     prevItem: ISchedule | undefined;
     active?: boolean | undefined;
+    last?: boolean;
 }
 const ScheduleTeacherBlock:React.FC<IScheduleTeacherBlock> = (props) => {
     let[groupName, setGroupName] = useState(props.groupName);
@@ -20,6 +21,7 @@ const ScheduleTeacherBlock:React.FC<IScheduleTeacherBlock> = (props) => {
     let[prevItem, SetPrevItem] = useState<ISchedule | undefined>(props.prevItem);
     let[active, setActive] = useState(props.active);
     let[timeLeft ,setTimeLeft] = useState('');
+    let[last ,setLast] = useState(false);
 
 
 
@@ -68,7 +70,7 @@ const ScheduleTeacherBlock:React.FC<IScheduleTeacherBlock> = (props) => {
         setCurTime(props.curTime)
         setActive(props.active)
         setTimeLeft(calculateTimeToNext(curTime, nextItem))
-
+        setLast(props.last ? props.last : false)
 
 
 
@@ -76,18 +78,23 @@ const ScheduleTeacherBlock:React.FC<IScheduleTeacherBlock> = (props) => {
 
 
     return (
-        <div className={`schedule-teacher-block ${active ? 'schedule-teacher-block-active' : ''}`}>
-            <div className="schedule-teacher-block-top">
-                <span className={`schedule-teacher-block-top-left-text`}>{groupName}</span>
-                <span className={`schedule-teacher-block-top-right-text`}>{time}</span>
-            </div>
-            <p className="schedule-teacher-block-subject">
-                Предмет: {subject}
-            </p>
-            <p className="schedule-teacher-block-next">
-                {timeLeft !== '' && active ? timeLeft : '\u00A0'}
-            </p>
-        </div>
+       <div className={`top-block ${last ? 'top-block-last' : ''} ${active ? 'top-block-active' : ''}` }>
+           <div className="circle ">
+               <div className={`${active ? 'circle-full' : ''}`}></div>
+           </div>
+           <div className={`schedule-teacher-block ${active ? 'schedule-teacher-block-active' : ''}`}>
+               <div className="schedule-teacher-block-top">
+                   <span className={`schedule-teacher-block-top-left-text`}>{groupName}</span>
+                   <span className={`schedule-teacher-block-top-right-text`}>{time}</span>
+               </div>
+               <p className="schedule-teacher-block-subject">
+                   Предмет: {subject}
+               </p>
+               <p className="schedule-teacher-block-next">
+                   {timeLeft !== '' && active ? timeLeft : '\u00A0'}
+               </p>
+           </div>
+       </div>
     );
 };
 

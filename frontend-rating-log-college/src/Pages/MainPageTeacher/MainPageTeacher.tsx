@@ -27,7 +27,6 @@ export interface ISchedule{
 
 const MainPageTeacher: React.FC = () => {
 
-    let[active, setIsActive] = useState(false)
     let[homeWorks, setHomeWorks] = useState<HomeworkItem[]>([
         {
             id: 1,
@@ -75,7 +74,10 @@ const MainPageTeacher: React.FC = () => {
         },
     ])
     let[time, setTime] = useState("")
+    let[presence, setPresence] = useState({
+        group: 'П-20-23к',
 
+    })
 
     useEffect(()=>{
         // mainPageData()
@@ -202,6 +204,7 @@ const MainPageTeacher: React.FC = () => {
                                              nextItem={index !== schedule.length-1 ? schedule[index+1] : schedule[index]}
                                              prevItem={index !== 0 ? schedule[index-1] : schedule[index] }
                                              active={el.active}
+                                             last={index === schedule.length - 1}
                        />
                    )}
                </div>
@@ -209,7 +212,7 @@ const MainPageTeacher: React.FC = () => {
             </div>
             <div className={'block-right block-right-t'}>
                 <p className={'block-right__text'}>
-                    П-20-23к
+                    {presence.group}
                 </p>
 
 

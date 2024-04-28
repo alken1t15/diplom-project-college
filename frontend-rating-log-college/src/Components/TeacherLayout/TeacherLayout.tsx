@@ -32,19 +32,20 @@ const TeacherLayout: React.FC = () => {
             active: true,
             img: fImage
         },
+
         {
             id: 2,
-            name: 'Homework page icon',
-            link: TEACHER_HOMEWORKS_PAGE_ROUTE,
-            active: false,
-            img: sImage
-        },
-        {
-            id: 3,
             name: 'Grades page icon',
             link: TEACHER_GRADES_PAGE_ROUTE,
             active: false,
             img: foImage
+        },
+        {
+            id: 3,
+            name: 'Homework page icon',
+            link: TEACHER_HOMEWORKS_PAGE_ROUTE,
+            active: false,
+            img: sImage
         }
     ])
     let navigator = useNavigate();
@@ -156,8 +157,8 @@ const TeacherLayout: React.FC = () => {
                             }} className={`link-button ${el.active ? 'link-button-active' : ''}`}>
                                 {React.createElement(el.img, {
                                     className: `link-img
-                                    ${el.active && el.id != 4 ? 'link-img-active' : ''}
-                                    ${el.active && el.id == 4 ? 'link-img-active-4' : '' }`
+                                    ${el.active && el.id != 2 ? 'link-img-active' : ''}
+                                    ${el.active && el.id == 2 ? 'link-img-active-4' : '' }`
                                 })}
 
                             </button>

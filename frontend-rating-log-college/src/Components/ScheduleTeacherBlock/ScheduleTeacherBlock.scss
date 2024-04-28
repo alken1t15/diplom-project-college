@@ -3,9 +3,10 @@
   background-color: #434C59;
   border-radius: 10px;
   border: none;
-  margin-top: 29px;
+  width: 100%;
   display: inline-block;
   transition: .5s;
+
   &-time{
     padding-bottom: 50px;
   }
@@ -38,5 +39,54 @@
     font-size: 18px;
     line-height: 190%;
 
+  }
+}
+
+.top-block{
+  width: 100%;
+  display: block;
+  padding-left: 35px;
+  position: relative;
+  padding-bottom: 30px;
+  &:before{
+    position: absolute;
+    content: '';
+    left: 9px;
+    top: 26px;
+    height: 113px;
+    width: 1px;
+    background-color: var(--purple);
+  }
+
+  &-last{
+    &:before{
+      background-color: transparent;
+    }
+
+
+  }
+
+}
+
+.circle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid var(--purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &-full{
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--purple);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
