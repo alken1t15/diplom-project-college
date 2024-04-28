@@ -17,6 +17,7 @@ import CoursesPageStudent from "./Pages/CoursesPageStudent/CoursesPageStudent";
 import HomeworkPageStudent from "./Pages/HomeworkPageStudent/HomeworkPageStudent";
 import TeacherLayout from "./Components/TeacherLayout/TeacherLayout";
 import MainPageTeacher from "./Pages/MainPageTeacher/MainPageTeacher";
+import HomeWorksPageTeacher from "./Pages/HomeWorksPageTeacher/HomeWorksPageTeacher";
 
 function App() {
   return (
@@ -35,7 +36,7 @@ function App() {
 
               <Route path={TEACHER_ROUTE} element={<TeacherLayout/>}>
                   <Route path={TEACHER_MAIN_PAGE_ROUTE} element={<MainPageTeacher/>}/>
-                  <Route path={TEACHER_HOMEWORKS_PAGE_ROUTE} element={<MainPageTeacher/>}/>
+                  <Route path={TEACHER_HOMEWORKS_PAGE_ROUTE} element={<HomeWorksPageTeacher/>}/>
                   <Route path={TEACHER_GRADES_PAGE_ROUTE} element={<MainPageTeacher/>}/>
               </Route>
 

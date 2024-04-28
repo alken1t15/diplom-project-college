@@ -35,15 +35,15 @@ const TeacherLayout: React.FC = () => {
 
         {
             id: 2,
-            name: 'Grades page icon',
-            link: TEACHER_GRADES_PAGE_ROUTE,
+            name: 'Homework page icon',
+            link: TEACHER_HOMEWORKS_PAGE_ROUTE,
             active: false,
             img: foImage
         },
         {
             id: 3,
-            name: 'Homework page icon',
-            link: TEACHER_HOMEWORKS_PAGE_ROUTE,
+            name: 'Grades page icon',
+            link: TEACHER_GRADES_PAGE_ROUTE,
             active: false,
             img: sImage
         }
