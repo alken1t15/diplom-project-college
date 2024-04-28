@@ -34,6 +34,10 @@ const ScheduleTeacherBlock:React.FC<IScheduleTeacherBlock> = (props) => {
             let timeDifference = nextDateTime.getTime() - curDateTime.getTime();
             let hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
             let minutesDifference = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            if(timeDifference <= 0){
+                return '';
+
+            }
             if(hoursDifference === 0){
                 if(minutesDifference <= 1){
                     return `След. пара: Через минуту`;
@@ -81,7 +85,7 @@ const ScheduleTeacherBlock:React.FC<IScheduleTeacherBlock> = (props) => {
                 Предмет: {subject}
             </p>
             <p className="schedule-teacher-block-next">
-                {timeLeft !== '' ? timeLeft : '\u00A0'}
+                {timeLeft !== '' && active ? timeLeft : '\u00A0'}
             </p>
         </div>
     );

@@ -5,11 +5,13 @@
   border: none;
   margin-top: 29px;
   display: inline-block;
+  transition: .5s;
   &-time{
     padding-bottom: 50px;
   }
   &-active{
     background-color: var(--purple);
+    transition: .5s;
   }
   &-top{
     display: flex;

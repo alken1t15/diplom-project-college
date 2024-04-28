@@ -88,43 +88,43 @@ const MainPageTeacher: React.FC = () => {
     }, [])
 
     function setActiveOnSchedule(){
-        let str = "09:40";
-        setTime(str)
-        let curTimeSplit = str.split(':').map(Number);
+        let curTimeSplit = time.split(':').map(Number);
         let curDateTime = new Date(0, 0, 0, curTimeSplit[0], curTimeSplit[1]);
+        let newArr: ISchedule[] = [];
+        let activeIndex = -1;
 
-        let newArr = [];
         for (let index = 0; index < schedule.length; index++) {
             let el = schedule[index];
             let itemTimeSplit = el.time.split(':').map(Number);
             let itemDateTime = new Date(0, 0, 0, itemTimeSplit[0], itemTimeSplit[1]);
 
+            let lastItemTime = schedule[schedule.length - 1].time.split(':').map(Number);
+            let lastItemDateTime = new Date(0, 0, 0, lastItemTime[0], lastItemTime[1]);
+            lastItemDateTime.setHours(lastItemDateTime.getHours() + 1);
+            lastItemDateTime.setMinutes(lastItemDateTime.getMinutes() + 30);
 
-
-            if(index > 0){
-                let prevTimeSplit = schedule[index-1].time.split(':').map(Number);
-                let prevDateTime = new Date(0, 0, 0, prevTimeSplit[0], prevTimeSplit[1]);
-                console.log('------------------')
-                console.log(index)
-                console.log(prevDateTime)
-                console.log(curDateTime)
-                console.log(itemDateTime)
-                console.log('------------------')
-                el.active = curDateTime.getTime() < itemDateTime.getTime() && curDateTime.getTime() > prevDateTime.getTime()
-
+            if (index === schedule.length - 1 && curDateTime > lastItemDateTime) {
+                activeIndex = -1;
+                break;
+            } else if (curDateTime >= itemDateTime) {
+                activeIndex = index;
+            } else {
+                break;
             }
-            else if(index === 0){
-                el.active = curDateTime.getTime() <= itemDateTime.getTime();
-            }
-            else if(index === schedule.length-1){
-                el.active = curDateTime.getTime() >= itemDateTime.getTime();
-            }
+        }
 
+        for (let index = 0; index < schedule.length; index++) {
+            let el = schedule[index];
+            el.active = index === activeIndex;
             newArr.push(el);
         }
-        console.log(newArr)
-        setSchedule(newArr)
+
+        setSchedule(newArr);
+
+
     }
+
+
 
     useEffect(()=>{
         setActiveOnSchedule();
