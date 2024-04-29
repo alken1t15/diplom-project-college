@@ -1,5 +1,6 @@
 package kz.alken1t15.backratinglogcollege.contoller;
 
+import kz.alken1t15.backratinglogcollege.dto.teacher.TeacherMainPageDTO;
 import kz.alken1t15.backratinglogcollege.service.ServiceFilesGroup;
 import kz.alken1t15.backratinglogcollege.service.ServiceHoweWork;
 import kz.alken1t15.backratinglogcollege.service.ServiceTeachers;
@@ -38,8 +39,8 @@ public class ControllerTeacher {
         return serviceFilesGroup.addNewFile(files,id);
     }
     @PostMapping(path = "/main")
-    private Object getMainPageTeacher(){
-        return serviceTeachers.getMainPageTeacher();
+    private TeacherMainPageDTO getMainPageTeacher(Integer idGroupStep, Boolean certificateHave){
+        return serviceTeachers.getMainPageTeacher(idGroupStep,certificateHave);
     }
 
     public record Teacher(String firstName, String secondName, String middleName, String login, String password, String bornDate){}

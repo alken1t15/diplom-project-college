@@ -2,10 +2,8 @@ package kz.alken1t15.backratinglogcollege.service;
 
 import io.micrometer.common.util.StringUtils;
 import kz.alken1t15.backratinglogcollege.contoller.ControllerTeacher;
-import kz.alken1t15.backratinglogcollege.entity.Groups;
-import kz.alken1t15.backratinglogcollege.entity.Students;
-import kz.alken1t15.backratinglogcollege.entity.Teachers;
-import kz.alken1t15.backratinglogcollege.entity.User;
+import kz.alken1t15.backratinglogcollege.dto.teacher.TeacherMainPageDTO;
+import kz.alken1t15.backratinglogcollege.entity.*;
 import kz.alken1t15.backratinglogcollege.entity.study.PlanStudy;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryTeachers;
 import lombok.AllArgsConstructor;
@@ -36,6 +34,7 @@ public class ServiceTeachers {
     private final ServiceUsers serviceUser;
     private final ServiceGroups serviceGroup;
     private final ServicePlanStudy servicePlanStudy;
+    private final ServiceOmissions serviceOmissions;
 
     //TODO Проверка на уникальность
 //    public ResponseEntity save(ControllerTeacher.Teacher teacher) {
@@ -58,12 +57,13 @@ public class ServiceTeachers {
     }
 
     //TODO Получение информации для главной страницы учителя
-    public Object getMainPageTeacher(){
+    public TeacherMainPageDTO getMainPageTeacher(Integer idGroupStep, Boolean certificateHave){
         Teachers teachers = getTeachers();
         List<Groups> groups = serviceGroup.findByAllGroupForTeacher(teachers.getId(), LocalDate.now());
         List<CurrentGraphStudyGroup> graphGroupsForStudy = getCurrentGraphStudyGroup(groups);
+        List<CurrentOmissionStudent> currentOmissionStudents = getStudentsByGroup(graphGroupsForStudy,idGroupStep,certificateHave);
 
-        return null;
+        return new TeacherMainPageDTO(graphGroupsForStudy,currentOmissionStudents,new TeacherDTOP(String.format("%s %s %s",teachers.getSecondName(),teachers.getFirstName(),teachers.getMiddleName()),teachers.getStartWork().getYear()));
     }
 
 
@@ -73,26 +73,61 @@ public class ServiceTeachers {
             String name = group.getName();
             List<PlanStudy> planStudies = servicePlanStudy.getPlanStudyToday(group.getId());
             for (PlanStudy p : planStudies){
-                currentGraphStudyGroups.add(new CurrentGraphStudyGroup(name,p.getTimeStudy().getStartLesson(),p.getSubjectStudy().getName()));
+                currentGraphStudyGroups.add(new CurrentGraphStudyGroup(name,p.getTimeStudy().getStartLesson(),p.getSubjectStudy().getName(),group.getId()));
             }
         }
         Collections.sort(currentGraphStudyGroups);
         return currentGraphStudyGroups;
     }
 
-//    public Object getStudentsByGroup(Groups group,String nameObject){
-//        List<Students> students = group.getStudents();
-//        for (Students student: students){
-//
-//        }
-//    }
+    public List<CurrentOmissionStudent> getStudentsByGroup(List<CurrentGraphStudyGroup> currentGraph,Integer id,Boolean certificateHave){
+        List<CurrentOmissionStudent> currentOmissionStudents = new ArrayList<>();
+        Long idGroup;
+        String nameSubject;
+        if (id==null){
+            idGroup = currentGraph.get(0).idGroup;
+            nameSubject = currentGraph.get(0).nameSubject;
+        }
+        else {
+            idGroup = currentGraph.get(id-1).idGroup;
+            nameSubject = currentGraph.get(id-1).nameSubject;
+        }
+        Groups group = serviceGroup.findById(idGroup);
+        List<Students> students = group.getStudents();
+        if (certificateHave){
+            for (Students student: students) {
+                Omissions omissions = serviceOmissions.findByDateAndSubjectName(LocalDate.now(), nameSubject, student.getId(), group.getCurrentCourse());
+                if (omissions!= null){
+                    currentOmissionStudents.add(new CurrentOmissionStudent(String.format("%s %s %s",student.getSecondName(),student.getFirstName(),student.getMiddleName()),0,omissions.getStatus(),omissions.getFilesStudent().getId()));
+                }
+            }
+        }
+        else {
+            for (Students student: students){
+                Omissions omissions = serviceOmissions.findByDateAndSubjectName(LocalDate.now(),nameSubject, student.getId(), group.getCurrentCourse());
+                if (omissions==null){
+                    currentOmissionStudents.add(new CurrentOmissionStudent(String.format("%s %s %s",student.getSecondName(),student.getFirstName(),student.getMiddleName()),0,null,null));
+                }
+                else {
+                    currentOmissionStudents.add(new CurrentOmissionStudent(String.format("%s %s %s",student.getSecondName(),student.getFirstName(),student.getMiddleName()),0,omissions.getStatus(),null));
+                }
+            }
+        }
+        return currentOmissionStudents;
+    }
 
 
-    public record CurrentGraphStudyGroup(String name, LocalTime timeStart, String nameSubject) implements Comparable<CurrentGraphStudyGroup>{
+    public record CurrentGraphStudyGroup(String name, LocalTime timeStart, String nameSubject,Long idGroup) implements Comparable<CurrentGraphStudyGroup>{
         @Override
         public int compareTo(CurrentGraphStudyGroup o) {
             return this.timeStart.compareTo(o.timeStart);
         }
     }
+
+
+    public record CurrentOmissionStudent(String name,Integer count,String status, Long idCertificate){}
+
+    public record TeacherDTOP(String name,Integer yearWork){}
+
 
 }

@@ -89,4 +89,8 @@ public class ServiceGroups {
     public List<Groups> findByAllGroupForTeacher(Long idTeacher, LocalDate date){
         return repositoryGroups.findByAllGroupForTeacher(idTeacher,date);
     }
+
+    public Groups findById(Long id){
+        return repositoryGroups.findById(id).orElseThrow();
+    }
 }

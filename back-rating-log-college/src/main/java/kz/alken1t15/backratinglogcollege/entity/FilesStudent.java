@@ -1,7 +1,9 @@
 package kz.alken1t15.backratinglogcollege.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -9,6 +11,8 @@ import java.util.List;
 @Entity
 @Table(name = "files_student")
 @NoArgsConstructor
+@Getter
+@Setter
 public class FilesStudent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

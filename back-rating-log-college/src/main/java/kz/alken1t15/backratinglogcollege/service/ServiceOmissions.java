@@ -24,9 +24,9 @@ public class ServiceOmissions {
             "июля", "августа", "сентября", "октября", "ноября", "декабря"
     };
 
-    public MonthDTO findByMonth(Integer numberMonth, Integer course,Long idStudent) {
+    public MonthDTO findByMonth(Integer numberMonth, Integer course, Long idStudent) {
         List<DayDTO> dayDTOs = new ArrayList<>();
-        List<Omissions> omissions = repositoryOmissions.findByMonth(numberMonth,course,idStudent);
+        List<Omissions> omissions = repositoryOmissions.findByMonth(numberMonth, course, idStudent);
 
         for (Omissions o : omissions) {
             LocalDate localDate = o.getDateOmissions();
@@ -61,5 +61,13 @@ public class ServiceOmissions {
 
 
         return new MonthDTO("Сентябрь", dayDTOs);
+    }
+
+    public Omissions findByDateAndSubjectName(LocalDate date, String nameSubject, Long idStudent, Integer course) {
+        return repositoryOmissions.findByDateAndSubjectName(date, nameSubject, idStudent, course);
+    }
+
+    public Omissions findByDateAndSubjectNameAndCertificate(LocalDate date, String nameSubject, Long idStudent, Integer course) {
+        return repositoryOmissions.findByDateAndSubjectNameAndCertificate(date, nameSubject, idStudent, course);
     }
 }
