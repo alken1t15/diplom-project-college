@@ -18,4 +18,6 @@ public class User {
     private String password;
 
     private String jwt;
+
+    private String role;
 }

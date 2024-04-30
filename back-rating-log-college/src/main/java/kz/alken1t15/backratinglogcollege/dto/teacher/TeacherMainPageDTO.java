@@ -11,7 +11,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class TeacherMainPageDTO {
-   private List<ServiceTeachers.CurrentGraphStudyGroup> graphGroupsForStudy;
+   private List<CurrentGraphStudyGroup> graphGroupsForStudy;
    private List<ServiceTeachers.CurrentOmissionStudent> currentOmissionStudents;
    private ServiceTeachers.TeacherDTOP teacher;
+   private Integer countStudent;
 }

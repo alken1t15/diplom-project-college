@@ -1,12 +1,15 @@
 package kz.alken1t15.backratinglogcollege.service;
 
 import io.micrometer.common.util.StringUtils;
+import kz.alken1t15.backratinglogcollege.contoller.ControllerTeacher;
 import kz.alken1t15.backratinglogcollege.dto.file.FileRequestDTO;
+import kz.alken1t15.backratinglogcollege.dto.work.FileDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.FilesStudentRequestDTO;
 import kz.alken1t15.backratinglogcollege.entity.FilesStudent;
 import kz.alken1t15.backratinglogcollege.entity.Omissions;
 import kz.alken1t15.backratinglogcollege.entity.Students;
 import kz.alken1t15.backratinglogcollege.entity.StudentsCourse;
+import kz.alken1t15.backratinglogcollege.entity.study.FilesGroup;
 import kz.alken1t15.backratinglogcollege.entity.study.PlanStudy;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryFilesStudent;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryOmissions;
@@ -21,9 +24,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -100,4 +105,20 @@ public class ServiceFilesStudent {
             return new ResponseEntity<>("Не правильный запрос", HttpStatus.BAD_REQUEST);
         }
     }
+
+
+    public ResponseEntity getCertificate(Long id) {
+        System.out.println(id);
+        FilesStudent f = repositoryFilesStudent.findById(id).orElseThrow();
+        byte[] fileContent = new byte[0];
+        try {
+            fileContent = Files.readAllBytes(Paths.get(pathSaveFile + f.getName()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return new ResponseEntity<>(new CertificateFile(fileContent), HttpStatus.OK);
+    }
+
+    public record CertificateFile(byte[] file){}
 }

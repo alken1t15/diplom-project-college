@@ -1,18 +1,11 @@
 package kz.alken1t15.backratinglogcollege.service;
 
-import io.micrometer.common.util.StringUtils;
-import kz.alken1t15.backratinglogcollege.contoller.ControllerGroup;
-import kz.alken1t15.backratinglogcollege.dto.GroupDTO;
+import kz.alken1t15.backratinglogcollege.dto.teacher.CurrentGraphStudyGroup;
 import kz.alken1t15.backratinglogcollege.entity.Groups;
-import kz.alken1t15.backratinglogcollege.entity.Students;
-import kz.alken1t15.backratinglogcollege.entity.Teachers;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryGroups;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryStudents;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryTeachers;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -86,8 +79,8 @@ public class ServiceGroups {
 //    }
 
 
-    public List<Groups> findByAllGroupForTeacher(Long idTeacher, LocalDate date){
-        return repositoryGroups.findByAllGroupForTeacher(idTeacher,date);
+    public List<CurrentGraphStudyGroup> findByAllGroupForTeacher(Long idTeacher, LocalDate date, Long idWeek){
+        return repositoryGroups.findByAllGroupForTeacher(idTeacher,date,idWeek);
     }
 
     public Groups findById(Long id){

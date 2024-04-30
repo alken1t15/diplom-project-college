@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.naming.AuthenticationException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 @CrossOrigin
 @RestController
@@ -69,7 +70,10 @@ public class ControllerMain {
         user.setJwt(jwt);
         repositoryUser.save(user);
         logger.info(String.format("JWT: %s", jwt));
-        return Collections.singletonMap("jwt-token", jwt);
+        HashMap<String,Object> hashMap = new HashMap<>();
+        hashMap.put("jwt-token", jwt);
+        hashMap.put("role",user.getRole());
+        return hashMap;
     }
 
     @ExceptionHandler(BadCredentialsException.class)

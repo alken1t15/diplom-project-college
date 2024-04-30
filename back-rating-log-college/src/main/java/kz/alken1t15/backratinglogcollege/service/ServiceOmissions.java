@@ -70,4 +70,8 @@ public class ServiceOmissions {
     public Omissions findByDateAndSubjectNameAndCertificate(LocalDate date, String nameSubject, Long idStudent, Integer course) {
         return repositoryOmissions.findByDateAndSubjectNameAndCertificate(date, nameSubject, idStudent, course);
     }
+
+    public Integer findBySubjectNameAndIdStudentCountOmission(String nameSubject, Long idStudent, Integer course){
+        return repositoryOmissions.findBySubjectNameAndIdStudentCountOmission(nameSubject,idStudent,course);
+    }
 }

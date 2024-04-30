@@ -5,14 +5,15 @@ create table users
     id       serial primary key,
     login    varchar(255) not null unique,
     password varchar(255) not null,
+    role varchar(255) not null ,
     jwt      text
 );
 
-insert into users(login, password)
-values ('alex', '$2a$12$NYaQWMAhfFbKNafq6YwhTuZyruktcWnsvHf7KrDc6TB9h0IwIx7E.'),
-       ('maxim', '$2y$10$QsmdOGpTOpn4qWLD3jSIY.8C8bwMIR8PFXuIkpf5aejT2xCpO0pji'),
-       ('popov', '$2a$12$7PLgfxHX34OgvqKmbeGfrua48kwTqwVFAgkZj/4x9b7MKHCicbthC'),
-       ('marina', '$2a$12$fALbcsaeUCMZtWTPrr8wqO5pbkrM2BW2PXI.kZS6gFL54tganpPA.');
+insert into users(login,  password,role)
+values ('alex', '$2a$12$NYaQWMAhfFbKNafq6YwhTuZyruktcWnsvHf7KrDc6TB9h0IwIx7E.','student'),
+       ('maxim', '$2y$10$QsmdOGpTOpn4qWLD3jSIY.8C8bwMIR8PFXuIkpf5aejT2xCpO0pji','student'),
+       ('popov', '$2a$12$7PLgfxHX34OgvqKmbeGfrua48kwTqwVFAgkZj/4x9b7MKHCicbthC','teacher'),
+       ('marina', '$2a$12$fALbcsaeUCMZtWTPrr8wqO5pbkrM2BW2PXI.kZS6gFL54tganpPA.','teacher');
 
 create table teachers
 (
@@ -360,3 +361,6 @@ VALUES (3, 1, 1, 3, 1, 1, 1),
        (3, 4, 4, 3, 2, 4, 4),
        (3, 1, 1, 3, 4, 5, 1),
        (3, 2, 2, 4, 3, 5, 2);
+
+
+select o from Omissions  o join students_course sc on o.id_course = sc.id   where o.date_omissions = '2024-04-30' and o.name_object= 'Веб-программирование' and sc.id_students = 2 and sc.course = 1 and o.id_files_student notnull
