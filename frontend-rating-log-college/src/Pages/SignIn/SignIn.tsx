@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import "./SignIn.scss";
 import Input from "../../UI/Input/Input";
 import Button from "../../UI/Button/Button";
@@ -28,6 +28,10 @@ const SignIn: React.FC = () => {
             .catch((error)=>{
             })
     }
+
+    useEffect(()=>{
+        localStorage.setItem('token', '')
+    }, [])
 
     return (
         <div className={'sign-in-block'}>

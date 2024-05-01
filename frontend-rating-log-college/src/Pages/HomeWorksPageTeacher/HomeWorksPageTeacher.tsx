@@ -11,6 +11,7 @@ import doneImg from '../../assets/images/Check.svg';
 import HomeworkBlock, {HomeworkItem} from "../../Components/HomeworkBlock/HomeworkBlock";
 import TimeBlock, {ITimeBlock} from "../../Components/TimeBlock/TimeBlock";
 import ScheduleTeacherBlock from "../../Components/ScheduleTeacherBlock/ScheduleTeacherBlock";
+import Filter, {IFilterItem} from "../../Components/Filter/Filter";
 
 const infoImg = require('../../assets/images/InformationImgg.png');
 const gradeImg = require('../../assets/images/GradesImg.png');
@@ -27,7 +28,35 @@ export interface ISchedule{
 
 const HomeWorksPageTeacher: React.FC = () => {
 
-
+    let[filterItems, setFilterItems]=  useState<IFilterItem[]>([
+        {
+            id: 1,
+            name: 'Предмет',
+            items: [
+                {
+                    id: 1,
+                    name: 'Веб-программирование',
+                    active: false,
+                }
+            ]
+        },
+        {
+            id: 2,
+            name: 'Группа',
+            items: [
+                {
+                    id: 1,
+                    name: 'П-20-51б',
+                    active: false,
+                },
+                {
+                    id: 2,
+                    name: 'П-20-53к',
+                    active: false,
+                },
+            ]
+        },
+    ])
 
     useEffect(()=>{
         // mainPageData()
@@ -39,14 +68,21 @@ const HomeWorksPageTeacher: React.FC = () => {
         //     })
     }, [])
 
+    function setCurrentFilter(parentId: number, itemId: number){
+        console.log(parentId)
+        console.log(itemId)
+    }
 
     return (
-        <div className={'main-page main-page-t'}>
+        <div className={'main-page main-page-t hw-page-t'}>
             <div className={'block-middle block-middle-t'}>
                 <p className={'block-middle__text block-middle__text-t'}>
                     Домашние задания
                 </p>
 
+                <div className="block-middle-top">
+                    <Filter items={filterItems} onCLick={setCurrentFilter}/>
+                </div>
 
             </div>
             <div className={'block-right block-right-t'}>

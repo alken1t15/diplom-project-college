@@ -57,6 +57,7 @@ const StudentLayout: React.FC = () => {
             el.active = el.link == window.location.href.split('3000')[1];
             return el;
         })
+        localStorage.setItem('token', '')
         setLinkButtons(newArr)
     }, [])
 

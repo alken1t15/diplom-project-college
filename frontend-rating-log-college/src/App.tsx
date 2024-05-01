@@ -22,6 +22,12 @@ import HomeWorksPageTeacher from "./Pages/HomeWorksPageTeacher/HomeWorksPageTeac
 function App() {
   return (
     <div className="App">
+        <head>
+            <title>My Page</title>
+            <meta name="description" content="Developers: FrontEnd Korablev maxim https://github.com/OverlordCrowley &&
+            Zarubin Alexey https://github.com/alken1t15
+            " />
+        </head>
       <Routes>
           <Route path="/">
             <Route path={SIGN_IN_ROUTE} index element={<SignIn />} />

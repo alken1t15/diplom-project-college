@@ -7,6 +7,7 @@ import LatenessItem, {ITardinessItem} from "../../Components/Lateness/LatenessIt
 import ScheduleItem from "../../Components/Schedule/ScheduleItem";
 import FileUploader from "../../Components/FileUploader/FileUploader";
 import {mainPageData} from "../../Http/MainPage";
+import {gradePageData} from "../../Http/GradePage";
 
 const infoImg = require('../../assets/images/InformationImgg.png');
 const gradeImg = require('../../assets/images/GradesImg.png');
@@ -221,6 +222,7 @@ const MainPageStudent: React.FC = () => {
             .catch(error=>{
 
             })
+
     }, [])
 
 
