@@ -21,64 +21,64 @@ const GradePageStudent: React.FC = () => {
     let[currentQuarter , setCurrentQuarter] = useState(1);
     let[dateArray, setDateArray] = useState<IDataArrayItem[]>([
         {
-            id: 1,
             isActive: true,
             date: 'Янв',
-            number: "01"
+            number: "01",
+            requestMonth: 1
         },
         {
-            id: 2,
             isActive: false,
             date: 'Фев',
-            number: "02"
+            number: "02",
+            requestMonth: 1
         },
         {
-            id: 3,
             isActive: false,
             date: 'Март',
-            number: "03"
+            number: "03",
+            requestMonth: 1
         },
         {
-            id: 4,
             isActive: false,
             date: 'Апр',
-            number: "04"
+            number: "04",
+            requestMonth: 1
         },
         {
-            id: 5,
             isActive: false,
             date: 'Май',
-            number: "05"
+            number: "05",
+            requestMonth: 1
         },
         {
-            id: 6,
             isActive: false,
             date: 'Июн',
-            number: "06"
+            number: "06",
+            requestMonth: 1
         },
         {
-            id: 9,
             isActive: false,
             date: 'Сен',
-            number: "09"
+            number: "09",
+            requestMonth: 1
         },
         {
-            id: 10,
             isActive: false,
             date: 'Окт',
-            number: "10"
+            number: "10",
+            requestMonth: 1
         },
         {
-            id: 11,
             isActive: false,
             date: 'Нояб',
-            number: "11"
+            number: "11",
+            requestMonth: 1
         },
         {
-            id: 12,
             isActive: false,
             date: 'Дек',
-            number: "12"
+            number: "12",
+            requestMonth: 1
         },
     ])
     let[courses, setCourses] = useState([

@@ -18,6 +18,7 @@ import './TeacherLayout.scss';
 import InitialsImage from "../InitialsImage/InitialsImage";
 import button from "../../UI/Button/Button";
 import {logOut} from "../../Http/User";
+import {mainPageData} from "../../Http/MainPage";
 
 const Logo = require('../../assets/images/Logo.png');
 const LogOut = require('../../assets/images/ExitPng.png');
@@ -56,6 +57,7 @@ const TeacherLayout: React.FC = () => {
             return el;
         })
         setLinkButtons(newArr)
+
     }, [])
 
     function changeActiveTab(id: number) {

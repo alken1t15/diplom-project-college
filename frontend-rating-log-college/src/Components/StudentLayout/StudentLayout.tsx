@@ -14,6 +14,7 @@ import './StudentLayout.scss';
 import InitialsImage from "../InitialsImage/InitialsImage";
 import button from "../../UI/Button/Button";
 import {logOut} from "../../Http/User";
+import {mainPageData} from "../../Http/MainPage";
 
 const Logo = require('../../assets/images/Logo.png');
 const LogOut = require('../../assets/images/ExitPng.png');
@@ -50,6 +51,12 @@ const StudentLayout: React.FC = () => {
             img: foImage
         }
     ])
+    let [user, setUser] = useState({
+        name: '',
+        lastName: '',
+        groupName: '',
+        yearGroup: '',
+    });
     let navigator = useNavigate();
 
     useEffect(()=>{
@@ -57,8 +64,21 @@ const StudentLayout: React.FC = () => {
             el.active = el.link == window.location.href.split('3000')[1];
             return el;
         })
-        localStorage.setItem('token', '')
         setLinkButtons(newArr)
+        mainPageData()
+            .then(response=>{
+                let obj = {
+                    name: response.data.name,
+                    lastName: response.data.lastName,
+                    groupName: response.data.groupName,
+                    yearGroup: response.data.yearGroup,
+
+                };
+                setUser(obj)
+            })
+            .catch(error=>{
+
+            })
     }, [])
 
     function changeActiveTab(id: number) {
@@ -169,7 +189,7 @@ const StudentLayout: React.FC = () => {
                         </div>
                         <div className="nav-other">
                             <button className="nav-other-user">
-                                <InitialsImage initials="МК" width={50} height={50} fontSize={24} textColor="#fff" backgroundColor="#d9d9d9" />
+                                <InitialsImage initials={`${user.name.split('')[0]}${user.lastName.split('')[0]}`} width={50} height={50} fontSize={24} textColor="#fff" backgroundColor="#d9d9d9" />
                             </button>
                             <button className="nav-other-logout" onClick={exit}><img src={LogOut} alt="logout"/></button>
                         </div>

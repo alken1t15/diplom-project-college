@@ -48,7 +48,6 @@ public class ControllerStudent {
 
     @PostMapping(path = "/main")
     public StudentInfoMainPageDTO getInfoForMainPage(@RequestBody UserId userId) {
-        System.out.println("fffffffffffffff");
         ModelMapper modelMapper = new ModelMapper();
         Students student = serviceStudents.getStudent();
         Groups groups = student.getGroup();

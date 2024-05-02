@@ -27,7 +27,7 @@ const ScheduleItem: React.FC<ITardinessItem> = (props) => {
 
 
             {item.schedules.map((el, index)=>(
-                <div className={`schedule-item__info-block`} key={el.id}>
+                <div className={`schedule-item__info-block`} key={index}>
                     <p>
                         <span className={`schedule-item__info-block-span-first`}>{el.time.split(' ')[0]}</span>
                         <span className={`schedule-item__info-block-span-first`}>{el.time.split(' ')[1]}</span>
