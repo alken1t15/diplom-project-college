@@ -1,10 +1,10 @@
 import React, {CSSProperties, useEffect, useState} from 'react';
 import './Pagination.scss';
 export interface IDataArrayItem{
-    id: number,
-    isActive: boolean,
-    date: string,
-    number: string,
+    isActive: boolean;
+    date: string;
+    number: string;
+    requestMonth: number;
 }
 
 export interface IPagination{
@@ -25,7 +25,7 @@ const Pagination: React.FC<IPagination> = (props) => {
         let dataArr = [...dateArray];
 
         let newArr = dataArr.map((el, index)=>{
-            el.isActive = el.id === id;
+            // el.isActive = el.id === id;
             return el;
         })
     }
@@ -33,9 +33,11 @@ const Pagination: React.FC<IPagination> = (props) => {
     return (
         <div className={'pagination-block'} style={props.styles}>
             {dateArray.map((el, index) =>(
-                <button onClick={(e)=>{
-                    changeCurrentPage(el.id)
-                }} className={`pagination-item ${el.isActive ? 'pagination-item-active' : ''}`} key={el.id}>
+                <button
+                    // onClick={(e)=>{
+                    // changeCurrentPage(el.id)
+                // }}
+                    className={`pagination-item ${el.isActive ? 'pagination-item-active' : ''}`} key={index}>
                     <p className={`pagination-item__title`}>{el.number}</p>
                     <p className={`pagination-item__text`}>{el.date}</p>
                 </button>

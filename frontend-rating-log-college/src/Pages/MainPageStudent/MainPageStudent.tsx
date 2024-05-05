@@ -7,6 +7,7 @@ import LatenessItem, {ITardinessItem} from "../../Components/Lateness/LatenessIt
 import ScheduleItem from "../../Components/Schedule/ScheduleItem";
 import FileUploader from "../../Components/FileUploader/FileUploader";
 import {mainPageData} from "../../Http/MainPage";
+import {logOut} from "../../Http/User";
 
 const infoImg = require('../../assets/images/InformationImgg.png');
 const gradeImg = require('../../assets/images/GradesImg.png');
@@ -18,64 +19,64 @@ const MainPageStudent: React.FC = () => {
     let[currentPage, setCurrentPage] = useState(7);
     let [dateArray, setDateArray] = useState<IDataArrayItem[]>([
         {
-            id: 1,
             isActive: true,
             date: 'Янв',
-            number: "01"
+            number: "01",
+            requestMonth: 1
         },
         {
-            id: 2,
             isActive: false,
             date: 'Фев',
-            number: "02"
+            number: "02",
+            requestMonth: 1
         },
         {
-            id: 3,
             isActive: false,
             date: 'Март',
-            number: "03"
+            number: "03",
+            requestMonth: 1
         },
         {
-            id: 4,
             isActive: false,
             date: 'Апр',
-            number: "04"
+            number: "04",
+            requestMonth: 1
         },
         {
-            id: 5,
             isActive: false,
             date: 'Май',
-            number: "05"
+            number: "05",
+            requestMonth: 1
         },
         {
-            id: 6,
             isActive: false,
             date: 'Июн',
-            number: "06"
+            number: "06",
+            requestMonth: 1
         },
         {
-            id: 9,
             isActive: false,
             date: 'Сен',
-            number: "09"
+            number: "09",
+            requestMonth: 1
         },
         {
-            id: 10,
             isActive: false,
             date: 'Окт',
-            number: "10"
+            number: "10",
+            requestMonth: 1
         },
         {
-            id: 11,
             isActive: false,
             date: 'Нояб',
-            number: "11"
+            number: "11",
+            requestMonth: 1
         },
         {
-            id: 12,
             isActive: false,
             date: 'Дек',
-            number: "12"
+            number: "12",
+            requestMonth: 1
         },
     ])
     let[tardinessItem, setTardinessItem] = useState<ITardinessItem[]>([
@@ -164,23 +165,9 @@ const MainPageStudent: React.FC = () => {
                     }]
             }
         ])
-    let[schedule, setSchedule] = useState({
-        date: '3 сентября',
-        nameOfDay: 'Среда',
-        schedules: [
-            {
-                id: 1,
-                time: '9:00 10:30',
-                subject: 'Веб-программирование',
-
-            },  {
-                id: 2,
-                time: '9:00 10:30',
-                subject: 'Веб-программирование',
-
-            },
-        ]
-    })
+    let[schedule, setSchedule] = useState({date: '',
+        nameOfDay: '',
+        items: []})
     let[active, setIsActive] = useState(false)
     let[gradeLine, setGradeLine] = useState([
         {
@@ -208,6 +195,12 @@ const MainPageStudent: React.FC = () => {
             grade: 2
         },
         ]);
+    let[user, setUser] = useState({
+            name: ' ',
+            lastName: ' ',
+            groupName: ' ',
+            yearGroup: ' ',
+    })
 
     function updateCurrentPage(value: any){
         setCurrentPage(value)
@@ -216,12 +209,125 @@ const MainPageStudent: React.FC = () => {
     useEffect(()=>{
         mainPageData()
             .then(response=>{
-                console.log(response.data)
+                let obj = {
+                    name: response.data.name,
+                    lastName: response.data.lastName,
+                    groupName: response.data.groupName,
+                    yearGroup: response.data.yearGroup,
+
+                };
+                let dataArr: IDataArrayItem[]  = [];
+
+                response.data.monthsStudy.forEach((el: any, index: any)=>{
+                    let todayMonth = (new Date()).getMonth() + 1;
+                    let obj: IDataArrayItem = {
+                        isActive: todayMonth === el.requestMonth,
+                        date: el.name.split(' ')[1],
+                        number: el.name.split(' ')[0],
+                        requestMonth: el.requestMonth,
+                    };
+                    dataArr.push(obj)
+
+                })
+
+
+            //         schedules: [
+            //         {
+            //             id: 1,
+            //             time: '9:00 10:30',
+            //             subject: 'Веб-программирование',
+            //
+            //         },  {
+            //             id: 2,
+            //             time: '9:00 10:30',
+            //             subject: 'Веб-программирование',
+            //
+            //         },
+            //     ]
+            //     console.log(response.data.planStudy)
+
+                // let subjects = response.data.planStudy.subjects.map((el: any)=>{
+                //     return {
+                //         time: String(el.startStudy.split(':')[0]) + ':' + String(el.startStudy.split(':')[1]) + ' ' + String(el.endStudy.split(':')[0]) + ':' + String(el.endStudy.split(':')[1]),
+                //         subject: el.name
+                //     }
+                // })
+
+                // console.log(subjects)
+
+                let scheduleObj = {
+                    date: response.data.planStudy.date,
+                    nameOfDay: response.data.planStudy.nameOfWeek,
+                    items: response.data.planStudy.subjects.map((el: any)=>{
+                            return {
+                                time: String(el.startStudy.split(':')[0]) + ':' + String(el.startStudy.split(':')[1]) + ' ' + String(el.endStudy.split(':')[0]) + ':' + String(el.endStudy.split(':')[1]),
+                                subject: el.name
+                            }
+                        })
+
+                }
+                setSchedule(scheduleObj)
+                setDateArray(dataArr)
+                setUser(obj)
             })
             .catch(error=>{
 
             })
+
     }, [])
+
+    useEffect(()=>{
+        let currentMonth;
+        for(let i = 0; i < dateArray.length; i++){
+            if(dateArray[i].isActive){
+                currentMonth = dateArray[i].requestMonth;
+                break;
+            }
+            else{
+                currentMonth = 1
+            }
+        }
+
+
+        mainPageData(currentMonth)
+            .then(response=>{
+
+                // console.log(response.data)
+
+                // {
+                //     date: "2 сентября",
+                //         nameOfDay: "Вторник",
+                //     tardiness: [ {
+                //     id: 1,
+                //     type: 'yellow',
+                //     text: 'С опозданием',
+                //     subject: 'Веб-программирование'
+                // },
+                //     {
+                //         id: 2,
+                //         type: 'green',
+                //         text: 'Без опозданий',
+                //         subject: 'Основа право'
+                //     },
+                //     {
+                //         id: 3,
+                //         type: 'red',
+                //         text: 'Отсутвует',
+                //         subject: 'Комп сети'
+                //     },
+                //     {
+                //         id: 4,
+                //         type: 'cyan',
+                //         text: 'С справкой',
+                //         subject: 'Комп сети'
+                //     }]
+                // } ,
+
+            })
+            .catch(error=>{
+
+            })
+    }, [dateArray])
 
 
     return (
@@ -234,17 +340,17 @@ const MainPageStudent: React.FC = () => {
                     </p>
                     <div className="block-left-header-personal">
                         <div className="block-left-header-personal-l">
-                            <InitialsImage initials="МК" width={70} height={70} fontSize={30} textColor="#fff" backgroundColor="#d9d9d9" />
+                            <InitialsImage initials={`${user.name.split('')[0]}${user.lastName.split('')[0]}`} width={70} height={70} fontSize={30} textColor="#fff" backgroundColor="#d9d9d9" />
                         </div>
                         <div className="block-left-header-personal-r">
-                            <p className="block-left-header-personal-r__header">Кораблев Максим</p>
+                            <p className="block-left-header-personal-r__header">{user.lastName} {user.name}</p>
                             <p className="block-left-header-personal-r__column" style={{marginLeft: 0}}>
                                 Год поступления:
-                                <span className="block-left-header-personal-r__text">2020</span>
+                                <span className="block-left-header-personal-r__text">{user.yearGroup}</span>
                             </p>
                             <p className="block-left-header-personal-r__column">
                                 Группа:
-                                <span className="block-left-header-personal-r__text">П-20-51б</span>
+                                <span className="block-left-header-personal-r__text">{user.groupName}</span>
                             </p>
                         </div>
                     </div>
@@ -280,7 +386,7 @@ const MainPageStudent: React.FC = () => {
                     <img src={teachImg} alt="Info img"/>
                     Расписание на сегодня
                 </p>
-                <ScheduleItem date={schedule.date} nameOfDay={schedule.nameOfDay} schedules={schedule.schedules}/>
+                <ScheduleItem date={schedule.date} nameOfDay={schedule.nameOfDay} schedules={schedule.items}/>
                 <button className="block-right__button" onClick={
                     (e) => {
                         setIsActive(true)

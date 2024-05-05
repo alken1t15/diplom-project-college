@@ -69,6 +69,7 @@ public class JWTFilter extends OncePerRequestFilter {
                 String token = headerAuth.substring(7);
                 logger.info(String.format("JWT который был получен: %s", token));
                 LoginAuth loginAuth = jwtUtil.validateTokenAndRetrieveSubject(token);
+
                 if (loginAuth == null) {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     response.getWriter().write("Не правильный JWT токен");

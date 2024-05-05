@@ -1,0 +1,41 @@
+.filter-block{
+  padding: 13px 10px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  background-color: var(--purple);
+  width: 123px;
+  position: relative;
+  &__img{
+    width: 25px;
+    height: 18px;
+    margin-right: 7px;
+  }
+  &__text{
+    font-weight: 400;
+    font-size: 18px;
+  }
+  &-hidden{
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    opacity: 0;
+    z-index: -9999;
+    background-color: var(--purple);
+    transition: .5s;
+  }
+  &-visible{
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    opacity: 1;
+    z-index: 9999;
+    background-color: var(--purple);
+    transition: .5s;
+
+  }
+}
