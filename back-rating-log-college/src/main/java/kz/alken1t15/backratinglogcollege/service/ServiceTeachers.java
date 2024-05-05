@@ -82,14 +82,12 @@ public class ServiceTeachers {
         }
         Groups group = serviceGroup.findById(idGroup);
         List<Students> students = group.getStudents();
-        System.out.println(id);
-        System.out.println(certificateHave);
         if (certificateHave) {
             for (Students student : students) {
                 Omissions omissions = serviceOmissions.findByDateAndSubjectNameAndCertificate(LocalDate.now(), nameSubject, student.getId(), group.getCurrentCourse());
                 if (omissions != null) {
                     Integer count = serviceOmissions.findBySubjectNameAndIdStudentCountOmission(nameSubject, student.getId(), group.getCurrentCourse());
-                    currentOmissionStudents.add(new CurrentOmissionStudent(String.format("%s %s %s", student.getSecondName(), student.getFirstName(), student.getMiddleName()), count, omissions.getStatus(), omissions.getFilesStudent().getId()));
+                    currentOmissionStudents.add(new CurrentOmissionStudent(String.format("%s %s %s", student.getSecondName(), student.getFirstName(), student.getMiddleName()), count, omissions.getStatus(), omissions.getFilesStudent().getId(), student.getId()));
                 }
             }
         } else {
@@ -99,9 +97,9 @@ public class ServiceTeachers {
                 Integer count = serviceOmissions.findBySubjectNameAndIdStudentCountOmission(nameSubject, student.getId(), group.getCurrentCourse());
                 if (omissionsHaseCertificate == null) {
                     if (omissions == null) {
-                        currentOmissionStudents.add(new CurrentOmissionStudent(String.format("%s %s %s", student.getSecondName(), student.getFirstName(), student.getMiddleName()), count, null, null));
+                        currentOmissionStudents.add(new CurrentOmissionStudent(String.format("%s %s %s", student.getSecondName(), student.getFirstName(), student.getMiddleName()), count, null, null, student.getId()));
                     } else {
-                        currentOmissionStudents.add(new CurrentOmissionStudent(String.format("%s %s %s", student.getSecondName(), student.getFirstName(), student.getMiddleName()), count, omissions.getStatus(), null));
+                        currentOmissionStudents.add(new CurrentOmissionStudent(String.format("%s %s %s", student.getSecondName(), student.getFirstName(), student.getMiddleName()), count, omissions.getStatus(), null, student.getId()));
                     }
                 }
             }
@@ -110,7 +108,7 @@ public class ServiceTeachers {
     }
 
 
-    public record CurrentOmissionStudent(String name, Integer count, String status, Long idCertificate) {
+    public record CurrentOmissionStudent(String name, Integer count, String status, Long idCertificate,Long idStudent) {
     }
 
     public record TeacherDTOP(String name, Integer yearWork) {

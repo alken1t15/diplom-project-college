@@ -53,4 +53,13 @@ public class Omissions {
         this.numberMonth = numberMonth;
         this.filesStudent = filesStudent;
     }
+
+    public Omissions(StudentsCourse studentsCourse, LocalDate dateOmissions, String status, String nameObject, Integer numberCouple, Integer numberMonth) {
+        this.studentsCourse = studentsCourse;
+        this.dateOmissions = dateOmissions;
+        this.status = status;
+        this.nameObject = nameObject;
+        this.numberCouple = numberCouple;
+        this.numberMonth = numberMonth;
+    }
 }

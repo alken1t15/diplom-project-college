@@ -15,11 +15,14 @@ public class CurrentGraphStudyGroup {
     private LocalTime timeStart;
     private String nameSubject;
     private Long idGroup;
+    private Integer numberOfCouple;
 
-    public CurrentGraphStudyGroup(String name, LocalTime timeStart, String nameSubject, Long idGroup) {
+
+    public CurrentGraphStudyGroup(String name, LocalTime timeStart, String nameSubject, Long idGroup, Integer numberOfCouple) {
         this.name = name;
         this.timeStart = timeStart;
         this.nameSubject = nameSubject;
         this.idGroup = idGroup;
+        this.numberOfCouple = numberOfCouple;
     }
 }
