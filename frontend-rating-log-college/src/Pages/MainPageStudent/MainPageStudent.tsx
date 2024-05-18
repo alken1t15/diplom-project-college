@@ -7,7 +7,6 @@ import LatenessItem, {ITardinessItem} from "../../Components/Lateness/LatenessIt
 import ScheduleItem from "../../Components/Schedule/ScheduleItem";
 import FileUploader from "../../Components/FileUploader/FileUploader";
 import {mainPageData} from "../../Http/MainPage";
-import {logOut} from "../../Http/User";
 
 const infoImg = require('../../assets/images/InformationImgg.png');
 const gradeImg = require('../../assets/images/GradesImg.png');
@@ -204,20 +203,38 @@ const MainPageStudent: React.FC = () => {
 
     function updateCurrentPage(value: any){
         setCurrentPage(value)
+        console.log(value)
+        mainPageData(value)
+            .then(response=>{
+                console.log(response.data)
+
+            })
+            .catch(error=>{
+
+            })
     }
+
+    function updateUser(name: string, lastName: string, groupName: string, yearGroup: string){
+        let obj = {
+            name: name,
+            lastName: lastName,
+            groupName: groupName,
+            yearGroup: yearGroup,
+
+        };
+        setUser(obj)
+    }
+
+     function updateEvaluations(){
+
+     }
 
     useEffect(()=>{
         mainPageData()
             .then(response=>{
-                let obj = {
-                    name: response.data.name,
-                    lastName: response.data.lastName,
-                    groupName: response.data.groupName,
-                    yearGroup: response.data.yearGroup,
+                updateUser(response.data.name, response.data.lastName, response.data.groupName, response.data.yearGroup)
 
-                };
                 let dataArr: IDataArrayItem[]  = [];
-
                 response.data.monthsStudy.forEach((el: any, index: any)=>{
                     let todayMonth = (new Date()).getMonth() + 1;
                     let obj: IDataArrayItem = {
@@ -229,7 +246,7 @@ const MainPageStudent: React.FC = () => {
                     dataArr.push(obj)
 
                 })
-
+                setGradeLine(response.data.evaluations)
 
             //         schedules: [
             //         {
@@ -268,7 +285,7 @@ const MainPageStudent: React.FC = () => {
                 }
                 setSchedule(scheduleObj)
                 setDateArray(dataArr)
-                setUser(obj)
+
             })
             .catch(error=>{
 

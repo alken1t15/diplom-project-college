@@ -25,7 +25,7 @@ const Pagination: React.FC<IPagination> = (props) => {
         let dataArr = [...dateArray];
 
         let newArr = dataArr.map((el, index)=>{
-            // el.isActive = el.id === id;
+            el.isActive = el.requestMonth === id;
             return el;
         })
     }
@@ -34,9 +34,9 @@ const Pagination: React.FC<IPagination> = (props) => {
         <div className={'pagination-block'} style={props.styles}>
             {dateArray.map((el, index) =>(
                 <button
-                    // onClick={(e)=>{
-                    // changeCurrentPage(el.id)
-                // }}
+                    onClick={(e)=>{
+                    changeCurrentPage(el.requestMonth)
+                }}
                     className={`pagination-item ${el.isActive ? 'pagination-item-active' : ''}`} key={index}>
                     <p className={`pagination-item__title`}>{el.number}</p>
                     <p className={`pagination-item__text`}>{el.date}</p>
