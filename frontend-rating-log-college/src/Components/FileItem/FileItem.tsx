@@ -4,7 +4,7 @@ import './FileItem.scss'
 export interface IFileItem{
     id: number;
     text: string;
-    date: string;
+    date?: string;
     img: any;
     size?: string;
 }

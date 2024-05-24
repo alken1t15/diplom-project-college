@@ -14,12 +14,8 @@ interface BlueButtonProps{
     style?: React.CSSProperties;
 }
 
-const Button: React.FC<BlueButtonProps> = ({link,
-                                                   name,
-                                                   data,
-                                                   onClick,
-                                                   style,
-                                                   active}) => {
+const Button: React.FC<BlueButtonProps> = ({link, name, data, onClick, style, active}) => {
+
     let [linkValue, setLinkValue] = useState<number | string | undefined>(link);
     let [nameValue, setNameValue] = useState<string>(name);
     let [isActive, setIsActive] = useState<boolean | undefined>(undefined);

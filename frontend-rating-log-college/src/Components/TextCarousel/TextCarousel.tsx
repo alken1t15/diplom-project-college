@@ -32,7 +32,7 @@ const TextCarousel: React.FC<CarouselProps> = ({ items, onChange }) => {
             scrollbar={{
                 hide: true,
             }}
-            loop={true}
+            loop={items.length > 1}
             slidesPerView={1}
             navigation={{
                 prevEl: navigationPrevRef.current,

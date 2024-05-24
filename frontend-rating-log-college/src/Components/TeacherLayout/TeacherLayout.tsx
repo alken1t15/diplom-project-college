@@ -18,7 +18,7 @@ import './TeacherLayout.scss';
 import InitialsImage from "../InitialsImage/InitialsImage";
 import button from "../../UI/Button/Button";
 import {logOut} from "../../Http/User";
-import {mainPageData} from "../../Http/MainPage";
+import {mainPageData, mainPageTeacherData} from "../../Http/MainPage";
 
 const Logo = require('../../assets/images/Logo.png');
 const LogOut = require('../../assets/images/ExitPng.png');
@@ -50,6 +50,8 @@ const TeacherLayout: React.FC = () => {
         }
     ])
     let navigator = useNavigate();
+    let [userName ,setUserName] = useState('')
+    let [userLastName ,setUSerLastName] = useState('')
 
     useEffect(()=>{
         let newArr = linkButtons.map((el, index)=>{
@@ -57,6 +59,15 @@ const TeacherLayout: React.FC = () => {
             return el;
         })
         setLinkButtons(newArr)
+
+        mainPageTeacherData()
+            .then(response=>{
+               setUserName(response.data.teacher.name.split(' ')[0])
+               setUSerLastName(response.data.teacher.name.split(' ')[1])
+            })
+            .catch(error=>{
+
+            })
 
     }, [])
 
@@ -168,7 +179,7 @@ const TeacherLayout: React.FC = () => {
                         </div>
                         <div className="nav-other">
                             <button className="nav-other-user">
-                                <InitialsImage initials="МК" width={50} height={50} fontSize={24} textColor="#fff" backgroundColor="#d9d9d9" />
+                                <InitialsImage initials={`${userName.split('')[0]}${userLastName.split('')[0]}`} width={50} height={50} fontSize={24} textColor="#fff" backgroundColor="#d9d9d9" />
                             </button>
                             <button className="nav-other-logout" onClick={exit}><img src={LogOut} alt="logout"/></button>
                         </div>

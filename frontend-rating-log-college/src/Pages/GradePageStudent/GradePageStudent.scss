@@ -104,7 +104,7 @@
 .my-table td {
   border-right: 1px solid #B4B7BC;
   border-bottom: 1px solid #B4B7BC;
-  padding: 19px 10px;
+  padding: 19px 11px;
 }
 
 .my-table .first-column {
@@ -124,6 +124,8 @@
   font-size: 16px;
   text-align: center;
   word-wrap: break-word;
+  min-width: 54px;
+  min-height: 60px;
 }
 
 .my-table{
@@ -157,5 +159,9 @@
 .break-item{
   word-wrap: break-word;
   word-break: break-word;
+}
+
+.block-right-grade{
+  flex-grow: 1;
 }
 

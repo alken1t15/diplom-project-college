@@ -81,6 +81,8 @@ const StudentLayout: React.FC = () => {
             })
     }, [])
 
+
+
     function changeActiveTab(id: number) {
         const currentIndex = linkButtons.findIndex(el => el.active) + 1;
 

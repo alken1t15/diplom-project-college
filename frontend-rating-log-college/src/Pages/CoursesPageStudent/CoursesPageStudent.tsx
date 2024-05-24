@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './CoursesPageStudent.scss';
 import CoursesItem, {CourseItem} from "../../Components/CoursesItem/CoursesItem";
 import FileItem, {IFileItem} from "../../Components/FileItem/FileItem";
+import {getCoursesItems} from "../../Http/Courses";
 
 const fileImg = require('../../assets/images/PDF.png');
 
@@ -14,25 +15,7 @@ const CoursesPageStudent: React.FC = () => {
             name: '1 Курс',
             date: 'Год: 2020',
             active: true
-        },
-        {
-            id: 2,
-            name: '2 Курс',
-            date: 'Год: 2022',
-            active: false
-        },
-        {
-            id: 3,
-            name: '3 Курс',
-            date: 'Год: 2023',
-            active: false
-        },
-        {
-            id: 4,
-            name: '4 Курс',
-            date: 'Год: 2024',
-            active: false
-        },
+        }
     ])
     let[currentCourse, setCurrentCourse] = useState<CourseItem>(courses[0])
     let[fileItems, setFileItems] = useState<IFileItem[]>([
@@ -120,6 +103,28 @@ const CoursesPageStudent: React.FC = () => {
         }
 
     }
+
+    useEffect(()=>{
+        getCoursesItems(currentCourse.id).then((response: any)=>{
+            let newCourses = response.data.courses.map((el: any)=>{
+                let newObj = {
+                    id: el.course,
+                    name: `${el.course} Курс`,
+                    date: `Год: ${el.year}`,
+                    active: response.data.currentCourse === el.course
+                }
+                if(response.data.currentCourse === el.course){
+                    setCurrentCourse(newObj)
+                }
+                return newObj;
+            })
+            setCourses(newCourses)
+
+
+        }).catch((error)=>{
+
+        })
+    },[])
 
 
     return (

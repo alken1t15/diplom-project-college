@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import './MainPageTeacher.scss';
 import InitialsImage from "../../Components/InitialsImage/InitialsImage";
-import GradeLine from "../../Components/GradeLine/GradeLine";
-import Pagination, {IDataArrayItem} from "../../Components/Pagination/Pagination";
-import LatenessItem, {ITardinessItem} from "../../Components/Lateness/LatenessItem";
-import ScheduleItem from "../../Components/Schedule/ScheduleItem";
-import FileUploader from "../../Components/FileUploader/FileUploader";
-import {mainPageData} from "../../Http/MainPage";
+import {mainPageTeacherData} from "../../Http/MainPage";
 import doneImg from '../../assets/images/Check.svg';
 import HomeworkBlock, {HomeworkItem} from "../../Components/HomeworkBlock/HomeworkBlock";
 import TimeBlock, {ITimeBlock} from "../../Components/TimeBlock/TimeBlock";
 import ScheduleTeacherBlock from "../../Components/ScheduleTeacherBlock/ScheduleTeacherBlock";
+import {parse, addMinutes, isWithinInterval} from "date-fns";
+import Slider, {ISliderItem} from "../../Components/Slider/Slider";
+import {login} from "../../Http/User";
+import StudentWithoutCertificate from "../../Components/StudentWithoutCertificate/StudentWithoutCertificate";
+
 
 const infoImg = require('../../assets/images/InformationImgg.png');
 const gradeImg = require('../../assets/images/GradesImg.png');
@@ -52,42 +52,27 @@ const MainPageTeacher: React.FC = () => {
         },
 
     ])
-    let[dateAndTime, setDateAndTime] = useState({
-        date: '11 Сен',
-        nameOfTheDay: 'Вторник'
-    })
-    let[schedule, setSchedule] = useState<ISchedule[]>([
+
+    let[schedule, setSchedule] = useState<ISchedule[]>([])
+    let[time, setTime] = useState("")
+    let[presence, setPresence] = useState('')
+    let[userName, setUserName] = useState('')
+    let[userYEar, setUserYear] = useState('')
+    let[studentsWithCertificate, setStudentsWithCertificate] = useState<any[]>([])
+    let[studentWithoutCertificate, setStudentWithoutCertificate] = useState<any[]>([])
+    let[slider, setSlider] =useState([
         {
-            groupName: 'П-20-51б',
-            time: '9:00',
-            subject: 'Веб-программирование',
+          id: 1,
+          name: 'Проверка',
+          active: true,
         },
         {
-            groupName: 'ИС-12-23б',
-            time: '10:30',
-            subject: 'Веб-программирование',
-        },
-        {
-            groupName: 'П-20-53к',
-            time: '13:00',
-            subject: 'Веб-программирование',
+            id: 2,
+            name: 'Со справкой',
+            active: false,
         },
     ])
-    let[time, setTime] = useState("")
-    let[presence, setPresence] = useState({
-        group: 'П-20-23к',
-
-    })
-
-    useEffect(()=>{
-        // mainPageData()
-        //     .then(response=>{
-        //         console.log(response.data)
-        //     })
-        //     .catch(error=>{
-        //
-        //     })
-    }, [])
+    let[curSlider, setCurSlider] =useState(1);
 
     function setActiveOnSchedule(){
         let curTimeSplit = time.split(':').map(Number);
@@ -126,8 +111,6 @@ const MainPageTeacher: React.FC = () => {
 
     }
 
-
-
     useEffect(()=>{
         setActiveOnSchedule();
     }, [time])
@@ -140,15 +123,95 @@ const MainPageTeacher: React.FC = () => {
         setTime(currentTime);
     }
 
+    function setCurrentStudent(){
+
+        mainPageTeacherData()
+            .then(response=>{
+
+                let withCertif: any[] = [];
+                let withoutCertif: any[] = [];
+
+                response.data.currentOmissionStudents.forEach((el: any)=>{
+                    let newObj={
+                        name: el.name,
+                        count: el.count,
+                        status: false,
+                    }
+                    if(el.idCertificate !== null){
+                        newObj.status = true;
+                        withCertif.push(newObj)
+                    }
+                    else{
+                        newObj.status = false;
+                        withoutCertif.push(newObj)
+                    }
+                })
+
+                setStudentWithoutCertificate(withoutCertif)
+                setStudentsWithCertificate(withCertif)
+
+
+            })
+            .catch(error=>{
+
+            })
+
+
+    }
+
     useEffect(() => {
+
+        mainPageTeacherData()
+            .then(response=>{
+                setUserName(response.data.teacher.name)
+                setUserYear(response.data.teacher.yearWork)
+                let newSchedule = response.data.graphGroupsForStudy.map((el: any)=>{
+                    let newObj = {
+                        groupName: el.name,
+                        time: el.timeStart.slice(0, 5),
+                        subject: el.nameSubject,
+                    }
+                    let time = parse(el.timeStart.slice(0, 5), 'HH:mm', new Date());
+                    let currentTime = new Date();
+                    let endTime = addMinutes(time, 90);
+                    if(isWithinInterval(currentTime, { start: time, end: endTime })){
+                        setPresence(el.name)
+                    }
+                    return newObj;
+                })
+                setSchedule(newSchedule)
+
+
+            })
+            .catch(error=>{
+
+            })
+        setCurrentStudent()
         getTime()
+
+        const timeStudentInterval = setInterval(() => {
+            setCurrentStudent()
+        }, 600000);
+
         const timeInterval = setInterval(() => {
             getTime()
-        }, 60000);
+        }, 10000);
 
-        return () => clearInterval(timeInterval);
+        return () => {
+            clearInterval(timeInterval)
+            clearInterval(timeStudentInterval)
+        };
+
     }, []);
 
+    function setSliderItems(id: number){
+        let newArr = slider.map((el1: any)=>{
+            el1.active = el1.id === id
+            return el1;
+        })
+        setSlider(newArr)
+        setCurSlider(id)
+    }
 
     return (
         <div className={'main-page main-page-t'}>
@@ -160,13 +223,13 @@ const MainPageTeacher: React.FC = () => {
                     </p>
                     <div className="block-left-header-personal">
                         <div className="block-left-header-personal-l">
-                            <InitialsImage initials="МК" width={70} height={70} fontSize={30} textColor="#fff" backgroundColor="#d9d9d9" />
+                            <InitialsImage initials={(userName ? userName.split(' ')[0][0]: '') + (userName ? userName.split(' ')[1][0] : '')}  width={70} height={70} fontSize={30} textColor="#fff" backgroundColor="#d9d9d9" />
                         </div>
                         <div className="block-left-header-personal-r">
-                            <p className="block-left-header-personal-r__header">Кораблев Максим</p>
+                            <p className="block-left-header-personal-r__header">{userName}</p>
                             <p className="block-left-header-personal-r__column" style={{marginLeft: 0}}>
                                 Год трудоустройства:
-                                <span className="block-left-header-personal-r__text">2020</span>
+                                <span className="block-left-header-personal-r__text">{userYEar}</span>
                             </p>
 
 
@@ -194,11 +257,9 @@ const MainPageTeacher: React.FC = () => {
                 <p className={'block-middle__text block-middle__text-t'}>
                     Расписание
                 </p>
-
-                <TimeBlock date={dateAndTime.date} time={time} nameOfTheDay={dateAndTime.nameOfTheDay}/>
-
+                <TimeBlock time={time}/>
                <div className="schedule-box">
-                   {schedule.map((el, index)=>
+                   {schedule.length > 0 ? schedule.map((el, index)=>
                        <ScheduleTeacherBlock groupName={el.groupName} time={el.time} subject={el.subject} curTime={time}
                                              key={index}
                                              nextItem={index !== schedule.length-1 ? schedule[index+1] : schedule[index]}
@@ -206,15 +267,26 @@ const MainPageTeacher: React.FC = () => {
                                              active={el.active}
                                              last={index === schedule.length - 1}
                        />
-                   )}
+                   ) : ''}
                </div>
 
             </div>
             <div className={'block-right block-right-t'}>
                 <p className={'block-right__text'}>
-                    {presence.group}
+                    {presence ? presence : 'На текущей момент нет активного урока'}
                 </p>
-
+                <div>
+                    <Slider items={slider} onChange={setSliderItems}/>
+                    {curSlider === 1 ?
+                        <>
+                        {studentWithoutCertificate.length > 0 ? studentWithoutCertificate.map((el: any, index: any)=>(
+                            // <StudentWithoutCertificate item={studentWithoutCertificate} key={index}/>
+                            <></>
+                        )) : ''}
+                        </>
+                        :
+                        <></>}
+                </div>
 
             </div>
         </div>

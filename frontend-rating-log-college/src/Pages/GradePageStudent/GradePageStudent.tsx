@@ -1,149 +1,57 @@
 import React, {useEffect, useState} from 'react';
 import './GradePageStudent.scss';
-import InitialsImage from "../../Components/InitialsImage/InitialsImage";
-import GradeLine from "../../Components/GradeLine/GradeLine";
 import Pagination, {IDataArrayItem} from "../../Components/Pagination/Pagination";
-import LatenessItem, {ITardinessItem} from "../../Components/Lateness/LatenessItem";
-import ScheduleItem from "../../Components/Schedule/ScheduleItem";
-import FileUploader from "../../Components/FileUploader/FileUploader";
 import TextCarousel from "../../Components/TextCarousel/TextCarousel";
 import TeachersBlock, {ITeachersItem} from "../../Components/TeachersBlock/TeachersBlock";
+import {gradePageData} from "../../Http/GradePage";
 
 const infoImg = require('../../assets/images/InformationImgg.png');
 const gradeImg = require('../../assets/images/GradesImg.png');
 const houseImg = require('../../assets/images/School.png');
 const teachImg = require('../../assets/images/TeacherImg.png');
 const backImg = require('../../assets/images/backImg.png');
+
+interface ICourses {
+    id: number;
+    active: boolean;
+    text: string;
+}
+
+interface ISem {
+    id: number;
+    active: boolean;
+    name: string;
+}
+
+interface IGradeTable{
+    items: string[]
+}
+
 const GradePageStudent: React.FC = () => {
 
-    let[currentPage, setCurrentPage] = useState(7);
+    let[currentMonth, setCurrentMonth] = useState(9);
     let[currentCourse, setCurrentCourse] = useState(1);
     let[currentQuarter , setCurrentQuarter] = useState(1);
-    let[dateArray, setDateArray] = useState<IDataArrayItem[]>([
-        {
-            isActive: true,
-            date: 'Янв',
-            number: "01",
-            requestMonth: 1
-        },
-        {
-            isActive: false,
-            date: 'Фев',
-            number: "02",
-            requestMonth: 1
-        },
-        {
-            isActive: false,
-            date: 'Март',
-            number: "03",
-            requestMonth: 1
-        },
-        {
-            isActive: false,
-            date: 'Апр',
-            number: "04",
-            requestMonth: 1
-        },
-        {
-            isActive: false,
-            date: 'Май',
-            number: "05",
-            requestMonth: 1
-        },
-        {
-            isActive: false,
-            date: 'Июн',
-            number: "06",
-            requestMonth: 1
-        },
-        {
-            isActive: false,
-            date: 'Сен',
-            number: "09",
-            requestMonth: 1
-        },
-        {
-            isActive: false,
-            date: 'Окт',
-            number: "10",
-            requestMonth: 1
-        },
-        {
-            isActive: false,
-            date: 'Нояб',
-            number: "11",
-            requestMonth: 1
-        },
-        {
-            isActive: false,
-            date: 'Дек',
-            number: "12",
-            requestMonth: 1
-        },
-    ])
-    let[courses, setCourses] = useState([
+    let[dateArray, setDateArray] = useState<IDataArrayItem[]>([])
+    let[courses, setCourses] = useState<ICourses[]>([]);
+    let[quarters , setQuarters] = useState<ISem[]>([
         {
             id: 1,
             active: true,
-            text: '1 курс',
+            name: `1 семестр`,
         },
         {
             id: 2,
             active: false,
-            text: '2 курс',
-        },
-        {
-            id: 3,
-            active: false,
-            text: '3 курс',
-        },
-        {
-            id: 4,
-            active: false,
-            text: '4 курс',
+            name: `2 семестр`,
         },
     ]);
-    let[quarters , setQuarters] = useState([
-        {
-            id: 1,
-            active: true,
-            name: '1 семестр'
-        },
-        {
-            id: 2,
-            active: false,
-            name: '2 семестр'
-        }
-    ]);
-    let[currentTable, setCurrentTable] = useState([
-        {
-            id: 1,
-            items: ['Предметы\\Даты', '01 Пн', '02 Вт', '03 Ср', '04 Чт', '05 Пт', '08 Пн', '09 Пн', '10 Вт', '11 Ср', '12 Чт', '15 Пт', '16 Пн', '17 Чт', '18 Пт', '19 Пн', '21 Пн', '22 Вт', '23 Ср', '24 Чт', '25 Пт']
-        },
-        {
-            id: 2,
-            items: ['Веб-программирование', '89', '92', '\u00A0', '\u00A0', '\u00A0', '\u00A0', '95', '40', '65', '\u00A0', '\u00A0', '\u00A0', '\u00A0', '\u00A0', '\u00A0', '\u00A0', '\u00A0', '\u00A0', '\u00A0', '\u00A0']
-        },
-    ])
-    let[currentBody, setCurrentBody] = useState([{
-        id: 2,
-        items: ['Веб-программирование', ' ', ' ', '0', '0', '20', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
-    },]);
-    let[teachers, setTeacher] = useState<ITeachersItem[]>([
-        {
-            id: 1,
-            name: 'Денис Валентинович',
-            subject: 'Веб-программирования'
-        },
-        {
-            id: 2,
-            name: 'Марина Галимовна',
-            subject: 'Философия'
-        },
-    ])
+    let[currentTable, setCurrentTable] = useState<any[]>([])
+    let[currentBody, setCurrentBody] = useState<string[]>([]);
+    let[teachers, setTeacher] = useState<ITeachersItem[]>([])
 
-    function updateCurrentPage(value: any){
-        setCurrentPage(value)
+    function updateCurrentMonth(value: any){
+        setCurrentMonth(value)
     }
 
     function updateActiveQuarter(id: any){
@@ -152,6 +60,7 @@ const GradePageStudent: React.FC = () => {
             return el;
         })
         setQuarters(newArr)
+        setCurrentQuarter(id)
     }
 
     const handleCarouselChange = (index: number) => {
@@ -168,11 +77,115 @@ const GradePageStudent: React.FC = () => {
         setCourses(newItems);
     };
 
+    function setNewTeacher(array: ITeachersItem[]){
+        let newTeachArr = array.map((el: any)=>{
+            let newObj = {
+                name: el.teacherFirstName + " " + el.teacherSecondName,
+                subject: el.subjectName
+            }
+            return newObj;
+        })
+        setTeacher(newTeachArr)
+    }
+
     useEffect(() => {
-        let arrBody = [...currentTable].slice(1);
-        setCurrentBody(arrBody);
+        if(currentTable.length > 0){
+            let newCurBody = [...currentTable].slice(1).map((el: any)=>{
+                if(el === null){
+                    return '\u00A0'
+                }
+                return el
+            })
+            setCurrentBody(newCurBody);
+
+        }
+
+
 
     }, [currentTable]);
+
+    useEffect(()=>{
+        gradePageData(currentCourse,currentQuarter,currentMonth).then((response)=>{
+
+            let dataArr: IDataArrayItem[]  = [];
+            response.data.months.forEach((el: any, index: any)=>{
+                let obj: IDataArrayItem = {
+                    isActive: currentMonth === el.requestMonth,
+                    date: el.name.split(' ')[1],
+                    number: el.name.split(' ')[0],
+                    requestMonth: el.requestMonth,
+                };
+                dataArr.push(obj)
+
+            })
+            setDateArray(dataArr)
+
+            let arrCourses = [];
+            for(let i = 1; i !== response.data.totalCourse+1; i++){
+                let obj = {
+                    id: i,
+                    active: i === 1,
+                    text: `${i} курс`,
+                }
+                arrCourses.push(obj)
+
+            }
+            setCourses(arrCourses)
+            setCurrentTable(response.data.evaluations)
+            setNewTeacher(response.data.teachers)
+
+        })
+            .catch((error)=>{
+
+            })
+
+
+
+    }, [currentMonth, currentQuarter, currentCourse])
+
+
+    useEffect(()=>{
+        gradePageData(currentCourse,currentQuarter,currentMonth).then((response)=>{
+
+            let dataArr: IDataArrayItem[]  = [];
+            response.data.months.forEach((el: any, index: any)=>{
+                let obj: IDataArrayItem = {
+                    isActive: index === 0,
+                    date: el.name.split(' ')[1],
+                    number: el.name.split(' ')[0],
+                    requestMonth: el.requestMonth,
+                };
+                dataArr.push(obj)
+
+            })
+            setDateArray(dataArr)
+
+
+            let arrCourses = [];
+            for(let i = 1; i !== response.data.totalCourse+1; i++){
+                let obj = {
+                    id: i,
+                    active: i === 1,
+                    text: `${i} курс`,
+                }
+                arrCourses.push(obj)
+
+            }
+            setCourses(arrCourses)
+
+            setCurrentTable(response.data.evaluations)
+            setNewTeacher(response.data.teachers)
+        })
+            .catch((error)=>{
+
+            })
+
+
+    },[])
+
+
+
+
 
     return (
         <div className={'main-page'}>
@@ -180,7 +193,7 @@ const GradePageStudent: React.FC = () => {
 
 
                 <div className="block-middle-wrapper">
-                    <div className="block-middle-tabs">
+                    {quarters.length > 0 ? <div className="block-middle-tabs">
                         {quarters.map((el, index) => (
                             <button
                                 onClick={(e) => {
@@ -192,11 +205,11 @@ const GradePageStudent: React.FC = () => {
 
                             >{el.name}</button>
                         ))}
-                    </div>
+                    </div> : ''}
                     <div className="block-middle-top">
                         <TextCarousel items={courses} onChange={handleCarouselChange}/>
                     </div>
-                    <Pagination items={dateArray} onChange={updateCurrentPage}
+                    <Pagination isGrades={true} items={dateArray} onChange={updateCurrentMonth}
                                 styles={{marginBottom: 15, marginTop: 23}}/>
 
                     <div className="block-middle-grades">
@@ -221,31 +234,38 @@ const GradePageStudent: React.FC = () => {
                     <table className="my-table">
                         <thead>
                         <tr>
-                            {currentTable[0].items.map((el, index)=>(
+
+
+                            {currentTable && currentTable[0] ?  currentTable[0].map((el:any, index: any)=>(
                                 <th key={index} className={`${index === 0 ? 'first-column ' : 'column-text'}
-                                 ${index === 1 ? 'break-item' : ''} `}>{el}</th>
-                            ))}
+                                 ${index === 1 ? 'break-item' : ''} `}>{el.length === 3
+                                    ? `${el[0]} ${el.slice(1)}`
+                                    : el.length === 4
+                                        ? `${el.slice(0, 2)} ${el.slice(2)}`
+                                        : el}</th>
+                            )) : ''}
                         </tr>
                         </thead>
                         <tbody>
-                        {currentBody.map((el, index)=> (
+                        {currentBody && currentBody.length > 0 ? currentBody.map((el: any, index)=> (
                             <tr key={index}>
-                                {el.items.map((childEl, chileIndex)=> (
-                                    <td key={chileIndex} className={`${chileIndex === 0 ? 'first-column' : 'column-text'} 
+                                {el.map((childEl: any, chileIndex: any)=> (
+
+                                    <td key={chileIndex} className={`${chileIndex === 0 ? 'first-column' : 'column-text'}
                                        ${
                                         Number(childEl) >= 90 ? 'table-item-green' :
                                             Number(childEl) > 70 && Number(childEl) < 90 ? 'table-item-dark-green' :
-                                                Number(childEl) > 40 && Number(childEl) < 70 ? 'table-item-yellow' : 
+                                                Number(childEl) > 40 && Number(childEl) < 70 ? 'table-item-yellow' :
                                                     Number(childEl) <= 40 && Number(childEl) !== 0 ? 'table-item-red' :
                                                             chileIndex == 1 ? '' : ''
 
 
                                     }
-                                    `}>{childEl}{chileIndex !== 0 && childEl != '\u00A0' ? '%' : '\u00A0'}</td>
+                                    `}>{childEl ? childEl : ''}{chileIndex !== 0 && childEl? '%' : ''}</td>
                                 ))}
 
                             </tr>
-                        ))}
+                        )) : ''}
 
 
                         </tbody>
@@ -261,9 +281,9 @@ const GradePageStudent: React.FC = () => {
                 <img src={teachImg} alt="Info img"/>
                     Список учителей
                 </p>
-                {teachers.map((el, index)=>(
-                    <TeachersBlock item={el} />
-                ))}
+                {teachers.length > 0 ? teachers.map((el, index)=>(
+                    <TeachersBlock item={el} key={index}/>
+                )) : ''}
 
             </div>
         </div>
