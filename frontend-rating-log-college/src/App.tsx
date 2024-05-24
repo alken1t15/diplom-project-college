@@ -19,7 +19,7 @@ import TeacherLayout from "./Components/TeacherLayout/TeacherLayout";
 import MainPageTeacher from "./Pages/MainPageTeacher/MainPageTeacher";
 import HomeWorksPageTeacher from "./Pages/HomeWorksPageTeacher/HomeWorksPageTeacher";
 import {UserProvider} from "./Store/Providers/UserProvider";
-import {mainPageData} from "./Http/MainPage";
+import {mainPageData, mainPageTeacherData} from "./Http/MainPage";
 import {selectLoading, selectUser} from "./Store/Selectors/authSelectors";
 import {useDispatch, useSelector} from "react-redux";
 import {useCustomNavigate} from "./hooks/navigator";
@@ -32,19 +32,34 @@ function App() {
         let user: any = getItemFromLocalStorage('user');
         let parsedUser = JSON.parse(user);
         if(parsedUser){
-            mainPageData()
-                .then(response=>{
-                    if(parsedUser.role === 'student' && window.location.href.split('http://localhost:3000/')[1] === ''){
-                        setNavigate(MAIN_PAGE_STUDENT_ROUTE)
-                    }
-                    else if(parsedUser.role === 'teacher' && window.location.href.split('http://localhost:3000/')[1] === ''){
-                        setNavigate(TEACHER_MAIN_PAGE_ROUTE)
-                    }
+            if(parsedUser.role === 'student'){
+                mainPageData()
+                    .then(response=>{
+                        if(window.location.href.split('http://localhost:3000/')[1] === ''){
+                            setNavigate(MAIN_PAGE_STUDENT_ROUTE)
+                        }
 
-                })
-                .catch(error=>{
-                    setNavigate(SIGN_IN_ROUTE)
-                })
+                    })
+                    .catch(error=>{
+                        setNavigate(SIGN_IN_ROUTE)
+                    })
+            }
+            else if(parsedUser.role === 'teacher'){
+                mainPageTeacherData()
+                    .then(response=>{
+                        if(window.location.href.split('http://localhost:3000/')[1] === ''){
+                            setNavigate(TEACHER_MAIN_PAGE_ROUTE)
+                        }
+
+                    })
+                    .catch(error=>{
+                        setNavigate(SIGN_IN_ROUTE)
+                    })
+            }
+
+        }
+        else{
+            setNavigate(SIGN_IN_ROUTE)
         }
     },[])
 

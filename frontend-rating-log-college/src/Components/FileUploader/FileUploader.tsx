@@ -1,5 +1,6 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './FileUploader.scss'
+import {sendHomeWorkFiles} from "../../Http/HomeWorks";
 const uploadImg = require('../../assets/images/UploadImg.png');
 
 interface IImage{
@@ -13,15 +14,36 @@ interface IFileUploader{
     func?: () => void;
     items?: [],
     status?: string,
-
+    homeWorkId?: number;
 }
+
+interface FileObject {
+    name: string;
+    file: string;
+    typeFile: string;
+    date: string;
+}
+
+const transformData = (data: { name: string, url: string }[]): FileObject[] => {
+    const currentDate = new Date().toISOString();
+
+    return data.map(item => ({
+        name: item.name,
+        file: item.url,
+        typeFile: "дз",
+        date: currentDate,
+    }));
+};
 const FileUploader: React.FC<IFileUploader> = (props) => {
 
     let [images, setImages] = useState<IImage[]>(props.items ? props.items : []);
     let [isDragging, setIsDragging] = useState(false);
     let fileInputRef = useRef<HTMLInputElement>(null)
     let containerRef = useRef<HTMLDivElement>(null);
+    let[hwId, setHwId] = useState(props.homeWorkId)
     let [active, isActive] = useState()
+    let [sendingFiles, setSendingFiles] = useState()
+    const [transformedData, setTransformedData] = useState<FileObject[]>([]);
 
     function selectFiles(){
         if (fileInputRef.current) {
@@ -94,6 +116,9 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
         }
     }
 
+    useEffect(()=>{
+        setHwId(props.homeWorkId)
+    },[props])
 
     const handleImageLoad = (index: number) => {
         if (containerRef.current) {
@@ -103,6 +128,12 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
             }
         }
     };
+
+    useEffect(()=>{
+        const data = transformData(images);
+        setTransformedData(data);
+    }, [images])
+
     return (
         <div className="card">
 
@@ -160,7 +191,16 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
 
 
             </div>
-            <button className={`button ${images.length === 0 ? 'none' : ' '}`}>
+            <button className={`button ${images.length === 0 ? 'none' : ' '}`}
+            onClick={(e)=>{
+                sendHomeWorkFiles(hwId, transformedData).then((response)=>{
+                    console.log(response.data)
+                })
+                    .catch((error)=>{
+
+                    })
+            }}
+            >
                 {props.status === "Назначенно" ? 'Сдать' :
                     props.status === "Сдано" ? 'Пересдать':
                         props.status === "Просрочено" ? 'Сдать с опозданием':

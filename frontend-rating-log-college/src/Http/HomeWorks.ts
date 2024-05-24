@@ -12,3 +12,11 @@ export const getCoursesItems = async (id?: string) => {
         }
 
 };
+
+export const sendHomeWorkFiles = async (id?: number, files?: object[]) => {
+    let res;
+    res = await $api.post(`student/home/add`, {idHomeTask: id, files: files});
+    return res;
+
+
+};

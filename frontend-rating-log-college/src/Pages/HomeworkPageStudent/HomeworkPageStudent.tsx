@@ -2,62 +2,54 @@ import React, {useEffect, useState} from 'react';
 import './HomeworkPageStudent.scss';
 import HomeworkBlock, {HomeworkItem} from "../../Components/HomeworkBlock/HomeworkBlock";
 import TeachersBlock from "../../Components/TeachersBlock/TeachersBlock";
-import FileItem from "../../Components/FileItem/FileItem";
+import FileItem, {IFileItem} from "../../Components/FileItem/FileItem";
 import FileUploader from "../../Components/FileUploader/FileUploader";
 import {getCoursesItems} from "../../Http/HomeWorks";
 
 const fileImg = require('../../assets/images/PDF.png');
 
+interface ICurrentHw{
+    id: number;
+    name: string;
+    expires: string;
+    status: string;
+    teacher: {
+        name: string;
+        subject: string;
+    },
+    homeWorkFiles: [
+        {
+            name: string;
+            size: string;
+            url: any
+        }
+    ],
+    files: [
+        {
+            id: number;
+            text: string;
+            date: string;
+            img: any;
+            size: string;
+        }
+    ]
+}
 
 const HomeworkPageStudent: React.FC = () => {
 
     let[homeWork, setHomeWork] = useState<HomeworkItem[]>([])
-    let[currentCourse, setCurrentCourse] = useState<HomeworkItem>()
-    let[currentHomework, setCurrentHomework] = useState(
-        {
-        // id: 1,
-        // name: 'Наименования задания',
-        // expires: '9 сентября - 15 сентября',
-        // status: 'Выполняется',
-        // workStatus: 'Назначенно',
-        // teacher: {
-        //     id: 1,
-        //     name: 'Денис Валентинович',
-        //     subject: 'Веб-программирования'
-        // },
-        // files: [
-        //     {
-        //
-        //         id: 1,
-        //         text: 'Учебник истории',
-        //         date: '3 сентября',
-        //         img: fileImg,
-        //         size: '5.3 мб'
-        //     },
-        //     {
-        //         id: 2,
-        //         text: 'Учебник истории 2',
-        //         date: '4 сентября',
-        //         img: fileImg,
-        //         size: '5.3 мб'
-        //     },
-        //     {
-        //         id: 3,
-        //         text: 'Учебник истории 3',
-        //         date: '5 сентября',
-        //         img: fileImg,
-        //         size: '5.3 мб'
-        //     },
-        //
-        // ],
-        // homeWorkFiles: [
-        //     {
-        //         name: 'File_name.pdf',
-        //         size: '5.3 мб',
-        //         url: fileImg
-        //     }
-        // ]
-    })
+
+    let[curId, setCurId] = useState<number>();
+    let[curName, setCurName] = useState('');
+    let[expires, setExpires] = useState('');
+    let[status, setStatus] = useState('');
+    let[deskr, setDeskr] = useState('')
+    let[teacherName, setTeacherName] = useState('');
+    let[teacherSubject, setTeacherSubject] = useState('');
+    let[homeWorkFiles, setHomeWorkFiles] = useState<IFileItem[]>();
+    let[files, setFiles] = useState<IFileItem[]>();
+
+
     function setActiveHomeWork(id: number){
         let curArr = [...homeWork];
         let newArr = curArr.map((el, index)=>{
@@ -67,10 +59,48 @@ const HomeworkPageStudent: React.FC = () => {
         setHomeWork(newArr)
     }
 
+    function updateCurrentHomeWork(obj: any){
+        setCurId(obj.id)
+        setCurName(obj.name)
+        setExpires(`${obj.startDate} - ${obj.endDate}`)
+        setStatus(obj.statusStudent)
+        setTeacherName(obj.teacherName)
+        setTeacherSubject(obj.subjectName)
+        setDeskr(obj.description)
+
+        // доделать
+        let newFiles = [
+            {
+                id: 1,
+                text: 'Учебник истории',
+                date: '3 сентября',
+                img: fileImg,
+                size: '5.3 мб'
+            }
+        ]
+        setFiles(newFiles)
+        // доделать
+        let filArr = [
+            {
+                id: 1,
+                text: 'File_name.pdf',
+                size: '5.3 мб',
+                img: fileImg
+            },
+            {
+                id: 2,
+                text: 'File_name.pdf',
+                size: '5.3 мб',
+                img: fileImg
+            }
+        ]
+        setHomeWorkFiles(filArr)
+
+    }
+
+
     useEffect(()=>{
         getCoursesItems('').then((response)=>{
-            console.log(response.data.homeWork)
-            console.log(response.data.homeWorks)
 
             let newHwk = response.data.homeWorks.map((el: any)=>{
                 let newObj =
@@ -83,12 +113,12 @@ const HomeworkPageStudent: React.FC = () => {
                     teacher: el.teacherName,
                     subject: el.subjectName
                 }
-                if(el.id === response.data.homeWork.id){
-                    // setCurrentHomework(newObj)
-                }
                 return newObj;
             })
             setHomeWork(newHwk)
+            updateCurrentHomeWork(response.data.homeWork)
+
+
 
 
         }).catch((error)=>{
@@ -119,38 +149,36 @@ const HomeworkPageStudent: React.FC = () => {
             </div>
 
             <div className={'block-middle block-middle-full block-middle-full-t-0 block-middle-full-t-hw'}>
-                {currentCourse ? <>
+                {curId ? <>
                     <div className={'block-middle__text'}>
                         <div className={`courses-block courses-block-l`}>
-                            <p className={`courses-block__title courses-block__title-l block-left__text-hw`}>{currentCourse.name}</p>
+                            <p className={`courses-block__title courses-block__title-l block-left__text-hw`}>{curName}</p>
                         </div>
                     </div>
                     <div className="block-middle-info">
-                        <p className="block-middle-info__expires"><span>Срок задание: </span>{currentHomework.expires}</p>
-                        <TeachersBlock item={currentHomework.teacher} styles={{marginTop: 20}}/>
-                        <p className="status">
-                            Статус:&nbsp;
-                            <span
-                                className={`status-color ${currentHomework.status == "Выполняется" ? "status-color__purple" :
-                                    currentHomework.status == "Назначенно" ? "status-color__green" :
-                                        currentHomework.status == "Просрочено" ? "status-color__red" : ''
-                                }`}>
-                         {currentHomework.status}
-                    </span></p>
+                        <p className="block-middle-info__expires"><span>Срок задание: </span>{expires}</p>
+                        <TeachersBlock item={{name: teacherName ,subject: teacherSubject} } styles={{marginTop: 20}}/>
+                        {/*<p className="status">*/}
+                            {/*Статус:&nbsp;*/}
+                         {/*   <span*/}
+                         {/*       className={`status-color ${status == "Выполняется" ? "status-color__purple" :*/}
+                         {/*           status == "Назначенно" ? "status-color__green" :*/}
+                         {/*               status == "Просрочено" ? "status-color__red" : ''*/}
+                         {/*       }`}>*/}
+                         {/*{currentHomework && currentHomework.status ? currentHomework.status : ''}*/}
+                         {/*   </span>*/}
+                        {/*</p>*/}
                         <p className="block-middle-info__text">
-                            Дневник-отчёт Вы должны распечатать, в местах где согласно инструкции должны проставить печати с
-                            предприятия ОБЯЗАТЕЛЬНО должны поставить. Потом Вы сканируете дневник-отчёт и в pdf формате
-                            прикрепляете в GoogleClassRoom, также туда прикрепляете Отчёт и Презентацию. Срок сдачи
-                            ПОНЕДЕЛЬНИК 20 ИЮНЯ ДО 17:30!!!
+                            {deskr}
                         </p>
                     </div>
 
                     <div className="block-middle-info__files-block">
                         <p className="block-middle-info__files-block__text">Приклепленные файлы</p>
                         <div className="file-box block-middle-info__files-file-box">
-                            {currentHomework.files.map((el, index) => (
+                            {homeWorkFiles && homeWorkFiles.length > 0 ? homeWorkFiles.map((el, index) => (
                                 <FileItem item={el} key={index}/>
-                            ))}
+                            )) : ''}
                         </div>
                     </div>
                 </> : ''}
@@ -163,15 +191,15 @@ const HomeworkPageStudent: React.FC = () => {
                         <p className={'image-block-top__text'}>
                             Мои задания
                             <span
-                                className={`status-color ${currentHomework.workStatus == "Сдано" ? "status-color__purple" :
-                                    currentHomework.workStatus == "Назначенно" ? "status-color__green" :
-                                        currentHomework.workStatus == "Просрочено" ? "status-color__red" : ' '
+                                className={`status-color ${status == "Сдано" ? "status-color__purple" :
+                                    status == "Назначенно" ? "status-color__green" :
+                                        status == "Просрочено" ? "status-color__red" : ' '
                                 }`}>
-                    {currentHomework.workStatus}</span>
+                    {status}</span>
                         </p>
 
 
-                        <FileUploader status={currentHomework.workStatus}/>
+                        <FileUploader homeWorkId={curId} status={status}/>
 
 
                     </div>
