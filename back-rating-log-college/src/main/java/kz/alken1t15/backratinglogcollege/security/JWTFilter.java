@@ -130,7 +130,10 @@ public class JWTFilter extends OncePerRequestFilter {
             if (request.getMethod().equals("OPTIONS")) {
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {
-                filterChain.doFilter(request, response);
+               // filterChain.doFilter(request, response);
+                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                response.getWriter().write("Вы не ввели JWT токен");
+                response.setCharacterEncoding("UTF-8");
             }
 //            response.setStatus(HttpStatus.UNAUTHORIZED.value());
 //            response.getWriter().write("Вы не ввели JWT токен");

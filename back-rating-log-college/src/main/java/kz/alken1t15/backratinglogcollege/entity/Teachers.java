@@ -16,7 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 public class Teachers {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "first_name")
@@ -34,19 +33,27 @@ public class Teachers {
     @Column(name = "start_work")
     private LocalDate startWork;
 
-//    @OneToMany(mappedBy = "teachers")
-//    private List<Groups> groups;
-
-    @OneToMany(mappedBy = "teacher",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
     private List<PlanStudy> planStudies;
 
     @OneToMany(mappedBy = "teacher")
     private List<HomeWork> howeWorks;
 
-    public Teachers(String firstName, String secondName, String middleName, String login, String password, LocalDate bornDate) {
+
+    public Teachers(Long id,String firstName, String secondName, String middleName, LocalDate bornDate, LocalDate startWork) {
+        this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
         this.middleName = middleName;
         this.bornDate = bornDate;
+        this.startWork = startWork;
+    }
+
+    public Teachers(Long id,String firstName, String secondName, LocalDate bornDate, LocalDate startWork) {
+        this.id = id;
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.bornDate = bornDate;
+        this.startWork = startWork;
     }
 }

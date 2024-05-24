@@ -7,4 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface RepositoryCourses extends JpaRepository<Courses,Long> {
     @Query("select  c from Courses c where c.course = ?1 and c.group.id = ?2")
     Courses findByCourseGroup(Integer course,Long idGroup);
+
+    @Query("select count(*) from Courses  c where c.group.id = ?1")
+    Integer findByGroupId(Long id);
 }

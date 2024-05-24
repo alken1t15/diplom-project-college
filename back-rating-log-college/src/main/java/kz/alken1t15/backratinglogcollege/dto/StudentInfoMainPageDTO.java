@@ -22,4 +22,5 @@ public class StudentInfoMainPageDTO {
     private MonthDTO omissions;
     private PlanStudyDTO planStudy;
     private List<MonthReturnDTO> monthsStudy;
+    private FilesStudentDTO file;
 }

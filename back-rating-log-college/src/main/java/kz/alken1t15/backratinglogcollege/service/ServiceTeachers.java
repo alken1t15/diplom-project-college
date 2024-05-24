@@ -1,64 +1,38 @@
 package kz.alken1t15.backratinglogcollege.service;
 
 import io.micrometer.common.util.StringUtils;
-import kz.alken1t15.backratinglogcollege.contoller.ControllerTeacher;
 import kz.alken1t15.backratinglogcollege.dto.teacher.CurrentGraphStudyGroup;
+import kz.alken1t15.backratinglogcollege.dto.teacher.TeacherAddDTO;
 import kz.alken1t15.backratinglogcollege.dto.teacher.TeacherMainPageDTO;
 import kz.alken1t15.backratinglogcollege.entity.*;
-import kz.alken1t15.backratinglogcollege.entity.study.PlanStudy;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryTeachers;
 import lombok.AllArgsConstructor;
-import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class ServiceTeachers {
     private final RepositoryTeachers repositoryTeacher;
-    private final ServiceHoweWork serviceHoweWork;
-    private final ServiceFilesGroup serviceFilesGroup;
     private final ServiceUsers serviceUser;
     private final ServiceGroups serviceGroup;
-    private final ServicePlanStudy servicePlanStudy;
     private final ServiceOmissions serviceOmissions;
-    private final ServiceFilesStudent serviceFilesStudent;
-
-    //TODO Проверка на уникальность
-//    public ResponseEntity save(ControllerTeacher.Teacher teacher) {
-//        if (StringUtils.isBlank(teacher.firstName()) || StringUtils.isBlank(teacher.secondName())
-//                || StringUtils.isBlank(teacher.login()) || StringUtils.isBlank(teacher.password()) || StringUtils.isBlank(teacher.bornDate())){
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//        }
-//        else {
-//            Teachers teachers = new Teachers(teacher.firstName(),teacher.secondName(),teacher.middleName(),teacher.login(),
-//                    teacher.password(), LocalDate.parse(teacher.bornDate()));
-//            repositoryTeachers.save(teachers);
-//            return ResponseEntity.status(HttpStatus.OK).build();
-//        }
-//    }
 
 
+    //Получение учителя
     public Teachers getTeachers() {
         User user = serviceUser.getUser();
         return repositoryTeacher.findById(user.getId()).orElseThrow();
     }
 
-    //TODO Получение информации для главной страницы учителя
+    //Получение информации для главной страницы учителя
     public TeacherMainPageDTO getMainPageTeacher(Integer idGroupStep, Boolean certificateHave) {
         Teachers teachers = getTeachers();
         List<CurrentGraphStudyGroup> graphGroupsForStudy = serviceGroup.findByAllGroupForTeacher(teachers.getId(), LocalDate.now(), (long) LocalDate.now().getDayOfWeek().getValue());
@@ -105,6 +79,34 @@ public class ServiceTeachers {
             }
         }
         return currentOmissionStudents;
+    }
+
+    //Обновление данных пользователя
+    public void save(Teachers teacher) {
+        repositoryTeacher.save(teacher);
+    }
+    //Сохранение нового учителя
+    public ResponseEntity saveNewTeacher(TeacherAddDTO teacher, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<String> errors = new ArrayList<>();
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                String field = fieldError.getField();
+                String nameError = fieldError.getDefaultMessage();
+                errors.add(String.format("Поле %s ошибка: %s", field, nameError));
+            }
+            return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
+        }
+        User user = serviceUser.getUser(teacher.getLogin());
+        if (user!=null){
+            return new ResponseEntity("Такой логи занят",HttpStatus.CONFLICT);
+        }
+       Long idUser = serviceUser.save(teacher.getLogin(),teacher.getPassword(),"teacher");
+        if (StringUtils.isBlank(teacher.getMiddleName())){
+            save(new Teachers(idUser, teacher.getFirstName(),teacher.getSecondName(),teacher.getBornDate(),teacher.getStartWork()));
+        }else {
+            save(new Teachers(idUser, teacher.getFirstName(), teacher.getSecondName(), teacher.getMiddleName(), teacher.getBornDate(), teacher.getStartWork()));
+        }
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 

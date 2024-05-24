@@ -1,5 +1,6 @@
 package kz.alken1t15.backratinglogcollege.contoller;
 
+import kz.alken1t15.backratinglogcollege.dto.teacher.TeacherAddDTO;
 import kz.alken1t15.backratinglogcollege.dto.teacher.TeacherMainPageDTO;
 import kz.alken1t15.backratinglogcollege.service.*;
 import lombok.AllArgsConstructor;
@@ -26,10 +27,10 @@ public class ControllerTeacher {
     private final ServiceFilesStudent serviceFilesStudent;
     private final ServiceOmissions serviceOmissions;
 
-//    @PostMapping(path = "/add")
-//    public ResponseEntity addEvaluation(@RequestBody Teacher teacher){
-//        return serviceTeachers.save(teacher);
-//    }
+    @PostMapping(path = "/add")
+    public ResponseEntity addEvaluation(@RequestBody @Validated TeacherAddDTO teacher,BindingResult bindingResult){
+        return serviceTeachers.saveNewTeacher(teacher,bindingResult);
+    }
 
     @PostMapping(path = "/home/add")
     public ResponseEntity addNewFileHomeTaskTeacher(@Validated @RequestParam List<MultipartFile> files, @NonNull @RequestParam("id") Long id) {

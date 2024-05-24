@@ -58,10 +58,11 @@ public class ControllerStudent {
             EvaluationsReturnDTO evaluationsReturnDTO = modelMapper.map(e, EvaluationsReturnDTO.class);
             evaluationsReturnDTOS.add(evaluationsReturnDTO);
         }
+        FilesStudentDTO filesStudentDTO = serviceFilesStudent.getCertificateUserToday();
         MonthDTO monthDTO = serviceOmissions.findByMonth(userId.getNumberOfMonth(), course, student.getId());
         PlanStudyDTO planStudyDTO = servicePlanStudy.findByOfDate(groups.getId());
         List<MonthReturnDTO> months = serviceStudyProcess.getStudyProcessAll(student.getGroup().getCurrentCourse(), student.getGroup().getId());
-        return new StudentInfoMainPageDTO(student.getFirstName(), student.getSecondName(), groups.getName(), groups.getYear(), evaluationsReturnDTOS, monthDTO, planStudyDTO, months);
+        return new StudentInfoMainPageDTO(student.getFirstName(), student.getSecondName(), groups.getName(), groups.getYear(), evaluationsReturnDTOS, monthDTO, planStudyDTO, months,filesStudentDTO);
     }
 
     @PostMapping(path = "/grade")
@@ -78,6 +79,7 @@ public class ControllerStudent {
     public ResponseEntity saveFileCertificate(@RequestParam MultipartFile file) {
         return serviceFilesStudent.saveCertificate(file);
     }
+
 
     @PostMapping(path = "/home/task")
     public HomeWorkReturnDTO getHomeTask(@RequestBody HomeWorkRequest homeWorkRequest) {

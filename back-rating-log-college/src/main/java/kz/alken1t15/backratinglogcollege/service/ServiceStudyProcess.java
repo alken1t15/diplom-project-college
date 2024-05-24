@@ -34,6 +34,7 @@ public class ServiceStudyProcess {
     private ServiceStudents serviceStudents;
     private RepositoryTypeStudy repositoryTypeStudy;
     private RepositoryPlanStudy repositoryPlanStudy;
+    private ServiceCourses serviceCourses;
 
 
     public ProcessReturnDTO getStudyProcess(ProcessDTO process) {
@@ -149,8 +150,8 @@ public class ServiceStudyProcess {
 
         processReturnDTO.setEvaluations(evalStudy);
 
-
-
+        int countCourse = serviceCourses.getCountCoursesGroup(student.getGroup().getId());
+        processReturnDTO.setCountCourse(countCourse);
 
         return processReturnDTO;
     }
@@ -166,7 +167,6 @@ public class ServiceStudyProcess {
             months.add(new MonthReturnDTO(arrMonth[currentMonth.getMonth().getValue() - 1], currentMonth.getMonth().getValue()));
             currentMonth = currentMonth.plusMonths(1);
         }
-
         return months;
     }
 
@@ -181,7 +181,17 @@ public class ServiceStudyProcess {
         List<MonthReturnDTO> arr1 = getAllMonths(studyProcess.getDateStart(),studyProcess.getDateEnd());
         List<MonthReturnDTO> arr2 = getAllMonths(studyProcess2.getDateStart(),studyProcess2.getDateEnd());
         arr1.addAll(arr2);
-        return arr1;
+        List<MonthReturnDTO> monthReturnDTOS = new ArrayList<>();
+        Integer dayOfMouth = LocalDate.now().getMonthValue();
+        for (int i = 0; i<arr1.size();i++){
+            MonthReturnDTO month = arr1.get(i);
+            if (month.getRequestMonth()==dayOfMouth){
+                monthReturnDTOS.add(month);
+                break;
+            }
+            monthReturnDTOS.add(month);
+        }
+        return monthReturnDTOS;
     }
 
 }
