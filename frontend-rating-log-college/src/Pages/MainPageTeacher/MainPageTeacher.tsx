@@ -280,7 +280,8 @@ const MainPageTeacher: React.FC = () => {
                     {curSlider === 1 ?
                         <>
                         {studentWithoutCertificate.length > 0 ? studentWithoutCertificate.map((el: any, index: any)=>(
-                            <StudentWithoutCertificate key={index}/>
+                            // <StudentWithoutCertificate item={studentWithoutCertificate} key={index}/>
+                            <></>
                         )) : ''}
                         </>
                         :
