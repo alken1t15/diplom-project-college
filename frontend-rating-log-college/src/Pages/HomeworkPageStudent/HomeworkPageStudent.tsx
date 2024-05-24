@@ -3,79 +3,60 @@ import './HomeworkPageStudent.scss';
 import HomeworkBlock, {HomeworkItem} from "../../Components/HomeworkBlock/HomeworkBlock";
 import TeachersBlock from "../../Components/TeachersBlock/TeachersBlock";
 import FileItem from "../../Components/FileItem/FileItem";
-import ScheduleItem from "../../Components/Schedule/ScheduleItem";
 import FileUploader from "../../Components/FileUploader/FileUploader";
+import {getCoursesItems} from "../../Http/HomeWorks";
 
 const fileImg = require('../../assets/images/PDF.png');
 
 
 const HomeworkPageStudent: React.FC = () => {
 
-    let[homeWork, setHomeWork] = useState<HomeworkItem[]>([
+    let[homeWork, setHomeWork] = useState<HomeworkItem[]>([])
+    let[currentCourse, setCurrentCourse] = useState<HomeworkItem>()
+    let[currentHomework, setCurrentHomework] = useState(
         {
-            id: 1,
-            active: true,
-            name: 'Наименования задания',
-            date: '15 Сен',
-            expiresAt: '9 сен - 15 сен',
-            teacher: 'Денис Валентинович Попов',
-            subject: 'Веб-программирования'
-        },
-        {
-            id: 2,
-            active: false,
-            name: 'Наименования задания',
-            date: '10 Сен',
-            expiresAt: '9 сен - 10 сен',
-            teacher: 'Марина Галимовна',
-            subject: 'Философия'
-        },
-
-    ])
-    let[currentCourse, setCurrentCourse] = useState<HomeworkItem>(homeWork[0])
-    let[currentHomework, setCurrentHomework] = useState({
-        id: 1,
-        name: 'Наименования задания',
-        expires: '9 сентября - 15 сентября',
-        status: 'Выполняется',
-        workStatus: 'Назначенно',
-        teacher: {
-            id: 1,
-            name: 'Денис Валентинович',
-            subject: 'Веб-программирования'
-        },
-        files: [
-            {
-
-                id: 1,
-                text: 'Учебник истории',
-                date: '3 сентября',
-                img: fileImg,
-                size: '5.3 мб'
-            },
-            {
-                id: 2,
-                text: 'Учебник истории 2',
-                date: '4 сентября',
-                img: fileImg,
-                size: '5.3 мб'
-            },
-            {
-                id: 3,
-                text: 'Учебник истории 3',
-                date: '5 сентября',
-                img: fileImg,
-                size: '5.3 мб'
-            },
-
-        ],
-        homeWorkFiles: [
-            {
-                name: 'File_name.pdf',
-                size: '5.3 мб',
-                url: fileImg
-            }
-        ]
+        // id: 1,
+        // name: 'Наименования задания',
+        // expires: '9 сентября - 15 сентября',
+        // status: 'Выполняется',
+        // workStatus: 'Назначенно',
+        // teacher: {
+        //     id: 1,
+        //     name: 'Денис Валентинович',
+        //     subject: 'Веб-программирования'
+        // },
+        // files: [
+        //     {
+        //
+        //         id: 1,
+        //         text: 'Учебник истории',
+        //         date: '3 сентября',
+        //         img: fileImg,
+        //         size: '5.3 мб'
+        //     },
+        //     {
+        //         id: 2,
+        //         text: 'Учебник истории 2',
+        //         date: '4 сентября',
+        //         img: fileImg,
+        //         size: '5.3 мб'
+        //     },
+        //     {
+        //         id: 3,
+        //         text: 'Учебник истории 3',
+        //         date: '5 сентября',
+        //         img: fileImg,
+        //         size: '5.3 мб'
+        //     },
+        //
+        // ],
+        // homeWorkFiles: [
+        //     {
+        //         name: 'File_name.pdf',
+        //         size: '5.3 мб',
+        //         url: fileImg
+        //     }
+        // ]
     })
     function setActiveHomeWork(id: number){
         let curArr = [...homeWork];
@@ -86,6 +67,34 @@ const HomeworkPageStudent: React.FC = () => {
         setHomeWork(newArr)
     }
 
+    useEffect(()=>{
+        getCoursesItems('').then((response)=>{
+            console.log(response.data.homeWork)
+            console.log(response.data.homeWorks)
+
+            let newHwk = response.data.homeWorks.map((el: any)=>{
+                let newObj =
+                {
+                    id: el.id,
+                    active: el.id === response.data.homeWork.id,
+                    name: el.name,
+                    date: '10 Сен',
+                    expiresAt: `${el.startDate} - ${el.endDate}`,
+                    teacher: el.teacherName,
+                    subject: el.subjectName
+                }
+                if(el.id === response.data.homeWork.id){
+                    // setCurrentHomework(newObj)
+                }
+                return newObj;
+            })
+            setHomeWork(newHwk)
+
+
+        }).catch((error)=>{
+
+        })
+    },[])
 
 
     return (
@@ -98,9 +107,9 @@ const HomeworkPageStudent: React.FC = () => {
                         </p>
                     </div>
                     <div className="homeworks-block">
-                        {[...homeWork].map((el, index) => (
+                        {homeWork.length > 0 ? [...homeWork].map((el, index) => (
                             <HomeworkBlock item={el} onClick={setActiveHomeWork} key={el.id}/>
-                        ))}
+                        )) : ''}
                     </div>
 
 
@@ -110,39 +119,41 @@ const HomeworkPageStudent: React.FC = () => {
             </div>
 
             <div className={'block-middle block-middle-full block-middle-full-t-0 block-middle-full-t-hw'}>
-                <div className={'block-middle__text'}>
-                    <div className={`courses-block courses-block-l`}>
-                        <p className={`courses-block__title courses-block__title-l block-left__text-hw`}>{currentCourse.name}</p>
+                {currentCourse ? <>
+                    <div className={'block-middle__text'}>
+                        <div className={`courses-block courses-block-l`}>
+                            <p className={`courses-block__title courses-block__title-l block-left__text-hw`}>{currentCourse.name}</p>
+                        </div>
                     </div>
-                </div>
-                <div className="block-middle-info">
-                    <p className="block-middle-info__expires"><span>Срок задание: </span>{currentHomework.expires}</p>
-                    <TeachersBlock item={currentHomework.teacher} styles={{marginTop: 20}}/>
-                    <p className="status">
-                        Статус:&nbsp;
-                        <span
-                            className={`status-color ${currentHomework.status == "Выполняется" ? "status-color__purple" :
-                                currentHomework.status == "Назначенно" ? "status-color__green" :
-                                    currentHomework.status == "Просрочено" ? "status-color__red" : ''
-                            }`}>
+                    <div className="block-middle-info">
+                        <p className="block-middle-info__expires"><span>Срок задание: </span>{currentHomework.expires}</p>
+                        <TeachersBlock item={currentHomework.teacher} styles={{marginTop: 20}}/>
+                        <p className="status">
+                            Статус:&nbsp;
+                            <span
+                                className={`status-color ${currentHomework.status == "Выполняется" ? "status-color__purple" :
+                                    currentHomework.status == "Назначенно" ? "status-color__green" :
+                                        currentHomework.status == "Просрочено" ? "status-color__red" : ''
+                                }`}>
                          {currentHomework.status}
                     </span></p>
-                    <p className="block-middle-info__text">
-                        Дневник-отчёт Вы должны распечатать, в местах где согласно инструкции должны проставить печати с
-                        предприятия ОБЯЗАТЕЛЬНО должны поставить. Потом Вы сканируете дневник-отчёт и в pdf формате
-                        прикрепляете в GoogleClassRoom, также туда прикрепляете Отчёт и Презентацию. Срок сдачи
-                        ПОНЕДЕЛЬНИК 20 ИЮНЯ ДО 17:30!!!
-                    </p>
-                </div>
-
-                <div className="block-middle-info__files-block">
-                    <p className="block-middle-info__files-block__text">Приклепленные файлы</p>
-                    <div className="file-box block-middle-info__files-file-box">
-                        {currentHomework.files.map((el, index) => (
-                            <FileItem item={el} key={index}/>
-                        ))}
+                        <p className="block-middle-info__text">
+                            Дневник-отчёт Вы должны распечатать, в местах где согласно инструкции должны проставить печати с
+                            предприятия ОБЯЗАТЕЛЬНО должны поставить. Потом Вы сканируете дневник-отчёт и в pdf формате
+                            прикрепляете в GoogleClassRoom, также туда прикрепляете Отчёт и Презентацию. Срок сдачи
+                            ПОНЕДЕЛЬНИК 20 ИЮНЯ ДО 17:30!!!
+                        </p>
                     </div>
-                </div>
+
+                    <div className="block-middle-info__files-block">
+                        <p className="block-middle-info__files-block__text">Приклепленные файлы</p>
+                        <div className="file-box block-middle-info__files-file-box">
+                            {currentHomework.files.map((el, index) => (
+                                <FileItem item={el} key={index}/>
+                            ))}
+                        </div>
+                    </div>
+                </> : ''}
 
             </div>
 

@@ -1,6 +1,6 @@
 import {$api} from './index';
 
-export const gradePageData = async (course: number, semester: number, month: number) => {
+export const gradePageData = async (course?: number, semester?: number, month?: number) => {
     if(course && semester && month){
         let res = await $api.post(`student/grade`, {course, semester, month});
         return res;

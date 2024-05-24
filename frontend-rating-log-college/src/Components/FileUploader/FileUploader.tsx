@@ -31,7 +31,7 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
 
     function onFileSelected(event: any){
         let files = event.target.files;
-        const max_file_size = 20;
+        const max_file_size = 100;
         let max_sile_size_bytes = max_file_size * 1024 * 1024;
         if(files.length == 0 ) return ;
 
@@ -54,9 +54,12 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
 
     }
 
-    function deleteImage(index: number){
-        setImages((prevState) => prevState.filter((el, i) => i !== index));
-
+    function deleteImage(index: number) {
+        setImages((prevState) => {
+            const newState = [...prevState];
+            newState.splice(index, 1);
+            return newState;
+        });
     }
 
     function onDragOver(e: any){
@@ -120,7 +123,7 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
                                 <img src={uploadImg} alt=""/>
                                     <span>Перетащите файлы или нажмите для загрузки</span>
                           </span>
-                                    <p className={`select-light`}>Загружайте файлы не больше 20 мб</p>
+                                    <p className={`select-light`}>Загружайте файлы не больше 100 мб</p>
                                 </span>
                     )
                 }
@@ -143,12 +146,15 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
                         <img className={'loaded-img'} src={el.url} alt={el.name} onLoad={() => handleImageLoad(index)}/>
                         <div className="loader-info">
                             <p className={'loader-text'}>{el.name}</p>
+                            <div className="loader">
+                                <div className="loader-line">
+                                    <div></div>
+                                </div>
+                            </div>
                             {props.status === 'Сдано'}
                         </div>
 
                         <p className={`delete`} onClick={() => deleteImage(index)}>&times;</p>
-
-
                     </div>
                 ))}
 

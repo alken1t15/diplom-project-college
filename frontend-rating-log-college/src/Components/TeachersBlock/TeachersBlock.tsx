@@ -3,7 +3,6 @@ import InitialsImage from "../InitialsImage/InitialsImage";
 import './TeachersBlock.scss'
 
 export interface ITeachersItem{
-    id: number;
     name: string;
     subject: string;
 }

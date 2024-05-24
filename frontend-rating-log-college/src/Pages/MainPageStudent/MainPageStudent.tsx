@@ -203,11 +203,9 @@ const MainPageStudent: React.FC = () => {
 
     function updateCurrentPage(value: any){
         setCurrentPage(value)
-        console.log(value)
         mainPageData(value)
             .then(response=>{
-                console.log(response.data)
-
+                updateOmissions(response.data.omissions)
             })
             .catch(error=>{
 
@@ -225,13 +223,46 @@ const MainPageStudent: React.FC = () => {
         setUser(obj)
     }
 
-     function updateEvaluations(){
+    function updateOmissions(tardiness: any){
 
-     }
+        let newTardiness = tardiness.days.map((el: any, index: any)=>{
+
+            let newTardinessItems = el.tardiness.map((el1: any, index1: any)=>{
+                let obj = {
+                    text: el1.status,
+                    type: el1.status === 'Отсутвует' ? 'red' : el1.status === 'С опозданием' ? 'yellow' : el1.status === 'Без опозданий' ? 'green' : el1.status === 'С справкой' ? 'cyan' : '',
+                    subject: el1.nameObject
+                }
+                return obj;
+            })
+
+            let newTardItem = {
+                date: el.date,
+                nameOfDay: el.nameOfDay,
+                tardiness: newTardinessItems
+            }
+            return newTardItem;
+        })
+
+        setTardinessItem(newTardiness)
+    }
+
+    function formatDate(dateString: string): string {
+        const monthNames = [
+            "января", "февраля", "марта", "апреля", "мая", "июня",
+            "июля", "августа", "сентября", "октября", "ноября", "декабря"
+        ];
+        const date = new Date(dateString);
+        const day = date.getDate();
+        const month = monthNames[date.getMonth()];
+        const year = date.getFullYear();
+        return `${day} ${month} ${year}`;
+    };
 
     useEffect(()=>{
         mainPageData()
             .then(response=>{
+
                 updateUser(response.data.name, response.data.lastName, response.data.groupName, response.data.yearGroup)
 
                 let dataArr: IDataArrayItem[]  = [];
@@ -246,31 +277,18 @@ const MainPageStudent: React.FC = () => {
                     dataArr.push(obj)
 
                 })
-                setGradeLine(response.data.evaluations)
+                setDateArray(dataArr)
 
-            //         schedules: [
-            //         {
-            //             id: 1,
-            //             time: '9:00 10:30',
-            //             subject: 'Веб-программирование',
-            //
-            //         },  {
-            //             id: 2,
-            //             time: '9:00 10:30',
-            //             subject: 'Веб-программирование',
-            //
-            //         },
-            //     ]
-            //     console.log(response.data.planStudy)
-
-                // let subjects = response.data.planStudy.subjects.map((el: any)=>{
-                //     return {
-                //         time: String(el.startStudy.split(':')[0]) + ':' + String(el.startStudy.split(':')[1]) + ' ' + String(el.endStudy.split(':')[0]) + ':' + String(el.endStudy.split(':')[1]),
-                //         subject: el.name
-                //     }
-                // })
-
-                // console.log(subjects)
+                let newGradeLine = response.data.evaluations.map((el:any, index:any)=>{
+                    let obj = {
+                        teacherName: el.nameTeacher,
+                        subject: el.nameObject,
+                        date: formatDate(el.dateEvaluation),
+                        grade: el.ball <= 39 ? 2 : el.ball >= 40 && el.ball < 70 ? 3 : el.ball < 90 && el.ball >= 70 ? 4 : el.ball >= 90 ? 5 : 0
+                    }
+                    return obj;
+                })
+                setGradeLine(newGradeLine)
 
                 let scheduleObj = {
                     date: response.data.planStudy.date,
@@ -284,12 +302,16 @@ const MainPageStudent: React.FC = () => {
 
                 }
                 setSchedule(scheduleObj)
-                setDateArray(dataArr)
+
+                updateOmissions(response.data.omissions)
+
 
             })
             .catch(error=>{
 
             })
+
+
 
     }, [])
 
@@ -305,45 +327,6 @@ const MainPageStudent: React.FC = () => {
             }
         }
 
-
-        mainPageData(currentMonth)
-            .then(response=>{
-
-                // console.log(response.data)
-
-                // {
-                //     date: "2 сентября",
-                //         nameOfDay: "Вторник",
-                //     tardiness: [ {
-                //     id: 1,
-                //     type: 'yellow',
-                //     text: 'С опозданием',
-                //     subject: 'Веб-программирование'
-                // },
-                //     {
-                //         id: 2,
-                //         type: 'green',
-                //         text: 'Без опозданий',
-                //         subject: 'Основа право'
-                //     },
-                //     {
-                //         id: 3,
-                //         type: 'red',
-                //         text: 'Отсутвует',
-                //         subject: 'Комп сети'
-                //     },
-                //     {
-                //         id: 4,
-                //         type: 'cyan',
-                //         text: 'С справкой',
-                //         subject: 'Комп сети'
-                //     }]
-                // } ,
-
-            })
-            .catch(error=>{
-
-            })
     }, [dateArray])
 
 

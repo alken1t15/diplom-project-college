@@ -8,9 +8,10 @@ export interface IDataArrayItem{
 }
 
 export interface IPagination{
-    items: IDataArrayItem[]
+    items: IDataArrayItem[];
     onChange: (value: number) => void;
-    styles?: CSSProperties
+    styles?: CSSProperties;
+    isGrades?: boolean;
 }
 const Pagination: React.FC<IPagination> = (props) => {
     let [dateArray, setDateArray] = useState<IDataArrayItem[]>(props.items)

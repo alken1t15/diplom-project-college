@@ -3,15 +3,19 @@ import "./SignIn.scss";
 import Input from "../../UI/Input/Input";
 import Button from "../../UI/Button/Button";
 import {login} from "../../Http/User";
-import {useNavigate} from "react-router-dom";
-import {MAIN_PAGE_STUDENT_ROUTE} from "../../Utils/Routes";
+import {MAIN_PAGE_STUDENT_ROUTE, TEACHER_MAIN_PAGE_ROUTE} from "../../Utils/Routes";
+import {useDispatch} from "react-redux";
+import {useCustomNavigate} from "../../hooks/navigator";
+import {removeItemFromLocalStorage, setItemsInLocalStorage} from "../../Utils/LocalStore";
+import {setUser} from "../../Store/Actions/authActions";
 const logoImg = require("../../assets/images/Logo.png");
 const signInImg = require("../../assets/images/SignInImage.png");
 
 const SignIn: React.FC = () => {
     let[email, setEmail] = useState<string>('');
     let[password, setPassword] = useState<string>('');
-    let navigator = useNavigate();
+    const dispatch = useDispatch();
+    const { setNavigate } = useCustomNavigate();
     function getEmail(value: string) {
         setEmail(value);
     }
@@ -22,15 +26,26 @@ const SignIn: React.FC = () => {
     function sendUserData(email: string, password: string): void{
         login(email, password)
             .then((response)=>{
-                localStorage.setItem('token', response.data['jwt-token']);
-                navigator(MAIN_PAGE_STUDENT_ROUTE)
+                let userObj = {
+                    token: response.data['jwt-token'],
+                    role: response.data['role']
+                }
+                setItemsInLocalStorage('user', userObj);
+                dispatch(setUser(userObj))
+                if(response.data['role'] === 'student'){
+                    setNavigate(MAIN_PAGE_STUDENT_ROUTE)
+                }
+                else if(response.data['role'] === 'teacher'){
+                    setNavigate(TEACHER_MAIN_PAGE_ROUTE)
+                }
+
             })
             .catch((error)=>{
             })
     }
 
     useEffect(()=>{
-        localStorage.setItem('token', '')
+        removeItemFromLocalStorage('user')
     }, [])
 
     return (

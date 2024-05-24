@@ -29,9 +29,9 @@ const GradeLine: React.FC<IGradeLine> = (props) => {
         ${item.grade === 5 ? 'grade-block-green' : item.grade === 4 ? 'grade-block-dark-green' : item.grade === 3 ? 'grade-block-yellow' : item.grade === 2 ? 'grade-block-red' : ''}`}>
             <div className="grade-line-top">
                 {props.teachersBlock ? <>
-                    <TeachersBlock item={{id: 1, name: item.teacherName, subject: item.subject}} styles={props.styles}/>
+                    <TeachersBlock item={{name: item.teacherName, subject: item.subject}} styles={props.styles}/>
                 </> : <>
-                    <TeachersBlock item={{id: 1, name: item.teacherName, subject: item.subject}}/>
+                    <TeachersBlock item={{ name: item.teacherName, subject: item.subject}}/>
                 </>}
             </div>
 

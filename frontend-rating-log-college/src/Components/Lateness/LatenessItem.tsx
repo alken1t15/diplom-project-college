@@ -26,7 +26,7 @@ const LatenessItem: React.FC<ITardinessItem> = (props) => {
             <p className="lateness-item__date">{item.date}</p>
             <p className="lateness-item__day">День недели: {item.nameOfDay}</p>
             {item.tardiness.map((el, index)=>(
-                <div className={`lateness-item__info-block`} key={el.id}>
+                <div className={`lateness-item__info-block`} key={index}>
                     <span className={`lateness-item__info-block-span-first 
                     ${el.type == 'green' ? 'text-green' : 
                     el.type == 'yellow' ? 'text-yellow' :
