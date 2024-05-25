@@ -65,6 +65,17 @@ insert into home_work (id_groups, id_teacher, start_date, end_date, name, status
 VALUES (1, 4, '2024-04-16', '2024-04-28', 'Тест', 'Назначено',
         'ыавщлывалывалдлдывалдыавлдыавьлыавьлываьлывьлыавьлдывьл', 'Самопознание');
 
+insert into home_work (id_groups, id_teacher, start_date, end_date, name, status, description, name_subject)
+VALUES (1, 3, '2024-05-16', '2024-05-28', 'Прочитать книгу', 'Назначено',
+        'ыавщлывалывалдлдывалдыавлдыавьлыавьлываьлывьлыавьлдывьл', 'Веб программирование');
+
+insert into home_work (id_groups, id_teacher, start_date, end_date, name, status, description, name_subject)
+VALUES (1, 4, '2024-03-16', '2024-03-28', 'Сделать презентацию', 'Назначено',
+        'ыавщлывалывалдлдывалдыавлдыавьлыавьлываьлывьлыавьлдывьл', 'Самопознание');
+
+insert into home_work (id_groups, id_teacher, start_date, end_date, name, status, description, name_subject)
+VALUES (1, 3, '2024-05-25', '2024-05-30', 'Сделать сайт', 'Назначено',
+        'Разработать сайт', 'Веб программирование');
 
 create table file_home_task
 (
@@ -74,6 +85,8 @@ create table file_home_task
     date_create  date         not null
 
 );
+
+insert into file_home_task (id_home_task, name, date_create) VALUES (4,'3.pdf',current_date);
 
 create table courses
 (
@@ -123,6 +136,9 @@ create table files_student
     type_file   varchar(255) not null
 );
 
+insert into files_student (id_students, name, date_create, type_file) VALUES
+                                                                          (2,'4.pdf',current_date,'дз');
+
 create table task_students
 (
     id             serial primary key,
@@ -133,7 +149,12 @@ create table task_students
 );
 
 insert into task_students(id_howe_work, id_students, status)
-values (1, 2, 'Не выполнено');
+values (1, 2, 'Не выполнено'),
+ (2, 2, 'Не выполнено'),
+ (3, 2, 'Не выполнено');
+
+insert into task_students(id_howe_work, id_students, status, time_completed) VALUES
+    (4, 2, 'Сдано',current_date);
 
 
 create table task_students_files
@@ -142,6 +163,9 @@ create table task_students_files
     id_task_students int references task_students (id),
     id_file_students int references files_student (id)
 );
+
+insert into task_students_files (id_task_students, id_file_students) VALUES
+                                                                         (4,1);
 
 
 create table students_course
@@ -223,6 +247,7 @@ create table omissions
     number_couple    int          not null,
     number_month     int          not null
 );
+
 
 
 INSERT INTO omissions (id_course, date_omissions, status, name_object, number_couple, number_month)

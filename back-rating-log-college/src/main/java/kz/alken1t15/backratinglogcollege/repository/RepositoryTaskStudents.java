@@ -12,4 +12,10 @@ public interface RepositoryTaskStudents extends JpaRepository<TaskStudents, Long
 
     @Query("select t from  TaskStudents t where t.howeWork.id = ?1 and  t.student.id = ?2")
     TaskStudents findByIdWorkAndIdStudent(Long idHomeWord, Long idStudentId);
+
+    @Query("SELECT t from TaskStudents t where t.howeWork.teacher.id=?1 and t.status=?2")
+    List<TaskStudents> findByTeacherIdAndComplete(Long id, String status);
+
+    @Query("SELECT t from TaskStudents t where t.howeWork.id=?1 and t.student.id = ?2 and t.status=?3")
+    TaskStudents findByWorkIdAndStudentIdAndComplete(Long id, Long idStudent, String status);
 }

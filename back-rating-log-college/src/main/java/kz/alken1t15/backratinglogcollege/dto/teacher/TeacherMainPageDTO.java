@@ -1,5 +1,6 @@
 package kz.alken1t15.backratinglogcollege.dto.teacher;
 
+import kz.alken1t15.backratinglogcollege.dto.CompleteHomeWorkDTO;
 import kz.alken1t15.backratinglogcollege.service.ServiceTeachers;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,4 +16,5 @@ public class TeacherMainPageDTO {
    private List<ServiceTeachers.CurrentOmissionStudent> currentOmissionStudents;
    private ServiceTeachers.TeacherDTOP teacher;
    private Integer countStudent;
+   private List<CompleteHomeWorkDTO> completeTask;
 }

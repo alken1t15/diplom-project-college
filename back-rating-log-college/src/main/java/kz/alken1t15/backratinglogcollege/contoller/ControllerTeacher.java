@@ -1,5 +1,6 @@
 package kz.alken1t15.backratinglogcollege.contoller;
 
+import kz.alken1t15.backratinglogcollege.dto.GetHomeWorkDTO;
 import kz.alken1t15.backratinglogcollege.dto.teacher.TeacherAddDTO;
 import kz.alken1t15.backratinglogcollege.dto.teacher.TeacherMainPageDTO;
 import kz.alken1t15.backratinglogcollege.service.*;
@@ -35,6 +36,11 @@ public class ControllerTeacher {
     @PostMapping(path = "/home/add")
     public ResponseEntity addNewFileHomeTaskTeacher(@Validated @RequestParam List<MultipartFile> files, @NonNull @RequestParam("id") Long id) {
         return serviceHoweWork.addNewFileHomeTaskTeacher(files,id);
+    }
+
+    @PostMapping(path = "/home")
+    public ResponseEntity getHomeWorkStudent(@Validated @RequestBody GetHomeWorkDTO getHomeWorkDTO,BindingResult bindingResult){
+        return serviceTeachers.getHomeWorkStudent(getHomeWorkDTO.getIdWork(), getHomeWorkDTO.getIdStudent(),bindingResult);
     }
 
     @PostMapping(path = "/courses/add")

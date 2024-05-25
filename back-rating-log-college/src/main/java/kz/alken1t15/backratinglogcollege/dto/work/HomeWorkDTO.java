@@ -20,5 +20,6 @@ public class HomeWorkDTO {
     private String teacherName;
     private String description;
     private String statusStudent;
-    List<FileHomeTaskDTO> fileHomeTask;
+    private List<FileHomeTaskDTO> fileHomeTask;
+    private List<byte[]> files;
 }

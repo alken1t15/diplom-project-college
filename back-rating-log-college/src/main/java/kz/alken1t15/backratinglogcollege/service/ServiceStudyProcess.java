@@ -95,8 +95,18 @@ public class ServiceStudyProcess {
                     tempArr[localDate.getDayOfMonth()] = String.valueOf(e.getBall());
                     count++;
                 }
-                tempArr[tempArr.length-1] = String.valueOf(total/count);
-                evalStudy.add(tempArr);
+                ArrayList<String> arrayList = new ArrayList<>();
+                int day = 0;
+                for (String str : tempArr){
+                    if (day == 6) {
+                        day = 0;
+                        continue;
+                    }
+                    arrayList.add(str);
+                    day++;
+                }
+                arrayList.add(String.valueOf(total/count));
+                evalStudy.add(arrayList.toArray(new String[0]));
             }
         } else {
             Courses courses = repositoryCourses.findByCourseGroup(student.getGroup().getCurrentCourse(), student.getGroup().getId());

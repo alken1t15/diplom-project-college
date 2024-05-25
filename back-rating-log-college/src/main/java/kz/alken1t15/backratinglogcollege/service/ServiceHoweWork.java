@@ -85,7 +85,7 @@ public class ServiceHoweWork {
     public HomeWorkDTO getHomeWorkById(Long id, String status) {
         HomeWork howeWork = repositoryHoweWork.findByGroupAndId(id);
         String dateStart = howeWork.getStartDate().getDayOfMonth() + " " + arrMonth[howeWork.getStartDate().getMonthValue() - 1];
-        String dateEnd = howeWork.getStartDate().getDayOfMonth() + " " + arrMonth[howeWork.getStartDate().getMonthValue() - 1];
+        String dateEnd = howeWork.getEndDate().getDayOfMonth() + " " + arrMonth[howeWork.getStartDate().getMonthValue() - 1];
         Teachers teacher = howeWork.getTeacher();
         String teacherName = String.format("%s %s %s", teacher.getSecondName(), teacher.getFirstName(), teacher.getMiddleName());
         ArrayList<FileHomeTaskDTO> fileHomeTasks = new ArrayList<>();
@@ -98,7 +98,23 @@ public class ServiceHoweWork {
             }
             fileHomeTasks.add(new FileHomeTaskDTO(f.getId(), f.getName(), f.getDateCreate(), file));
         }
-        return new HomeWorkDTO(howeWork.getId(), howeWork.getName(), howeWork.getNameSubject(), dateStart, dateEnd, teacherName, howeWork.getDescription(), status, fileHomeTasks);
+        List<byte[]> files = getFileForHomeWork(id);
+        return new HomeWorkDTO(howeWork.getId(), howeWork.getName(), howeWork.getNameSubject(), dateStart, dateEnd, teacherName, howeWork.getDescription(), status, fileHomeTasks,files);
+    }
+
+    public List<byte[]>  getFileForHomeWork(Long idHomeWork){
+        List<TaskStudentsFiles> taskStudentsFiles = repositoryTaskStudentsFiles.findByIdHomeWork(idHomeWork);
+        List<byte[]> files = new ArrayList<>();
+        if (taskStudentsFiles.isEmpty()) {
+            return null;
+        }
+        else {
+            for (TaskStudentsFiles t : taskStudentsFiles) {
+                byte[] file = serviceFilesStudent.getFile(t.getFilesStudent().getId());
+                files.add(file);
+            }
+            return files;
+        }
     }
 
     public List<TaskStudents> getAllTaskWorkNotCompleted(Long idStudent) {
@@ -120,9 +136,6 @@ public class ServiceHoweWork {
             }
             FilesStudent fileStudent = serviceFilesStudent.saveFileForHomeWork(new FileRequestDTO(uniqueFileName, LocalDate.now()), student);
             TaskStudents taskStudent = repositoryTaskStudent.findByIdWorkAndIdStudent(id, student.getId());
-            taskStudent.setStatus("Сдано");
-            taskStudent.setTimeCompleted(LocalDateTime.now());
-            repositoryTaskStudent.save(taskStudent);
             repositoryTaskStudentsFiles.save(new TaskStudentsFiles(fileStudent, taskStudent));
         }
         return new ResponseEntity<>(HttpStatus.OK);
