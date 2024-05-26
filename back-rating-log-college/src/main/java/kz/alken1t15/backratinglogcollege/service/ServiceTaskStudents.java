@@ -19,4 +19,12 @@ public class ServiceTaskStudents {
     TaskStudents findByWorkIdAndStudentIdAndComplete(Long id, Long idStudent, String status){
         return repositoryTaskStudents.findByWorkIdAndStudentIdAndComplete(id, idStudent, status);
     }
+
+    public  TaskStudents findByIdWorkAndIdStudent(Long idHomeWord, Long idStudentId){
+        return repositoryTaskStudents.findByIdWorkAndIdStudent(idHomeWord, idStudentId);
+    }
+
+    public void save(TaskStudents taskStudents){
+        repositoryTaskStudents.save(taskStudents);
+    }
 }

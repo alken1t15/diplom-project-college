@@ -38,6 +38,8 @@ public class Teachers {
 
     @OneToMany(mappedBy = "teacher")
     private List<HomeWork> howeWorks;
+    @OneToMany(mappedBy = "teacher")
+    private List<Curator> curators;
 
 
     public Teachers(Long id,String firstName, String secondName, String middleName, LocalDate bornDate, LocalDate startWork) {

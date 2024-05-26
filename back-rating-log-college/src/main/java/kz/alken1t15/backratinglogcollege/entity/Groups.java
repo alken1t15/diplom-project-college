@@ -35,11 +35,25 @@ public class Groups {
     private List<Courses> courses;
     @OneToMany(mappedBy = "group")
     private List<HomeWork> howeWorks;
+    @ManyToOne
+    @JoinColumn(name = "id_specialization")
+    private Specialization specialization;
+    @ManyToOne
+    @JoinColumn(name = "id_curator")
+    private Curator curator;
 
     public Groups(String name) {
         this.name = name;
     }
 
+
+    public Groups(String name, Integer year, Integer currentCourse, Specialization specialization, Curator curator) {
+        this.name = name;
+        this.year = year;
+        this.currentCourse = currentCourse;
+        this.specialization = specialization;
+        this.curator = curator;
+    }
 
     @Override
     public String toString() {

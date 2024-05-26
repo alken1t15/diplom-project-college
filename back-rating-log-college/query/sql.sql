@@ -5,15 +5,16 @@ create table users
     id       serial primary key,
     login    varchar(255) not null unique,
     password varchar(255) not null,
-    role varchar(255) not null ,
+    role     varchar(255) not null,
     jwt      text
 );
 
-insert into users(login,  password,role)
-values ('alex', '$2a$12$NYaQWMAhfFbKNafq6YwhTuZyruktcWnsvHf7KrDc6TB9h0IwIx7E.','student'),
-       ('maxim', '$2y$10$QsmdOGpTOpn4qWLD3jSIY.8C8bwMIR8PFXuIkpf5aejT2xCpO0pji','student'),
-       ('popov', '$2a$12$7PLgfxHX34OgvqKmbeGfrua48kwTqwVFAgkZj/4x9b7MKHCicbthC','teacher'),
-       ('marina', '$2a$12$fALbcsaeUCMZtWTPrr8wqO5pbkrM2BW2PXI.kZS6gFL54tganpPA.','teacher');
+insert into users(login, password, role)
+values ('alex', '$2a$12$NYaQWMAhfFbKNafq6YwhTuZyruktcWnsvHf7KrDc6TB9h0IwIx7E.', 'student'),
+       ('maxim', '$2a$12$7ydeDHsnSCl.c820UFgBtOf04BeLyDSc1eDzZZrVTV33Xioy2PCtO', 'student'),
+       ('popov', '$2a$12$7PLgfxHX34OgvqKmbeGfrua48kwTqwVFAgkZj/4x9b7MKHCicbthC', 'teacher'),
+       ('marina', '$2a$12$fALbcsaeUCMZtWTPrr8wqO5pbkrM2BW2PXI.kZS6gFL54tganpPA.', 'teacher'),
+       ('denis', '$2a$12$fALbcsaeUCMZtWTPrr8wqO5pbkrM2BW2PXI.kZS6gFL54tganpPA.', 'teacher');
 
 create table teachers
 (
@@ -22,11 +23,12 @@ create table teachers
     second_name varchar(255)              not null,
     middle_name varchar(255),
     born_date   date                      not null,
-    start_work date not null
+    start_work  date                      not null
 );
-insert into teachers (id, first_name, second_name, middle_name, born_date,start_work)
-VALUES (3, 'Денис', 'Попов', 'Валентинович', '1993.04.22',current_date),
-       (4, 'Марина', 'Галимовна', 'Игоревна', '1980.07.23',current_date);
+insert into teachers (id, first_name, second_name, middle_name, born_date, start_work)
+VALUES (3, 'Денис', 'Попов', 'Валентинович', '1993.04.22', current_date),
+       (4, 'Марина', 'Галимовна', 'Игоревна', '1980.07.23', current_date),
+       (5, 'Марина', 'Галимовна', 'Игоревна', '1980.07.23', current_date);
 
 create table curator
 (
@@ -36,18 +38,27 @@ create table curator
 insert into curator (id_teacher)
 VALUES (3);
 
+create table specialization
+(
+    id   serial primary key,
+    name varchar(255) not null
+);
+
+insert into specialization (name) VALUES ('Вычислительная техника и программное обеспечение');
+
 create table groups
 (
     id                  serial primary key,
     id_curator          int references curator (id) not null,
+    id_specialization int references specialization (id) not null,
     name                varchar(255)                not null,
-    specialization_name varchar(255)                not null,
     year                int                         not null,
     current_course      int                         not null
 );
 
-insert into groups (id_curator, name, specialization_name, year, current_course)
-VALUES (1, 'П-20-51б', 'Вычислительная техника и программное обеспечение', 2023, 1);
+insert into groups (id_curator, id_specialization, name, year, current_course)
+VALUES (1,1, 'П-20-51б', 2023, 1),
+       (1,1,'П-20-66К',2024,1);
 
 create table home_work
 (
@@ -86,7 +97,8 @@ create table file_home_task
 
 );
 
-insert into file_home_task (id_home_task, name, date_create) VALUES (4,'3.pdf',current_date);
+insert into file_home_task (id_home_task, name, date_create)
+VALUES (4, '3.pdf', current_date);
 
 create table courses
 (
@@ -136,8 +148,8 @@ create table files_student
     type_file   varchar(255) not null
 );
 
-insert into files_student (id_students, name, date_create, type_file) VALUES
-                                                                          (2,'4.pdf',current_date,'дз');
+insert into files_student (id_students, name, date_create, type_file)
+VALUES (2, '4.pdf', current_date, 'дз');
 
 create table task_students
 (
@@ -150,11 +162,11 @@ create table task_students
 
 insert into task_students(id_howe_work, id_students, status)
 values (1, 2, 'Не выполнено'),
- (2, 2, 'Не выполнено'),
- (3, 2, 'Не выполнено');
+       (2, 2, 'Не выполнено'),
+       (3, 2, 'Не выполнено');
 
-insert into task_students(id_howe_work, id_students, status, time_completed) VALUES
-    (4, 2, 'Сдано',current_date);
+insert into task_students(id_howe_work, id_students, status, time_completed)
+VALUES (4, 2, 'Сдано', current_date);
 
 
 create table task_students_files
@@ -164,8 +176,8 @@ create table task_students_files
     id_file_students int references files_student (id)
 );
 
-insert into task_students_files (id_task_students, id_file_students) VALUES
-                                                                         (4,1);
+insert into task_students_files (id_task_students, id_file_students)
+VALUES (4, 1);
 
 
 create table students_course
@@ -288,7 +300,11 @@ create table study_process
 );
 insert into study_process (id_group, semester, course, date_start, date_end)
 VALUES (1, 1, 1, '02.09.2023', '10.10.2023'),
- (1, 2, 1, '02.11.2023', '30.06.2024');
+       (1, 2, 1, '02.11.2023', '30.06.2024');
+
+insert into study_process (id_group, semester, course, date_start, date_end)
+VALUES (2, 1, 1, '02.09.2023', '10.10.2023'),
+       (2, 2, 1, '02.11.2023', '30.06.2024');
 
 create table type_study
 (
@@ -304,6 +320,9 @@ VALUES (1, 'учеба', '02.11.2023', '10.02.2024'),
        (2, 'учеба', '02.11.2023', '10.02.2024'),
        (2, 'практика', '11.02.2024', '10.06.2024'),
        (2, 'учебная практика', '11.06.2024', '10.10.2024');
+
+insert into type_study (id_study_process, name, date_start, date_end)
+VALUES (3, 'учеба', '02.11.2023', '10.02.2024');
 
 create table time_study
 (
@@ -387,3 +406,20 @@ VALUES (3, 1, 1, 3, 1, 1, 1),
        (3, 4, 4, 3, 2, 4, 4),
        (3, 1, 1, 3, 4, 5, 1),
        (3, 2, 2, 4, 3, 5, 2);
+
+
+insert into plan_study (id_type_study, id_time_study, id_subject_study, id_teacher, id_auditorium, id_week,
+                        number_of_couple)
+VALUES (5, 2, 2, 3, 1, 1, 2),
+       (5, 1, 1, 3, 2, 1, 1),
+       (5, 4, 3, 3, 3, 1, 4),
+       (5, 2, 1, 3, 1, 2, 2),
+       (5, 3, 2, 4, 3, 2, 3),
+       (5, 1, 4, 4, 3, 3, 1),
+       (5, 2, 5, 3, 1, 3, 2),
+       (5, 3, 1, 3, 1, 3, 3),
+       (5, 1, 2, 4, 3, 4, 1),
+       (5, 5, 3, 4, 4, 4, 5),
+       (5, 6, 4, 3, 2, 4, 6),
+       (5, 3, 1, 3, 4, 5, 3),
+       (5, 4, 2, 4, 3, 5, 4);

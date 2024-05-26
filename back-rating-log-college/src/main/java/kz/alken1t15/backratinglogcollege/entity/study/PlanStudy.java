@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import kz.alken1t15.backratinglogcollege.entity.Teachers;
 import kz.alken1t15.backratinglogcollege.entity.study.process.TypeStudy;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -12,6 +13,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class PlanStudy {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
@@ -43,4 +45,15 @@ public class PlanStudy {
 
 @Column(name = "number_of_couple")
     private Integer numberOfCouple;
+
+
+    public PlanStudy(TypeStudy typeStudy, TimeStudy timeStudy, SubjectStudy subjectStudy, Teachers teacher, Auditorium auditorium, Week week, Integer numberOfCouple) {
+        this.typeStudy = typeStudy;
+        this.timeStudy = timeStudy;
+        this.subjectStudy = subjectStudy;
+        this.teacher = teacher;
+        this.auditorium = auditorium;
+        this.week = week;
+        this.numberOfCouple = numberOfCouple;
+    }
 }

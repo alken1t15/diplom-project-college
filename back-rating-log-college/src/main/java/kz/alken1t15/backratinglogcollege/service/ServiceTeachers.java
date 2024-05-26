@@ -193,6 +193,11 @@ public class ServiceTeachers {
         return month[idMonth];
     }
 
+    //Получение учителя по id
+    public Teachers findById(Long id){
+        return repositoryTeacher.findById(id).orElse(null);
+    }
+
 
     //Обновление данных пользователя
     public void save(Teachers teacher) {

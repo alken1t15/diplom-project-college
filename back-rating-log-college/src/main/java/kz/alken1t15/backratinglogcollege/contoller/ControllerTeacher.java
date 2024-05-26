@@ -28,11 +28,6 @@ public class ControllerTeacher {
     private final ServiceFilesStudent serviceFilesStudent;
     private final ServiceOmissions serviceOmissions;
 
-    @PostMapping(path = "/add")
-    public ResponseEntity addEvaluation(@RequestBody @Validated TeacherAddDTO teacher,BindingResult bindingResult){
-        return serviceTeachers.saveNewTeacher(teacher,bindingResult);
-    }
-
     @PostMapping(path = "/home/add")
     public ResponseEntity addNewFileHomeTaskTeacher(@Validated @RequestParam List<MultipartFile> files, @NonNull @RequestParam("id") Long id) {
         return serviceHoweWork.addNewFileHomeTaskTeacher(files,id);
