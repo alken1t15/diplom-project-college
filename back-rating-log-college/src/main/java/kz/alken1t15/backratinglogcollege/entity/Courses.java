@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import kz.alken1t15.backratinglogcollege.entity.study.FilesGroup;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.catalina.LifecycleState;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Table(name = "courses")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Courses {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,4 +26,10 @@ public class Courses {
     private Integer year;
     @OneToMany(mappedBy = "course")
     private List<FilesGroup> filesGroups;
+
+    public Courses(Groups group, Integer course, Integer year) {
+        this.group = group;
+        this.course = course;
+        this.year = year;
+    }
 }

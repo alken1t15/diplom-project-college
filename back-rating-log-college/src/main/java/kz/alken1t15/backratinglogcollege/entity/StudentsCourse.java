@@ -2,6 +2,7 @@ package kz.alken1t15.backratinglogcollege.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 @Table(name = "students_course")
 @Getter
 @Setter
+@NoArgsConstructor
 public class StudentsCourse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +28,9 @@ public class StudentsCourse {
 
     @OneToMany(mappedBy = "studentsCourse")
     private List<Evaluations> evaluations;
+
+    public StudentsCourse(Students student, Integer course) {
+        this.student = student;
+        this.course = course;
+    }
 }

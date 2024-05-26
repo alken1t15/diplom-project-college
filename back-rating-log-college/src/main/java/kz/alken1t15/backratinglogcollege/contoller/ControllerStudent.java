@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,17 +36,6 @@ public class ControllerStudent {
     private final ServiceFilesGroup serviceFilesGroup;
     private final ServiceFilesStudent serviceFilesStudent;
     private final ServiceHoweWork serviceHoweWork;
-
-//    @GetMapping(path = "/{id}")
-//    public ResponseEntity<Students> getStudent(@PathVariable("id") Long id) {
-//        return serviceStudents.findById(id);
-//    }
-//
-//    @PostMapping(path = "/add")
-//    public ResponseEntity addNewGroup(@RequestBody StudentDTO student) {
-//        return serviceStudents.save(student);
-//    }
-
     @PostMapping(path = "/main")
     public StudentInfoMainPageDTO getInfoForMainPage(@RequestBody UserId userId) {
         ModelMapper modelMapper = new ModelMapper();
@@ -78,6 +68,11 @@ public class ControllerStudent {
     @PostMapping(path = "/certificate/add")
     public ResponseEntity saveFileCertificate(@RequestParam MultipartFile file) {
         return serviceFilesStudent.saveCertificate(file);
+    }
+
+    @PostMapping(path = "/home/complete")
+    public ResponseEntity setCompleteHome(@Validated @RequestBody CompleteHomeTaskDTO completeHomeTaskDTO, BindingResult bindingResult){
+        return  serviceHoweWork.setCompleteHome(completeHomeTaskDTO,bindingResult);
     }
 
 

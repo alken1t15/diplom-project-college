@@ -1,12 +1,18 @@
 package kz.alken1t15.backratinglogcollege.service;
 
 import kz.alken1t15.backratinglogcollege.dto.AuditoriumDTO;
+import kz.alken1t15.backratinglogcollege.dto.PlanStudyAddDTO;
 import kz.alken1t15.backratinglogcollege.dto.PlanStudyDTO;
 import kz.alken1t15.backratinglogcollege.dto.PlanStudySubjectDTO;
 import kz.alken1t15.backratinglogcollege.entity.study.PlanStudy;
+import kz.alken1t15.backratinglogcollege.entity.study.process.TypeStudy;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryPlanStudy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -17,6 +23,7 @@ import java.util.List;
 public class ServicePlanStudy {
     @Autowired
     private RepositoryPlanStudy repositoryPlanStudy;
+    private ServiceTypeStudy serviceTypeStudy;
     private final String[] russianDayOfWeekNames = {"Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"};
     private final String[] russianMonthNames = {
             "января", "февраля", "марта", "апреля", "мая", "июня",
@@ -60,5 +67,21 @@ public class ServicePlanStudy {
         LocalDate date = LocalDate.now();
         long idWeek = date.getDayOfWeek().getValue();
         return repositoryPlanStudy.findByGroupIdNameOfDay(idGroup, idWeek, date);
+    }
+
+    //В разработке
+    public ResponseEntity saveNewPlanStudy(PlanStudyAddDTO planStudy, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<String> errors = new ArrayList<>();
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                String field = fieldError.getField();
+                String nameError = fieldError.getDefaultMessage();
+                errors.add(String.format("Поле %s ошибка: %s", field, nameError));
+            }
+            return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
+        }
+        TypeStudy typeStudy = serviceTypeStudy.findById(planStudy.getIdTypeStudy());
+        //
+        return null;
     }
 }

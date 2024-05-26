@@ -1,21 +1,23 @@
 package kz.alken1t15.backratinglogcollege.service;
 
 import kz.alken1t15.backratinglogcollege.dto.MonthDTO;
+import kz.alken1t15.backratinglogcollege.dto.StudyProcessDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.MonthReturnDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.PlanStudyFindDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.ProcessDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.ProcessReturnDTO;
-import kz.alken1t15.backratinglogcollege.entity.Courses;
-import kz.alken1t15.backratinglogcollege.entity.Evaluations;
-import kz.alken1t15.backratinglogcollege.entity.Students;
-import kz.alken1t15.backratinglogcollege.entity.User;
+import kz.alken1t15.backratinglogcollege.entity.*;
 import kz.alken1t15.backratinglogcollege.entity.study.process.StudyProcess;
 import kz.alken1t15.backratinglogcollege.entity.study.process.TypeStudy;
 import kz.alken1t15.backratinglogcollege.repository.*;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 import java.security.Security;
 import java.time.LocalDate;
@@ -35,6 +37,7 @@ public class ServiceStudyProcess {
     private RepositoryTypeStudy repositoryTypeStudy;
     private RepositoryPlanStudy repositoryPlanStudy;
     private ServiceCourses serviceCourses;
+    private ServiceGroups serviceGroups;
 
 
     public ProcessReturnDTO getStudyProcess(ProcessDTO process) {
@@ -204,4 +207,26 @@ public class ServiceStudyProcess {
         return monthReturnDTOS;
     }
 
+    public ResponseEntity saveNewStudyProcess(StudyProcessDTO studyProcess, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<String> errors = new ArrayList<>();
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                String field = fieldError.getField();
+                String nameError = fieldError.getDefaultMessage();
+                errors.add(String.format("Поле %s ошибка: %s", field, nameError));
+            }
+            return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
+        }
+        Groups group = serviceGroups.findById(studyProcess.getIdGroup());
+        if (group==null){
+            return new ResponseEntity("Нету такой группы",HttpStatus.BAD_REQUEST);
+        }
+        repositoryStudyProcess.save(new StudyProcess(group,studyProcess.getSemester(),studyProcess.getCourse(),studyProcess.getStart(),studyProcess.getEnd()));
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+
+    public StudyProcess findById(Long id){
+        return repositoryStudyProcess.findById(id).orElse(null);
+    }
 }

@@ -1,4 +1,4 @@
-package kz.alken1t15.backratinglogcollege.entity.study;
+package kz.alken1t15.backratinglogcollege.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,19 +8,17 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Table(name = "subject_study")
+@Table(name = "specialization")
 @Getter
 @Setter
 @NoArgsConstructor
-public class SubjectStudy {
+public class Specialization {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    @OneToMany(mappedBy = "subjectStudy")
-    private List<PlanStudy> planStudies;
 
-    public SubjectStudy(String name) {
-        this.name = name;
-    }
+    private String name;
+
+    @OneToMany(mappedBy = "specialization")
+    private List<Groups> groups;
 }

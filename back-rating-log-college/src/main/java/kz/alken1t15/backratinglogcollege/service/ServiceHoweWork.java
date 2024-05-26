@@ -1,5 +1,6 @@
 package kz.alken1t15.backratinglogcollege.service;
 
+import kz.alken1t15.backratinglogcollege.dto.CompleteHomeTaskDTO;
 import kz.alken1t15.backratinglogcollege.dto.FileHomeTaskDTO;
 import kz.alken1t15.backratinglogcollege.dto.HomeWorkRequest;
 import kz.alken1t15.backratinglogcollege.dto.file.FileRequestDTO;
@@ -16,6 +17,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -41,16 +44,19 @@ public class ServiceHoweWork {
     private final RepositoryTaskStudentsFiles repositoryTaskStudentsFiles;
     @Autowired
     private final RepositoryFileHomeTask repositoryFileHomeTask;
+    @Autowired
+    private final ServiceTaskStudents serviceTaskStudents;
     @Value("${path.save.file}")
     private String pathSaveFile;
 
-    public ServiceHoweWork(RepositoryHoweWork repositoryHoweWork, ServiceStudents serviceStudent, RepositoryTaskStudents repositoryTaskStudent, ServiceFilesStudent serviceFilesStudent, RepositoryTaskStudentsFiles taskStudentsFiles, RepositoryFileHomeTask repositoryFileHomeTask) {
+    public ServiceHoweWork(RepositoryHoweWork repositoryHoweWork, ServiceStudents serviceStudent, RepositoryTaskStudents repositoryTaskStudent, ServiceFilesStudent serviceFilesStudent, RepositoryTaskStudentsFiles taskStudentsFiles, RepositoryFileHomeTask repositoryFileHomeTask, ServiceTaskStudents serviceTaskStudents) {
         this.repositoryHoweWork = repositoryHoweWork;
         this.serviceStudent = serviceStudent;
         this.repositoryTaskStudent = repositoryTaskStudent;
         this.serviceFilesStudent = serviceFilesStudent;
         this.repositoryTaskStudentsFiles = taskStudentsFiles;
         this.repositoryFileHomeTask = repositoryFileHomeTask;
+        this.serviceTaskStudents = serviceTaskStudents;
     }
 
     private final String[] arrMonth = new String[]{"янв", "фев", "мар", "апр", "май", "июн", "", "", "сен", "окт", "нояб", "дек"};
@@ -158,5 +164,23 @@ public class ServiceHoweWork {
             }
             return new ResponseEntity<>(HttpStatus.OK);
         }
+    }
+
+    public ResponseEntity setCompleteHome(CompleteHomeTaskDTO completeHomeTaskDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<String> errors = new ArrayList<>();
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                String field = fieldError.getField();
+                String nameError = fieldError.getDefaultMessage();
+                errors.add(String.format("Поле %s ошибка: %s", field, nameError));
+            }
+            return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
+        }
+        Students student = serviceStudent.getStudent();
+        TaskStudents taskStudents = serviceTaskStudents.findByIdWorkAndIdStudent(completeHomeTaskDTO.getIdWork(),student.getId());
+        taskStudents.setStatus("Сдано");
+        taskStudents.setTimeCompleted(LocalDateTime.now());
+        serviceTaskStudents.save(taskStudents);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
