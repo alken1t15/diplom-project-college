@@ -36,4 +36,8 @@ public class ServiceSubject {
         repositorySubject.save(new SubjectStudy(subject.getName()));
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    public SubjectStudy findById(Long id){
+        return repositorySubject.findById(id).orElse(null);
+    }
 }

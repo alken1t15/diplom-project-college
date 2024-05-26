@@ -302,6 +302,10 @@ insert into study_process (id_group, semester, course, date_start, date_end)
 VALUES (1, 1, 1, '02.09.2023', '10.10.2023'),
        (1, 2, 1, '02.11.2023', '30.06.2024');
 
+insert into study_process (id_group, semester, course, date_start, date_end)
+VALUES (2, 1, 1, '02.09.2023', '10.10.2023'),
+       (2, 2, 1, '02.11.2023', '30.06.2024');
+
 create table type_study
 (
     id               serial primary key,
@@ -316,6 +320,9 @@ VALUES (1, 'учеба', '02.11.2023', '10.02.2024'),
        (2, 'учеба', '02.11.2023', '10.02.2024'),
        (2, 'практика', '11.02.2024', '10.06.2024'),
        (2, 'учебная практика', '11.06.2024', '10.10.2024');
+
+insert into type_study (id_study_process, name, date_start, date_end)
+VALUES (3, 'учеба', '02.11.2023', '10.02.2024');
 
 create table time_study
 (
@@ -399,3 +406,20 @@ VALUES (3, 1, 1, 3, 1, 1, 1),
        (3, 4, 4, 3, 2, 4, 4),
        (3, 1, 1, 3, 4, 5, 1),
        (3, 2, 2, 4, 3, 5, 2);
+
+
+insert into plan_study (id_type_study, id_time_study, id_subject_study, id_teacher, id_auditorium, id_week,
+                        number_of_couple)
+VALUES (5, 2, 2, 3, 1, 1, 2),
+       (5, 1, 1, 3, 2, 1, 1),
+       (5, 4, 3, 3, 3, 1, 4),
+       (5, 2, 1, 3, 1, 2, 2),
+       (5, 3, 2, 4, 3, 2, 3),
+       (5, 1, 4, 4, 3, 3, 1),
+       (5, 2, 5, 3, 1, 3, 2),
+       (5, 3, 1, 3, 1, 3, 3),
+       (5, 1, 2, 4, 3, 4, 1),
+       (5, 5, 3, 4, 4, 4, 5),
+       (5, 6, 4, 3, 2, 4, 6),
+       (5, 3, 1, 3, 4, 5, 3),
+       (5, 4, 2, 4, 3, 5, 4);

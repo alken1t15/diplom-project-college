@@ -36,4 +36,8 @@ public class ServiceAuditorium {
         repositoryAuditorium.save(new Auditorium(auditorium.getBlock(),auditorium.getFlour(),auditorium.getCabinet()));
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    public Auditorium findById(Long id){
+        return repositoryAuditorium.findById(id).orElse(null);
+    }
 }
