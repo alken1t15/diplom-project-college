@@ -53,3 +53,15 @@
   align-items: stretch;
   justify-content: stretch;
 }
+
+.total-student{
+  font-weight: 300;
+  font-size: 20px;
+  color: #b4b7bc;
+  margin-bottom: 25px;
+  & > span{
+    font-weight: 700;
+    font-size: 20px;
+    color: #fff;
+  }
+}

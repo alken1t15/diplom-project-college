@@ -1,0 +1,28 @@
+.switch {
+  width: 60px;
+  height: 30px;
+  border-radius: 15px;
+  background-color: #A0A0A0;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &.active {
+    background-color: var(--purple);
+  }
+
+  .switch-handle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: white;
+    transition: transform 0.2s;
+    transform: translateX(0);
+  }
+
+  &.active .switch-handle {
+    transform: translateX(30px);
+  }
+}

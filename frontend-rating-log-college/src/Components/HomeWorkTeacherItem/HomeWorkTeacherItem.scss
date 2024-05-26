@@ -1,0 +1,60 @@
+.homework-teacher-item{
+  padding: 15px 10px;
+  background-color: #434C59;
+  width: 274px;
+  border-radius: 10px;
+  border: none;
+  margin-left: 23px;
+  margin-top: 30px;
+  cursor: pointer;
+  transition: .3s;
+  &-a{
+    background-color: var(--purple);
+    transition: .3s;
+  }
+  &:first-child{
+    margin-left: 0;
+  }
+  &__name{
+    font-weight: 700;
+    font-size: 18px;
+    color: #fff;
+    width: 100%;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #fff;
+    word-wrap: break-word;
+  }
+  &-inner-block{
+    margin-top: 10px;
+    &__title{
+      margin-bottom: 5px;
+      font-weight: 400;
+      font-size: 14px;
+      color: #b4b7bc;
+      word-wrap: break-word;
+    }
+    &__text{
+      font-weight: 400;
+      font-size: 14px;
+      color: #fff;
+      word-wrap: break-word;
+    }
+  }
+}
+
+.homework-teacher-item-inner-block__text-u{
+  font-weight: 500;
+  font-size: 18px;
+  color: #fff;
+}
+
+.expires-block{
+  font-weight: 400;
+  font-size: 14px;
+  color: #b4b7bc;
+  &__text{
+    font-weight: 500;
+    font-size: 14px;
+    color: #fff;
+  }
+}

@@ -9,7 +9,9 @@ import ScheduleTeacherBlock from "../../Components/ScheduleTeacherBlock/Schedule
 import {parse, addMinutes, isWithinInterval} from "date-fns";
 import Slider, {ISliderItem} from "../../Components/Slider/Slider";
 import {login} from "../../Http/User";
-import StudentWithoutCertificate from "../../Components/StudentWithoutCertificate/StudentWithoutCertificate";
+import StudentWithoutCertificate, {
+    IStudentWithoutCertificateItem
+} from "../../Components/StudentWithoutCertificate/StudentWithoutCertificate";
 
 
 const infoImg = require('../../assets/images/InformationImgg.png');
@@ -58,8 +60,7 @@ const MainPageTeacher: React.FC = () => {
     let[presence, setPresence] = useState('')
     let[userName, setUserName] = useState('')
     let[userYEar, setUserYear] = useState('')
-    let[studentsWithCertificate, setStudentsWithCertificate] = useState<any[]>([])
-    let[studentWithoutCertificate, setStudentWithoutCertificate] = useState<any[]>([])
+    let[students, setStudents] = useState<IStudentWithoutCertificateItem[]>([])
     let[slider, setSlider] =useState([
         {
           id: 1,
@@ -115,7 +116,7 @@ const MainPageTeacher: React.FC = () => {
         setActiveOnSchedule();
     }, [time])
 
-    function getTime(){
+    const getTime = () => {
         const currentDate = new Date();
         const hours = String(currentDate.getHours()).padStart(2, '0');
         const minutes = String(currentDate.getMinutes()).padStart(2, '0');
@@ -128,27 +129,19 @@ const MainPageTeacher: React.FC = () => {
         mainPageTeacherData()
             .then(response=>{
 
-                let withCertif: any[] = [];
-                let withoutCertif: any[] = [];
 
-                response.data.currentOmissionStudents.forEach((el: any)=>{
+               let newArr = response.data.currentOmissionStudents.map((el: any)=>{
                     let newObj={
                         name: el.name,
                         count: el.count,
                         status: false,
+                        idCertificate: el.idCertificate
                     }
-                    if(el.idCertificate !== null){
-                        newObj.status = true;
-                        withCertif.push(newObj)
-                    }
-                    else{
-                        newObj.status = false;
-                        withoutCertif.push(newObj)
-                    }
-                })
+                    return newObj
 
-                setStudentWithoutCertificate(withoutCertif)
-                setStudentsWithCertificate(withCertif)
+                })
+                setStudents(newArr)
+
 
 
             })
@@ -211,6 +204,17 @@ const MainPageTeacher: React.FC = () => {
         })
         setSlider(newArr)
         setCurSlider(id)
+    }
+
+    const updateStudentOmissions = (id: number, value: boolean) => {
+        let newArr = students.map((el:any)=>{
+            if(el.id === id){
+                el.active = value;
+            }
+
+            return el;
+        })
+        setStudents(newArr)
     }
 
     return (
@@ -277,15 +281,12 @@ const MainPageTeacher: React.FC = () => {
                 </p>
                 <div>
                     <Slider items={slider} onChange={setSliderItems}/>
-                    {curSlider === 1 ?
-                        <>
-                        {studentWithoutCertificate.length > 0 ? studentWithoutCertificate.map((el: any, index: any)=>(
-                            // <StudentWithoutCertificate item={studentWithoutCertificate} key={index}/>
-                            <></>
+                    <div style={{marginTop: 25}}>
+                        <p className="total-student">Всего студентов: <span>{students.length}</span></p>
+                        {students.length > 0 ? students.map((el: any, index: any)=>(
+                            <StudentWithoutCertificate onChange={updateStudentOmissions} items={el}/>
                         )) : ''}
-                        </>
-                        :
-                        <></>}
+                    </div>
                 </div>
 
             </div>

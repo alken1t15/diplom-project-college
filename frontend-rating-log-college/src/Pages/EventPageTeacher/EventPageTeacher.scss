@@ -1,0 +1,45 @@
+.block-left__text-e{
+  padding-bottom: 20px;
+}
+
+.block-left-t-e{
+  padding-top: 35px;
+  width: 387px;
+}
+
+.block-middle-t-e{
+  flex-grow: 1;
+  padding-left: 16px;
+
+
+}
+
+.block-middle-t-e-bottom{
+  padding-left: 10px;
+  &-event-text{
+    margin-top: 30px;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 140%;
+    letter-spacing: -0.02em;
+    color: #b4b7bc;
+    & > span{
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 140%;
+      letter-spacing: -0.02em;
+      text-align: center;
+      color: #fff;
+    }
+  }
+}
+
+.block-middle__text-t-e{
+  margin-left: 10px;
+}
+
+.event-student-box{
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
