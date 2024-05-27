@@ -2,6 +2,7 @@ package kz.alken1t15.backratinglogcollege.dto.work;
 
 
 import kz.alken1t15.backratinglogcollege.dto.FileHomeTaskDTO;
+import kz.alken1t15.backratinglogcollege.dto.StudentWorkDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,5 +22,5 @@ public class HomeWorkDTO {
     private String description;
     private String statusStudent;
     private List<FileHomeTaskDTO> fileHomeTask;
-    private List<byte[]> files;
+    private List<StudentWorkDTO> files;
 }

@@ -71,10 +71,10 @@ public class ServiceFilesStudent {
                 try {
                     file.transferTo(filePath);
                     filesStudent.setName(uniqueFileName);
+                    repositoryFilesStudent.save(filesStudent);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-
                 return new ResponseEntity(HttpStatus.OK);
             } else {
                 try {
