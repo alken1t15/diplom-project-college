@@ -231,3 +231,11 @@
     height: 50px;
   }
 }
+.preview{
+  margin-top: 25px;
+  & > img{
+    margin-top: 10px;
+    width: 200px;
+    height: 200px;
+  }
+}

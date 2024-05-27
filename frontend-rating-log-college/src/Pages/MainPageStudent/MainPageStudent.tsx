@@ -307,7 +307,6 @@ const MainPageStudent: React.FC = () => {
 
                 updateOmissions(response.data.omissions)
 
-                console.log(response.data.file)
                 let newFile = [
                     {
                         name: '1',
@@ -356,6 +355,7 @@ const MainPageStudent: React.FC = () => {
         try {
             const response = await addNewCertificate(formData);
             console.log(response.data);
+            setIsActive(false)
         } catch (error) {
             console.error('Error sending certificate:', error);
         }
