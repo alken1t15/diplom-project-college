@@ -38,7 +38,7 @@ public class ServiceStudyProcess {
     private RepositoryPlanStudy repositoryPlanStudy;
     private ServiceCourses serviceCourses;
     private ServiceGroups serviceGroups;
-
+    private RepositoryTaskStudents repositoryTaskStudents;
 
     public ProcessReturnDTO getStudyProcess(ProcessDTO process) {
         ProcessReturnDTO processReturnDTO = new ProcessReturnDTO();
@@ -67,6 +67,7 @@ public class ServiceStudyProcess {
         processReturnDTO.setMonths(months);
         List<String> nameObjects;
         List<Evaluations> evaluationsObjects;
+        List<TaskStudents> taskStudents;
         LocalDate yearStart;
         int daysInMonth;
         List<String[]> evalStudy = new ArrayList<>();
@@ -88,6 +89,7 @@ public class ServiceStudyProcess {
             nameObjects = repositoryEvaluation.findByDateStudentCourseDistinctName(yearStart, yearEnd, process.getCourse(), student.getId());
             for (String name : nameObjects) {
                 evaluationsObjects = repositoryEvaluation.findByDateStudentCourseNameObject(yearStart, yearEnd, process.getCourse(), student.getId(), name);
+                taskStudents = repositoryTaskStudents.findByIdStudentAndDate(student.getId(),yearStart,yearEnd,name);
                 String[] tempArr = new String[daysInMonth + 1];
                 tempArr[0] = name;
                 long total = 0;
@@ -98,9 +100,20 @@ public class ServiceStudyProcess {
                     tempArr[localDate.getDayOfMonth()] = String.valueOf(e.getBall());
                     count++;
                 }
+                for (TaskStudents t : taskStudents) {
+                    total = t.getBall() + total;
+                    LocalDate localDate = t.getDateBall();
+                    tempArr[localDate.getDayOfMonth()] = String.valueOf(t.getBall());
+                    count++;
+                }
                 ArrayList<String> arrayList = new ArrayList<>();
                 int day = 0;
+                int i = 0;
                 for (String str : tempArr){
+                    if (i==0){
+                        i++;
+                        continue;
+                    }
                     if (day == 6) {
                         day = 0;
                         continue;
@@ -130,6 +143,7 @@ public class ServiceStudyProcess {
             nameObjects = repositoryEvaluation.findByDateStudentCourseDistinctName(yearStart, yearEnd, student.getGroup().getCurrentCourse(), student.getId());
             for (String name : nameObjects) {
                 evaluationsObjects = repositoryEvaluation.findByDateStudentCourseNameObject(yearStart, yearEnd, student.getGroup().getCurrentCourse(), student.getId(), name);
+                taskStudents = repositoryTaskStudents.findByIdStudentAndDate(student.getId(),yearStart,yearEnd,name);
                 String[] tempArr = new String[daysInMonth + 1];
                 tempArr[0] = name;
                 int count =0;
@@ -140,8 +154,29 @@ public class ServiceStudyProcess {
                     tempArr[localDate.getDayOfMonth()] = String.valueOf(e.getBall());
                     count++;
                 }
-                tempArr[tempArr.length-1] = String.valueOf(total/count);
-                evalStudy.add(tempArr);
+                for (TaskStudents t : taskStudents) {
+                    total = t.getBall() + total;
+                    LocalDate localDate = t.getDateBall();
+                    tempArr[localDate.getDayOfMonth()] = String.valueOf(t.getBall());
+                    count++;
+                }
+                ArrayList<String> arrayList = new ArrayList<>();
+                int day = 0;
+                int i = 0;
+                for (String str : tempArr){
+                    if (i==0){
+                        i++;
+                        continue;
+                    }
+                    if (day == 6) {
+                        day = 0;
+                        continue;
+                    }
+                    arrayList.add(str);
+                    day++;
+                }
+                arrayList.add(String.valueOf(total/count));
+                evalStudy.add(arrayList.toArray(new String[0]));
             }
         }
         List<String> arr = new ArrayList<>();

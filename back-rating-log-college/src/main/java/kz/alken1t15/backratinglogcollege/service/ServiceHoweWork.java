@@ -2,6 +2,7 @@ package kz.alken1t15.backratinglogcollege.service;
 
 import kz.alken1t15.backratinglogcollege.dto.CompleteHomeTaskDTO;
 import kz.alken1t15.backratinglogcollege.dto.FileHomeTaskDTO;
+import kz.alken1t15.backratinglogcollege.dto.HomeWorkAddDTO;
 import kz.alken1t15.backratinglogcollege.dto.HomeWorkRequest;
 import kz.alken1t15.backratinglogcollege.dto.file.FileRequestDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.HomeWorkDTO;
@@ -12,6 +13,7 @@ import kz.alken1t15.backratinglogcollege.repository.RepositoryFileHomeTask;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryHoweWork;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryTaskStudents;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryTaskStudentsFiles;
+import org.hibernate.jdbc.Work;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -46,10 +48,14 @@ public class ServiceHoweWork {
     private final RepositoryFileHomeTask repositoryFileHomeTask;
     @Autowired
     private final ServiceTaskStudents serviceTaskStudents;
+    @Autowired
+    private final ServiceGroups serviceGroups;
+    @Autowired
+    private final ServiceTeachers serviceTeachers;
     @Value("${path.save.file}")
     private String pathSaveFile;
 
-    public ServiceHoweWork(RepositoryHoweWork repositoryHoweWork, ServiceStudents serviceStudent, RepositoryTaskStudents repositoryTaskStudent, ServiceFilesStudent serviceFilesStudent, RepositoryTaskStudentsFiles taskStudentsFiles, RepositoryFileHomeTask repositoryFileHomeTask, ServiceTaskStudents serviceTaskStudents) {
+    public ServiceHoweWork(RepositoryHoweWork repositoryHoweWork, ServiceStudents serviceStudent, RepositoryTaskStudents repositoryTaskStudent, ServiceFilesStudent serviceFilesStudent, RepositoryTaskStudentsFiles taskStudentsFiles, RepositoryFileHomeTask repositoryFileHomeTask, ServiceTaskStudents serviceTaskStudents, ServiceGroups serviceGroups, ServiceTeachers serviceTeachers) {
         this.repositoryHoweWork = repositoryHoweWork;
         this.serviceStudent = serviceStudent;
         this.repositoryTaskStudent = repositoryTaskStudent;
@@ -57,6 +63,8 @@ public class ServiceHoweWork {
         this.repositoryTaskStudentsFiles = taskStudentsFiles;
         this.repositoryFileHomeTask = repositoryFileHomeTask;
         this.serviceTaskStudents = serviceTaskStudents;
+        this.serviceGroups = serviceGroups;
+        this.serviceTeachers = serviceTeachers;
     }
 
     private final String[] arrMonth = new String[]{"янв", "фев", "мар", "апр", "май", "июн", "", "", "сен", "окт", "нояб", "дек"};
@@ -105,16 +113,15 @@ public class ServiceHoweWork {
             fileHomeTasks.add(new FileHomeTaskDTO(f.getId(), f.getName(), f.getDateCreate(), file));
         }
         List<byte[]> files = getFileForHomeWork(id);
-        return new HomeWorkDTO(howeWork.getId(), howeWork.getName(), howeWork.getNameSubject(), dateStart, dateEnd, teacherName, howeWork.getDescription(), status, fileHomeTasks,files);
+        return new HomeWorkDTO(howeWork.getId(), howeWork.getName(), howeWork.getNameSubject(), dateStart, dateEnd, teacherName, howeWork.getDescription(), status, fileHomeTasks, files);
     }
 
-    public List<byte[]>  getFileForHomeWork(Long idHomeWork){
+    public List<byte[]> getFileForHomeWork(Long idHomeWork) {
         List<TaskStudentsFiles> taskStudentsFiles = repositoryTaskStudentsFiles.findByIdHomeWork(idHomeWork);
         List<byte[]> files = new ArrayList<>();
         if (taskStudentsFiles.isEmpty()) {
             return null;
-        }
-        else {
+        } else {
             for (TaskStudentsFiles t : taskStudentsFiles) {
                 byte[] file = serviceFilesStudent.getFile(t.getFilesStudent().getId());
                 files.add(file);
@@ -177,10 +184,42 @@ public class ServiceHoweWork {
             return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
         }
         Students student = serviceStudent.getStudent();
-        TaskStudents taskStudents = serviceTaskStudents.findByIdWorkAndIdStudent(completeHomeTaskDTO.getIdWork(),student.getId());
+        TaskStudents taskStudents = serviceTaskStudents.findByIdWorkAndIdStudent(completeHomeTaskDTO.getIdWork(), student.getId());
         taskStudents.setStatus("Сдано");
         taskStudents.setTimeCompleted(LocalDateTime.now());
         serviceTaskStudents.save(taskStudents);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    public ResponseEntity addNewWork(HomeWorkAddDTO homeWorkAddDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<String> errors = new ArrayList<>();
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                String field = fieldError.getField();
+                String nameError = fieldError.getDefaultMessage();
+                errors.add(String.format("Поле %s ошибка: %s", field, nameError));
+            }
+            return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
+        }
+        Groups group = serviceGroups.findById(homeWorkAddDTO.getIdGroup());
+        if (group == null) {
+            return new ResponseEntity("Нету такой группы", HttpStatus.BAD_REQUEST);
+        }
+        Teachers teachers = serviceTeachers.getTeachers();
+        HomeWork homeWork = repositoryHoweWork.save(new HomeWork(homeWorkAddDTO.getStart(), homeWorkAddDTO.getEnd(), homeWorkAddDTO.getName(), homeWorkAddDTO.getDescription(), homeWorkAddDTO.getNameSubject(), group, teachers,"Назначено"));
+        List<Students> students = group.getStudents();
+        for (Students student : students) {
+            serviceTaskStudents.save(new TaskStudents(homeWork, student, group.getCurrentCourse(), "Не выполнено"));
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+
+    public HomeWork findById(Long id){
+        return repositoryHoweWork.findById(id).orElse(null);
+    }
+
+    public List<HomeWork> findByIdTeacher(Long id){
+        return repositoryHoweWork.findByIdTeacher(id);
     }
 }

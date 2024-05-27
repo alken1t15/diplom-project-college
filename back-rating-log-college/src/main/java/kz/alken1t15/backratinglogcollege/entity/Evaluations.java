@@ -34,4 +34,11 @@ public class Evaluations {
     @Column(name = "name_teacher")
     private String nameTeacher;
 
+    public Evaluations(StudentsCourse studentsCourse, String nameObject, LocalDate dateEvaluation, Long ball, String nameTeacher) {
+        this.studentsCourse = studentsCourse;
+        this.nameObject = nameObject;
+        this.dateEvaluation = dateEvaluation;
+        this.ball = ball;
+        this.nameTeacher = nameTeacher;
+    }
 }

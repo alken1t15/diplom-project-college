@@ -1,16 +1,16 @@
 package kz.alken1t15.backratinglogcollege.dto;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class GetHomeWorkDTO {
+public class HomeWorkGetDTO {
     @NotNull
     private Long idWork;
     @NotNull
-    private Long idStudent;
-    private String ball;
-    private Boolean repeat;
+    private String name;
 }

@@ -68,4 +68,11 @@ public class ServiceGroups {
     }
 
 
+    List<Groups> findByIdTeacher(Long id){
+        return repositoryGroups.findByIdTeacher(id);
+    }
+
+    Groups findByIdGroupAndIdSubject(Long id,Long idSubject){
+        return repositoryGroups.findByIdGroupAndIdSubject(id,idSubject);
+    }
 }

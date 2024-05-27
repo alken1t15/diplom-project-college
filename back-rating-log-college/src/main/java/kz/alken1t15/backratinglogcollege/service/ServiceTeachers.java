@@ -1,12 +1,14 @@
 package kz.alken1t15.backratinglogcollege.service;
 
 import io.micrometer.common.util.StringUtils;
-import kz.alken1t15.backratinglogcollege.dto.CompleteHomeWorkDTO;
-import kz.alken1t15.backratinglogcollege.dto.CompleteHomeWorkStudentDTO;
+import kz.alken1t15.backratinglogcollege.dto.*;
 import kz.alken1t15.backratinglogcollege.dto.teacher.CurrentGraphStudyGroup;
 import kz.alken1t15.backratinglogcollege.dto.teacher.TeacherAddDTO;
 import kz.alken1t15.backratinglogcollege.dto.teacher.TeacherMainPageDTO;
 import kz.alken1t15.backratinglogcollege.entity.*;
+import kz.alken1t15.backratinglogcollege.entity.study.SubjectStudy;
+import kz.alken1t15.backratinglogcollege.repository.RepositoryEvaluations;
+import kz.alken1t15.backratinglogcollege.repository.RepositorySubject;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryTeachers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,16 +32,29 @@ public class ServiceTeachers {
     private final ServiceGroups serviceGroup;
     private final ServiceOmissions serviceOmissions;
     private final ServiceTaskStudents serviceTaskStudents;
+
+    private final ServiceGroups serviceGroups;
+
+    private final RepositorySubject repositorySubject;
+
+    private final ServiceStudents serviceStudents;
+
+    private final RepositoryEvaluations repositoryEvaluations;
+
     @Value("${path.save.file}")
     private String pathSaveFile;
 
     @Autowired
-    public ServiceTeachers(RepositoryTeachers repositoryTeacher, ServiceUsers serviceUser, ServiceGroups serviceGroup, ServiceOmissions serviceOmissions, ServiceTaskStudents serviceTaskStudents) {
+    public ServiceTeachers(RepositoryTeachers repositoryTeacher, ServiceUsers serviceUser, ServiceGroups serviceGroup, ServiceOmissions serviceOmissions, ServiceTaskStudents serviceTaskStudents, ServiceGroups serviceGroups, RepositorySubject repositorySubject, ServiceStudents serviceStudents, RepositoryEvaluations repositoryEvaluations) {
         this.repositoryTeacher = repositoryTeacher;
         this.serviceUser = serviceUser;
         this.serviceGroup = serviceGroup;
         this.serviceOmissions = serviceOmissions;
         this.serviceTaskStudents = serviceTaskStudents;
+        this.serviceGroups = serviceGroups;
+        this.repositorySubject = repositorySubject;
+        this.serviceStudents = serviceStudents;
+        this.repositoryEvaluations = repositoryEvaluations;
     }
 
     //Получение учителя
@@ -122,51 +137,88 @@ public class ServiceTeachers {
     }
 
     //Получение конкретного ученика и его работы
-    public ResponseEntity getHomeWorkStudent(Long idWork, Long idStudent, BindingResult bindingResult) {
-        if (idWork == null || idStudent == null){
-            CompleteHomeWorkStudentDTO completeHomeWork = new CompleteHomeWorkStudentDTO();
-            List<CompleteHomeWorkDTO> completeHomeWorkDTOS = getAllStudentCompleteTask();
-            completeHomeWork.setCompleteHomeWork(completeHomeWorkDTOS);
-            return new ResponseEntity(completeHomeWork,HttpStatus.OK);
+    public ResponseEntity getHomeWork(List<HomeWork> homeWorks) {
+        if (homeWorks.isEmpty()) {
+            return new ResponseEntity(new ArrayList<>(), HttpStatus.OK);
         }
-        TaskStudents taskStudents = serviceTaskStudents.findByWorkIdAndStudentIdAndComplete(idWork, idStudent, "Сдано");
-        HomeWork homeWork = taskStudents.getHoweWork();
-        Students student = taskStudents.getStudent();
-        Teachers teacher = homeWork.getTeacher();
-        String monthStart = getMonthNameShort(homeWork.getStartDate().getMonth().getValue());
-        String allStart = homeWork.getStartDate().getDayOfMonth() + " " + monthStart;
-        String monthEnd = getMonthNameShort(homeWork.getEndDate().getMonth().getValue());
-        String allEnd = homeWork.getEndDate().getDayOfMonth() + " " + monthEnd;
-        String nameTeacher;
-        if (!StringUtils.isBlank(teacher.getMiddleName())) {
-            nameTeacher = teacher.getSecondName() + " " + teacher.getFirstName() + " " + teacher.getMiddleName();
-        } else {
-            nameTeacher = teacher.getSecondName() + " " + teacher.getFirstName();
+        List<HomeWorkTeacherDTO> homeWorkTeacherDTOs = new ArrayList<>();
+        for (HomeWork h : homeWorks) {
+            String monthEnd = getMonthName(h.getEndDate().getMonth().getValue());
+            String allEnd = h.getEndDate().getDayOfMonth() + " " + monthEnd;
+            Integer countGroupPeople = h.getGroup().getStudents().size();
+            List<Students> students = h.getGroup().getStudents();
+            Integer count = 0;
+            for (Students s : students) {
+                TaskStudents taskStudents = serviceTaskStudents.findByWorkIdAndStudentIdAndComplete(h.getId(), s.getId(), "Сдано");
+                if (taskStudents != null) {
+                    count++;
+                }
+                taskStudents = serviceTaskStudents.findByWorkIdAndStudentIdAndComplete(h.getId(), s.getId(), "Проверено");
+                if (taskStudents != null) {
+                    count++;
+                }
+
+            }
+            String countTotal = count + "/" + countGroupPeople;
+            homeWorkTeacherDTOs.add(new HomeWorkTeacherDTO(h.getId(), h.getName(), h.getNameSubject(), h.getGroup().getName(), allEnd, countTotal));
         }
-        String nameStudent;
-        if (!StringUtils.isBlank(teacher.getMiddleName())) {
-            nameStudent = student.getSecondName() + " " + student.getFirstName() + " " + student.getMiddleName();
-        } else {
-            nameStudent = student.getSecondName() + " " + student.getFirstName();
+        return new ResponseEntity(homeWorkTeacherDTOs, HttpStatus.OK);
+    }
+
+    public ResponseEntity getHomeWorkId(HomeWork h, String name, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<String> errors = new ArrayList<>();
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                String field = fieldError.getField();
+                String nameError = fieldError.getDefaultMessage();
+                errors.add(String.format("Поле %s ошибка: %s", field, nameError));
+            }
+            return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
         }
-        String month = getMonthName(taskStudents.getTimeCompleted().getMonth().getValue());
-        String completeDate = taskStudents.getTimeCompleted().getDayOfMonth() + " " + month;
-        List<FileHomeTask> homeTasks = homeWork.getFileHomeTasks();
-        List<byte[]> fileWork = new ArrayList<>();
-        if (!homeTasks.isEmpty()) {
-            for (FileHomeTask t : homeTasks) {
-                fileWork.add(readFile(t.getName()));
+        String monthEnd = getMonthName(h.getEndDate().getMonth().getValue());
+        String allEnd = h.getEndDate().getDayOfMonth() + " " + monthEnd;
+        Integer countGroupPeople = h.getGroup().getStudents().size();
+        List<Students> students = h.getGroup().getStudents();
+        Integer count = 0;
+        List<StudentHomeWorkDTO> homeWorkGetDTOs = new ArrayList<>();
+        for (Students s : students) {
+            TaskStudents taskStudents = serviceTaskStudents.findByWorkIdAndStudentIdAndComplete(h.getId(), s.getId(), "Сдано");
+            if (taskStudents != null) {
+                count++;
+            }
+            taskStudents = serviceTaskStudents.findByWorkIdAndStudentIdAndComplete(h.getId(), s.getId(), "Проверено");
+            if (taskStudents != null) {
+                count++;
+            }
+            if (name.equals("Сдано")) {
+                taskStudents = serviceTaskStudents.findByWorkIdAndStudentIdAndComplete(h.getId(), s.getId(), "Сдано");
+                if (taskStudents != null) {
+                    String nameStudent = s.getSecondName() + " " + s.getFirstName();
+                    List<byte[]> files = new ArrayList<>();
+                    List<TaskStudentsFiles> taskStudentsFiles = taskStudents.getTaskStudentsFiles();
+                    for (TaskStudentsFiles t : taskStudentsFiles) {
+                        files.add(readFile(t.getFilesStudent().getName()));
+                    }
+                    homeWorkGetDTOs.add(new StudentHomeWorkDTO(s.getId(), nameStudent, null, files));
+                }
+            } else if (name.equals("Проверено")) {
+                taskStudents = serviceTaskStudents.findByWorkIdAndStudentIdAndComplete(h.getId(), s.getId(), "Проверено");
+                if (taskStudents != null) {
+                    String nameStudent = s.getSecondName() + " " + s.getFirstName();
+                    String ball = String.valueOf(taskStudents.getBall());
+                    List<byte[]> files = new ArrayList<>();
+                    List<TaskStudentsFiles> taskStudentsFiles = taskStudents.getTaskStudentsFiles();
+                    for (TaskStudentsFiles t : taskStudentsFiles) {
+                        files.add(readFile(t.getFilesStudent().getName()));
+                    }
+                    homeWorkGetDTOs.add(new StudentHomeWorkDTO(s.getId(), nameStudent, ball, files));
+                }
+
             }
         }
-        List<TaskStudentsFiles> taskStudentsFiles = taskStudents.getTaskStudentsFiles();
-        List<byte[]> fileStudent = new ArrayList<>();
-        if (!taskStudentsFiles.isEmpty()) {
-            for (TaskStudentsFiles t : taskStudentsFiles) {
-                fileStudent.add(readFile(t.getFilesStudent().getName()));
-            }
-        }
-        List<CompleteHomeWorkDTO> completeHomeWorkDTOS = getAllStudentCompleteTask();
-        return new ResponseEntity<>(new CompleteHomeWorkStudentDTO(homeWork.getName(), allStart, allEnd, nameTeacher, homeWork.getNameSubject(), homeWork.getDescription(), nameStudent, completeDate, fileWork, fileStudent, completeHomeWorkDTOS), HttpStatus.OK);
+        String countTotal = count + "/" + countGroupPeople;
+        HomeWorkStudentDTO homeWorkTeacherDTO = new HomeWorkStudentDTO(h.getId(), h.getName(), h.getNameSubject(), h.getGroup().getName(), allEnd, countTotal, homeWorkGetDTOs);
+        return new ResponseEntity(homeWorkTeacherDTO, HttpStatus.OK);
     }
 
 
@@ -194,7 +246,7 @@ public class ServiceTeachers {
     }
 
     //Получение учителя по id
-    public Teachers findById(Long id){
+    public Teachers findById(Long id) {
         return repositoryTeacher.findById(id).orElse(null);
     }
 
@@ -224,6 +276,78 @@ public class ServiceTeachers {
             save(new Teachers(idUser, teacher.getFirstName(), teacher.getSecondName(), teacher.getBornDate(), teacher.getStartWork()));
         } else {
             save(new Teachers(idUser, teacher.getFirstName(), teacher.getSecondName(), teacher.getMiddleName(), teacher.getBornDate(), teacher.getStartWork()));
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    public ResponseEntity getStudy() {
+        Teachers teachers = getTeachers();
+        List<GroupsStudyDTO> groupsStudyDTOS = new ArrayList<>();
+        List<SubjectStudyDTO> subjectStudyDTOS = new ArrayList<>();
+        List<Groups> groups = serviceGroup.findByIdTeacher(teachers.getId());
+        if (!groups.isEmpty()) {
+            for (Groups g : groups) {
+                groupsStudyDTOS.add(new GroupsStudyDTO(g.getId(), g.getName()));
+            }
+        }
+        List<SubjectStudy> subjectStudies = repositorySubject.findByIdTeacher(teachers.getId());
+        if (!subjectStudies.isEmpty()) {
+            for (SubjectStudy s : subjectStudies) {
+                subjectStudyDTOS.add(new SubjectStudyDTO(s.getId(), s.getName()));
+            }
+        }
+        return new ResponseEntity(new StudyDTO(groupsStudyDTOS, subjectStudyDTOS), HttpStatus.OK);
+    }
+
+    public ResponseEntity getStudent(StudyFindDTO studyFindDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<String> errors = new ArrayList<>();
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                String field = fieldError.getField();
+                String nameError = fieldError.getDefaultMessage();
+                errors.add(String.format("Поле %s ошибка: %s", field, nameError));
+            }
+            return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
+        }
+        Groups group = serviceGroup.findByIdGroupAndIdSubject(studyFindDTO.getIdGroup(), studyFindDTO.getIdSubject());
+        List<Students> students = group.getStudents();
+        List<StudentsStudyDTO> studentsStudyDTOS = new ArrayList<>();
+        for (Students s : students) {
+            String name = s.getSecondName() + " " + s.getFirstName();
+            Integer countOmissions = serviceOmissions.getOmissionsStudent(s.getId());
+            Integer count = 0;
+            count += countOmissions;
+            studentsStudyDTOS.add(new StudentsStudyDTO(s.getId(), name, String.valueOf(count)));
+        }
+        return new ResponseEntity(new GroupStudyDTOS(studentsStudyDTOS, students.size()), HttpStatus.OK);
+    }
+
+    public ResponseEntity addBullStudent(AddBullStudentDTO addBullStudentDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<String> errors = new ArrayList<>();
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                String field = fieldError.getField();
+                String nameError = fieldError.getDefaultMessage();
+                errors.add(String.format("Поле %s ошибка: %s", field, nameError));
+            }
+            return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
+        }
+        Teachers teacher = getTeachers();
+        String name = teacher.getSecondName() + " " + teacher.getFirstName();
+        SubjectStudy subjectStudy = repositorySubject.findById(addBullStudentDTO.getIdSubject()).orElseThrow();
+        for (BullStudentDTO b : addBullStudentDTO.getStudents()) {
+            Students students = serviceStudents.findByIdStudent(b.getId());
+            List<StudentsCourse> studentsCourses = students.getStudentsCourses();
+            StudentsCourse studentsCourse = null;
+            for (StudentsCourse s : studentsCourses) {
+                if (studentsCourse == null) {
+                    studentsCourse = s;
+                } else if (studentsCourse.getCourse() < s.getCourse()) {
+                    studentsCourse = s;
+                }
+                long bull = b.getBull();
+                repositoryEvaluations.save(new Evaluations(studentsCourse, subjectStudy.getName(), addBullStudentDTO.getDate(), bull, name));
+            }
         }
         return new ResponseEntity(HttpStatus.OK);
     }

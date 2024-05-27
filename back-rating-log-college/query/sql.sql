@@ -44,21 +44,22 @@ create table specialization
     name varchar(255) not null
 );
 
-insert into specialization (name) VALUES ('Вычислительная техника и программное обеспечение');
+insert into specialization (name)
+VALUES ('Вычислительная техника и программное обеспечение');
 
 create table groups
 (
-    id                  serial primary key,
-    id_curator          int references curator (id) not null,
+    id                serial primary key,
+    id_curator        int references curator (id)        not null,
     id_specialization int references specialization (id) not null,
-    name                varchar(255)                not null,
-    year                int                         not null,
-    current_course      int                         not null
+    name              varchar(255)                       not null,
+    year              int                                not null,
+    current_course    int                                not null
 );
 
 insert into groups (id_curator, id_specialization, name, year, current_course)
-VALUES (1,1, 'П-20-51б', 2023, 1),
-       (1,1,'П-20-66К',2024,1);
+VALUES (1, 1, 'П-20-51б', 2023, 1),
+       (1, 1, 'П-20-66К', 2024, 1);
 
 create table home_work
 (
@@ -78,7 +79,7 @@ VALUES (1, 4, '2024-04-16', '2024-04-28', 'Тест', 'Назначено',
 
 insert into home_work (id_groups, id_teacher, start_date, end_date, name, status, description, name_subject)
 VALUES (1, 3, '2024-05-16', '2024-05-28', 'Прочитать книгу', 'Назначено',
-        'ыавщлывалывалдлдывалдыавлдыавьлыавьлываьлывьлыавьлдывьл', 'Веб программирование');
+        'ыавщлывалывалдлдывалдыавлдыавьлыавьлываьлывьлыавьлдывьл', 'Веб-программирование');
 
 insert into home_work (id_groups, id_teacher, start_date, end_date, name, status, description, name_subject)
 VALUES (1, 4, '2024-03-16', '2024-03-28', 'Сделать презентацию', 'Назначено',
@@ -86,7 +87,7 @@ VALUES (1, 4, '2024-03-16', '2024-03-28', 'Сделать презентацию
 
 insert into home_work (id_groups, id_teacher, start_date, end_date, name, status, description, name_subject)
 VALUES (1, 3, '2024-05-25', '2024-05-30', 'Сделать сайт', 'Назначено',
-        'Разработать сайт', 'Веб программирование');
+        'Разработать сайт', 'Веб-программирование');
 
 create table file_home_task
 (
@@ -110,6 +111,8 @@ create table courses
 
 insert into courses (id_groups, course, year)
 VALUES (1, 1, 2023);
+insert into courses (id_groups, course, year)
+VALUES (1, 2, 2024);
 
 create table files_group
 (
@@ -157,6 +160,9 @@ create table task_students
     id_howe_work   int references home_work (id),
     id_students    int references students (id),
     status         varchar(255) not null,
+    course         int,
+    ball           int,
+    date_ball      timestamp,
     time_completed timestamp
 );
 

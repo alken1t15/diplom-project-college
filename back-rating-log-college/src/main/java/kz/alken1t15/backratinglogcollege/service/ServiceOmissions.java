@@ -22,6 +22,7 @@ import org.springframework.validation.BindingResult;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,5 +114,12 @@ public class ServiceOmissions {
         repositoryOmissions.save(new Omissions(studentsCourse, dateOmission, status, statusOmissionStudent.nameSubject(), statusOmissionStudent.numberCouple(), numberMonth));
 
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    public Integer getOmissionsStudent(Long id) {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate startOfMonth = currentDate.with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate endOfMonth = currentDate.with(TemporalAdjusters.lastDayOfMonth());
+      return   repositoryOmissions.findBySubjectNameAndIdStudentCountOmission(id,startOfMonth,endOfMonth);
     }
 }

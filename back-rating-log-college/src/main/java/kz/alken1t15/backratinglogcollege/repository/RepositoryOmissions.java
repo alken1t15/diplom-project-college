@@ -20,4 +20,7 @@ public interface RepositoryOmissions extends JpaRepository<Omissions, Long> {
 
     @Query("select count(o) from Omissions  o where  o.nameObject= ?1 and o.studentsCourse.student.id = ?2 and o.studentsCourse.course = ?3")
     Integer findBySubjectNameAndIdStudentCountOmission(String nameSubject, Long idStudent, Integer course);
+
+    @Query("select count(o) from Omissions  o join StudentsCourse sc on o.studentsCourse.id = sc.id join Students s on sc.student.id = s.id where s.id = ?1 and o.dateOmissions between ?2 and ?3")
+    Integer findBySubjectNameAndIdStudentCountOmission(Long idStudent,LocalDate start,LocalDate end);
 }

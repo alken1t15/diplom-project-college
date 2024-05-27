@@ -6,11 +6,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GetHomeWorkDTO {
+public class GetHomeWorkRepeatDTO {
     @NotNull
     private Long idWork;
     @NotNull
     private Long idStudent;
-    private String ball;
     private Boolean repeat;
 }

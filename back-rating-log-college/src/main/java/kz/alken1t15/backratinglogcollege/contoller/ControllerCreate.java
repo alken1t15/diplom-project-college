@@ -35,12 +35,12 @@ public class ControllerCreate {
     private final ServicePlanStudy servicePlanStudy;
 
     @PostMapping(path = "/teacher/add")
-    public ResponseEntity addTeacher(@RequestBody @Validated TeacherAddDTO teacher, BindingResult bindingResult){
-        return serviceTeachers.saveNewTeacher(teacher,bindingResult);
+    public ResponseEntity addTeacher(@RequestBody @Validated TeacherAddDTO teacher, BindingResult bindingResult) {
+        return serviceTeachers.saveNewTeacher(teacher, bindingResult);
     }
 
     @PostMapping(path = "/curator/add")
-    public ResponseEntity addCurator(@RequestBody @Validated CuratorAddDTO curator, BindingResult bindingResult){
+    public ResponseEntity addCurator(@RequestBody @Validated CuratorAddDTO curator, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<String> errors = new ArrayList<>();
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -51,44 +51,44 @@ public class ControllerCreate {
             return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
         }
         Teachers teacher = serviceTeachers.findById(curator.getIdTeacher());
-        if (teacher==null){
-            return new ResponseEntity("Такого учителя нету",HttpStatus.BAD_REQUEST);
+        if (teacher == null) {
+            return new ResponseEntity("Такого учителя нету", HttpStatus.BAD_REQUEST);
         }
         return serviceCurator.saveNewCurator(teacher);
     }
 
     @PostMapping(path = "/group/add")
-    public ResponseEntity addGroup(@RequestBody @Validated GroupAddDTO group, BindingResult bindingResult){
-        return serviceGroups.saveNewGroup(group,bindingResult);
+    public ResponseEntity addGroup(@RequestBody @Validated GroupAddDTO group, BindingResult bindingResult) {
+        return serviceGroups.saveNewGroup(group, bindingResult);
     }
 
     @PostMapping(path = "/student/add")
-    public ResponseEntity addStudent(@RequestBody @Validated StudentAddDTO student, BindingResult bindingResult){
-        return serviceStudents.saveNewStudent(student,bindingResult);
+    public ResponseEntity addStudent(@RequestBody @Validated StudentAddDTO student, BindingResult bindingResult) {
+        return serviceStudents.saveNewStudent(student, bindingResult);
     }
 
     @PostMapping(path = "/subject/add")
-    public ResponseEntity addSubject(@RequestBody @Validated SubjectAddDTO subject, BindingResult bindingResult){
-        return serviceSubject.saveNewSubject(subject,bindingResult);
+    public ResponseEntity addSubject(@RequestBody @Validated SubjectAddDTO subject, BindingResult bindingResult) {
+        return serviceSubject.saveNewSubject(subject, bindingResult);
     }
 
     @PostMapping(path = "/auditorium/add")
-    public ResponseEntity addAuditorium(@RequestBody @Validated AuditoriumAddDTO auditorium, BindingResult bindingResult){
-        return serviceAuditorium.saveNewAuditorium(auditorium,bindingResult);
+    public ResponseEntity addAuditorium(@RequestBody @Validated AuditoriumAddDTO auditorium, BindingResult bindingResult) {
+        return serviceAuditorium.saveNewAuditorium(auditorium, bindingResult);
     }
 
     @PostMapping(path = "/study/process/add")
-    public ResponseEntity addStudyProcess(@RequestBody @Validated StudyProcessDTO studyProcess, BindingResult bindingResult){
-        return serviceStudyProcess.saveNewStudyProcess(studyProcess,bindingResult);
+    public ResponseEntity addStudyProcess(@RequestBody @Validated StudyProcessDTO studyProcess, BindingResult bindingResult) {
+        return serviceStudyProcess.saveNewStudyProcess(studyProcess, bindingResult);
     }
 
     @PostMapping(path = "/type/study/add")
-    public ResponseEntity addTypeStudy(@RequestBody @Validated TypeStudyAddDTO typeStudy, BindingResult bindingResult){
-        return saveNewTypeStudy.saveNewTypeStudy(typeStudy,bindingResult);
+    public ResponseEntity addTypeStudy(@RequestBody @Validated TypeStudyAddDTO typeStudy, BindingResult bindingResult) {
+        return saveNewTypeStudy.saveNewTypeStudy(typeStudy, bindingResult);
     }
 
     @PostMapping(path = "/plan/study/add")
-    public ResponseEntity addPlanStydy(@RequestBody @Validated PlanStudyAddDTO planStudy, BindingResult bindingResult){
-        return servicePlanStudy.saveNewPlanStudy(planStudy,bindingResult);
+    public ResponseEntity addPlanStydy(@RequestBody @Validated PlanStudyAddDTO planStudy, BindingResult bindingResult) {
+        return servicePlanStudy.saveNewPlanStudy(planStudy, bindingResult);
     }
 }
