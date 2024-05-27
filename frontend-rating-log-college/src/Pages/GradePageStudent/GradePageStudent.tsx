@@ -45,6 +45,11 @@ const GradePageStudent: React.FC = () => {
             active: false,
             name: `2 семестр`,
         },
+        {
+            id: 3,
+            active: false,
+            name: `Итоговые оценки`,
+        },
     ]);
     let[currentTable, setCurrentTable] = useState<any[]>([])
     let[currentBody, setCurrentBody] = useState<string[]>([]);
@@ -171,6 +176,7 @@ const GradePageStudent: React.FC = () => {
                 arrCourses.push(obj)
 
             }
+
             setCourses(arrCourses)
 
             setCurrentTable(response.data.evaluations)

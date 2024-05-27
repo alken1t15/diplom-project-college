@@ -355,6 +355,7 @@ const MainPageStudent: React.FC = () => {
         try {
             const response = await addNewCertificate(formData);
             console.log(response.data);
+            setIsActive(false)
         } catch (error) {
             console.error('Error sending certificate:', error);
         }
