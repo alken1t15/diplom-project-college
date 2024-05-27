@@ -18,12 +18,10 @@ import HomeworkPageStudent from "./Pages/HomeworkPageStudent/HomeworkPageStudent
 import TeacherLayout from "./Components/TeacherLayout/TeacherLayout";
 import MainPageTeacher from "./Pages/MainPageTeacher/MainPageTeacher";
 import HomeWorksPageTeacher from "./Pages/HomeWorksPageTeacher/HomeWorksPageTeacher";
-import {UserProvider} from "./Store/Providers/UserProvider";
 import {mainPageData, mainPageTeacherData} from "./Http/MainPage";
-import {selectLoading, selectUser} from "./Store/Selectors/authSelectors";
-import {useDispatch, useSelector} from "react-redux";
 import {useCustomNavigate} from "./hooks/navigator";
 import {getItemFromLocalStorage} from "./Utils/LocalStore";
+import EventPageTeacher from "./Pages/EventPageTeacher/EventPageTeacher";
 
 function App() {
 
@@ -79,7 +77,7 @@ function App() {
                       <Route path={TEACHER_ROUTE} element={<TeacherLayout/>}>
                           <Route path={TEACHER_MAIN_PAGE_ROUTE} element={<MainPageTeacher/>}/>
                           <Route path={TEACHER_HOMEWORKS_PAGE_ROUTE} element={<HomeWorksPageTeacher/>}/>
-                          <Route path={TEACHER_GRADES_PAGE_ROUTE} element={<MainPageTeacher/>}/>
+                          <Route path={TEACHER_GRADES_PAGE_ROUTE} element={<EventPageTeacher/>}/>
                       </Route>
 
 

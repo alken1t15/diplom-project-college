@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {CSSProperties, useEffect, useState} from 'react';
 
 import './Slider.scss';
 export interface ISliderItem{
@@ -9,6 +9,7 @@ export interface ISliderItem{
 interface ISlider{
     items: ISliderItem[];
     onChange: (id: number) => void;
+    styles? : CSSProperties
 }
 const Slider: React.FC<ISlider> = (props) => {
     let[items, setItems] = useState(props.items);
@@ -18,7 +19,7 @@ const Slider: React.FC<ISlider> = (props) => {
     }, [props])
 
     return (
-        <div className={`slider-box`}>
+        <div className={`slider-box`} style={props.styles}>
             {items.map((el: any, index: any)=>(
                 <button className={`slider-item ${el.active ? 'slider-item-a' : ''}`}
                 onClick={(e)=>{

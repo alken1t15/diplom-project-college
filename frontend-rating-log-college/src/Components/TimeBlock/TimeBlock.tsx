@@ -1,18 +1,19 @@
-import React from 'react';
+import React, {CSSProperties} from 'react';
 import './TimeBlock.scss';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 export interface ITimeBlock{
     time: string;
+    style?: CSSProperties;
 }
-const TimeBlock: React.FC<ITimeBlock> = ({ time}) => {
+const TimeBlock: React.FC<ITimeBlock> = ({ time,style}) => {
 
     const today = new Date();
     const day = format(today, 'dd MMM', { locale: ru });
     const weekday = format(today, 'EEEE', { locale: ru });
 
     return (
-        <div className={'time-block'}>
+        <div className={'time-block'} style={style}>
             <div className="time-block-left">
                 {day.split(' ')[0]}
                 <span>{day.split(' ')[1]}</span>

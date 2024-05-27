@@ -1,43 +1,67 @@
-import React, {useState} from 'react';
-import './Filter.scss'
+import React, { useEffect, useState } from 'react';
+import './Filter.scss';
 
 const filterImg = require('../../assets/images/FilterVec.svg').default;
 
-interface IFilterItemInbox{
+interface IFilterItemInbox {
     id: number;
     name: string;
     active: boolean;
 }
-export interface IFilterItem{
+export interface IFilterItem {
     id: number;
     name: string;
-    items: IFilterItemInbox[]
+    items: IFilterItemInbox[];
 }
 
-interface IFilter{
-    items: IFilterItem[],
-    onCLick: (parentId: number, itemId: number) => void;
+interface IFilter {
+    items: IFilterItem[];
+    onClick: (parentId: number, itemId: number) => void;
 }
+
 const Filter: React.FC<IFilter> = (props) => {
+    const [items, setItems] = useState<IFilterItem[]>(props.items);
+    const [active, setActive] = useState(false);
+    const [hoveredParentId, setHoveredParentId] = useState<number | null>(null);
 
-    let [items, setItems] = useState<IFilterItem[]>(props.items)
-    let [active, setActive] = useState(false)
+    useEffect(() => {
+        setItems(props.items);
+    }, [props.items]);
 
     return (
-        <div className={'filter-block'}
-             onMouseOver={(e) => { setActive(true); }}
-             onMouseLeave={(e) => { setActive(false); }}
+        <div
+            className={'filter-block'}
+            onMouseOver={() => setActive(true)}
+            onMouseLeave={() => {
+                setActive(false);
+                setHoveredParentId(null);
+            }}
         >
-            <img className={'filter-block__img'} src={filterImg} alt="Filter img"/>
+            <img className={'filter-block__img'} src={filterImg} alt="Filter img" />
             <p className="filter-block__text">Фильтр</p>
-            <div className={`filter-block-hidden ${active ? 'filter-block-visible' : ''}`}>
-                {items ? items.map((el, index) => (
-                    <p className="filter-block-hidden-item" key={index}>
-                        <span>{el.name}</span>
-                    </p>
-                )) : <></>}
+            <div
+                className={`filter-block-hidden ${active ? 'filter-block-visible' : ''}`}
+            >
+                {items.map((parent) => (
+                    <div
+                        key={parent.id}
+                        className="filter-block-hidden-item"
+                        onMouseOver={() => setHoveredParentId(parent.id)}
+                        onMouseLeave={() => setHoveredParentId(null)}
+                    >
+                        <span>{parent.name}</span>
+                        {hoveredParentId === parent.id && parent.items.map((item) => (
+                            <p
+                                key={item.id}
+                                className="filter-block-hidden-item-inner"
+                                onClick={() => props.onClick(parent.id, item.id)}
+                            >
+                                {item.name}
+                            </p>
+                        ))}
+                    </div>
+                ))}
             </div>
-
         </div>
     );
 };

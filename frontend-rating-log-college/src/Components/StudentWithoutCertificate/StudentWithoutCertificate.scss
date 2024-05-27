@@ -1,0 +1,50 @@
+.studentWithoutCertificate{
+  &-block{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #434C59;
+    border-radius: 12px;
+    padding: 10px 20px;
+    color: white;
+    width: 100%;
+    min-height: 50px;
+    margin-top: 22px;
+    &-l{
+      display: flex;
+    }
+    &-text{
+      margin-left: 20px;
+      &__name{
+        font-weight: 500;
+        font-size: 18px;
+        color: #fff;
+      }
+      &__count{
+        font-weight: 300;
+        font-size: 18px;
+        color: #b4b7bc;
+        margin-top: 3px;
+        & > span{
+
+          font-weight: 500;
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+.omis-block{
+  display: flex;
+  align-items: center;
+  &__text{
+    margin-right: 10px;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 140%;
+    letter-spacing: -0.02em;
+    text-align: center;
+    color: #b4b7bc;
+  }
+}

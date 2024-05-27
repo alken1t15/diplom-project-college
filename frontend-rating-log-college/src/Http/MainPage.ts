@@ -9,3 +9,13 @@ export const mainPageTeacherData = async () => {
     let res = await $api.post(`teacher/main`, {});
     return res;
 };
+
+export const addNewCertificate = async (formData: any) => {
+    try {
+        let res = await $api.post(`student/certificate/add`, formData);
+        return res;
+    } catch (error) {
+        console.error('Error uploading certificate:', error);
+        throw error;
+    }
+};

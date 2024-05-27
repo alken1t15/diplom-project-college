@@ -121,6 +121,7 @@ public class ServiceStudyProcess {
                     arrayList.add(str);
                     day++;
                 }
+                System.out.println(arrayList);
                 arrayList.add(String.valueOf(total/count));
                 evalStudy.add(arrayList.toArray(new String[0]));
             }

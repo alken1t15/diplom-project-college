@@ -1,20 +1,22 @@
-import React, {useEffect, useRef, useState} from 'react';
-import './FileUploader.scss'
-import {sendHomeWorkFiles} from "../../Http/HomeWorks";
+import React, { useEffect, useRef, useState } from 'react';
+import './FileUploader.scss';
+import { sendHomeWorkFiles } from "../../Http/HomeWorks";
 const uploadImg = require('../../assets/images/UploadImg.png');
 
-interface IImage{
+interface IImage {
     name: string;
     url: string;
     size?: string;
 }
 
-interface IFileUploader{
-    dayId?: number,
+interface IFileUploader {
+    dayId?: number;
     func?: () => void;
-    items?: [],
-    status?: string,
+    items?: any[];
+    status?: string;
     homeWorkId?: number;
+    onClick: (items: any[])=> void;
+    multipart?: boolean;
 }
 
 interface FileObject {
@@ -24,7 +26,7 @@ interface FileObject {
     date: string;
 }
 
-const transformData = (data: { name: string, url: string }[]): FileObject[] => {
+const transformData = (data: { name: string; url: string }[]): FileObject[] => {
     const currentDate = new Date().toISOString();
 
     return data.map(item => ({
@@ -34,91 +36,124 @@ const transformData = (data: { name: string, url: string }[]): FileObject[] => {
         date: currentDate,
     }));
 };
-const FileUploader: React.FC<IFileUploader> = (props) => {
 
-    let [images, setImages] = useState<IImage[]>(props.items ? props.items : []);
-    let [isDragging, setIsDragging] = useState(false);
-    let fileInputRef = useRef<HTMLInputElement>(null)
-    let containerRef = useRef<HTMLDivElement>(null);
-    let[hwId, setHwId] = useState(props.homeWorkId)
-    let [active, isActive] = useState()
-    let [sendingFiles, setSendingFiles] = useState()
+const FileUploader: React.FC<IFileUploader> = (props) => {
+    const [images, setImages] = useState<IImage[]>([]);
+    const [parentImg, setParentImg] = useState<IImage | null>(null);
+    const [isDragging, setIsDragging] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [hwId, setHwId] = useState(props.homeWorkId);
+    const [active, isActive] = useState();
+    const [sendingFiles, setSendingFiles] = useState();
     const [transformedData, setTransformedData] = useState<FileObject[]>([]);
 
-    function selectFiles(){
+    function selectFiles() {
         if (fileInputRef.current) {
             fileInputRef.current.click();
         }
     }
 
-    function onFileSelected(event: any){
-        let files = event.target.files;
+    function onFileSelected(event: React.ChangeEvent<HTMLInputElement>) {
+        const files = event.target.files;
         const max_file_size = 100;
-        let max_sile_size_bytes = max_file_size * 1024 * 1024;
-        if(files.length == 0 ) return ;
+        const max_file_size_bytes = max_file_size * 1024 * 1024;
+        if (!files || files.length === 0) return;
 
-        for(let i = 0; i < files.length; i++){
-            if(files[i].type.split('/')[0] !== 'image' || files[i].size > max_sile_size_bytes) continue;
-
-            if(!images.some((e: any)=> e.name == files[i].name)){
-                setImages((prevState)=>[
-                    ...prevState,
-                    {
-                        name: files[i].name,
-                        url: URL.createObjectURL(files[i])
-
-                    },
-                ]);
+        if (props.multipart) {
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].type.split('/')[0] !== 'image' || files[i].size > max_file_size_bytes) continue;
+                if (!images.some(e => e.name === files[i].name)) {
+                    setImages(prevState => [
+                        ...prevState,
+                        {
+                            name: files[i].name,
+                            url: URL.createObjectURL(files[i])
+                        },
+                    ]);
+                }
             }
-
-
+        } else {
+            const file = files[0];
+            if (file.type.split('/')[0] !== 'image' || file.size > max_file_size_bytes) return;
+            setImages([
+                {
+                    name: file.name,
+                    url: URL.createObjectURL(file)
+                },
+            ]);
         }
-
     }
 
     function deleteImage(index: number) {
-        setImages((prevState) => {
+        setImages(prevState => {
             const newState = [...prevState];
             newState.splice(index, 1);
             return newState;
         });
     }
 
-    function onDragOver(e: any){
+    function onDragOver(e: React.DragEvent<HTMLDivElement>) {
         e.preventDefault();
         setIsDragging(true);
         e.dataTransfer.dropEffect = 'copy';
     }
 
-    function onDragLeave(e: any){
-        e.preventDefault();
-        setIsDragging(false)
-    }
-
-    function onDrop(e:any){
+    function onDragLeave(e: React.DragEvent<HTMLDivElement>) {
         e.preventDefault();
         setIsDragging(false);
-        let files = e.dataTransfer.files;
-        for(let i = 0; i < files.length; i++){
-            if(files[i].type.split('/')[0] !== 'image') continue;
+    }
 
-            if(!images.some((e: any)=> e.name == files[i].name)){
-                setImages((prevState)=>[
-                    ...prevState,
-                    {
-                        name: files[i].name,
-                        url: URL.createObjectURL(files[i])
-                    },
-                ]);
+    function onDrop(e: React.DragEvent<HTMLDivElement>) {
+        e.preventDefault();
+        setIsDragging(false);
+        const files = e.dataTransfer.files;
+        const max_file_size = 100;
+        const max_file_size_bytes = max_file_size * 1024 * 1024;
+
+        if (!files || files.length === 0) return;
+
+        if (props.multipart) {
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].type.split('/')[0] !== 'image' || files[i].size > max_file_size_bytes) continue;
+                if (!images.some(e => e.name === files[i].name)) {
+                    setImages(prevState => [
+                        ...prevState,
+                        {
+                            name: files[i].name,
+                            url: URL.createObjectURL(files[i])
+                        },
+                    ]);
+                }
             }
-
-
+        } else {
+            const file = files[0];
+            if (file.type.split('/')[0] !== 'image' || file.size > max_file_size_bytes) return;
+            setImages([
+                {
+                    name: file.name,
+                    url: URL.createObjectURL(file)
+                },
+            ]);
         }
     }
 
-    useEffect(()=>{
-        setHwId(props.homeWorkId)
-    },[props])
+    useEffect(() => {
+        setHwId(props.homeWorkId);
+    }, [props]);
+
+    useEffect(() => {
+        const data = transformData(images);
+        setTransformedData(data);
+    }, [images]);
+
+    useEffect(() => {
+        if (props.items && props.items.length > 0) {
+            const item = props.items[0];
+            const blobUrl = URL.createObjectURL(new Blob([item.url]));
+            setParentImg({ name: item.name, url: blobUrl });
+        }
+    }, [props.items]);
 
     const handleImageLoad = (index: number) => {
         if (containerRef.current) {
@@ -129,49 +164,31 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
         }
     };
 
-    useEffect(()=>{
-        const data = transformData(images);
-        setTransformedData(data);
-    }, [images])
-
     return (
         <div className="card">
-
             <div className={`drag-area ${props.status === "Сдано" ? 'drag-area-none' : ' '}`}
                  onClick={selectFiles}
-                 onDragOver={(e)=>{
-                onDragOver(e)
-            }}
-                 onDragLeave={onDragLeave} onDrop={onDrop}>
+                 onDragOver={onDragOver}
+                 onDragLeave={onDragLeave}
+                 onDrop={onDrop}>
                 {
                     isDragging ? (
-                        <span className="select">
-                                    Перетащите файлы
-                                </span>
+                        <span className="select">Перетащите файлы</span>
                     ) : (
-                        <span className="select ">
+                        <span className="select">
                           <span className="select-top">
                                 <img src={uploadImg} alt=""/>
-                                    <span>Перетащите файлы или нажмите для загрузки</span>
+                                <span>Перетащите файлы или нажмите для загрузки</span>
                           </span>
-                                    <p className={`select-light`}>Загружайте файлы не больше 100 мб</p>
-                                </span>
+                          <p className={`select-light`}>Загружайте файлы не больше 100 мб</p>
+                        </span>
                     )
                 }
-
-
-                <input type="file" name='file' className={`file`} multiple={true}
+                <input type="file" name='file' className={`file`} multiple={props.multipart}
                        ref={fileInputRef}
-                       onChange={(e)=>{
-                           onFileSelected(e)
-                       }}
-                />
-
-
+                       onChange={onFileSelected}/>
             </div>
             <div className="drag-container" ref={containerRef}>
-
-
                 {images.map((el, index) => (
                     <div className="image loading" key={index}>
                         <img className={'loaded-img'} src={el.url} alt={el.name} onLoad={() => handleImageLoad(index)}/>
@@ -184,29 +201,25 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
                             </div>
                             {props.status === 'Сдано'}
                         </div>
-
                         <p className={`delete`} onClick={() => deleteImage(index)}>&times;</p>
                     </div>
                 ))}
-
-
             </div>
             <button className={`button ${images.length === 0 ? 'none' : ' '}`}
-            onClick={(e)=>{
-                sendHomeWorkFiles(hwId, transformedData).then((response)=>{
-                    console.log(response.data)
-                })
-                    .catch((error)=>{
-
-                    })
-            }}
-            >
+                    onClick={() => {
+                       props.onClick(images)
+                    }}>
                 {props.status === "Назначенно" ? 'Сдать' :
-                    props.status === "Сдано" ? 'Пересдать':
-                        props.status === "Просрочено" ? 'Сдать с опозданием':
-                            'Отправить'
-                }
+                    props.status === "Сдано" ? 'Пересдать' :
+                        props.status === "Просрочено" ? 'Сдать с опозданием' :
+                            'Отправить'}
             </button>
+            {!props.multipart && parentImg && (
+                <div className="preview">
+                    <h3>Preview:</h3>
+                    <img src={parentImg.url} alt={parentImg.name} />
+                </div>
+            )}
         </div>
     );
 };

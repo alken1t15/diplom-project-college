@@ -6,7 +6,8 @@ import Pagination, {IDataArrayItem} from "../../Components/Pagination/Pagination
 import LatenessItem, {ITardinessItem} from "../../Components/Lateness/LatenessItem";
 import ScheduleItem from "../../Components/Schedule/ScheduleItem";
 import FileUploader from "../../Components/FileUploader/FileUploader";
-import {mainPageData} from "../../Http/MainPage";
+import {addNewCertificate, mainPageData} from "../../Http/MainPage";
+import {$api} from "../../Http";
 
 const infoImg = require('../../assets/images/InformationImgg.png');
 const gradeImg = require('../../assets/images/GradesImg.png');
@@ -200,6 +201,7 @@ const MainPageStudent: React.FC = () => {
             groupName: ' ',
             yearGroup: ' ',
     })
+    let[file, setFile] = useState<any[]>([])
 
     function updateCurrentPage(value: any){
         setCurrentPage(value)
@@ -305,6 +307,14 @@ const MainPageStudent: React.FC = () => {
 
                 updateOmissions(response.data.omissions)
 
+                let newFile = [
+                    {
+                        name: '1',
+                        file: response.data.file.file,
+
+                    }
+                ]
+                setFile(newFile)
 
             })
             .catch(error=>{
@@ -328,6 +338,28 @@ const MainPageStudent: React.FC = () => {
         }
 
     }, [dateArray])
+
+    const sendCertif = async (items: { name: string; url: string }[]) => {
+        const formData = new FormData();
+
+        const fetchBlob = async (url: string) => {
+            const response = await fetch(url);
+            return await response.blob();
+        };
+
+        for (const item of items) {
+            const blob = await fetchBlob(item.url);
+            formData.append('file', blob, item.name);
+        }
+
+        try {
+            const response = await addNewCertificate(formData);
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error sending certificate:', error);
+        }
+    };
+
 
 
     return (
@@ -411,7 +443,7 @@ const MainPageStudent: React.FC = () => {
 
 
 
-                    <FileUploader/>
+                    <FileUploader onClick={sendCertif} multipart={false} items={file}/>
 
 
 
