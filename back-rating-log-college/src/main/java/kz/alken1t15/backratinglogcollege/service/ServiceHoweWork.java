@@ -1,9 +1,6 @@
 package kz.alken1t15.backratinglogcollege.service;
 
-import kz.alken1t15.backratinglogcollege.dto.CompleteHomeTaskDTO;
-import kz.alken1t15.backratinglogcollege.dto.FileHomeTaskDTO;
-import kz.alken1t15.backratinglogcollege.dto.HomeWorkAddDTO;
-import kz.alken1t15.backratinglogcollege.dto.HomeWorkRequest;
+import kz.alken1t15.backratinglogcollege.dto.*;
 import kz.alken1t15.backratinglogcollege.dto.file.FileRequestDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.HomeWorkDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.HomeWorkReturnDTO;
@@ -112,19 +109,19 @@ public class ServiceHoweWork {
             }
             fileHomeTasks.add(new FileHomeTaskDTO(f.getId(), f.getName(), f.getDateCreate(), file));
         }
-        List<byte[]> files = getFileForHomeWork(id);
+        List<StudentWorkDTO> files = getFileForHomeWorkStudent(id);
         return new HomeWorkDTO(howeWork.getId(), howeWork.getName(), howeWork.getNameSubject(), dateStart, dateEnd, teacherName, howeWork.getDescription(), status, fileHomeTasks, files);
     }
 
-    public List<byte[]> getFileForHomeWork(Long idHomeWork) {
+    public List<StudentWorkDTO> getFileForHomeWorkStudent(Long idHomeWork) {
         List<TaskStudentsFiles> taskStudentsFiles = repositoryTaskStudentsFiles.findByIdHomeWork(idHomeWork);
-        List<byte[]> files = new ArrayList<>();
+        List<StudentWorkDTO> files = new ArrayList<>();
         if (taskStudentsFiles.isEmpty()) {
             return null;
         } else {
             for (TaskStudentsFiles t : taskStudentsFiles) {
                 byte[] file = serviceFilesStudent.getFile(t.getFilesStudent().getId());
-                files.add(file);
+                files.add(new StudentWorkDTO(t.getFilesStudent().getName(),file));
             }
             return files;
         }

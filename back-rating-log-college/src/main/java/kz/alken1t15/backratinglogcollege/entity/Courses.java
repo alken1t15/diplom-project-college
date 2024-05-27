@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.apache.catalina.LifecycleState;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "courses")
@@ -31,5 +32,18 @@ public class Courses {
         this.group = group;
         this.course = course;
         this.year = year;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Courses courses = (Courses) o;
+        return Objects.equals(course, courses.course);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(course);
     }
 }

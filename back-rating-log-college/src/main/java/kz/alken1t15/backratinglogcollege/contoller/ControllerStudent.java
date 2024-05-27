@@ -36,6 +36,7 @@ public class ControllerStudent {
     private final ServiceFilesGroup serviceFilesGroup;
     private final ServiceFilesStudent serviceFilesStudent;
     private final ServiceHoweWork serviceHoweWork;
+    private final ServiceTotal serviceTotal;
     @PostMapping(path = "/main")
     public StudentInfoMainPageDTO getInfoForMainPage(@RequestBody UserId userId) {
         ModelMapper modelMapper = new ModelMapper();
@@ -85,5 +86,11 @@ public class ControllerStudent {
     @PostMapping(path = "/home/add")
     public ResponseEntity addFileForHomeTask(@RequestParam List<MultipartFile> files,@Validated @NonNull @RequestParam Long id) {
         return serviceHoweWork.addNewFileHomeTask(files,id);
+    }
+
+
+    @PostMapping(path = "/total")
+    public ResponseEntity getTotalEvalution(){
+        return serviceTotal.getTotalEvaluations();
     }
 }

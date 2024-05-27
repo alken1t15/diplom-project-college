@@ -13,4 +13,7 @@ public interface RepositoryStudyProcess extends JpaRepository<StudyProcess, Long
 
     @Query("select p from StudyProcess p where p.course =?1 and p.group.id = ?2 order by p.semester")
     List<StudyProcess> findByCourseGroup(Integer course, Long idGroup);
+
+    @Query("select p from StudyProcess p where p.group.id = ?1 order by p.semester")
+    List<StudyProcess> findByStudyProcessByIdGroup(Long idGroup);
 }
