@@ -5,6 +5,7 @@ import Search from "../../UI/Search/Search";
 import HomeWorkTeacherItem from "../../Components/HomeWorkTeacherItem/HomeWorkTeacherItem";
 import Slider from "../../Components/Slider/Slider";
 import CurrentStudentHomeWork, {IFile} from "../../Components/CurrentStudentHomeWork/CurrentStudentHomeWork";
+import {getStudentHomeWork, getStudentHomeWorks} from "../../Http/HomeWorks";
 
 
 export interface ISchedule{
@@ -104,36 +105,26 @@ const HomeWorksPageTeacher: React.FC = () => {
     }
 
     useEffect(()=>{
-        let newArr = [
-            {
-                id: 1,
-                name: 'Наименование задания',
-                subject: 'Веб-программирования',
-                group: 'П-20-50к',
-                date: '20 сентября',
-                count: '2/25',
-                active: true
-            },
-            {
-                id: 2,
-                name: 'Наименование задания',
-                subject: 'Веб-программирования',
-                group: 'П-20-50к',
-                date: '20 сентября',
-                count: '2/25',
-                active: false
-            },
-            {
-                id: 3,
-                name: 'Наименование задания',
-                subject: 'Веб-программирования',
-                group: 'П-20-50к',
-                date: '20 сентября',
-                count: '2/25',
-                active: false
-            },
-        ]
-        setHoweWorks(newArr)
+
+
+        getStudentHomeWorks().then((response)=>{
+            let newArr = response.data.map((el:any, index: any)=>{
+                let newObj =   {
+                    id: el.idWork,
+                    name: el.name,
+                    subject: el.nameSubject,
+                    group: el.groupName,
+                    date: el.dateEnd,
+                    count: el.completedCount,
+                    active: index === 0
+                }
+                return newObj;
+            })
+            setHoweWorks(newArr)
+        }).catch((error)=>{
+
+        })
+
     },[])
 
     const updateCurrentHomeWork = (id: number) => {
@@ -183,6 +174,10 @@ const HomeWorksPageTeacher: React.FC = () => {
         setCurHomeWorks(newObj)
     }
 
+    function updateCurHW(id: number){
+
+    }
+
     const setNewCurrentHw = (id: number) =>{
         let curHwId = 0;
         let newArr = homeWorks.map((el: any)=>{
@@ -194,6 +189,19 @@ const HomeWorksPageTeacher: React.FC = () => {
         })
         setHoweWorks(newArr)
         updateCurrentHomeWork(curHwId)
+        getStudentHomeWork(curHwId, curSlider === 1 ? 'Проверено': 'Сдано').then((response)=>{
+            console.log(response.data)
+            // id: number;
+            // name: string;
+            // subject: string;
+            // date: string;
+            // group: string;
+            // count: string;
+            // students: IStudentHomeWorks
+        }).catch((error)=>{
+
+        })
+
     }
 
     function setSliderItems(id: number){

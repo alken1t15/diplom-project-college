@@ -24,6 +24,7 @@ const ToggleBtns: React.FC<IToggleBtns> = (props) => {
             {items.length > 0 ? items.map((el: any, index: any)=>(
                 <button className={`toggleBtns-button ${el.active ? 'toggleBtns-button-a' : ''}`}
                 onClick={(e)=>{props.onClick(el.id)}}
+                        key={index}
                 >{el.name}</button>
             )) : ''}
         </div>

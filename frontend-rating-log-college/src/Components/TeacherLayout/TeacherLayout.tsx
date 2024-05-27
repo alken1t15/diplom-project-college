@@ -1,6 +1,6 @@
 import {ReactComponent as fImage} from "../../assets/images/TeacherMainPage.svg";
 import {ReactComponent as sImage} from "../../assets/images/NavbarS.svg";
-import {ReactComponent as tImage} from "../../assets/images/NavbarT.svg";
+import {ReactComponent as tImage} from "../../assets/images/uploadSVG.svg";
 import {ReactComponent as foImage} from "../../assets/images/NavbarFo.svg";
 import React, {useEffect, useState} from 'react';
 import {Link, Outlet, useNavigate, useParams} from "react-router-dom";
@@ -12,7 +12,7 @@ import {
     SIGN_IN_ROUTE,
     TEACHER_GRADES_PAGE_ROUTE,
     TEACHER_HOMEWORKS_PAGE_ROUTE,
-    TEACHER_MAIN_PAGE_ROUTE
+    TEACHER_MAIN_PAGE_ROUTE, TEACHER_UPLOAD_PAGE_ROUTE
 } from "../../Utils/Routes";
 import './TeacherLayout.scss';
 import InitialsImage from "../InitialsImage/InitialsImage";
@@ -47,7 +47,14 @@ const TeacherLayout: React.FC = () => {
             link: TEACHER_GRADES_PAGE_ROUTE,
             active: false,
             img: sImage
-        }
+        },
+        {
+            id: 4,
+            name: 'Upload page icon',
+            link: TEACHER_UPLOAD_PAGE_ROUTE,
+            active: false,
+            img: tImage
+        },
     ])
     let navigator = useNavigate();
     let [userName ,setUserName] = useState('')

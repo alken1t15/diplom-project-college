@@ -4,7 +4,8 @@ import HomeworkBlock, {HomeworkItem} from "../../Components/HomeworkBlock/Homewo
 import TeachersBlock from "../../Components/TeachersBlock/TeachersBlock";
 import FileItem, {IFileItem} from "../../Components/FileItem/FileItem";
 import FileUploader from "../../Components/FileUploader/FileUploader";
-import {getCoursesItems} from "../../Http/HomeWorks";
+import {getCoursesItems, sendHomeWorkFiles} from "../../Http/HomeWorks";
+import {addNewCertificate} from "../../Http/MainPage";
 
 const fileImg = require('../../assets/images/PDF.png');
 
@@ -46,8 +47,8 @@ const HomeworkPageStudent: React.FC = () => {
     let[deskr, setDeskr] = useState('')
     let[teacherName, setTeacherName] = useState('');
     let[teacherSubject, setTeacherSubject] = useState('');
-    let[homeWorkFiles, setHomeWorkFiles] = useState<IFileItem[]>();
-    let[files, setFiles] = useState<IFileItem[]>();
+    let[homeWorkFiles, setHomeWorkFiles] = useState<IFileItem[]>([]);
+    let[taskFiles, setTaskFiles] = useState<any[]>([]);
 
 
     function setActiveHomeWork(id: number){
@@ -57,6 +58,14 @@ const HomeworkPageStudent: React.FC = () => {
             return el;
         })
         setHomeWork(newArr)
+
+        getCoursesItems(String(id)).then((response: any)=>{
+            updateCurrentHomeWork(response.data.homeWork)
+            console.log(response.data.homeWork)
+        }).catch((error)=>{
+
+        })
+
     }
 
     function updateCurrentHomeWork(obj: any){
@@ -69,32 +78,26 @@ const HomeworkPageStudent: React.FC = () => {
         setDeskr(obj.description)
 
         // доделать
-        let newFiles = [
-            {
-                id: 1,
-                text: 'Учебник истории',
-                date: '3 сентября',
-                img: fileImg,
-                size: '5.3 мб'
+        // let newFiles = [
+        //     {
+        //         id: 1,
+        //         text: 'Учебник истории',
+        //         date: '3 сентября',
+        //         img: fileImg,
+        //         size: '5.3 мб'
+        //     }
+        // ]
+        // setTaskFiles(newFiles)
+
+        let filArr =obj.files.map((el: any, index: any)=>{
+            let newObj =  {
+                name: `Файл №${index}`,
+                file: el,
             }
-        ]
-        setFiles(newFiles)
-        // доделать
-        let filArr = [
-            {
-                id: 1,
-                text: 'File_name.pdf',
-                size: '5.3 мб',
-                img: fileImg
-            },
-            {
-                id: 2,
-                text: 'File_name.pdf',
-                size: '5.3 мб',
-                img: fileImg
-            }
-        ]
-        setHomeWorkFiles(filArr)
+            return newObj;
+        })
+        console.log(filArr)
+        setTaskFiles(filArr)
 
     }
 
@@ -125,6 +128,26 @@ const HomeworkPageStudent: React.FC = () => {
 
         })
     },[])
+
+    const sendCertif = async (items: { name: string; url: string }[]) => {
+        const formData = new FormData();
+
+        const fetchBlob = async (url: string) => {
+            const response = await fetch(url);
+            return await response.blob();
+        };
+
+        for (const item of items) {
+            const blob = await fetchBlob(item.url);
+            formData.append('files', blob, item.name);
+        }
+
+        try {
+            const response = await sendHomeWorkFiles(curId ,formData);
+        } catch (error) {
+            console.error('Error sending certificate:', error);
+        }
+    };
 
 
     return (
@@ -199,7 +222,7 @@ const HomeworkPageStudent: React.FC = () => {
                         </p>
 
 
-                        {/*<FileUploader homeWorkId={curId} status={status}/>*/}
+                        <FileUploader items={taskFiles} multipart={true} onClick={sendCertif} homeWorkId={curId} status={status}/>
 
 
                     </div>

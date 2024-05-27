@@ -13,10 +13,22 @@ export const getCoursesItems = async (id?: string) => {
 
 };
 
-export const sendHomeWorkFiles = async (id?: number, files?: object[]) => {
-    let res;
-    res = await $api.post(`student/home/add`, {idHomeTask: id, files: files});
+
+export const sendHomeWorkFiles = async (id?: number, formData?: any) => {
+    if(id && formData){
+        let res = await $api.post(`student/home/add?id=${id}`, formData);
+        return res;
+    }
+
+};
+
+
+export const getStudentHomeWorks = async () => {
+    let res = await $api.post(`teacher/home`, );
     return res;
+};
 
-
+export const getStudentHomeWork = async (idWork: number, name: string) => {
+    let res = await $api.post(`teacher/home/group`, {idWork: idWork, name: name});
+    return res;
 };

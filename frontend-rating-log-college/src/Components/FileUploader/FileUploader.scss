@@ -233,7 +233,9 @@
 }
 .preview{
   margin-top: 25px;
-  & > img{
+  height: 450px;
+  overflow: auto;
+  & > a > img{
     margin-top: 10px;
     width: 200px;
     height: 200px;

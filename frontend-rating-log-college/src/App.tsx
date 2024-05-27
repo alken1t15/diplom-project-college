@@ -5,10 +5,16 @@ import NotFound from "./Pages/NotFound/NotFound";
 import SignIn from "./Pages/SignIn/SignIn";
 import {
     COURSES_STUDENT_ROUTE,
-    GRADE_STUDENT_ROUTE, HW_STUDENT_ROUTE,
+    GRADE_STUDENT_ROUTE,
+    HW_STUDENT_ROUTE,
     MAIN_PAGE_STUDENT_ROUTE,
     SIGN_IN_ROUTE,
-    STUDENT_ROUTE, TEACHER_GRADES_PAGE_ROUTE, TEACHER_HOMEWORKS_PAGE_ROUTE, TEACHER_MAIN_PAGE_ROUTE, TEACHER_ROUTE
+    STUDENT_ROUTE,
+    TEACHER_GRADES_PAGE_ROUTE,
+    TEACHER_HOMEWORKS_PAGE_ROUTE,
+    TEACHER_MAIN_PAGE_ROUTE,
+    TEACHER_ROUTE,
+    TEACHER_UPLOAD_PAGE_ROUTE
 } from "./Utils/Routes";
 import MainPageStudent from "./Pages/MainPageStudent/MainPageStudent";
 import StudentLayout from "./Components/StudentLayout/StudentLayout";
@@ -22,6 +28,7 @@ import {mainPageData, mainPageTeacherData} from "./Http/MainPage";
 import {useCustomNavigate} from "./hooks/navigator";
 import {getItemFromLocalStorage} from "./Utils/LocalStore";
 import EventPageTeacher from "./Pages/EventPageTeacher/EventPageTeacher";
+import UploadPageTeacher from "./Pages/UploadPageTeacher/UploadPageTeacher";
 
 function App() {
 
@@ -78,6 +85,7 @@ function App() {
                           <Route path={TEACHER_MAIN_PAGE_ROUTE} element={<MainPageTeacher/>}/>
                           <Route path={TEACHER_HOMEWORKS_PAGE_ROUTE} element={<HomeWorksPageTeacher/>}/>
                           <Route path={TEACHER_GRADES_PAGE_ROUTE} element={<EventPageTeacher/>}/>
+                          <Route path={TEACHER_UPLOAD_PAGE_ROUTE} element={<UploadPageTeacher/>}/>
                       </Route>
 
 
