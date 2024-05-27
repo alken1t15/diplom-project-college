@@ -111,6 +111,8 @@ create table courses
 
 insert into courses (id_groups, course, year)
 VALUES (1, 1, 2023);
+insert into courses (id_groups, course, year)
+VALUES (1, 2, 2024);
 
 create table files_group
 (

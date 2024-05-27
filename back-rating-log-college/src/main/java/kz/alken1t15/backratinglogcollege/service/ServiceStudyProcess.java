@@ -106,13 +106,14 @@ public class ServiceStudyProcess {
                     tempArr[localDate.getDayOfMonth()] = String.valueOf(t.getBall());
                     count++;
                 }
-                System.out.println("Содержимое ArrayList:");
-                for (String element : tempArr) {
-                    System.out.println(element);
-                }
                 ArrayList<String> arrayList = new ArrayList<>();
                 int day = 0;
+                int i = 0;
                 for (String str : tempArr){
+                    if (i==0){
+                        i++;
+                        continue;
+                    }
                     if (day == 6) {
                         day = 0;
                         continue;
@@ -160,8 +161,23 @@ public class ServiceStudyProcess {
                     tempArr[localDate.getDayOfMonth()] = String.valueOf(t.getBall());
                     count++;
                 }
-                tempArr[tempArr.length-1] = String.valueOf(total/count);
-                evalStudy.add(tempArr);
+                ArrayList<String> arrayList = new ArrayList<>();
+                int day = 0;
+                int i = 0;
+                for (String str : tempArr){
+                    if (i==0){
+                        i++;
+                        continue;
+                    }
+                    if (day == 6) {
+                        day = 0;
+                        continue;
+                    }
+                    arrayList.add(str);
+                    day++;
+                }
+                arrayList.add(String.valueOf(total/count));
+                evalStudy.add(arrayList.toArray(new String[0]));
             }
         }
         List<String> arr = new ArrayList<>();
