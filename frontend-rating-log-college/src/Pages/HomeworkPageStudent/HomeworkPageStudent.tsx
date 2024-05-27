@@ -199,7 +199,7 @@ const HomeworkPageStudent: React.FC = () => {
                         </p>
 
 
-                        <FileUploader homeWorkId={curId} status={status}/>
+                        {/*<FileUploader homeWorkId={curId} status={status}/>*/}
 
 
                     </div>

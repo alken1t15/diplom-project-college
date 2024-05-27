@@ -38,7 +38,7 @@ public class ServiceStudyProcess {
     private RepositoryPlanStudy repositoryPlanStudy;
     private ServiceCourses serviceCourses;
     private ServiceGroups serviceGroups;
-
+    private RepositoryTaskStudents repositoryTaskStudents;
 
     public ProcessReturnDTO getStudyProcess(ProcessDTO process) {
         ProcessReturnDTO processReturnDTO = new ProcessReturnDTO();
@@ -67,6 +67,7 @@ public class ServiceStudyProcess {
         processReturnDTO.setMonths(months);
         List<String> nameObjects;
         List<Evaluations> evaluationsObjects;
+        List<TaskStudents> taskStudents;
         LocalDate yearStart;
         int daysInMonth;
         List<String[]> evalStudy = new ArrayList<>();
@@ -88,6 +89,7 @@ public class ServiceStudyProcess {
             nameObjects = repositoryEvaluation.findByDateStudentCourseDistinctName(yearStart, yearEnd, process.getCourse(), student.getId());
             for (String name : nameObjects) {
                 evaluationsObjects = repositoryEvaluation.findByDateStudentCourseNameObject(yearStart, yearEnd, process.getCourse(), student.getId(), name);
+                taskStudents = repositoryTaskStudents.findByIdStudentAndDate(student.getId(),yearStart,yearEnd,name);
                 String[] tempArr = new String[daysInMonth + 1];
                 tempArr[0] = name;
                 long total = 0;
@@ -97,6 +99,16 @@ public class ServiceStudyProcess {
                     LocalDate localDate = e.getDateEvaluation();
                     tempArr[localDate.getDayOfMonth()] = String.valueOf(e.getBall());
                     count++;
+                }
+                for (TaskStudents t : taskStudents) {
+                    total = t.getBall() + total;
+                    LocalDate localDate = t.getDateBall();
+                    tempArr[localDate.getDayOfMonth()] = String.valueOf(t.getBall());
+                    count++;
+                }
+                System.out.println("Содержимое ArrayList:");
+                for (String element : tempArr) {
+                    System.out.println(element);
                 }
                 ArrayList<String> arrayList = new ArrayList<>();
                 int day = 0;
@@ -108,6 +120,7 @@ public class ServiceStudyProcess {
                     arrayList.add(str);
                     day++;
                 }
+                System.out.println(arrayList);
                 arrayList.add(String.valueOf(total/count));
                 evalStudy.add(arrayList.toArray(new String[0]));
             }
@@ -130,6 +143,7 @@ public class ServiceStudyProcess {
             nameObjects = repositoryEvaluation.findByDateStudentCourseDistinctName(yearStart, yearEnd, student.getGroup().getCurrentCourse(), student.getId());
             for (String name : nameObjects) {
                 evaluationsObjects = repositoryEvaluation.findByDateStudentCourseNameObject(yearStart, yearEnd, student.getGroup().getCurrentCourse(), student.getId(), name);
+                taskStudents = repositoryTaskStudents.findByIdStudentAndDate(student.getId(),yearStart,yearEnd,name);
                 String[] tempArr = new String[daysInMonth + 1];
                 tempArr[0] = name;
                 int count =0;
@@ -138,6 +152,12 @@ public class ServiceStudyProcess {
                     LocalDate localDate = e.getDateEvaluation();
                     total = e.getBall() + total;
                     tempArr[localDate.getDayOfMonth()] = String.valueOf(e.getBall());
+                    count++;
+                }
+                for (TaskStudents t : taskStudents) {
+                    total = t.getBall() + total;
+                    LocalDate localDate = t.getDateBall();
+                    tempArr[localDate.getDayOfMonth()] = String.valueOf(t.getBall());
                     count++;
                 }
                 tempArr[tempArr.length-1] = String.valueOf(total/count);

@@ -11,4 +11,7 @@ public interface RepositoryHoweWork  extends JpaRepository<HomeWork,Long> {
     @Query("select h from HomeWork h where  h.id = ?1 order by h.endDate desc ")
     HomeWork findByGroupAndId(Long idHomeTask);
 
+    @Query("select h from HomeWork h where h.teacher.id = ?1")
+    List<HomeWork> findByIdTeacher(Long id);
+
 }

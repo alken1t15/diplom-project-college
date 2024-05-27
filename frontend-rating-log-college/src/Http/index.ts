@@ -19,13 +19,13 @@ export interface IUser {
 $api.interceptors.request.use(
     (config) => {
         const user: any = getItemFromLocalStorage('user');
-        const token = JSON.parse(user);
+        const token = user ? JSON.parse(user)?.token : null;
 
         if (token) {
-                config.headers.Authorization = `Bearer ${token['token']}`;
-                return config;
+            config.headers.Authorization = `Bearer ${token}`;
+        } else {
+            config.headers.Authorization = '';
         }
-        config.headers.Authorization = `Bearer 333`;
         return config;
     },
     (error) => {
