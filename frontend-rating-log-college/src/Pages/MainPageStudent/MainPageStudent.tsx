@@ -307,6 +307,7 @@ const MainPageStudent: React.FC = () => {
 
                 updateOmissions(response.data.omissions)
 
+                console.log(response.data.file)
                 let newFile = [
                     {
                         name: '1',

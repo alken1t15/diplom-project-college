@@ -9,15 +9,8 @@ const fileImg = require('../../assets/images/PDF.png');
 
 const CoursesPageStudent: React.FC = () => {
 
-    let[courses, setCourses] = useState<CourseItem[]>([
-        {
-            id: 1,
-            name: '1 Курс',
-            date: 'Год: 2020',
-            active: true
-        }
-    ])
-    let[currentCourse, setCurrentCourse] = useState<CourseItem>(courses[0])
+    let[courses, setCourses] = useState<CourseItem[]>([])
+    let[currentCourse, setCurrentCourse] = useState<CourseItem>()
     let[fileItems, setFileItems] = useState<IFileItem[]>([
         {
             id: 1,
@@ -72,6 +65,7 @@ const CoursesPageStudent: React.FC = () => {
                 }, index * 200);
             });
 
+            setCurCourse(id)
 
         }
 
@@ -100,12 +94,43 @@ const CoursesPageStudent: React.FC = () => {
                 }, (courses.length - i - 1) * 200);
             });
 
+            setCurCourse(id)
+
         }
 
     }
 
+    function setCurCourse(id: number){
+
+
+        console.log(courses)
+
+        getCoursesItems(id).then((response: any)=>{
+            // let newCourses = response.data.courses.map((el: any)=>{
+            //     let newObj = {
+            //         id: el.course,
+            //         name: `${el.course} Курс`,
+            //         date: `Год: ${el.year}`,
+            //         active: response.data.currentCourse === el.course
+            //     }
+            //     if(response.data.currentCourse === el.course){
+            //         setCurrentCourse(newObj)
+            //     }
+            //     return newObj;
+            // })
+            // setCourses(newCourses)
+            console.log(response.data)
+
+
+        }).catch((error)=>{
+
+        })
+    }
+
+
+
     useEffect(()=>{
-        getCoursesItems(currentCourse.id).then((response: any)=>{
+        getCoursesItems(currentCourse && currentCourse.id ? currentCourse.id : 1).then((response: any)=>{
             let newCourses = response.data.courses.map((el: any)=>{
                 let newObj = {
                     id: el.course,
@@ -136,9 +161,9 @@ const CoursesPageStudent: React.FC = () => {
                             Курсы
                         </p>
                     </div>
-                    {[...courses].map((el, index) => (
+                    {courses.length > 0 ? [...courses].map((el, index) => (
                         <CoursesItem item={el} key={index} onClick={setActiveCourse}/>
-                    ))}
+                    )) : ''}
 
                 </div>
 
@@ -147,8 +172,8 @@ const CoursesPageStudent: React.FC = () => {
             <div className={'block-middle block-middle-full block-middle-full-t-0'}>
                 <div className={'block-middle__text'}>
                     <div className={`courses-block courses-block-l`}>
-                        <p className={`courses-block__title courses-block__title-l`}>{currentCourse.name}</p>
-                        <p className={`courses-block__text`}>{currentCourse.date}</p>
+                        <p className={`courses-block__title courses-block__title-l`}>{currentCourse && currentCourse.name ? currentCourse.name : ''}</p>
+                        <p className={`courses-block__text`}>{currentCourse && currentCourse.date ? currentCourse.date : ''}</p>
                     </div>
                 </div>
 
