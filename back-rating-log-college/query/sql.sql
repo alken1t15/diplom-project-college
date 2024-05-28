@@ -431,6 +431,3 @@ VALUES (5, 2, 2, 3, 1, 1, 2),
        (5, 3, 1, 3, 4, 5, 3),
        (5, 4, 2, 4, 3, 5, 4);
 
-
-insert into courses (id_groups, course, year)
-VALUES (1, 2, 2024);

@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './FileUploader.scss';
 const uploadImg = require('../../assets/images/UploadImg.png');
+const fileIcon = require('../../assets/images/files.png');
 
 interface IImage {
     name: string;
     url: string;
     size?: string;
+    isFile?: boolean;
 }
 
 interface IFileUploader {
@@ -25,7 +27,7 @@ interface FileObject {
     date: string;
 }
 
-const base64ToBlob = (base64: string, mime: string) => {
+const base64ToBlob = (base64: string, mimeType: string = ''): Blob => {
     const byteCharacters = atob(base64);
     const byteArrays = [];
 
@@ -39,23 +41,27 @@ const base64ToBlob = (base64: string, mime: string) => {
         byteArrays.push(byteArray);
     }
 
-    return new Blob(byteArrays, { type: mime });
+    return new Blob(byteArrays, { type: mimeType });
 };
 
 const transformData = (data: { name: string; file: string }[]): FileObject[] => {
     const currentDate = new Date().toISOString();
 
-    return data.map(item => ({
-        name: item.name,
-        file: base64ToBlob(item.file, 'image/png'), // Измените тип на нужный
-        typeFile: "дз",
-        date: currentDate,
-    }));
+    return data.map(item => {
+        const base64String = item.file.split(',')[1] || item.file;
+        const mimeType = item.file.match(/^data:(.*?);base64,/)?.[1] || 'application/octet-stream';
+        return {
+            name: item.name,
+            file: base64ToBlob(base64String, mimeType),
+            typeFile: "дз",
+            date: currentDate,
+        };
+    });
 };
 
 const FileUploader: React.FC<IFileUploader> = (props) => {
     const [images, setImages] = useState<IImage[]>([]);
-    const [parentImg, setParentImg] = useState<IImage | null>(null);
+    const [parentImgs, setParentImgs] = useState<IImage[]>([]);
     const [isDragging, setIsDragging] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -76,35 +82,37 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
         const max_file_size_bytes = max_file_size * 1024 * 1024;
         if (!files || files.length === 0) return;
 
-        console.log("Files selected: ", files);
-
         if (props.multipart) {
             for (let i = 0; i < files.length; i++) {
-                if (files[i].type.split('/')[0] !== 'image' || files[i].size > max_file_size_bytes) continue;
-                if (!images.some(e => e.name === files[i].name)) {
+                const file = files[i];
+                if (file.size > max_file_size_bytes) continue;
+                const isImage = file.type.split('/')[0] === 'image';
+                if (!images.some(e => e.name === file.name)) {
                     setImages(prevState => [
                         ...prevState,
                         {
-                            name: files[i].name,
-                            url: URL.createObjectURL(files[i])
+                            name: file.name,
+                            url: isImage ? URL.createObjectURL(file) : fileIcon,
+                            isFile: !isImage
                         },
                     ]);
                 }
             }
         } else {
             const file = files[0];
-            if (file.type.split('/')[0] !== 'image' || file.size > max_file_size_bytes) return;
+            if (file.size > max_file_size_bytes) return;
+            const isImage = file.type.split('/')[0] === 'image';
             setImages([
                 {
                     name: file.name,
-                    url: URL.createObjectURL(file)
+                    url: isImage ? URL.createObjectURL(file) : fileIcon,
+                    isFile: !isImage
                 },
             ]);
         }
     }
 
     function deleteImage(index: number) {
-        console.log("Deleting image at index: ", index);
         setImages(prevState => {
             const newState = [...prevState];
             newState.splice(index, 1);
@@ -130,30 +138,33 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
         const max_file_size = 100;
         const max_file_size_bytes = max_file_size * 1024 * 1024;
 
-        console.log("Files dropped: ", files);
-
         if (!files || files.length === 0) return;
 
         if (props.multipart) {
             for (let i = 0; i < files.length; i++) {
-                if (files[i].type.split('/')[0] !== 'image' || files[i].size > max_file_size_bytes) continue;
-                if (!images.some(e => e.name === files[i].name)) {
+                const file = files[i];
+                if (file.size > max_file_size_bytes) continue;
+                const isImage = file.type.split('/')[0] === 'image';
+                if (!images.some(e => e.name === file.name)) {
                     setImages(prevState => [
                         ...prevState,
                         {
-                            name: files[i].name,
-                            url: URL.createObjectURL(files[i])
+                            name: file.name,
+                            url: isImage ? URL.createObjectURL(file) : fileIcon,
+                            isFile: !isImage
                         },
                     ]);
                 }
             }
         } else {
             const file = files[0];
-            if (file.type.split('/')[0] !== 'image' || file.size > max_file_size_bytes) return;
+            if (file.size > max_file_size_bytes) return;
+            const isImage = file.type.split('/')[0] === 'image';
             setImages([
                 {
                     name: file.name,
-                    url: URL.createObjectURL(file)
+                    url: isImage ? URL.createObjectURL(file) : fileIcon,
+                    isFile: !isImage
                 },
             ]);
         }
@@ -170,11 +181,19 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
 
     useEffect(() => {
         if (props.items && props.items.length > 0) {
-            const item = props.items[0];
-            const blob = base64ToBlob(item.file, 'image/png'); // Измените тип на нужный
-            const blobUrl = URL.createObjectURL(blob);
-            console.log("Blob URL created: ", blobUrl);
-            setParentImg({ name: item.name, url: blobUrl });
+            const newParentImgs: IImage[] = props.items.map(item => {
+                try {
+                    const base64String = item.file.split(',')[1] || item.file;
+                    const mimeType = item.file.match(/^data:(.*?);base64,/)?.[1] || 'application/octet-stream';
+                    const blob = base64ToBlob(base64String, mimeType);
+                    const blobUrl = URL.createObjectURL(blob);
+                    return { name: item.name, url: blobUrl };
+                } catch (error) {
+                    console.error("Invalid base64 string:", item.file);
+                    return { name: item.name, url: '' };
+                }
+            });
+            setParentImgs(newParentImgs);
         }
     }, [props.items]);
 
@@ -230,7 +249,7 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
             </div>
             <button className={`button ${images.length === 0 ? 'none' : ' '}`}
                     onClick={() => {
-                        console.log("Submitting images: ", images);
+                        setImages([])
                         props.onClick(images);
                     }}>
                 {props.status === "Назначенно" ? 'Сдать' :
@@ -238,10 +257,14 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
                         props.status === "Просрочено" ? 'Сдать с опозданием' :
                             'Отправить'}
             </button>
-            {!props.multipart && parentImg && (
+            {parentImgs.length > 0 && (
                 <div className="preview">
-                    <h3>Картинка загруженнная ранее:</h3>
-                    <img src={parentImg.url} alt={parentImg.name} onError={(e) => console.error("Image load error: ", e)} />
+                    <h3>Ваши прикрепленные файлы:</h3>
+                    {parentImgs.map((img, index) => (
+                        <a key={index} href={img.url} download={img.name} target="_blank" rel="noopener noreferrer" style={{display: "inline"}}>
+                            <img src={img.url} alt={img.name} onError={(e) => console.error("Image load error: ", e)} />
+                        </a>
+                    ))}
                 </div>
             )}
         </div>

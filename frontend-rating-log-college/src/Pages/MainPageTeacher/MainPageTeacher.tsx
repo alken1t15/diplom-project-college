@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './MainPageTeacher.scss';
 import InitialsImage from "../../Components/InitialsImage/InitialsImage";
-import {mainPageTeacherData} from "../../Http/MainPage";
+import {mainPageTeacherData, mainPageTeacherUpdateData, mainPageTeacherUpdateOmission} from "../../Http/MainPage";
 import doneImg from '../../assets/images/Check.svg';
 import HomeworkBlock, {HomeworkItem} from "../../Components/HomeworkBlock/HomeworkBlock";
 import TimeBlock, {ITimeBlock} from "../../Components/TimeBlock/TimeBlock";
@@ -29,32 +29,7 @@ export interface ISchedule{
 
 const MainPageTeacher: React.FC = () => {
 
-    let[homeWorks, setHomeWorks] = useState<HomeworkItem[]>([
-        {
-            id: 1,
-            active: false,
-            name: 'Наименования задания',
-            date: '15 Сен',
-            expiresAt: '9 сен - 15 сен',
-            teacher: 'Денис Валентинович Попов',
-            subject: 'Веб-программирования',
-            scholar: 'Беккожа Аян',
-            dueDate: '10 сентября',
-        },
-        {
-            id: 2,
-            active: false,
-            name: 'Наименования задания',
-            date: '15 Сен',
-            expiresAt: '9 сен - 15 сен',
-            teacher: 'Денис Валентинович Попов',
-            subject: 'Веб-программирования',
-            scholar: 'Беккожа Аян',
-            dueDate: '10 сентября',
-        },
-
-    ])
-
+    let[homeWorks, setHomeWorks] = useState<HomeworkItem[]>([])
     let[schedule, setSchedule] = useState<ISchedule[]>([])
     let[time, setTime] = useState("")
     let[presence, setPresence] = useState('')
@@ -73,7 +48,12 @@ const MainPageTeacher: React.FC = () => {
             active: false,
         },
     ])
-    let[curSlider, setCurSlider] =useState(1);
+    let[curSlider, setCurSlider] = useState(1);
+    let[activeGroup, setActiveGroup] = useState(0)
+    let[activeGroupId, setActiveGroupId] = useState(0)
+
+    useEffect(()=>{
+    },[curSlider])
 
     function setActiveOnSchedule(){
         let curTimeSplit = time.split(':').map(Number);
@@ -124,13 +104,36 @@ const MainPageTeacher: React.FC = () => {
         setTime(currentTime);
     }
 
+    useEffect(()=>{
+        setCurrentStudent()
+    },[curSlider, activeGroup])
+
+    function getActiveGroup(graphGroupsForStudy: any[]) {
+        const currentTime = new Date();
+
+        for (const group of graphGroupsForStudy) {
+            const timeStart = new Date();
+            const [hours, minutes, seconds] = group.timeStart.split(':').map(Number);
+            timeStart.setHours(hours, minutes, seconds);
+
+            const timeEnd = new Date(timeStart);
+            timeEnd.setMinutes(timeEnd.getMinutes() + 90);
+
+            if (currentTime >= timeStart && currentTime <= timeEnd) {
+                return group;
+            }
+        }
+
+        return null;
+    }
+
     function setCurrentStudent(){
 
-        mainPageTeacherData()
+        mainPageTeacherUpdateData(activeGroup, curSlider !== 1)
             .then(response=>{
 
 
-               let newArr = response.data.currentOmissionStudents.map((el: any)=>{
+                let newArr = response.data.currentOmissionStudents.map((el: any)=>{
                     let newObj={
                         name: el.name,
                         count: el.count,
@@ -140,8 +143,29 @@ const MainPageTeacher: React.FC = () => {
                     return newObj
 
                 })
-                setStudents(newArr)
 
+                let newCompleteArr = response.data.completeTask.map((el: any, index: any)=>{
+                    let newObj = {
+                        id: index,
+                        active: false,
+                        name: el.nameWork,
+                        date: el.deadlineWork,
+                        expiresAt: '9 сен - 15 сен',
+                        teacher: 'Денис Валентинович Попов',
+                        subject: 'Веб-программирования',
+                        scholar: el.nameStudent,
+                        dueDate: '10 сентября',
+                    }
+                    return newObj;
+
+                })
+
+                const activeGroup = getActiveGroup(response.data.graphGroupsForStudy);
+                setActiveGroup(activeGroup)
+                // console.log(response.data.graphGroupsForStudy[activeGroup])
+                setHomeWorks(newCompleteArr)
+                setStudents(newArr)
+                console.log(response.data)
 
 
             })
@@ -173,6 +197,7 @@ const MainPageTeacher: React.FC = () => {
                     return newObj;
                 })
                 setSchedule(newSchedule)
+
 
 
             })
@@ -215,6 +240,8 @@ const MainPageTeacher: React.FC = () => {
             return el;
         })
         setStudents(newArr)
+        // mainPageTeacherUpdateOmission()
+
     }
 
     return (
@@ -248,7 +275,7 @@ const MainPageTeacher: React.FC = () => {
                         </div>
                         <div className="block-left-done-task-box">
                             {homeWorks.map((el, index)=>(
-                                <HomeworkBlock item={el} key={el.id} forTeacher={true}/>
+                                <HomeworkBlock item={el} key={index} forTeacher={true}/>
                             ))}
 
                         </div>
@@ -284,7 +311,7 @@ const MainPageTeacher: React.FC = () => {
                     <div style={{marginTop: 25}}>
                         <p className="total-student">Всего студентов: <span>{students.length}</span></p>
                         {students.length > 0 ? students.map((el: any, index: any)=>(
-                            <StudentWithoutCertificate onChange={updateStudentOmissions} items={el}/>
+                            <StudentWithoutCertificate onChange={updateStudentOmissions} items={el} key={index}/>
                         )) : ''}
                     </div>
                 </div>

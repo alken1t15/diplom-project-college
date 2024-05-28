@@ -8,3 +8,4 @@ export const HW_STUDENT_ROUTE = `${STUDENT_ROUTE}/homework`
 export const TEACHER_MAIN_PAGE_ROUTE = `${TEACHER_ROUTE}/main`
 export const TEACHER_HOMEWORKS_PAGE_ROUTE = `${TEACHER_ROUTE}/homeworks`
 export const TEACHER_GRADES_PAGE_ROUTE = `${TEACHER_ROUTE}/grades`
+export const TEACHER_UPLOAD_PAGE_ROUTE = `${TEACHER_ROUTE}/upload`
