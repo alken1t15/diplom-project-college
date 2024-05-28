@@ -352,6 +352,15 @@ public class ServiceTeachers {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    public ResponseEntity findAll() {
+        List<Teachers> teachers = repositoryTeacher.findAll();
+        List<TeacherDTO> teacherDTOS = new ArrayList<>();
+        for (Teachers t : teachers) {
+            teacherDTOS.add(new TeacherDTO(t.getId(), t.getFirstName(), t.getSecondName(), t.getMiddleName()));
+        }
+        return new ResponseEntity(teacherDTOS, HttpStatus.OK);
+    }
+
 
     public record CurrentOmissionStudent(String name, Integer count, String status, Long idCertificate,
                                          Long idStudent) {

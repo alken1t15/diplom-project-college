@@ -14,7 +14,8 @@ values ('alex', '$2a$12$NYaQWMAhfFbKNafq6YwhTuZyruktcWnsvHf7KrDc6TB9h0IwIx7E.', 
        ('maxim', '$2a$12$7ydeDHsnSCl.c820UFgBtOf04BeLyDSc1eDzZZrVTV33Xioy2PCtO', 'student'),
        ('popov', '$2a$12$7PLgfxHX34OgvqKmbeGfrua48kwTqwVFAgkZj/4x9b7MKHCicbthC', 'teacher'),
        ('marina', '$2a$12$fALbcsaeUCMZtWTPrr8wqO5pbkrM2BW2PXI.kZS6gFL54tganpPA.', 'teacher'),
-       ('denis', '$2a$12$fALbcsaeUCMZtWTPrr8wqO5pbkrM2BW2PXI.kZS6gFL54tganpPA.', 'teacher');
+       ('denis', '$2a$12$fALbcsaeUCMZtWTPrr8wqO5pbkrM2BW2PXI.kZS6gFL54tganpPA.', 'teacher'),
+       ('admin', '$2a$12$DwBjDJ0PobYbo/1MuM6wLO5WwKatjiNIAcz9HwEk9xQs3Vi2e6jh2', 'admin');
 
 create table teachers
 (
