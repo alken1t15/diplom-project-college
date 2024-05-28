@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './FileItem.scss';
-
+const fileIcon = require('../../assets/images/filesSVg.svg').default;
 export interface IFileItem {
     id: number;
-    text: string; // Это должно включать имя файла с расширением, например, 'file.pdf'
+    text: string;
     date?: string;
-    img: string; // Это всегда будет base64 строка без префикса data URL
+    img: string;
     size?: string;
 }
 
@@ -64,11 +64,18 @@ const FileItem: React.FC<IFileBlock> = ({ item, isMini }) => {
         try {
             const blob = convertBase64ToBlob(item.img, mimeType);
             const objectUrl = URL.createObjectURL(blob);
-            setImageSrc(objectUrl);
+
+            // Проверка, является ли файл изображением
+            if (mimeType.startsWith('image/')) {
+                setImageSrc(objectUrl);
+            } else {
+                setImageSrc(fileIcon);
+            }
+
             return () => URL.revokeObjectURL(objectUrl);
         } catch (error) {
             console.error('Ошибка при создании Blob из base64 строки:', error);
-            setImageSrc('/path/to/placeholder-image.png');
+            setImageSrc(fileIcon);
         }
     }, [item.img, item.text]);
 
