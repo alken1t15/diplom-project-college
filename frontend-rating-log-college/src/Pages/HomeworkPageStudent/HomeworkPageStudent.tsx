@@ -88,14 +88,14 @@ const HomeworkPageStudent: React.FC = () => {
         if(obj.fileHomeTask.length > 0){
 
             console.log(obj.fileHomeTask)
-            let newArr = obj.fileHomeTask.map((el: any, index: any)=>{
-                let newObj = {
-                    name: el.name,
-                    url: el.file
-                }
-                return newObj
-            })
-            console.log(newArr)
+            // let newArr = obj.fileHomeTask.map((el: any, index: any)=>{
+            //     let newObj = {
+            //         name: el.name,
+            //         url: el.file
+            //     }
+            //     return newObj
+            // })
+            // console.log(newArr)
             // let newFiles = [
             //     {
             //         id: 1,
@@ -113,14 +113,14 @@ const HomeworkPageStudent: React.FC = () => {
 
 
         if(obj.files.length > 0){
-            let filArr =obj.files.map((el: any, index: any)=>{
-                let newObj =  {
-                    name: el.name,
-                    url: el.file,
-                }
-                return newObj;
-            })
-            setTaskFiles(filArr)
+            // let filArr =obj.files.map((el: any, index: any)=>{
+            //     let newObj =  {
+            //         name: el.name,
+            //         url: el.file,
+            //     }
+            //     return newObj;
+            // })
+            // setTaskFiles(filArr)
         }
 
 
