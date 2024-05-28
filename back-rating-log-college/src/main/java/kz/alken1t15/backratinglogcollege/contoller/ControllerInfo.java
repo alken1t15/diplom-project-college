@@ -1,9 +1,12 @@
 package kz.alken1t15.backratinglogcollege.contoller;
 
+import kz.alken1t15.backratinglogcollege.dto.SpecializationDTO;
 import kz.alken1t15.backratinglogcollege.dto.TimeStudyDTO;
 import kz.alken1t15.backratinglogcollege.dto.WeekDTO;
+import kz.alken1t15.backratinglogcollege.entity.Specialization;
 import kz.alken1t15.backratinglogcollege.entity.study.TimeStudy;
 import kz.alken1t15.backratinglogcollege.entity.study.Week;
+import kz.alken1t15.backratinglogcollege.repository.RepositorySpecialization;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryTimeStudy;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryWeek;
 import kz.alken1t15.backratinglogcollege.service.ServiceAuditorium;
@@ -30,6 +33,7 @@ public class ControllerInfo {
     private final RepositoryTimeStudy repositoryTimeStudy;
     private final RepositoryWeek repositoryWeek;
     private final ServiceSubject serviceSubject;
+    private final RepositorySpecialization repositorySpecialization;
 
     @GetMapping("/group")
     public ResponseEntity getAllGroup() {
@@ -61,7 +65,7 @@ public class ControllerInfo {
         List<Week> weeks = repositoryWeek.findAll();
         List<WeekDTO> weekDTOS = new ArrayList<>();
         for (Week week : weeks) {
-            weekDTOS.add(new WeekDTO(week.getId(),week.getName()));
+            weekDTOS.add(new WeekDTO(week.getId(), week.getName()));
         }
         return new ResponseEntity(weekDTOS, HttpStatus.OK);
     }
@@ -69,6 +73,16 @@ public class ControllerInfo {
     @GetMapping("/subject")
     public ResponseEntity getAllSubject() {
         return serviceSubject.findAll();
+    }
+
+    @GetMapping("/specialization")
+    public ResponseEntity getAllSpecialization() {
+        List<Specialization> list = repositorySpecialization.findAll();
+        List<SpecializationDTO> specializationDTOS = new ArrayList<>();
+        for (Specialization s : list) {
+            specializationDTOS.add(new SpecializationDTO(s.getId(), s.getName()));
+        }
+        return new ResponseEntity(specializationDTOS, HttpStatus.OK);
     }
 
 }

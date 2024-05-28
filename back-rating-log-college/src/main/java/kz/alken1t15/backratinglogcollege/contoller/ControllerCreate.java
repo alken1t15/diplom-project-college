@@ -4,7 +4,9 @@ package kz.alken1t15.backratinglogcollege.contoller;
 import kz.alken1t15.backratinglogcollege.dto.*;
 import kz.alken1t15.backratinglogcollege.dto.teacher.TeacherAddDTO;
 import kz.alken1t15.backratinglogcollege.entity.AuditoriumAddDTO;
+import kz.alken1t15.backratinglogcollege.entity.Specialization;
 import kz.alken1t15.backratinglogcollege.entity.Teachers;
+import kz.alken1t15.backratinglogcollege.repository.RepositorySpecialization;
 import kz.alken1t15.backratinglogcollege.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,6 +35,7 @@ public class ControllerCreate {
     private final ServiceStudyProcess serviceStudyProcess;
     private final ServiceTypeStudy saveNewTypeStudy;
     private final ServicePlanStudy servicePlanStudy;
+    private final RepositorySpecialization repositorySpecialization;
 
     @PostMapping(path = "/teacher/add")
     public ResponseEntity addTeacher(@RequestBody @Validated TeacherAddDTO teacher, BindingResult bindingResult) {
@@ -90,5 +93,11 @@ public class ControllerCreate {
     @PostMapping(path = "/plan/study/add")
     public ResponseEntity addPlanStydy(@RequestBody @Validated PlanStudyAddDTO planStudy, BindingResult bindingResult) {
         return servicePlanStudy.saveNewPlanStudy(planStudy, bindingResult);
+    }
+
+    @PostMapping(path = "/specialization/add")
+    public ResponseEntity addSpecialization(@RequestBody @Validated SpecializationAddDTO specializationAddDTO) {
+        repositorySpecialization.save(new Specialization(specializationAddDTO.getName()));
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
