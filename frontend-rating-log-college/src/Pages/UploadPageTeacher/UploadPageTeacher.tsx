@@ -26,25 +26,26 @@ const UploadPageTeacher: React.FC = () => {
     let[curHomeWorks , setCurHomeWorks] = useState<ICurrentHomeWork>()
 
 
-    const sendGroupFile = async (items: { name: string; url: string }[]) => {
+    const addNewFile = async (files: File[]) => {
         const formData = new FormData();
 
-        const fetchBlob = async (url: string) => {
-            const response = await fetch(url);
-            return await response.blob();
-        };
-
-        for (const item of items) {
-            const blob = await fetchBlob(item.url);
-            formData.append('files', blob, item.name);
-            formData.append('id', String(selectedGroup));
-        }
+        files.forEach((file) => {
+            formData.append('files', file, file.name);
+        });
+        formData.append('id', String(1));
 
         try {
             const response = await addNewFiles(formData);
+            // Handle response if necessary
         } catch (error) {
+            // Handle error if necessary
         }
     };
+
+
+
+
+
 
     useEffect(()=>{
         getStudentHomeWorks().then((response)=>{
@@ -131,7 +132,7 @@ const UploadPageTeacher: React.FC = () => {
                         Добавление файла к группе
                     </p>
                     <div className="block-left-header-personal">
-                        <FileUploader   onClick={sendGroupFile} multipart={false}/>
+                        <FileUploader   onClick={addNewFile} multipart={false}/>
                     </div>
 
                 </div>

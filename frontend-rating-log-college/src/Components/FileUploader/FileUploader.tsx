@@ -16,15 +16,8 @@ interface IFileUploader {
     items?: { name: string; file: string }[];
     status?: string;
     homeWorkId?: number;
-    onClick: (items: any[]) => void;
+    onClick: (files: File[]) => void;
     multipart?: boolean;
-}
-
-interface FileObject {
-    name: string;
-    file: Blob;
-    typeFile: string;
-    date: string;
 }
 
 const base64ToBlob = (base64: string, mimeType: string = ''): Blob => {
@@ -44,31 +37,15 @@ const base64ToBlob = (base64: string, mimeType: string = ''): Blob => {
     return new Blob(byteArrays, { type: mimeType });
 };
 
-const transformData = (data: { name: string; file: string }[]): FileObject[] => {
-    const currentDate = new Date().toISOString();
-
-    return data.map(item => {
-        const base64String = item.file.split(',')[1] || item.file;
-        const mimeType = item.file.match(/^data:(.*?);base64,/)?.[1] || 'application/octet-stream';
-        return {
-            name: item.name,
-            file: base64ToBlob(base64String, mimeType),
-            typeFile: "дз",
-            date: currentDate,
-        };
-    });
-};
-
 const FileUploader: React.FC<IFileUploader> = (props) => {
     const [images, setImages] = useState<IImage[]>([]);
+    const [files, setFiles] = useState<File[]>([]);
     const [parentImgs, setParentImgs] = useState<IImage[]>([]);
     const [isDragging, setIsDragging] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const [hwId, setHwId] = useState(props.homeWorkId);
     const [active, isActive] = useState<boolean | undefined>(undefined);
-    const [sendingFiles, setSendingFiles] = useState<any[]>([]);
-    const [transformedData, setTransformedData] = useState<FileObject[]>([]);
 
     function selectFiles() {
         if (fileInputRef.current) {
@@ -77,43 +54,37 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
     }
 
     function onFileSelected(event: React.ChangeEvent<HTMLInputElement>) {
-        const files = event.target.files;
+        const selectedFiles = event.target.files;
         const max_file_size = 100;
         const max_file_size_bytes = max_file_size * 1024 * 1024;
-        if (!files || files.length === 0) return;
+        if (!selectedFiles || selectedFiles.length === 0) return;
 
-        if (props.multipart) {
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                if (file.size > max_file_size_bytes) continue;
-                const isImage = file.type.split('/')[0] === 'image';
-                if (!images.some(e => e.name === file.name)) {
-                    setImages(prevState => [
-                        ...prevState,
-                        {
-                            name: file.name,
-                            url: isImage ? URL.createObjectURL(file) : fileIcon,
-                            isFile: !isImage
-                        },
-                    ]);
-                }
-            }
-        } else {
-            const file = files[0];
-            if (file.size > max_file_size_bytes) return;
+        const newImages: IImage[] = [];
+        const newFiles: File[] = [];
+        for (let i = 0; i < selectedFiles.length; i++) {
+            const file = selectedFiles[i];
+            if (file.size > max_file_size_bytes) continue;
             const isImage = file.type.split('/')[0] === 'image';
-            setImages([
-                {
+            if (!images.some(e => e.name === file.name)) {
+                newImages.push({
                     name: file.name,
                     url: isImage ? URL.createObjectURL(file) : fileIcon,
                     isFile: !isImage
-                },
-            ]);
+                });
+                newFiles.push(file);
+            }
         }
+        setImages(prevState => [...prevState, ...newImages]);
+        setFiles(prevState => [...prevState, ...newFiles]);
     }
 
     function deleteImage(index: number) {
         setImages(prevState => {
+            const newState = [...prevState];
+            newState.splice(index, 1);
+            return newState;
+        });
+        setFiles(prevState => {
             const newState = [...prevState];
             newState.splice(index, 1);
             return newState;
@@ -134,50 +105,34 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
     function onDrop(e: React.DragEvent<HTMLDivElement>) {
         e.preventDefault();
         setIsDragging(false);
-        const files = e.dataTransfer.files;
+        const droppedFiles = e.dataTransfer.files;
         const max_file_size = 100;
         const max_file_size_bytes = max_file_size * 1024 * 1024;
 
-        if (!files || files.length === 0) return;
+        if (!droppedFiles || droppedFiles.length === 0) return;
 
-        if (props.multipart) {
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                if (file.size > max_file_size_bytes) continue;
-                const isImage = file.type.split('/')[0] === 'image';
-                if (!images.some(e => e.name === file.name)) {
-                    setImages(prevState => [
-                        ...prevState,
-                        {
-                            name: file.name,
-                            url: isImage ? URL.createObjectURL(file) : fileIcon,
-                            isFile: !isImage
-                        },
-                    ]);
-                }
-            }
-        } else {
-            const file = files[0];
-            if (file.size > max_file_size_bytes) return;
+        const newImages: IImage[] = [];
+        const newFiles: File[] = [];
+        for (let i = 0; i < droppedFiles.length; i++) {
+            const file = droppedFiles[i];
+            if (file.size > max_file_size_bytes) continue;
             const isImage = file.type.split('/')[0] === 'image';
-            setImages([
-                {
+            if (!images.some(e => e.name === file.name)) {
+                newImages.push({
                     name: file.name,
                     url: isImage ? URL.createObjectURL(file) : fileIcon,
                     isFile: !isImage
-                },
-            ]);
+                });
+                newFiles.push(file);
+            }
         }
+        setImages(prevState => [...prevState, ...newImages]);
+        setFiles(prevState => [...prevState, ...newFiles]);
     }
 
     useEffect(() => {
         setHwId(props.homeWorkId);
     }, [props]);
-
-    useEffect(() => {
-        const data = transformData(props.items || []);
-        setTransformedData(data);
-    }, [props.items]);
 
     useEffect(() => {
         if (props.items && props.items.length > 0) {
@@ -187,10 +142,14 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
                     const mimeType = item.file.match(/^data:(.*?);base64,/)?.[1] || 'application/octet-stream';
                     const blob = base64ToBlob(base64String, mimeType);
                     const blobUrl = URL.createObjectURL(blob);
-                    return { name: item.name, url: blobUrl };
+                    return {
+                        name: item.name,
+                        url: blobUrl,
+                        isFile: !mimeType.startsWith('image/')
+                    };
                 } catch (error) {
                     console.error("Invalid base64 string:", item.file);
-                    return { name: item.name, url: '' };
+                    return { name: item.name, url: fileIcon, isFile: true };
                 }
             });
             setParentImgs(newParentImgs);
@@ -204,6 +163,16 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
                 imageElement.classList.remove('loading');
             }
         }
+    };
+
+    const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+        e.currentTarget.src = fileIcon;
+    };
+
+    const handleSubmit = () => {
+        props.onClick(files);
+        setImages([]);
+        setFiles([]);
     };
 
     return (
@@ -233,7 +202,7 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
             <div className="drag-container" ref={containerRef}>
                 {images.map((el, index) => (
                     <div className="image loading" key={index}>
-                        <img className={'loaded-img'} src={el.url} alt={el.name} onLoad={() => handleImageLoad(index)}/>
+                        <img className={'loaded-img'} src={el.url} alt={el.name} onLoad={() => handleImageLoad(index)} onError={handleImageError}/>
                         <div className="loader-info">
                             <p className={'loader-text'}>{el.name}</p>
                             <div className="loader">
@@ -248,10 +217,7 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
                 ))}
             </div>
             <button className={`button ${images.length === 0 ? 'none' : ' '}`}
-                    onClick={() => {
-                        setImages([])
-                        props.onClick(images);
-                    }}>
+                    onClick={handleSubmit}>
                 {props.status === "Назначенно" ? 'Сдать' :
                     props.status === "Сдано" ? 'Пересдать' :
                         props.status === "Просрочено" ? 'Сдать с опозданием' :
@@ -262,7 +228,7 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
                     <h3>Ваши прикрепленные файлы:</h3>
                     {parentImgs.map((img, index) => (
                         <a key={index} href={img.url} download={img.name} target="_blank" rel="noopener noreferrer" style={{display: "inline"}}>
-                            <img src={img.url} alt={img.name} onError={(e) => console.error("Image load error: ", e)} />
+                            <img src={img.url} alt={img.name} onError={handleImageError} />
                         </a>
                     ))}
                 </div>
