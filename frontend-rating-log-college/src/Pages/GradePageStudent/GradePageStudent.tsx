@@ -113,7 +113,7 @@ const GradePageStudent: React.FC = () => {
         if(currentQuarter === 3){
             getTotalGrades().then((response: any)=>{
                 console.log(response.data)
-                // setCurrentTable(response.data)
+                setCurrentTable(response.data)
             }).catch((error: any)=>{
 
             })
@@ -259,45 +259,94 @@ const GradePageStudent: React.FC = () => {
                         </div>
                     </div>
 
-                    <table className={`my-table ${currentQuarter === 3 ? 'my-table-itog' : ''}`}>
-                        <thead>
-                        <tr>
+                    {currentQuarter === 3 ?
+                        <table className={`my-table ${currentQuarter === 3 ? 'my-table-itog' : ''}`}>
+                            <thead>
+                            <tr>
+                                {currentTable && currentTable[0] ?  currentTable[0].map((el:any, index: any)=>(
+                                    <th colSpan={index === 1 ? 2 : 1} key={index} className={`${index === 0 ? 'first-column ' : 'column-text'}
+                                 ${index === 1 ? 'break-item' : ''} `}
+                                    style={{display: el ? 'hidden' : ''}}>
+                                        {el}
+                                    </th>
+                                )) : ''}
+                            </tr>
+                            <tr>
+                                {currentTable && currentTable[1] ?  currentTable[1].map((el:any, index: any)=>(
+                                    <th key={index} className={`${index === 0 ? 'first-column ' : 'column-text'}
+                                 ${index === 1 ? 'break-item' : ''} `}>
+                                        {el}
+                                    </th>
+                                )) : ''}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {currentBody && currentBody.length > 0 ? currentBody.map((el: any, index)=> (
+                                <tr key={index}>
+                                    {el.map((childEl: any, chileIndex: any)=> (
 
-
-                            {currentTable && currentTable[0] ?  currentTable[0].map((el:any, index: any)=>(
-                                <th key={index} className={`${index === 0 ? 'first-column ' : 'column-text'}
-                                 ${index === 1 ? 'break-item' : ''} `}>{el.length === 3
-                                    ? `${el[0]} ${el.slice(1)}`
-                                    : el.length === 4
-                                        ? `${el.slice(0, 2)} ${el.slice(2)}`
-                                        : el}</th>
-                            )) : ''}
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {currentBody && currentBody.length > 0 ? currentBody.map((el: any, index)=> (
-                            <tr key={index}>
-                                {el.map((childEl: any, chileIndex: any)=> (
-
-                                    <td key={chileIndex} className={`${chileIndex === 0 ? 'first-column' : 'column-text'}
+                                        <td key={chileIndex} className={`${chileIndex === 0 ? 'first-column' : 'column-text'}
                                        ${
-                                        Number(childEl) >= 90 ? 'table-item-green' :
-                                            Number(childEl) > 70 && Number(childEl) < 90 ? 'table-item-dark-green' :
-                                                Number(childEl) > 40 && Number(childEl) < 70 ? 'table-item-yellow' :
-                                                    Number(childEl) <= 40 && Number(childEl) !== 0 ? 'table-item-red' :
+                                            Number(childEl) >= 90 ? 'table-item-green' :
+                                                Number(childEl) > 70 && Number(childEl) < 90 ? 'table-item-dark-green' :
+                                                    Number(childEl) > 40 && Number(childEl) < 70 ? 'table-item-yellow' :
+                                                        Number(childEl) <= 40 && Number(childEl) !== 0 ? 'table-item-red' :
                                                             chileIndex == 1 ? '' : ''
 
 
-                                    }
-                                    `}>{childEl ? childEl : ''}{chileIndex !== 0 && childEl? '%' : ''}</td>
-                                ))}
+                                        }
+                                    `}>{childEl !== '-' ? childEl : ''}{chileIndex !== 0 && childEl !== '-' ? '%' : ''}</td>
+                                    ))}
 
+                                </tr>
+                            )) : ''}
+
+
+                            </tbody>
+                        </table>
+
+                    :
+
+                        <table className={`my-table ${currentQuarter === 3 ? 'my-table-itog' : ''}`}>
+                            <thead>
+                            <tr>
+
+
+                                {currentTable && currentTable[0] ?  currentTable[0].map((el:any, index: any)=>(
+                                    <th key={index} className={`${index === 0 ? 'first-column ' : 'column-text'}
+                                 ${index === 1 ? 'break-item' : ''} `}>{el.length === 3
+                                        ? `${el[0]} ${el.slice(1)}`
+                                        : el.length === 4
+                                            ? `${el.slice(0, 2)} ${el.slice(2)}`
+                                            : el}</th>
+                                )) : ''}
                             </tr>
-                        )) : ''}
+                            </thead>
+                            <tbody>
+                            {currentBody && currentBody.length > 0 ? currentBody.map((el: any, index)=> (
+                                <tr key={index}>
+                                    {el.map((childEl: any, chileIndex: any)=> (
+
+                                        <td key={chileIndex} className={`${chileIndex === 0 ? 'first-column' : 'column-text'}
+                                       ${
+                                            Number(childEl) >= 90 ? 'table-item-green' :
+                                                Number(childEl) > 70 && Number(childEl) < 90 ? 'table-item-dark-green' :
+                                                    Number(childEl) > 40 && Number(childEl) < 70 ? 'table-item-yellow' :
+                                                        Number(childEl) <= 40 && Number(childEl) !== 0 ? 'table-item-red' :
+                                                            chileIndex == 1 ? '' : ''
 
 
-                        </tbody>
-                    </table>
+                                        }
+                                    `}>{childEl ? childEl : ''}{chileIndex !== 0 && childEl? '%' : ''}</td>
+                                    ))}
+
+                                </tr>
+                            )) : ''}
+
+
+                            </tbody>
+                        </table>
+                    }
                 </div>
 
 

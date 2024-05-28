@@ -5,43 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1bccd24e-30c0-4aec-9f57-1d7d68595d13" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerInfo.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/dto/GroupsDTO.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/dto/TeacherFileDTO.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/dto/TimeStudyDTO.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/dto/WeekDTO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/57f2517a-6503-4460-bdf5-a8d000e7e146.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/57f2517a-6503-4460-bdf5-a8d000e7e146/storage_v2/_src_/database/rating_log_college.-rNeMg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/57f2517a-6503-4460-bdf5-a8d000e7e146/storage_v2/_src_/database/rating_log_college.-rNeMg/schema/information_schema.FNRwLQ.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/57f2517a-6503-4460-bdf5-a8d000e7e146/storage_v2/_src_/database/rating_log_college.-rNeMg/schema/pg_catalog.0S1ZNQ.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/57f2517a-6503-4460-bdf5-a8d000e7e146/storage_v2/_src_/database/rating_log_college.-rNeMg/schema/public.abK9xQ.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/dto/SpecializationAddDTO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/dto/SpecializationDTO.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/309ec7f5-5f32-4449-af60-54b79faa6ce5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/309ec7f5-5f32-4449-af60-54b79faa6ce5.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/309ec7f5-5f32-4449-af60-54b79faa6ce5/storage_v2/_src_/database/rating_log_college.-rNeMg/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/309ec7f5-5f32-4449-af60-54b79faa6ce5/storage_v2/_src_/database/rating_log_college.-rNeMg/schema/public.abK9xQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/309ec7f5-5f32-4449-af60-54b79faa6ce5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/309ec7f5-5f32-4449-af60-54b79faa6ce5/storage_v2/_src_/database/rating_log_college.-rNeMg/schema/public.abK9xQ.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerEvaluations.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerEvaluationsPractice.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerGraph.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerGroup.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerObject.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerOmissions.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerPracticeStudy.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerTeachersGroup$TeachersGroupTemp.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerTeachersGroup.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerWeekStudy.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/dto/AuditoriumDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/dto/AuditoriumDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/dto/StudentHomeWorkDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/dto/StudentHomeWorkDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/dto/TeacherDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/dto/TeacherDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceAuditorium.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceAuditorium.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceEvaluations.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceEvaluations.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceEvaluationsPractice.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceEvaluationsPractice.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceGroups.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceGroups.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceStudyProcess.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceStudyProcess.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceSubject.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceSubject.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceTeachers$CurrentOmissionStudent.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceTeachers$CurrentOmissionStudent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceTeachers$TeacherDTOP.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceTeachers$TeacherDTOP.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceTeachers.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceTeachers.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceTeachersGroup.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Http/AdditionalHttp.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Http/AdditionalHttp.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/UploadPageTeacher/UploadPageTeacher.scss" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/UploadPageTeacher/UploadPageTeacher.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/UploadPageTeacher/UploadPageTeacher.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/UploadPageTeacher/UploadPageTeacher.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerInfo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/GradePageStudent/GradePageStudent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/GradePageStudent/GradePageStudent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/MainPageStudent/MainPageStudent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/MainPageStudent/MainPageStudent.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,7 +125,8 @@
       <workItem from="1716879803232" duration="1416000" />
       <workItem from="1716885923648" duration="1399000" />
       <workItem from="1716888276861" duration="2737000" />
-      <workItem from="1716897441112" duration="2910000" />
+      <workItem from="1716897441112" duration="3301000" />
+      <workItem from="1716912808616" duration="688000" />
     </task>
     <servers />
   </component>
