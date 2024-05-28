@@ -5,15 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class StudentHomeWorkDTO {
-    private Long id;
+@NoArgsConstructor
+public class TeacherFileDTO {
     private String name;
-    private String ball;
-    private List<TeacherFileDTO> files;
+    private byte[] file;
 }

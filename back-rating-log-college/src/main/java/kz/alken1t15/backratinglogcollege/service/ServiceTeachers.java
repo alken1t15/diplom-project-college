@@ -194,10 +194,10 @@ public class ServiceTeachers {
                 taskStudents = serviceTaskStudents.findByWorkIdAndStudentIdAndComplete(h.getId(), s.getId(), "Сдано");
                 if (taskStudents != null) {
                     String nameStudent = s.getSecondName() + " " + s.getFirstName();
-                    List<byte[]> files = new ArrayList<>();
+                    List<TeacherFileDTO> files = new ArrayList<>();
                     List<TaskStudentsFiles> taskStudentsFiles = taskStudents.getTaskStudentsFiles();
                     for (TaskStudentsFiles t : taskStudentsFiles) {
-                        files.add(readFile(t.getFilesStudent().getName()));
+                        files.add(new TeacherFileDTO(t.getFilesStudent().getName(),readFile(t.getFilesStudent().getName())));
                     }
                     homeWorkGetDTOs.add(new StudentHomeWorkDTO(s.getId(), nameStudent, null, files));
                 }
@@ -206,10 +206,10 @@ public class ServiceTeachers {
                 if (taskStudents != null) {
                     String nameStudent = s.getSecondName() + " " + s.getFirstName();
                     String ball = String.valueOf(taskStudents.getBall());
-                    List<byte[]> files = new ArrayList<>();
+                    List<TeacherFileDTO> files = new ArrayList<>();
                     List<TaskStudentsFiles> taskStudentsFiles = taskStudents.getTaskStudentsFiles();
                     for (TaskStudentsFiles t : taskStudentsFiles) {
-                        files.add(readFile(t.getFilesStudent().getName()));
+                        files.add(new TeacherFileDTO(t.getFilesStudent().getName(),readFile(t.getFilesStudent().getName())));
                     }
                     homeWorkGetDTOs.add(new StudentHomeWorkDTO(s.getId(), nameStudent, ball, files));
                 }
@@ -350,6 +350,15 @@ public class ServiceTeachers {
             }
         }
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    public ResponseEntity findAll() {
+        List<Teachers> teachers = repositoryTeacher.findAll();
+        List<TeacherDTO> teacherDTOS = new ArrayList<>();
+        for (Teachers t : teachers) {
+            teacherDTOS.add(new TeacherDTO(t.getId(), t.getFirstName(), t.getSecondName(), t.getMiddleName()));
+        }
+        return new ResponseEntity(teacherDTOS, HttpStatus.OK);
     }
 
 

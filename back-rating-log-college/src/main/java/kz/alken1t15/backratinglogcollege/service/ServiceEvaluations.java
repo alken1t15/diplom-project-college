@@ -1,13 +1,9 @@
 package kz.alken1t15.backratinglogcollege.service;
 
-import io.micrometer.common.util.StringUtils;
-import kz.alken1t15.backratinglogcollege.contoller.ControllerEvaluations;
 import kz.alken1t15.backratinglogcollege.entity.Evaluations;
-import kz.alken1t15.backratinglogcollege.entity.Students;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryEvaluations;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryStudents;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

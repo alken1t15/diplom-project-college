@@ -30,4 +30,10 @@ public class TeacherDTO {
 
     private LocalDate bornDate;
 
+    public TeacherDTO(Long id, String firstName, String secondName, String middleName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.middleName = middleName;
+    }
 }

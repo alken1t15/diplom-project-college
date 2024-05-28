@@ -1,6 +1,7 @@
 package kz.alken1t15.backratinglogcollege.service;
 
 import kz.alken1t15.backratinglogcollege.dto.GroupAddDTO;
+import kz.alken1t15.backratinglogcollege.dto.GroupsDTO;
 import kz.alken1t15.backratinglogcollege.dto.StudentAddDTO;
 import kz.alken1t15.backratinglogcollege.dto.teacher.CurrentGraphStudyGroup;
 import kz.alken1t15.backratinglogcollege.entity.Curator;
@@ -29,11 +30,11 @@ public class ServiceGroups {
     private final ServiceSpecialization serviceSpecialization;
     private final ServiceCourses serviceCourses;
 
-    public List<CurrentGraphStudyGroup> findByAllGroupForTeacher(Long idTeacher, LocalDate date, Long idWeek){
-        return repositoryGroups.findByAllGroupForTeacher(idTeacher,date,idWeek);
+    public List<CurrentGraphStudyGroup> findByAllGroupForTeacher(Long idTeacher, LocalDate date, Long idWeek) {
+        return repositoryGroups.findByAllGroupForTeacher(idTeacher, date, idWeek);
     }
 
-    public Groups findById(Long id){
+    public Groups findById(Long id) {
         return repositoryGroups.findById(id).orElseThrow();
     }
 
@@ -48,31 +49,39 @@ public class ServiceGroups {
             return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
         }
         Groups groups = repositoryGroups.findByName(group.getName()).orElse(null);
-        if (groups!=null){
-            return new ResponseEntity("Такая группа уже есть",HttpStatus.CONFLICT);
-        }
-        else {
+        if (groups != null) {
+            return new ResponseEntity("Такая группа уже есть", HttpStatus.CONFLICT);
+        } else {
             Curator curator = serviceCurator.findById(group.getIdCurator());
-            if (curator==null){
-                return new ResponseEntity("Такого куратора нету",HttpStatus.BAD_REQUEST);
+            if (curator == null) {
+                return new ResponseEntity("Такого куратора нету", HttpStatus.BAD_REQUEST);
             }
             Specialization specialization = serviceSpecialization.findById(group.getIdSpecialization());
-            if (specialization==null){
-                return new ResponseEntity("Такой специальности нету",HttpStatus.BAD_REQUEST);
+            if (specialization == null) {
+                return new ResponseEntity("Такой специальности нету", HttpStatus.BAD_REQUEST);
             }
 
-            groups =  repositoryGroups.save(new Groups(group.getName(),LocalDate.now().getYear(),1,specialization,curator));
+            groups = repositoryGroups.save(new Groups(group.getName(), LocalDate.now().getYear(), 1, specialization, curator));
             serviceCourses.saveNewCourses(groups);
             return new ResponseEntity(HttpStatus.OK);
         }
     }
 
 
-    List<Groups> findByIdTeacher(Long id){
+    List<Groups> findByIdTeacher(Long id) {
         return repositoryGroups.findByIdTeacher(id);
     }
 
-    Groups findByIdGroupAndIdSubject(Long id,Long idSubject){
-        return repositoryGroups.findByIdGroupAndIdSubject(id,idSubject);
+    Groups findByIdGroupAndIdSubject(Long id, Long idSubject) {
+        return repositoryGroups.findByIdGroupAndIdSubject(id, idSubject);
+    }
+
+    public ResponseEntity findAll() {
+        List<Groups> groups = repositoryGroups.findAll();
+        List<GroupsDTO> groupsDTOS = new ArrayList<>();
+        for (Groups g : groups) {
+            groupsDTOS.add(new GroupsDTO(g.getId(), g.getName()));
+        }
+        return new ResponseEntity(groupsDTOS, HttpStatus.OK);
     }
 }
