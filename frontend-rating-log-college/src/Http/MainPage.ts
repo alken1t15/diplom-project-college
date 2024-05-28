@@ -17,8 +17,10 @@ export const mainPageTeacherUpdateData = async (idGroupStep: number, certificate
 
 export const addNewCertificate = async (formData: any) => {
     try {
-        let res = await $api.post(`student/certificate/add`, formData);
-        return res;
+        if(formData){
+            let res = await $api.post(`student/certificate/add`, formData);
+            return res;
+        }
     } catch (error) {
         console.error('Error uploading certificate:', error);
         throw error;

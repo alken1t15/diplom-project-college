@@ -6,6 +6,7 @@ import FileItem, {IFileItem} from "../../Components/FileItem/FileItem";
 import FileUploader from "../../Components/FileUploader/FileUploader";
 import {getCoursesItems, sendHomeWorkFiles} from "../../Http/HomeWorks";
 import {addNewCertificate} from "../../Http/MainPage";
+import {addNewFiles} from "../../Http/Courses";
 
 const fileImg = require('../../assets/images/PDF.png');
 
@@ -129,25 +130,23 @@ const HomeworkPageStudent: React.FC = () => {
         })
     },[])
 
-    const sendCertif = async (items: { name: string; url: string }[]) => {
+
+
+    const sendCertif = async (files: File[]) => {
         const formData = new FormData();
 
-        const fetchBlob = async (url: string) => {
-            const response = await fetch(url);
-            return await response.blob();
-        };
-
-        for (const item of items) {
-            const blob = await fetchBlob(item.url);
-            formData.append('files', blob, item.name);
-        }
+        files.forEach((file) => {
+            formData.append('files', file, file.name);
+        });
 
         try {
-            const response = await sendHomeWorkFiles(curId ,formData);
+            const response = await sendHomeWorkFiles(curId,formData);
+            // Handle response if necessary
         } catch (error) {
-            console.error('Error sending certificate:', error);
+            // Handle error if necessary
         }
     };
+
 
 
     return (

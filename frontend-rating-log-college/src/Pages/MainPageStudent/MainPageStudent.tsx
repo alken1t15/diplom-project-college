@@ -265,6 +265,7 @@ const MainPageStudent: React.FC = () => {
         mainPageData()
             .then(response=>{
 
+
                 updateUser(response.data.name, response.data.lastName, response.data.groupName, response.data.yearGroup)
 
                 let dataArr: IDataArrayItem[]  = [];
@@ -307,6 +308,7 @@ const MainPageStudent: React.FC = () => {
 
                 updateOmissions(response.data.omissions)
 
+                console.log(response.data.file)
                 let newFile = [
                     {
                         name: '1',
@@ -340,25 +342,79 @@ const MainPageStudent: React.FC = () => {
 
     }, [dateArray])
 
-    const sendCertif = async (items: { name: string; url: string }[]) => {
+    const sendCertif = async (files: File[]) => {
         const formData = new FormData();
 
-        const fetchBlob = async (url: string) => {
-            const response = await fetch(url);
-            return await response.blob();
-        };
-
-        for (const item of items) {
-            const blob = await fetchBlob(item.url);
-            formData.append('file', blob, item.name);
-        }
+        files.forEach((file) => {
+            formData.append('file', file, file.name);
+        });
 
         try {
-            const response = await addNewCertificate(formData);
-            console.log(response.data);
-            setIsActive(false)
+            const response = await addNewCertificate(formData).then((response)=>{
+                mainPageData()
+                    .then(response=>{
+
+                        updateUser(response.data.name, response.data.lastName, response.data.groupName, response.data.yearGroup)
+
+                        let dataArr: IDataArrayItem[]  = [];
+                        response.data.monthsStudy.forEach((el: any, index: any)=>{
+                            let todayMonth = (new Date()).getMonth() + 1;
+                            let obj: IDataArrayItem = {
+                                isActive: todayMonth === el.requestMonth,
+                                date: el.name.split(' ')[1],
+                                number: el.name.split(' ')[0],
+                                requestMonth: el.requestMonth,
+                            };
+                            dataArr.push(obj)
+
+                        })
+                        setDateArray(dataArr)
+
+                        let newGradeLine = response.data.evaluations.map((el:any, index:any)=>{
+                            let obj = {
+                                teacherName: el.nameTeacher,
+                                subject: el.nameObject,
+                                date: formatDate(el.dateEvaluation),
+                                grade: el.ball <= 39 ? 2 : el.ball >= 40 && el.ball < 70 ? 3 : el.ball < 90 && el.ball >= 70 ? 4 : el.ball >= 90 ? 5 : 0
+                            }
+                            return obj;
+                        })
+                        setGradeLine(newGradeLine)
+
+                        let scheduleObj = {
+                            date: response.data.planStudy.date,
+                            nameOfDay: response.data.planStudy.nameOfWeek,
+                            items: response.data.planStudy.subjects.map((el: any)=>{
+                                return {
+                                    time: String(el.startStudy.split(':')[0]) + ':' + String(el.startStudy.split(':')[1]) + ' ' + String(el.endStudy.split(':')[0]) + ':' + String(el.endStudy.split(':')[1]),
+                                    subject: el.name
+                                }
+                            })
+
+                        }
+                        setSchedule(scheduleObj)
+
+                        updateOmissions(response.data.omissions)
+
+                        let newFile = [
+                            {
+                                name: '1',
+                                file: response.data.file.file,
+
+                            }
+                        ]
+                        console.log(response.data.file)
+                        setFile(newFile)
+
+                    })
+                    .catch(error=>{
+
+                    })
+            }).catch((error)=>{
+
+            })
+
         } catch (error) {
-            console.error('Error sending certificate:', error);
         }
     };
 
