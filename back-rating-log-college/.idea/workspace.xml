@@ -5,19 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1bccd24e-30c0-4aec-9f57-1d7d68595d13" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/309ec7f5-5f32-4449-af60-54b79faa6ce5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/309ec7f5-5f32-4449-af60-54b79faa6ce5.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/309ec7f5-5f32-4449-af60-54b79faa6ce5/storage_v2/_src_/database/rating_log_college.-rNeMg/schema/information_schema.FNRwLQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/309ec7f5-5f32-4449-af60-54b79faa6ce5/storage_v2/_src_/database/rating_log_college.-rNeMg/schema/information_schema.FNRwLQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/309ec7f5-5f32-4449-af60-54b79faa6ce5/storage_v2/_src_/database/rating_log_college.-rNeMg/schema/pg_catalog.0S1ZNQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/309ec7f5-5f32-4449-af60-54b79faa6ce5/storage_v2/_src_/database/rating_log_college.-rNeMg/schema/pg_catalog.0S1ZNQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/309ec7f5-5f32-4449-af60-54b79faa6ce5/storage_v2/_src_/database/rating_log_college.-rNeMg/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/309ec7f5-5f32-4449-af60-54b79faa6ce5/storage_v2/_src_/database/rating_log_college.-rNeMg/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/dto/FilesStudentDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/dto/FilesStudentDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/service/ServiceFilesStudent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/service/ServiceFilesStudent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/service/ServiceTotal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/service/ServiceTotal.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Components/CurrentStudentHomeWork/CurrentStudentHomeWork.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Components/CurrentStudentHomeWork/CurrentStudentHomeWork.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Components/FileItem/FileItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Components/FileItem/FileItem.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Http/HomeWorks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Http/HomeWorks.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/CoursesPageStudent/CoursesPageStudent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/CoursesPageStudent/CoursesPageStudent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/HomeWorksPageTeacher/HomeWorksPageTeacher.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/HomeWorksPageTeacher/HomeWorksPageTeacher.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/MainPageStudent/MainPageStudent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/MainPageStudent/MainPageStudent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/UploadPageTeacher/UploadPageTeacher.scss" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/UploadPageTeacher/UploadPageTeacher.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/UploadPageTeacher/UploadPageTeacher.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/UploadPageTeacher/UploadPageTeacher.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/dto/FilesStudentDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/dto/FilesStudentDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceFilesStudent.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceFilesStudent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceTotal.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceTotal.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,6 +119,7 @@
       <workItem from="1716879803232" duration="1416000" />
       <workItem from="1716885923648" duration="1399000" />
       <workItem from="1716888276861" duration="715000" />
+      <workItem from="1716890837738" duration="2491000" />
     </task>
     <servers />
   </component>

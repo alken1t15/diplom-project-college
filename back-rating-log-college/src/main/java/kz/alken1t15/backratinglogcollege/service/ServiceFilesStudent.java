@@ -122,7 +122,7 @@ public class ServiceFilesStudent {
             return null;
         } else {
             byte[] file = getFile(filesStudent.getId());
-            return new FilesStudentDTO(filesStudent.getId(), file, filesStudent.getDateCreate(), "Справка");
+            return new FilesStudentDTO(filesStudent.getId(), file, filesStudent.getDateCreate(), "Справка",filesStudent.getName());
         }
     }
 

@@ -111,6 +111,7 @@ public class ServiceStudyProcess {
                 int i = 0;
                 for (String str : tempArr){
                     if (i==0){
+                        arrayList.add(str);
                         i++;
                         continue;
                     }
@@ -121,7 +122,6 @@ public class ServiceStudyProcess {
                     arrayList.add(str);
                     day++;
                 }
-                System.out.println(arrayList);
                 arrayList.add(String.valueOf(total/count));
                 evalStudy.add(arrayList.toArray(new String[0]));
             }
@@ -166,6 +166,7 @@ public class ServiceStudyProcess {
                 int i = 0;
                 for (String str : tempArr){
                     if (i==0){
+                        arrayList.add(str);
                         i++;
                         continue;
                     }

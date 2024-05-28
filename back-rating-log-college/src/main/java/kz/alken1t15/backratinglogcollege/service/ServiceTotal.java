@@ -53,7 +53,6 @@ public class ServiceTotal {
             }
         }
 
-        // Создаем карту для хранения данных
         Map<Integer, Map<Integer, Map<String, Integer>>> courses = new HashMap<>();
         for (int i = 1; i <= 4; i++) {
             courses.put(i, new HashMap<>());
@@ -61,7 +60,6 @@ public class ServiceTotal {
             courses.get(i).put(2, new HashMap<>());
         }
 
-        // Заполняем карту данными
         for (TotalEvalDTO item : totalEvalDTOS) {
             int course = item.getCourse();
             int semester = item.getSemester();
@@ -71,37 +69,44 @@ public class ServiceTotal {
             courses.get(course).get(semester).put(name, total);
         }
 
-        // Формируем строку
-        StringBuilder result = new StringBuilder("Курс");
-        for (int course = 1; course <= 4; course++) {
-            result.append(", ").append(course).append(" курс");
-        }
-        result.append("\nПредметы\\Четверть");
-        for (int course = 1; course <= 4; course++) {
-            result.append(", 1, 2");
-        }
-
-        // Собираем названия предметов
         Set<String> subjectNames = new HashSet<>();
         for (TotalEvalDTO item : totalEvalDTOS) {
             subjectNames.add(item.getName());
         }
+        List<String> subjectList = new ArrayList<>(subjectNames);
 
-        // Добавляем оценки
-        for (String name : subjectNames) {
-            result.append("\n").append(name);
+
+        int numRows = subjectList.size() + 2;
+        int numCols = 1 + 4 * 2;
+        String[][] resultArray = new String[numRows][numCols];
+
+        resultArray[0][0] = "Курс";
+        for (int course = 1; course <= 4; course++) {
+            resultArray[0][(course - 1) * 2 + 1] = course + " курс";
+            resultArray[0][(course - 1) * 2 + 2] = "";
+        }
+
+        resultArray[1][0] = "Предметы\\Четверть";
+        for (int course = 1; course <= 4; course++) {
+            resultArray[1][(course - 1) * 2 + 1] = "1";
+            resultArray[1][(course - 1) * 2 + 2] = "2";
+        }
+
+        for (int i = 0; i < subjectList.size(); i++) {
+            String name = subjectList.get(i);
+            resultArray[i + 2][0] = name;
             for (int course = 1; course <= 4; course++) {
                 for (int semester = 1; semester <= 2; semester++) {
                     Map<String, Integer> semesterData = courses.get(course).get(semester);
                     if (semesterData.containsKey(name)) {
-                        result.append(", ").append(semesterData.get(name));
+                        resultArray[i + 2][(course - 1) * 2 + semester] = String.valueOf(semesterData.get(name));
                     } else {
-                        result.append(", -");
+                        resultArray[i + 2][(course - 1) * 2 + semester] = "-";
                     }
                 }
             }
         }
 
-        return new ResponseEntity(result, HttpStatus.OK);
+        return new ResponseEntity(resultArray, HttpStatus.OK);
     }
 }
