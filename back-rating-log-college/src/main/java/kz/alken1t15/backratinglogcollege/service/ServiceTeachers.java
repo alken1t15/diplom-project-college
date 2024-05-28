@@ -194,10 +194,10 @@ public class ServiceTeachers {
                 taskStudents = serviceTaskStudents.findByWorkIdAndStudentIdAndComplete(h.getId(), s.getId(), "Сдано");
                 if (taskStudents != null) {
                     String nameStudent = s.getSecondName() + " " + s.getFirstName();
-                    List<byte[]> files = new ArrayList<>();
+                    List<TeacherFileDTO> files = new ArrayList<>();
                     List<TaskStudentsFiles> taskStudentsFiles = taskStudents.getTaskStudentsFiles();
                     for (TaskStudentsFiles t : taskStudentsFiles) {
-                        files.add(readFile(t.getFilesStudent().getName()));
+                        files.add(new TeacherFileDTO(t.getFilesStudent().getName(),readFile(t.getFilesStudent().getName())));
                     }
                     homeWorkGetDTOs.add(new StudentHomeWorkDTO(s.getId(), nameStudent, null, files));
                 }
@@ -206,10 +206,10 @@ public class ServiceTeachers {
                 if (taskStudents != null) {
                     String nameStudent = s.getSecondName() + " " + s.getFirstName();
                     String ball = String.valueOf(taskStudents.getBall());
-                    List<byte[]> files = new ArrayList<>();
+                    List<TeacherFileDTO> files = new ArrayList<>();
                     List<TaskStudentsFiles> taskStudentsFiles = taskStudents.getTaskStudentsFiles();
                     for (TaskStudentsFiles t : taskStudentsFiles) {
-                        files.add(readFile(t.getFilesStudent().getName()));
+                        files.add(new TeacherFileDTO(t.getFilesStudent().getName(),readFile(t.getFilesStudent().getName())));
                     }
                     homeWorkGetDTOs.add(new StudentHomeWorkDTO(s.getId(), nameStudent, ball, files));
                 }
