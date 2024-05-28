@@ -14,6 +14,10 @@ interface ITeachersBlock{
 const TeachersBlock: React.FC<ITeachersBlock> = (props) => {
     let[item, setItem] = useState<ITeachersItem>(props.item);
 
+    useEffect(()=>{
+        setItem(props.item)
+    }, [props])
+
     return (
         <div className={`teachers-block`} style={props.styles}>
             <div className="teachers-block-left">

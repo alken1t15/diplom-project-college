@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './FileUploader.scss';
 const uploadImg = require('../../assets/images/UploadImg.png');
-const fileIcon = require('../../assets/images/files.png');
+const fileIcon = require('../../assets/images/filesSVg.svg').default;
 
 interface IImage {
     name: string;

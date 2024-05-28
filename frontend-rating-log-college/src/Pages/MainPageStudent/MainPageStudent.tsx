@@ -308,15 +308,13 @@ const MainPageStudent: React.FC = () => {
 
                 updateOmissions(response.data.omissions)
 
-                console.log(response.data.file)
                 let newFile = [
                     {
-                        name: '1',
+                        name: response.data.file.name,
                         file: response.data.file.file,
 
                     }
                 ]
-                console.log(response.data.file)
                 setFile(newFile)
 
             })
@@ -398,12 +396,12 @@ const MainPageStudent: React.FC = () => {
 
                         let newFile = [
                             {
-                                name: '1',
+                                name: response.data.file.name,
                                 file: response.data.file.file,
 
                             }
                         ]
-                        console.log(response.data.file)
+                        setFile(newFile)
                         setFile(newFile)
 
                     })

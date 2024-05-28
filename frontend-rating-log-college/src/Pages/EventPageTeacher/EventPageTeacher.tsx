@@ -1,12 +1,17 @@
 import React, {useEffect, useState} from 'react';
+import { ru } from 'date-fns/locale';
+import {registerLocale} from "react-datepicker";
 import './EventPageTeacher.scss';
 import Calendar from "../../Components/Calendar/Calendar";
 import EventItem from '../../Components/EventItem/EventItem';
 import ToggleBtns, {IToggleBtnsItems} from "../../Components/ToggleBtns/ToggleBtns";
 import TimeBlock from "../../Components/TimeBlock/TimeBlock";
 import EventStudentItem, {IEventStudentItem} from "../../Components/EventStudentItem/EventStudentItem";
+import {addGrade, getAllAboutGroupAndSubjects, getStudents} from "../../Http/HomeWorks";
 const calendarImg = require('../../assets/images/calendar.png');
 
+
+registerLocale('ru', ru);
 export interface IEventItem{
     id: number;
     name: string;
@@ -15,14 +20,13 @@ export interface IEventItem{
     group: string;
 }
 
-
 const EventPageTeacher: React.FC = () => {
 
-    let[date, setDate] = useState<Date>()
+    let[date, setDate] = useState<string>('')
     let[events, setEvents] = useState<IEventItem[]>([])
-    let[activeGroup, setActiveGroup] = useState(1)
+    let[activeGroup, setActiveGroup] = useState<number>()
     let[group, setGroup] = useState<IToggleBtnsItems[]>([])
-    let[activeSubject, setActiveSubject] = useState(1)
+    let[activeSubject, setActiveSubject] = useState<number>()
     let[subject, setSubject] = useState<IToggleBtnsItems[]>([])
     let[time, setTime] = useState("")
     let[currentEvent, setCurrentEvent] = useState('')
@@ -38,88 +42,28 @@ const EventPageTeacher: React.FC = () => {
     }
 
     useEffect(()=>{
-       let newArr = [
-           {
-               id: 1,
-               name: 'Практика по Vue',
-               dateStart: '15 сен',
-               dateEnd: '24 сен',
-               group: 'П-20-51б',
-           },
-           {
-               id: 2,
-               name: 'Практика по Vue',
-               dateStart: '15 сен',
-               dateEnd: '24 сен',
-               group: 'П-20-51б',
-           },
-       ]
-       setEvents(newArr)
-        let newGroup = [
-            {
-                id: 1,
-                name: 'П-19-49к',
-                active: true
-            },
-            {
-                id: 2,
-                name: 'П-20-50б',
-                active: false
-            },
-            {
-                id: 3,
-                name: 'П-21-51гб',
-                active: false
-            },
-        ]
-        setGroup(newGroup)
-        let newSubject = [
-            {
-                id: 1,
-                name: 'Веб-программирование',
-                active: true
-            },
-            {
-                id: 2,
-                name: 'Веб дизайн',
-                active: false
-            },
-        ]
-        setSubject(newSubject)
-        let newArrStud= [
-            {
-                id: 1,
-                count: 2,
-                name: 'Кораблев Максим Игоревич',
-                grade: null,
-            },
-            {
-                id: 2,
-                count: 0,
-                name: 'Кораблев Максим Игоревич',
-                grade: '55',
-            },
-            {
-                id: 3,
-                count: 1,
-                name: 'Кораблев Максим Игоревич',
-                grade: '65',
-            },
-            {
-                id: 4,
-                count: 15,
-                name: 'Кораблев Максим Игоревич',
-                grade: '95',
-            },
-        ]
-        setStudent(newArrStud)
 
+        getAllAboutGroupAndSubjects().then((response) => {
+            let newArr = response.data.groupsStudyDTOS.map((el: any) => {
+                let newObj = {
+                    active: false,
+                    id: el.id,
+                    name: el.name
+                }
+                return newObj;
+            });
+            setGroup(newArr);
 
-        //http
-
-        setCurrentEvent('Стандартный урок')
-        setCurCount(2)
-        ///
+            let newSubjectArr = response.data.subjectStudyDTOS.map((el: any) => {
+                let newObj = {
+                    active: false,
+                    id: el.id,
+                    name: el.name
+                }
+                return newObj;
+            });
+            setSubject(newSubjectArr);
+        }).catch((error) => { });
 
         getTime()
         const timeInterval = setInterval(() => {
@@ -130,8 +74,17 @@ const EventPageTeacher: React.FC = () => {
         };
     },[])
 
+    useEffect(()=>{
+        if(activeGroup && activeSubject){
+            getStudents(activeSubject, activeGroup).then((response)=>{
+                setStudent(response.data.students)
+                setCurCount(response.data.count)
+            }).catch((error)=>{})
+        }
+    }, [activeGroup, activeSubject])
+
     const updateDate = (value: Date) => {
-        setDate(value);
+        setDate(value.toLocaleDateString());
     }
 
     const updateCurrentGroup = (id: number) => {
@@ -163,11 +116,12 @@ const EventPageTeacher: React.FC = () => {
     const updateCurrentStudents = (id: number, value: string) => {
         let newArr = students.map((el: any)=>{
             if(el.id === id){
-                el.grade = value
+                el.bull = value
             }
             return el
         })
         setStudent(newArr)
+
     }
 
     return (
@@ -181,14 +135,14 @@ const EventPageTeacher: React.FC = () => {
                     <div className="block-left-header-personal">
                         <Calendar onChange={updateDate}/>
                     </div>
-                    <p className={'block-left__text block-left__text-e'} style={{marginTop: 50}}>
-                        События на текущий месяц
-                    </p>
-                    <div>
-                        {events.length > 0 ? events.map((el: any, index: any)=>(
-                            <EventItem id={el.id} name={el.name} group={el.group} dateStart={el.dateStart} dateEnd={el.dateEnd} key={index}/>
-                        )) : ''}
-                    </div>
+                    {/*<p className={'block-left__text block-left__text-e'} style={{marginTop: 50}}>*/}
+                    {/*    События на текущий месяц*/}
+                    {/*</p>*/}
+                    {/*<div>*/}
+                    {/*    {events.length > 0 ? events.map((el: any, index: any)=>(*/}
+                    {/*        <EventItem id={el.id} name={el.name} group={el.group} dateStart={el.dateStart} dateEnd={el.dateEnd} key={index}/>*/}
+                    {/*    )) : ''}*/}
+                    {/*</div>*/}
                 </div>
 
 
@@ -202,7 +156,7 @@ const EventPageTeacher: React.FC = () => {
                 {subject.length > 0 ?  <ToggleBtns onClick={updateCurrentSubject} items={subject} style={{marginTop: 15}}/> : ''}
                 <div className={`block-middle-t-e-bottom`}>
                     <TimeBlock time={time} style={{marginTop: 33}}/>
-                    <p className="block-middle-t-e-bottom-event-text">События: <span>{currentEvent}</span></p>
+                    {/*<p className="block-middle-t-e-bottom-event-text">События: <span>{currentEvent}</span></p>*/}
                     <p className="block-middle-t-e-bottom-event-text" style={{marginTop: 17}}>Кол-во учеников: <span>{curCount}</span></p>
 
                 </div>
@@ -211,7 +165,19 @@ const EventPageTeacher: React.FC = () => {
                         <EventStudentItem onChange={updateCurrentStudents} items={el} key={index}/>
                     ))}
                 </div>
+                <button className={'upl-bn upl-bn-hw'} onClick={(e)=>{
 
+                    if (activeSubject && activeGroup && date) {
+                        addGrade(activeSubject, date, students)
+                            .then((response) => {
+                                console.log('fff');
+                            })
+                            .catch((error) => {
+                                console.error('Error:', error);
+                            });
+                    }
+
+                }}>Выставить </button>
             </div>
         </div>
     );

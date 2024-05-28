@@ -37,6 +37,11 @@ interface ICurrentHw{
     ]
 }
 
+interface ITeacher{
+    name: string;
+    subject: string;
+}
+
 const HomeworkPageStudent: React.FC = () => {
 
     let[homeWork, setHomeWork] = useState<HomeworkItem[]>([])
@@ -50,7 +55,7 @@ const HomeworkPageStudent: React.FC = () => {
     let[teacherSubject, setTeacherSubject] = useState('');
     let[homeWorkFiles, setHomeWorkFiles] = useState<IFileItem[]>([]);
     let[taskFiles, setTaskFiles] = useState<any[]>([]);
-
+    let[teacherItem, setTeacherItem] = useState<ITeacher>()
 
     function setActiveHomeWork(id: number){
         let curArr = [...homeWork];
@@ -77,28 +82,39 @@ const HomeworkPageStudent: React.FC = () => {
         setTeacherName(obj.teacherName)
         setTeacherSubject(obj.subjectName)
         setDeskr(obj.description)
+        setTeacherItem({name: obj.teacherName, subject: obj.subjectName})
 
-        // доделать
-        // let newFiles = [
-        //     {
-        //         id: 1,
-        //         text: 'Учебник истории',
-        //         date: '3 сентября',
-        //         img: fileImg,
-        //         size: '5.3 мб'
-        //     }
-        // ]
-        // setTaskFiles(newFiles)
 
-        let filArr =obj.files.map((el: any, index: any)=>{
-            let newObj =  {
-                name: `Файл №${index}`,
-                file: el,
-            }
-            return newObj;
-        })
-        console.log(filArr)
-        setTaskFiles(filArr)
+        console.log(obj.fileHomeTask)
+        if(obj.fileHomeTask.length > 0){
+            // let newFiles = [
+            //     {
+            //         id: 1,
+            //         text: 'Учебник истории',
+            //         date: '3 сентября',
+            //         img: fileImg,
+            //         size: '5.3 мб'
+            //     }
+            // ]
+            // setTaskFiles(newFiles)
+        }
+
+
+
+
+
+        if(obj.files.length > 0){
+            let filArr =obj.files.map((el: any, index: any)=>{
+                let newObj =  {
+                    id: index,
+                    text: el.name,
+                    img: el.file,
+                }
+                return newObj;
+            })
+            setHomeWorkFiles(filArr)
+        }
+
 
     }
 
@@ -112,7 +128,7 @@ const HomeworkPageStudent: React.FC = () => {
                     id: el.id,
                     active: el.id === response.data.homeWork.id,
                     name: el.name,
-                    date: '10 Сен',
+                    date: `${el.startDate}`,
                     expiresAt: `${el.startDate} - ${el.endDate}`,
                     teacher: el.teacherName,
                     subject: el.subjectName
@@ -141,9 +157,7 @@ const HomeworkPageStudent: React.FC = () => {
 
         try {
             const response = await sendHomeWorkFiles(curId,formData);
-            // Handle response if necessary
         } catch (error) {
-            // Handle error if necessary
         }
     };
 
@@ -178,8 +192,8 @@ const HomeworkPageStudent: React.FC = () => {
                         </div>
                     </div>
                     <div className="block-middle-info">
-                        <p className="block-middle-info__expires"><span>Срок задание: </span>{expires}</p>
-                        <TeachersBlock item={{name: teacherName ,subject: teacherSubject} } styles={{marginTop: 20}}/>
+                        <p className="block-middle-info__expires"><span>Срок задания: </span>{expires}</p>
+                        <TeachersBlock item={teacherItem ? teacherItem : {name: '', subject: ''} } styles={{marginTop: 20}}/>
                         {/*<p className="status">*/}
                             {/*Статус:&nbsp;*/}
                          {/*   <span*/}
