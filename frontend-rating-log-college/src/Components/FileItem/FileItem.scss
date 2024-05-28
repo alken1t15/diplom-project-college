@@ -16,6 +16,7 @@
     justify-content: space-between;
     padding: 40px 18px 18px 18px;
     cursor: pointer;
+    margin-top: 10px;
     opacity: 1;
     transition: .25s;
     &-m{
@@ -41,8 +42,5 @@
       }
     }
 
-    &:first-child{
-      margin-left: 0;
-    }
   }
 }

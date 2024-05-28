@@ -314,6 +314,7 @@ const MainPageStudent: React.FC = () => {
 
                     }
                 ]
+                console.log(response.data.file)
                 setFile(newFile)
 
             })

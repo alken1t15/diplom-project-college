@@ -9,28 +9,12 @@ const fileImg = require('../../assets/images/PDF.png');
 
 const CoursesPageStudent: React.FC = () => {
 
-    let[courses, setCourses] = useState<CourseItem[]>([])
-    let[currentCourse, setCurrentCourse] = useState<CourseItem>()
-    let[fileItems, setFileItems] = useState<IFileItem[]>([
-        {
-            id: 1,
-            text: 'Учебник истории',
-            date: '3 сентября',
-            img: fileImg
-        },
-        {
-            id: 2,
-            text: 'Учебник истории за 9 классы ОБ ЖБГ ИМНП',
-            date: '15 сентября',
-            img: fileImg
-        },
-        {
-            id: 3,
-            text: 'Учебник истории',
-            date: '4 сентября',
-            img: fileImg
-        },
-    ])
+    let[courses, setCourses] = useState<CourseItem[]>([]);
+    let[currentCourse, setCurrentCourse] = useState<CourseItem>();
+    let[fileItems, setFileItems] = useState<IFileItem[]>([]);
+    let[currentCourseName, setCurrentCourseName] = useState('');
+    let[currentCourseYear, setCurrentCourseYear] = useState('');
+
     function setActiveCourse(id: number){
 
         const currentIndex = courses.findIndex(el => el.active) + 1;
@@ -100,26 +84,30 @@ const CoursesPageStudent: React.FC = () => {
 
     }
 
+    function updateFiles(data: any){
+        let newArr = data.map((el: any, index: any)=>{
+
+            let newObj = {
+                id: index,
+                text: el.name,
+                date: el.date,
+                img: el.file
+            }
+            return newObj
+        })
+        setFileItems(newArr)
+
+    }
+
     function setCurCourse(id: number){
 
 
-        console.log(courses)
 
         getCoursesItems(id).then((response: any)=>{
-            // let newCourses = response.data.courses.map((el: any)=>{
-            //     let newObj = {
-            //         id: el.course,
-            //         name: `${el.course} Курс`,
-            //         date: `Год: ${el.year}`,
-            //         active: response.data.currentCourse === el.course
-            //     }
-            //     if(response.data.currentCourse === el.course){
-            //         setCurrentCourse(newObj)
-            //     }
-            //     return newObj;
-            // })
-            // setCourses(newCourses)
-            console.log(response.data)
+
+            updateFiles(response.data.files);
+            setCurrentCourseName(`${response.data.currentCourse} Курс`)
+            setCurrentCourseYear(`${response.data.currentYear}`)
 
 
         }).catch((error)=>{
@@ -139,11 +127,12 @@ const CoursesPageStudent: React.FC = () => {
                     active: response.data.currentCourse === el.course
                 }
                 if(response.data.currentCourse === el.course){
-                    setCurrentCourse(newObj)
+                    setCurCourse(1)
                 }
                 return newObj;
             })
             setCourses(newCourses)
+            setCurCourse(1)
 
 
         }).catch((error)=>{
@@ -172,8 +161,8 @@ const CoursesPageStudent: React.FC = () => {
             <div className={'block-middle block-middle-full block-middle-full-t-0'}>
                 <div className={'block-middle__text'}>
                     <div className={`courses-block courses-block-l`}>
-                        <p className={`courses-block__title courses-block__title-l`}>{currentCourse && currentCourse.name ? currentCourse.name : ''}</p>
-                        <p className={`courses-block__text`}>{currentCourse && currentCourse.date ? currentCourse.date : ''}</p>
+                        <p className={`courses-block__title courses-block__title-l`}>{currentCourseName}</p>
+                        <p className={`courses-block__text`}>Год: {currentCourseYear}</p>
                     </div>
                 </div>
 

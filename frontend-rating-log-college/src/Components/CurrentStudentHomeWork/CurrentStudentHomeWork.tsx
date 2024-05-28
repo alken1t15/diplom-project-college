@@ -17,7 +17,7 @@ export interface ICurrentStudentHomeWork {
     name: string;
     file: IFile[];
     id: number;
-    onClick: (id: number) => void;
+    onClick: (id: number, value: string) => void;
     grade?: number;
 }
 
@@ -27,6 +27,7 @@ const CurrentStudentHomeWork: React.FC<ICurrentStudentHomeWork> = (props) => {
     let [id, setId] = useState<number>(props.id);
     let [grade, setGrade] = useState<number | undefined>(props.grade);
     let [inputValue , setInputValue] = useState('')
+    let [editGrade, setEditGrade] = useState(false)
 
     useEffect(() => {
         setName(props.name);
@@ -92,26 +93,44 @@ const CurrentStudentHomeWork: React.FC<ICurrentStudentHomeWork> = (props) => {
                             <img src={downloadImg} alt="Download image" />
                             <span>Скачать</span>
                         </button>
-                        <button className="current-student-item-middle-button-repeat" onClick={() => props.onClick(id)}>
+                        <button className="current-student-item-middle-button-repeat" onClick={() => props.onClick(id, 'изменить оценку')}>
                             <img src={editImg} alt="Repeat image" />
-                            <span>Изменить оценку</span>
+                            <span onClick={(e)=>{
+                                setEditGrade(true)
+                            }}>Изменить оценку</span>
                         </button>
                     </div>
                     <div className="current-student-item-bottom-e">
-                        <span className={`current-student-item-bottom-e-grade`}>Оценка:</span>
-                        <div className={`current-student-item-bottom-e-box`}>
-                            <div className={`
+
+                        {editGrade ? <>  <input placeholder={`Выставить оценку`} type="number" className={`current-student-item-bottom__input`}
+                                                value={inputValue}
+                                                onChange={(e) => validateAndSetInput(e.target.value)}
+                            />
+                                <button className="send-btn" onClick={(e)=>{
+                                    props.onClick(id, inputValue)
+                                    setEditGrade(false)
+                                }}>
+                                    {React.createElement(sendImg, {
+                                        className: `send-img`})}
+                                </button></>
+                      :
+                            <><span className={`current-student-item-bottom-e-grade`}>Оценка:</span>
+                                <div className={`current-student-item-bottom-e-box`}>
+                                    <div className={`
                             current-student-item-bottom-e-box-line
                             ${grade >= 0 && grade < 40 ? 'current-student-item-bottom-e-box-line-r' :
-                                grade >= 40 && grade < 70 ? 'current-student-item-bottom-e-box-line-y' :
-                                    grade >= 70 && grade < 90 ? 'current-student-item-bottom-e-box-line-dg' :
-                                        grade >= 90 && grade <= 100 ? 'current-student-item-bottom-e-box-line-g' : ''
-                            }
+                                        grade >= 40 && grade < 70 ? 'current-student-item-bottom-e-box-line-y' :
+                                            grade >= 70 && grade < 90 ? 'current-student-item-bottom-e-box-line-dg' :
+                                                grade >= 90 && grade <= 100 ? 'current-student-item-bottom-e-box-line-g' : ''
+                                    }
                             `}
-                            style={{width: grade+'%'}}
-                            ></div>
-                        </div>
-                        <span className={`current-student-item-bottom-e-grade`}>{grade}%</span>
+                                         style={{width: grade+'%'}}
+                                    ></div>
+                                </div>
+                                <span className={`current-student-item-bottom-e-grade`}>{grade}%</span></>}
+
+
+
                     </div>
                 </> :
 
@@ -121,7 +140,7 @@ const CurrentStudentHomeWork: React.FC<ICurrentStudentHomeWork> = (props) => {
                         <img src={downloadImg} alt="Download image" />
                         <span>Скачать</span>
                     </button>
-                    <button className="current-student-item-middle-button-repeat" onClick={() => props.onClick(id)}>
+                    <button className="current-student-item-middle-button-repeat" onClick={() => props.onClick(id, 'пересдача')}>
                         <img src={repeatImg} alt="Repeat image" />
                         <span>Отправить на пересдачу</span>
                     </button>
@@ -131,7 +150,9 @@ const CurrentStudentHomeWork: React.FC<ICurrentStudentHomeWork> = (props) => {
                            value={inputValue}
                            onChange={(e) => validateAndSetInput(e.target.value)}
                     />
-                    <button className="send-btn">
+                    <button className="send-btn" onClick={(e)=>{
+                        props.onClick(id, inputValue)
+                    }}>
                         {React.createElement(sendImg, {
                             className: `send-img`})}
                     </button>

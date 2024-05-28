@@ -32,3 +32,14 @@ export const getStudentHomeWork = async (idWork: number, name: string) => {
     let res = await $api.post(`teacher/home/group`, {idWork: idWork, name: name});
     return res;
 };
+
+export const sendRepeatHw = async (idWork: number, idStudent: number) => {
+    let res = await $api.post(`teacher/work/repeat`, {idWork: idWork, idStudent: idStudent, repeat: true});
+    return res;
+};
+
+export const sendNewGrade = async (idWork: number, idStudent: number, ball: number) => {
+    let res = await $api.post(`teacher/work/add/ball`, {idWork: idWork, idStudent: idStudent, ball: ball});
+    return res;
+};
+
