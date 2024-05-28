@@ -12,6 +12,8 @@ import {addNewFiles} from "../../Http/Courses";
 import HomeWorkTeacherItem from "../../Components/HomeWorkTeacherItem/HomeWorkTeacherItem";
 import {ICurrentHomeWork, IHomeWorks} from "../HomeWorksPageTeacher/HomeWorksPageTeacher";
 import {getStudentHomeWork, getStudentHomeWorks} from "../../Http/HomeWorks";
+import ToggleBtns from "../../Components/ToggleBtns/ToggleBtns";
+import {getAllGroups} from "../../Http/AdditionalHttp";
 
 const infoImg = require('../../assets/images/InformationImgg.png');
 const gradeImg = require('../../assets/images/GradesImg.png');
@@ -48,7 +50,7 @@ const UploadPageTeacher: React.FC = () => {
 
 
     useEffect(()=>{
-        getStudentHomeWorks().then((response)=>{
+            getStudentHomeWorks().then((response)=>{
             let newArr = response.data.map((el:any, index: any)=>{
                 let newObj =   {
                     id: el.idWork,
@@ -63,6 +65,9 @@ const UploadPageTeacher: React.FC = () => {
             })
             setHoweWorks(newArr)
             updateCurrentHomeWork(newArr[0].id)
+        }).catch((error)=>{})
+        getAllGroups().then((response: any)=>{
+            console.log(response.data)
         }).catch((error)=>{
 
         })
@@ -132,6 +137,7 @@ const UploadPageTeacher: React.FC = () => {
                         Добавление файла к группе
                     </p>
                     <div className="block-left-header-personal">
+                        {/*<ToggleBtns items={} onClick={}/>*/}
                         <FileUploader   onClick={addNewFile} multipart={false}/>
                     </div>
 

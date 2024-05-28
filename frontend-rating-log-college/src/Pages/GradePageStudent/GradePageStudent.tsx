@@ -3,7 +3,7 @@ import './GradePageStudent.scss';
 import Pagination, {IDataArrayItem} from "../../Components/Pagination/Pagination";
 import TextCarousel from "../../Components/TextCarousel/TextCarousel";
 import TeachersBlock, {ITeachersItem} from "../../Components/TeachersBlock/TeachersBlock";
-import {gradePageData} from "../../Http/GradePage";
+import {getTotalGrades, gradePageData} from "../../Http/GradePage";
 
 const infoImg = require('../../assets/images/InformationImgg.png');
 const gradeImg = require('../../assets/images/GradesImg.png');
@@ -110,39 +110,52 @@ const GradePageStudent: React.FC = () => {
     }, [currentTable]);
 
     useEffect(()=>{
-        gradePageData(currentCourse,currentQuarter,currentMonth).then((response)=>{
-
-            let dataArr: IDataArrayItem[]  = [];
-            response.data.months.forEach((el: any, index: any)=>{
-                let obj: IDataArrayItem = {
-                    isActive: currentMonth === el.requestMonth,
-                    date: el.name.split(' ')[1],
-                    number: el.name.split(' ')[0],
-                    requestMonth: el.requestMonth,
-                };
-                dataArr.push(obj)
+        if(currentQuarter === 3){
+            getTotalGrades().then((response: any)=>{
+                console.log(response.data)
+                // setCurrentTable(response.data)
+            }).catch((error: any)=>{
 
             })
-            setDateArray(dataArr)
+        }
+        else{
+            gradePageData(currentCourse,currentQuarter,currentMonth).then((response)=>{
 
-            let arrCourses = [];
-            for(let i = 1; i !== response.data.totalCourse+1; i++){
-                let obj = {
-                    id: i,
-                    active: i === 1,
-                    text: `${i} курс`,
+                let dataArr: IDataArrayItem[]  = [];
+                response.data.months.forEach((el: any, index: any)=>{
+                    let obj: IDataArrayItem = {
+                        isActive: currentMonth === el.requestMonth,
+                        date: el.name.split(' ')[1],
+                        number: el.name.split(' ')[0],
+                        requestMonth: el.requestMonth,
+                    };
+                    dataArr.push(obj)
+
+                })
+                setDateArray(dataArr)
+
+                let arrCourses = [];
+                for(let i = 1; i !== response.data.totalCourse+1; i++){
+                    let obj = {
+                        id: i,
+                        active: i === 1,
+                        text: `${i} курс`,
+                    }
+                    arrCourses.push(obj)
+
                 }
-                arrCourses.push(obj)
-
-            }
-            setCourses(arrCourses)
-            setCurrentTable(response.data.evaluations)
-            setNewTeacher(response.data.teachers)
-
-        })
-            .catch((error)=>{
+                console.log(response.data)
+                setCourses(arrCourses)
+                setCurrentTable(response.data.evaluations)
+                setNewTeacher(response.data.teachers)
 
             })
+                .catch((error)=>{
+
+                })
+        }
+
+
 
 
 
@@ -179,6 +192,8 @@ const GradePageStudent: React.FC = () => {
 
             setCourses(arrCourses)
 
+
+
             setCurrentTable(response.data.evaluations)
             setNewTeacher(response.data.teachers)
         })
@@ -213,10 +228,17 @@ const GradePageStudent: React.FC = () => {
                         ))}
                     </div> : ''}
                     <div className="block-middle-top">
-                        <TextCarousel items={courses} onChange={handleCarouselChange}/>
+                        {currentQuarter === 3 ? "" :
+
+                           <TextCarousel items={courses} onChange={handleCarouselChange}/>
+                        }
+
                     </div>
-                    <Pagination isGrades={true} items={dateArray} onChange={updateCurrentMonth}
-                                styles={{marginBottom: 15, marginTop: 23}}/>
+                    {currentQuarter === 3 ? "" :
+
+                        <Pagination isGrades={true} items={dateArray} onChange={updateCurrentMonth}
+                                    styles={{marginBottom: 15, marginTop: 23}}/>
+                    }
 
                     <div className="block-middle-grades">
                         <div className="block-middle-grades-item">
@@ -237,7 +259,7 @@ const GradePageStudent: React.FC = () => {
                         </div>
                     </div>
 
-                    <table className="my-table">
+                    <table className={`my-table ${currentQuarter === 3 ? 'my-table-itog' : ''}`}>
                         <thead>
                         <tr>
 
