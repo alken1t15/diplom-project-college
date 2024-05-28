@@ -6,7 +6,7 @@ export interface IEventStudentItem{
     id: number;
     count: number;
     name: string;
-    grade: null | string;
+    bull: null | string;
 
 }
 interface EventStudent{
@@ -17,8 +17,8 @@ const EventStudentItem: React.FC<EventStudent> = (props) => {
     let [id, setId] = useState(props.items.id)
     let [count, setCount] = useState(props.items.count)
     let [name, setName] = useState(props.items.name)
-    let [grade, setGrade] = useState(props.items.grade)
-    let [inputValue, setInputValue] = useState(String(props.items.grade))
+    let [grade, setGrade] = useState(props.items.bull)
+    let [inputValue, setInputValue] = useState(String(props.items.bull))
 
     const validateAndSetInput = (value: string) => {
         let numberValue = Number(value);

@@ -44,6 +44,7 @@ const Calendar: React.FC<ICalendar> = (props) => {
                 onChange={handleDateChange}
                 inline
                 locale="ru"
+                dateFormat="yyyy-MM-dd"
                 calendarClassName="custom-calendar"
                 dayClassName={getDayClassName}
             />

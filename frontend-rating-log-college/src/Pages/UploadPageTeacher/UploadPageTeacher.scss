@@ -1,12 +1,227 @@
 .block-left-add{
-  width: 352px;
   padding-top: 49px;
+  flex-grow: 0;
+  width: 380px;
 }
 
 .block-right-add{
   padding-top: 48px;
-  min-width: 450px;
+  width: 450px;
 }
 .block-middle-add{
   padding-top: 49px;
+  flex-grow: 1;
+}
+
+.toble-btn-box{
+  display: flex;
+  flex-direction: column;
+}
+
+.block-left-header-personal-upload{
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-datepicker-wrapper {
+  .custom-datepicker {
+    background-color: transparent;
+    border: 1px solid #ccc;
+    color: #fff;
+    padding: 10px;
+    cursor: pointer;
+    outline: none;
+    border-radius: 10px;
+
+    &::placeholder {
+      color: #fff;
+    }
+  }
+
+  .react-datepicker {
+    background-color: #2e2e2e;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #fff;
+  }
+
+  .react-datepicker__header {
+    background-color: var(--total-black);
+    border-bottom: none;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  .react-datepicker__current-month {
+    color: #fff;
+  }
+
+  .react-datepicker__day-name,
+  .react-datepicker__day,
+  .react-datepicker__time-name {
+    color: #fff;
+  }
+
+  .react-datepicker__day--selected,
+  .react-datepicker__day--keyboard-selected {
+    background-color: #6200ea;
+    color: #fff;
+  }
+
+  .react-datepicker__day--today {
+    border-color: #6200ea;
+  }
+
+  .react-datepicker__day--outside-month {
+    color: #666;
+  }
+
+  .react-datepicker__navigation {
+    top: 12px;
+    line-height: 1.7rem;
+  }
+
+  .react-datepicker__navigation--previous {
+    border-right-color: #fff;
+  }
+
+  .react-datepicker__navigation--next {
+    border-left-color: #fff;
+  }
+
+  .react-datepicker__day-names {
+    border-bottom: 1px solid #444;
+  }
+
+  .react-datepicker__week {
+    .react-datepicker__day {
+      &:hover {
+        background-color: #444;
+      }
+      &:nth-child(7) { /* Сделать воскресенье красным */
+        color: red;
+      }
+    }
+  }
+
+  .react-datepicker__day--selected {
+    background-color: #6200ea !important;
+    color: #fff;
+  }
+
+  .react-datepicker__day--keyboard-selected {
+    background-color: #6200ea !important;
+    color: #fff;
+  }
+
+  .react-datepicker__day--today {
+    color: #fff;
+  }
+  .react-datepicker__month{
+    border: none;
+    background: var(--total-black);
+  }
+}
+.date-wp{
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+
+
+
+
+.upload-container {
+  position: relative;
+  width: 300px;
+  background: var(--light-black);
+}
+
+.upload-container input {
+  width: 100%;
+  padding: 8px 8px 8px 8px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: var(--light-black);
+  font-size: 16px;
+  outline: none;
+  &:active{
+    outline: none;
+  }
+}
+
+.upload-container .upload-placeholder {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-55%);
+  transition: all 0.3s ease;
+  background-color: var(--light-black);
+  padding: 0 4px;
+  color: #aaa;
+  border-radius: 10px;
+  border: none;
+  pointer-events: none;
+}
+
+.upload-container .upload-placeholder.active {
+  top: -2px;
+  left: 8px;
+  font-size: 12px;
+  color: #aaa;
+  outline: none;
+  background-color: var(--light-black);
+}
+
+.textarea-container {
+  width: 100%;
+  height: 350px;
+}
+
+.textarea-container textarea {
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  resize: none;
+  background: transparent;
+  outline: none;
+}
+
+.textarea-container .textarea-text {
+  top: 0;
+  left: 0;
+  margin-bottom: 10px;
+  position: static;
+  display: block;
+  transition: all 0.3s ease;
+  background-color: transparent;
+  color: #aaa;
+  pointer-events: none;
+}
+
+.block-right__text-upl{
+  margin-top: 60px;
+}
+
+.upl-bn{
+  padding: 10px 30px;
+  color: #fff;
+  background: var(--purple);
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  margin-top: 45px;
+}
+
+.homeworks-box-u{
+  & > .homework-teacher-item{
+    margin-left: 23px;
+  }
+
+
 }
