@@ -1,12 +1,12 @@
 package kz.alken1t15.backratinglogcollege.service;
 
+import kz.alken1t15.backratinglogcollege.dto.TotalDTO;
 import kz.alken1t15.backratinglogcollege.dto.TotalEvalDTO;
+import kz.alken1t15.backratinglogcollege.dto.work.PlanStudyFindDTO;
 import kz.alken1t15.backratinglogcollege.entity.*;
 import kz.alken1t15.backratinglogcollege.entity.study.process.StudyProcess;
 import kz.alken1t15.backratinglogcollege.entity.study.process.TypeStudy;
-import kz.alken1t15.backratinglogcollege.repository.RepositoryEvaluations;
-import kz.alken1t15.backratinglogcollege.repository.RepositoryStudyProcess;
-import kz.alken1t15.backratinglogcollege.repository.RepositoryTaskStudents;
+import kz.alken1t15.backratinglogcollege.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,17 +22,28 @@ public class ServiceTotal {
     private final RepositoryStudyProcess repositoryStudyProcess;
     private final RepositoryEvaluations repositoryEvaluations;
     private final RepositoryTaskStudents repositoryTaskStudents;
+    private final RepositoryPlanStudy repositoryPlanStudy;
+    private final RepositoryTypeStudy repositoryTypeStudy;
 
     public ResponseEntity getTotalEvaluations() {
-        int[] arrMonth = new int[]{9, 10, 11, 12, 1, 2, 3, 4, 5, 6};
         Students students = serviceStudents.getStudent();
         Groups groups = students.getGroup();
         List<Courses> coursess = groups.getCourses();
         Long id = students.getGroup().getId();
         List<TotalEvalDTO> totalEvalDTOS = new ArrayList<>();
+        List<List<PlanStudyFindDTO>> list = new ArrayList<>();
         for (Courses c : coursess) {
             List<StudyProcess> studyProcesses = repositoryStudyProcess.findByCourseGroup(c.getCourse(), id);
             for (StudyProcess studyProcess : studyProcesses) {
+                List<Long> typeStudiesId = repositoryTypeStudy.findByIdStudyProcess(studyProcess.getId());
+
+                List<PlanStudyFindDTO> teachers = new ArrayList<>();
+                for (Long i : typeStudiesId){
+                    List<PlanStudyFindDTO> temp = repositoryPlanStudy.findByIdTypeStudy(i);
+                    teachers.addAll(temp);
+                }
+                list.add(teachers);
+
                 List<String> nameSubject = repositoryEvaluations.findByDateStudentCourseDistinctName(studyProcess.getDateStart(), studyProcess.getDateEnd(), students.getId());
                 for (String name : nameSubject) {
                     int total = 0;
@@ -83,7 +94,7 @@ public class ServiceTotal {
         resultArray[0][0] = "Курс";
         for (int course = 1; course <= 4; course++) {
             resultArray[0][(course - 1) * 2 + 1] = course + " курс";
-            resultArray[0][(course - 1) * 2 + 2] = "";
+            resultArray[0][(course - 1) * 2 + 2] = null;
         }
 
         resultArray[1][0] = "Предметы\\Четверть";
@@ -107,6 +118,6 @@ public class ServiceTotal {
             }
         }
 
-        return new ResponseEntity(resultArray, HttpStatus.OK);
+        return new ResponseEntity(new TotalDTO(resultArray,list), HttpStatus.OK);
     }
 }
