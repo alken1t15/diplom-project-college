@@ -5,10 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1bccd24e-30c0-4aec-9f57-1d7d68595d13" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Http/AdditionalHttp.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Components/FileUploader/FileUploader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Components/FileUploader/FileUploader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/HomeworkPageStudent/HomeworkPageStudent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/HomeworkPageStudent/HomeworkPageStudent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/MainPageStudent/MainPageStudent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/MainPageStudent/MainPageStudent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Http/GradePage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Http/GradePage.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/GradePageStudent/GradePageStudent.scss" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/GradePageStudent/GradePageStudent.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/GradePageStudent/GradePageStudent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/GradePageStudent/GradePageStudent.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/UploadPageTeacher/UploadPageTeacher.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/UploadPageTeacher/UploadPageTeacher.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -109,7 +110,7 @@
       <workItem from="1716840905998" duration="1908000" />
       <workItem from="1716879803232" duration="1416000" />
       <workItem from="1716885923648" duration="1399000" />
-      <workItem from="1716888276861" duration="1357000" />
+      <workItem from="1716888276861" duration="2557000" />
     </task>
     <servers />
   </component>
