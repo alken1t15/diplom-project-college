@@ -24,16 +24,4 @@ public class UserDetailsServiceImpl implements UserDetailsService
      User user = repositoryUser.findByLogin(username).orElse(null);
      return new UserDetailsImp(user);
     }
-
-//    @Override
-//    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-//        Optional<kz.alken1t15.backratinglogcollege.entity.User> userRes = repositoryUser.findByLogin(login);
-//        if(userRes.isEmpty())
-//            throw new UsernameNotFoundException("Could not findUser with login = " + login);
-//        kz.alken1t15.backratinglogcollege.entity.User user = userRes.get();
-//        return new org.springframework.security.core.userdetails.User(
-//                login,
-//                user.getPassword(),
-//                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
-//    }
 }

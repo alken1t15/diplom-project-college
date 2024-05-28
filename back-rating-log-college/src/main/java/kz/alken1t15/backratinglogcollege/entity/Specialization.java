@@ -21,4 +21,8 @@ public class Specialization {
 
     @OneToMany(mappedBy = "specialization")
     private List<Groups> groups;
+
+    public Specialization(String name) {
+        this.name = name;
+    }
 }
