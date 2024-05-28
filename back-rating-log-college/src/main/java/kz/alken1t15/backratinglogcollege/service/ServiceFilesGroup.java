@@ -98,6 +98,7 @@ public class ServiceFilesGroup {
     }
 
     public String getMonth(int idMonth) {
+        idMonth--;
         String[] arrMonth = new String[]{"января", "февраля", "марта", "апреля", "мая", "июня", "", "", "сентября", "октября", "ноября", "декабря"};
         return arrMonth[idMonth];
     }
