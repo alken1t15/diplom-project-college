@@ -5,7 +5,7 @@ import NotFound from "./Pages/NotFound/NotFound";
 import SignIn from "./Pages/SignIn/SignIn";
 import {
     ADMIN_MAIN_PAGE_ROUTE,
-    ADMIN_ROUTE,
+    ADMIN_ROUTE, ADMIN_USERS_PAGE_ROUTE,
     COURSES_STUDENT_ROUTE,
     GRADE_STUDENT_ROUTE,
     HW_STUDENT_ROUTE,
@@ -33,6 +33,7 @@ import EventPageTeacher from "./Pages/EventPageTeacher/EventPageTeacher";
 import UploadPageTeacher from "./Pages/UploadPageTeacher/UploadPageTeacher";
 import Admin from "./Components/AdminLayout/Admin";
 import MainPageAdmin from "./Pages/MainPageAdmin/MainPageAdmin";
+import UserPageAdmin from "./Pages/UserPageAdmin/UserPageAdmin";
 
 function App() {
 
@@ -98,7 +99,7 @@ function App() {
 
                       <Route path={ADMIN_ROUTE} element={<Admin/>}>
                           <Route path={ADMIN_MAIN_PAGE_ROUTE} element={<MainPageAdmin/>}/>
-                          {/*<Route path={TEACHER_HOMEWORKS_PAGE_ROUTE} element={<HomeWorksPageTeacher/>}/>*/}
+                          <Route path={ADMIN_USERS_PAGE_ROUTE} element={<UserPageAdmin/>}/>
                           {/*<Route path={TEACHER_GRADES_PAGE_ROUTE} element={<EventPageTeacher/>}/>*/}
                           {/*<Route path={TEACHER_UPLOAD_PAGE_ROUTE} element={<UploadPageTeacher/>}/>*/}
                       </Route>

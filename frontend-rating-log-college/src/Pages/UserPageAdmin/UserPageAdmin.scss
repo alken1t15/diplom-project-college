@@ -1,0 +1,35 @@
+.block-middle-admin{
+  padding-top: 48px;
+  flex-grow: 1;
+}
+
+.upload-placeholder-admin{
+  position: static;
+  display: block;
+  margin-bottom: 10px;
+  background-color: transparent;
+}
+
+.admin-upload-container{
+  margin-top: 10px;
+  background: transparent;
+  width: 250px;
+  margin-left: 10px;
+  & > input{
+    outline: none;
+    &:focus{
+      border: 1px solid var(--purple);
+    }
+  }
+}
+
+.info-cont{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.custom-datepicker-wrapper-admin{
+  margin-top: 10px;
+  margin-left: 10px;
+}
