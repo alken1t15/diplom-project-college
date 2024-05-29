@@ -33,3 +33,30 @@
   margin-top: 10px;
   margin-left: 10px;
 }
+
+.admin-add-btn{
+  padding: 10px 32px;
+  color: #fff;
+  font-weight: 600;
+  background: var(--purple);
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-left: 10px;
+}
+
+.btn-cont{
+  width: 100%;
+  display: flex;
+  justify-content: start;
+}
+
+.link-button-active-user{
+  width: 31px;
+  height: 31px;
+  & > path{
+    width: 31px;
+    height: 100%;
+  }
+}

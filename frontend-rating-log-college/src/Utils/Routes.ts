@@ -12,3 +12,4 @@ export const TEACHER_UPLOAD_PAGE_ROUTE = `${TEACHER_ROUTE}/upload`
 export const ADMIN_ROUTE = "/admin"
 export const ADMIN_MAIN_PAGE_ROUTE = `${ADMIN_ROUTE}/main`
 export const ADMIN_USERS_PAGE_ROUTE = `${ADMIN_ROUTE}/users`
+export const ADMIN_STUDY_PAGE_ROUTE = `${ADMIN_ROUTE}/study`

@@ -8,16 +8,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1bccd24e-30c0-4aec-9f57-1d7d68595d13" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/57f2517a-6503-4460-bdf5-a8d000e7e146.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/57f2517a-6503-4460-bdf5-a8d000e7e146.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/57f2517a-6503-4460-bdf5-a8d000e7e146/storage_v2/_src_/database/rating_log_college.-rNeMg/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/57f2517a-6503-4460-bdf5-a8d000e7e146/storage_v2/_src_/database/rating_log_college.-rNeMg/schema/public.abK9xQ.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Http/Admin.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/assets/images/user.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/contoller/ControllerMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/contoller/ControllerMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/security/JWTFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/security/JWTFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/security/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/service/ServiceStudyProcess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/service/ServiceStudyProcess.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerMain.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerMain.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/security/JWTFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/security/JWTFilter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/security/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/security/SecurityConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Components/AdminLayout/Admin.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Components/AdminLayout/Admin.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/UserPageAdmin/UserPageAdmin.scss" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/UserPageAdmin/UserPageAdmin.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/UserPageAdmin/UserPageAdmin.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/UserPageAdmin/UserPageAdmin.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,31 +55,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "swagger",
-    "spring.configuration.checksum": "21ce672fadd84366d483d67beb4a6d56",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;swagger&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;21ce672fadd84366d483d67beb4a6d56&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Spring Boot.BackRatingLogCollegeApplication">
     <configuration name="BackRatingLogCollegeApplication | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/BackRatingLogCollegeApplication.http" requestIdentifier="#1" runType="Run single request">
       <method v="2" />
@@ -149,6 +150,7 @@
       <workItem from="1716912808616" duration="1907000" />
       <workItem from="1716922384544" duration="4783000" />
       <workItem from="1716960319350" duration="3161000" />
+      <workItem from="1716989965942" duration="3508000" />
     </task>
     <servers />
   </component>
