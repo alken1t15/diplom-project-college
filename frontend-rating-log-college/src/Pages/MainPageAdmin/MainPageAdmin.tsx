@@ -8,7 +8,7 @@ const MainPageAdmin: React.FC = () => {
         <div className={'main-page'}>
             <div className={'block-middle block-middle-admin'}>
                 <p className={'block-middle__text'}>
-                    Посещяемость
+                    Добавление данных
                 </p>
 
             </div>

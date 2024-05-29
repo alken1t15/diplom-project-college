@@ -5,7 +5,7 @@ import {ReactComponent as foImage} from "../../assets/images/NavbarFo.svg";
 import React, {useEffect, useState} from 'react';
 import {Link, Outlet, useNavigate, useParams} from "react-router-dom";
 import {
-    ADMIN_MAIN_PAGE_ROUTE,
+    ADMIN_MAIN_PAGE_ROUTE, ADMIN_STUDENT_PAGE_ROUTE, ADMIN_TEACHER_PAGE_ROUTE,
     SIGN_IN_ROUTE,
     TEACHER_GRADES_PAGE_ROUTE,
     TEACHER_HOMEWORKS_PAGE_ROUTE,
@@ -26,7 +26,7 @@ const Admin: React.FC = () => {
         {
             id: 1,
             name: 'Main page icon',
-            link: TEACHER_MAIN_PAGE_ROUTE,
+            link: ADMIN_MAIN_PAGE_ROUTE,
             active: true,
             img: fImage
         },
@@ -34,23 +34,16 @@ const Admin: React.FC = () => {
         {
             id: 2,
             name: 'Homework page icon',
-            link: TEACHER_HOMEWORKS_PAGE_ROUTE,
+            link: ADMIN_STUDENT_PAGE_ROUTE,
             active: false,
             img: foImage
         },
         {
             id: 3,
             name: 'Grades page icon',
-            link: TEACHER_GRADES_PAGE_ROUTE,
+            link: ADMIN_TEACHER_PAGE_ROUTE,
             active: false,
             img: sImage
-        },
-        {
-            id: 4,
-            name: 'Upload page icon',
-            link: TEACHER_UPLOAD_PAGE_ROUTE,
-            active: false,
-            img: tImage
         },
     ])
     let navigator = useNavigate();

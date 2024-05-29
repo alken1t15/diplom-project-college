@@ -41,7 +41,10 @@ function App() {
         let user: any = getItemFromLocalStorage('user');
         let parsedUser = JSON.parse(user);
         if(parsedUser){
-            if(parsedUser.role === 'student'){
+            if(parsedUser.role === 'admin'){
+                setNavigate(ADMIN_MAIN_PAGE_ROUTE)
+            }
+            else if(parsedUser.role === 'student'){
                 mainPageData()
                     .then(response=>{
                         if(window.location.href.split('http://localhost:3000/')[1] === ''){
@@ -65,9 +68,7 @@ function App() {
                         setNavigate(SIGN_IN_ROUTE)
                     })
             }
-            else if(parsedUser.role === 'admin'){
-                setNavigate(TEACHER_MAIN_PAGE_ROUTE)
-            }
+
 
         }
         else{
