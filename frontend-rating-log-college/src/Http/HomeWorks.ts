@@ -1,4 +1,5 @@
 import {$api} from './index';
+import axios from "axios";
 
 export const getCoursesItems = async (id?: string) => {
         let res;
@@ -59,11 +60,30 @@ export const addFileToTask = async (taskId: number, formData: FormData) => {
 };
 
 export const addGrade = async (idSubject: number, date: string, students: any[] ) => {
-    let res = await $api.post(`teacher/study/student/add`, {idSubject: idSubject, students: students, date: date});
-    return res;
+    try{
+     if(date && idSubject && students){
+         let res = await $api.post(`teacher/study/student/add`, {idSubject: idSubject, students: students, date: date});
+         return res;
+     }
+    }catch (e) {
+
+    }
 };
 
 export const getStudents = async (idSubject: number, idGroup: number ) => {
     let res = await $api.post(`teacher/study/student`, {idSubject: idSubject, idGroup: idGroup});
     return res;
 };
+
+
+
+export const setHomeWOrkStatus = async (idWork: number) => {
+
+        try {
+            let res = await $api.post('student/home/complete', { idWork: idWork });
+            return res;
+        } catch (error) {
+        }
+
+};
+

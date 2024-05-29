@@ -6,7 +6,7 @@ export const login = async (login: string, password: string) => {
 };
 
 export const logOut = async () => {
-    let res = await $api.post(`logOut/jwt`);
+    // let res = await $api.post(`logOut/jwt`);
     localStorage.setItem('token', '');
-    return res;
+    // return res;
 };

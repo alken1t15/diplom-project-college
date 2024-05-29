@@ -54,6 +54,7 @@ const GradePageStudent: React.FC = () => {
     let[currentTable, setCurrentTable] = useState<any[]>([])
     let[currentBody, setCurrentBody] = useState<string[]>([]);
     let[teachers, setTeacher] = useState<ITeachersItem[]>([])
+    let[thead, setThead] = useState<string[]>([])
 
     function updateCurrentMonth(value: any){
         setCurrentMonth(value)
@@ -112,8 +113,24 @@ const GradePageStudent: React.FC = () => {
     useEffect(()=>{
         if(currentQuarter === 3){
             getTotalGrades().then((response: any)=>{
-                console.log(response.data)
-                setCurrentTable(response.data)
+                setCurrentTable(response.data.resultArray)
+                let newThead: string[] = []
+                response.data.resultArray[0].forEach((el: any, index: any)=>{
+                    if(el !== null){
+                        newThead.push(el)
+                    }
+                })
+                setThead(newThead)
+
+                let newTeacher: any[] = []
+                response.data.teacher.forEach((el: any)=>{
+                    let newObj = {
+                        name: `${el.teacherSecondName} ${el.teacherFirstName}`,
+                        subject: el.subjectName
+                    }
+                    newTeacher.push(newObj)
+                })
+                setTeacher(newTeacher)
             }).catch((error: any)=>{
 
             })
@@ -144,7 +161,6 @@ const GradePageStudent: React.FC = () => {
                     arrCourses.push(obj)
 
                 }
-                console.log(response.data)
                 setCourses(arrCourses)
                 setCurrentTable(response.data.evaluations)
                 setNewTeacher(response.data.teachers)
@@ -263,10 +279,10 @@ const GradePageStudent: React.FC = () => {
                         <table className={`my-table ${currentQuarter === 3 ? 'my-table-itog' : ''}`}>
                             <thead>
                             <tr>
-                                {currentTable && currentTable[0] ?  currentTable[0].map((el:any, index: any)=>(
-                                    <th colSpan={index === 1 ? 2 : 1} key={index} className={`${index === 0 ? 'first-column ' : 'column-text'}
+                                {thead ?  thead.map((el:any, index: any)=>(
+                                    <th colSpan={index !== 0 ? 2 : 1} key={index} className={`${index === 0 ? 'first-column ' : 'column-text'}
                                  ${index === 1 ? 'break-item' : ''} `}
-                                    style={{display: el ? 'hidden' : ''}}>
+                                    style={{display: el === null ? 'hidden' : ''}}>
                                         {el}
                                     </th>
                                 )) : ''}

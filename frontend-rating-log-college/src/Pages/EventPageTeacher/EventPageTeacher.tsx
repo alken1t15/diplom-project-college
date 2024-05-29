@@ -8,6 +8,8 @@ import ToggleBtns, {IToggleBtnsItems} from "../../Components/ToggleBtns/ToggleBt
 import TimeBlock from "../../Components/TimeBlock/TimeBlock";
 import EventStudentItem, {IEventStudentItem} from "../../Components/EventStudentItem/EventStudentItem";
 import {addGrade, getAllAboutGroupAndSubjects, getStudents} from "../../Http/HomeWorks";
+import {useSelector} from "react-redux";
+import {selectUser} from "../../Store/Selectors/authSelectors";
 const calendarImg = require('../../assets/images/calendar.png');
 
 
@@ -32,6 +34,7 @@ const EventPageTeacher: React.FC = () => {
     let[currentEvent, setCurrentEvent] = useState('')
     let[curCount, setCurCount] = useState<number>()
     let[students, setStudent] = useState<IEventStudentItem[]>([])
+
 
     const getTime = () => {
         const currentDate = new Date();
@@ -84,7 +87,9 @@ const EventPageTeacher: React.FC = () => {
     }, [activeGroup, activeSubject])
 
     const updateDate = (value: Date) => {
-        setDate(value.toLocaleDateString());
+        const formattedDate = value.toISOString().split('T')[0];
+        console.log(formattedDate)
+        setDate(formattedDate);
     }
 
     const updateCurrentGroup = (id: number) => {
@@ -168,12 +173,19 @@ const EventPageTeacher: React.FC = () => {
                 <button className={'upl-bn upl-bn-hw'} onClick={(e)=>{
 
                     if (activeSubject && activeGroup && date) {
-                        addGrade(activeSubject, date, students)
+                        let newStudent = students.map((el:any)=>{
+
+                            let newObj = {
+                                id: el.id,
+                                bull: el.bull
+                            }
+                            return newObj
+                        })
+
+                        addGrade(activeSubject, date, newStudent)
                             .then((response) => {
-                                console.log('fff');
                             })
                             .catch((error) => {
-                                console.error('Error:', error);
                             });
                     }
 

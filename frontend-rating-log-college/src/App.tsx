@@ -61,6 +61,9 @@ function App() {
                         setNavigate(SIGN_IN_ROUTE)
                     })
             }
+            else if(parsedUser.role === 'admin'){
+                setNavigate(TEACHER_MAIN_PAGE_ROUTE)
+            }
 
         }
         else{
@@ -86,6 +89,13 @@ function App() {
                           <Route path={TEACHER_HOMEWORKS_PAGE_ROUTE} element={<HomeWorksPageTeacher/>}/>
                           <Route path={TEACHER_GRADES_PAGE_ROUTE} element={<EventPageTeacher/>}/>
                           <Route path={TEACHER_UPLOAD_PAGE_ROUTE} element={<UploadPageTeacher/>}/>
+                      </Route>
+
+                      <Route path={TEACHER_ROUTE} element={<TeacherLayout/>}>
+                          <Route path={TEACHER_MAIN_PAGE_ROUTE} element={<MainPageTeacher/>}/>
+                          <Route path={TEACHER_HOMEWORKS_PAGE_ROUTE} element={<HomeWorksPageTeacher/>}/>
+                          <Route path={TEACHER_GRADES_PAGE_ROUTE} element={<EventPageTeacher/>}/>
+                          {/*<Route path={TEACHER_UPLOAD_PAGE_ROUTE} element={<UploadPageTeacher/>}/>*/}
                       </Route>
 
 

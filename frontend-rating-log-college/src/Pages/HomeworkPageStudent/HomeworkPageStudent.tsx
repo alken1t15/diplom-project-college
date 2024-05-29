@@ -4,9 +4,10 @@ import HomeworkBlock, {HomeworkItem} from "../../Components/HomeworkBlock/Homewo
 import TeachersBlock from "../../Components/TeachersBlock/TeachersBlock";
 import FileItem, {IFileItem} from "../../Components/FileItem/FileItem";
 import FileUploader from "../../Components/FileUploader/FileUploader";
-import {getCoursesItems, sendHomeWorkFiles} from "../../Http/HomeWorks";
+import {getCoursesItems, sendHomeWorkFiles, setHomeWOrkStatus} from "../../Http/HomeWorks";
 import {addNewCertificate} from "../../Http/MainPage";
 import {addNewFiles} from "../../Http/Courses";
+import axios from "axios";
 
 const fileImg = require('../../assets/images/PDF.png');
 
@@ -64,10 +65,11 @@ const HomeworkPageStudent: React.FC = () => {
             return el;
         })
         setHomeWork(newArr)
+        setTaskFiles([])
+        setHomeWorkFiles([])
 
         getCoursesItems(String(id)).then((response: any)=>{
             updateCurrentHomeWork(response.data.homeWork)
-            console.log(response.data.homeWork)
         }).catch((error)=>{
 
         })
@@ -84,43 +86,29 @@ const HomeworkPageStudent: React.FC = () => {
         setDeskr(obj.description)
         setTeacherItem({name: obj.teacherName, subject: obj.subjectName})
 
-
         if(obj.fileHomeTask.length > 0){
 
-            console.log(obj.fileHomeTask)
-            // let newArr = obj.fileHomeTask.map((el: any, index: any)=>{
-            //     let newObj = {
-            //         name: el.name,
-            //         url: el.file
-            //     }
-            //     return newObj
-            // })
-            // console.log(newArr)
-            // let newFiles = [
-            //     {
-            //         id: 1,
-            //         text: 'Учебник истории',
-            //         date: '3 сентября',
-            //         img: fileImg,
-            //         size: '5.3 мб'
-            //     }
-            // ]
-            // setTaskFiles(newFiles)
+            let newArr = obj.fileHomeTask.map((el: any, index: any)=>{
+                let newObj = {
+                    id: index,
+                    text: el.name,
+                    img: el.file
+                }
+                return newObj
+            })
+            setHomeWorkFiles(newArr)
         }
 
 
-
-
-
         if(obj.files.length > 0){
-            // let filArr =obj.files.map((el: any, index: any)=>{
-            //     let newObj =  {
-            //         name: el.name,
-            //         url: el.file,
-            //     }
-            //     return newObj;
-            // })
-            // setTaskFiles(filArr)
+            let filArr =obj.files.map((el: any, index: any)=>{
+                let newObj =  {
+                    name: el.name,
+                    file: el.file,
+                }
+                return newObj;
+            })
+            setTaskFiles(filArr)
         }
 
 
@@ -145,13 +133,7 @@ const HomeworkPageStudent: React.FC = () => {
             })
             setHomeWork(newHwk)
             updateCurrentHomeWork(response.data.homeWork)
-
-
-
-
-        }).catch((error)=>{
-
-        })
+        }).catch((error)=>{})
     },[])
 
 
@@ -164,8 +146,34 @@ const HomeworkPageStudent: React.FC = () => {
         });
 
         try {
-            const response = await sendHomeWorkFiles(curId,formData);
+            const response = await sendHomeWorkFiles(curId, formData).then((response: any) => {
+                 setHomeWOrkStatus(curId ? curId : 1).then((response: any)=>{
+                     getCoursesItems('').then((response)=>{
+
+                         let newHwk = response.data.homeWorks.map((el: any)=>{
+                             let newObj =
+                                 {
+                                     id: el.id,
+                                     active: el.id === response.data.homeWork.id,
+                                     name: el.name,
+                                     date: `${el.startDate}`,
+                                     expiresAt: `${el.startDate} - ${el.endDate}`,
+                                     teacher: el.teacherName,
+                                     subject: el.subjectName
+                                 }
+                             return newObj;
+                         })
+                         setHomeWork(newHwk)
+                         updateCurrentHomeWork(response.data.homeWork)
+                     }).catch((error)=>{})
+                 }).catch((error: any)=>{})
+
+            }).catch((error) => {
+
+            });
+
         } catch (error) {
+            // ваш код
         }
     };
 

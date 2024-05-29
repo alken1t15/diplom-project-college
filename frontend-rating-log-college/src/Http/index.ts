@@ -1,5 +1,7 @@
 import axios from "axios";
 import { getItemFromLocalStorage } from "../Utils/LocalStore";
+import {useSelector} from "react-redux";
+import {selectUser} from "../Store/Selectors/authSelectors";
 
 const $api = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
@@ -19,12 +21,13 @@ export interface IUser {
 $api.interceptors.request.use(
     (config) => {
         const user: any = getItemFromLocalStorage('user');
+
         const token = user ? JSON.parse(user)?.token : null;
 
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         } else {
-            config.headers.Authorization = '';
+            config.headers.Authorization = 'Bearer 333';
         }
         return config;
     },

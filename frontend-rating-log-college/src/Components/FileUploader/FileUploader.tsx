@@ -153,6 +153,8 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
                 }
             });
             setParentImgs(newParentImgs);
+        } else {
+            setParentImgs([]);
         }
     }, [props.items]);
 

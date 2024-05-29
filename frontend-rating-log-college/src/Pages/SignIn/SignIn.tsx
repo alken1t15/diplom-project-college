@@ -3,7 +3,7 @@ import "./SignIn.scss";
 import Input from "../../UI/Input/Input";
 import Button from "../../UI/Button/Button";
 import {login} from "../../Http/User";
-import {MAIN_PAGE_STUDENT_ROUTE, TEACHER_MAIN_PAGE_ROUTE} from "../../Utils/Routes";
+import {ADMIN_MAIN_PAGE_ROUTE, MAIN_PAGE_STUDENT_ROUTE, TEACHER_MAIN_PAGE_ROUTE} from "../../Utils/Routes";
 import {useDispatch} from "react-redux";
 import {useCustomNavigate} from "../../hooks/navigator";
 import {removeItemFromLocalStorage, setItemsInLocalStorage} from "../../Utils/LocalStore";
@@ -37,6 +37,9 @@ const SignIn: React.FC = () => {
                 }
                 else if(response.data['role'] === 'teacher'){
                     setNavigate(TEACHER_MAIN_PAGE_ROUTE)
+                }
+                else if(response.data['role'] === 'admin'){
+                    setNavigate(ADMIN_MAIN_PAGE_ROUTE)
                 }
 
             })
