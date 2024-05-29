@@ -5,6 +5,7 @@ import {ReactComponent as foImage} from "../../assets/images/NavbarFo.svg";
 import React, {useEffect, useState} from 'react';
 import {Link, Outlet, useNavigate, useParams} from "react-router-dom";
 import {
+    ADMIN_MAIN_PAGE_ROUTE,
     SIGN_IN_ROUTE,
     TEACHER_GRADES_PAGE_ROUTE,
     TEACHER_HOMEWORKS_PAGE_ROUTE,
@@ -62,16 +63,6 @@ const Admin: React.FC = () => {
             return el;
         })
         setLinkButtons(newArr)
-
-        mainPageTeacherData()
-            .then(response=>{
-               setUserName(response.data.teacher.name.split(' ')[0])
-               setUSerLastName(response.data.teacher.name.split(' ')[1])
-            })
-            .catch(error=>{
-
-            })
-
     }, [])
 
     function changeActiveTab(id: number) {
@@ -161,7 +152,7 @@ const Admin: React.FC = () => {
         <div className={'student-layout'}>
                 <div className={"navigation-block"}>
                     <div className={'link-main'}>
-                        <Link to={TEACHER_MAIN_PAGE_ROUTE}>
+                        <Link to={ADMIN_MAIN_PAGE_ROUTE}>
                             <img className={'link-logo'} src={Logo} alt="logo img"/>
                         </Link>
                     </div>
@@ -181,9 +172,6 @@ const Admin: React.FC = () => {
                         ))}
                         </div>
                         <div className="nav-other">
-                            <button className="nav-other-user">
-                                <InitialsImage initials={`${userName.split('')[0]}${userLastName.split('')[0]}`} width={50} height={50} fontSize={24} textColor="#fff" backgroundColor="#d9d9d9" />
-                            </button>
                             <button className="nav-other-logout" onClick={exit}><img src={LogOut} alt="logout"/></button>
                         </div>
                     </nav>
