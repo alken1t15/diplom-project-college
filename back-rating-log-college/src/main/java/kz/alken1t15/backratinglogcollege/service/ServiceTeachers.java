@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -44,8 +45,10 @@ public class ServiceTeachers {
     @Value("${path.save.file}")
     private String pathSaveFile;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    public ServiceTeachers(RepositoryTeachers repositoryTeacher, ServiceUsers serviceUser, ServiceGroups serviceGroup, ServiceOmissions serviceOmissions, ServiceTaskStudents serviceTaskStudents, ServiceGroups serviceGroups, RepositorySubject repositorySubject, ServiceStudents serviceStudents, RepositoryEvaluations repositoryEvaluations) {
+    public ServiceTeachers(RepositoryTeachers repositoryTeacher, ServiceUsers serviceUser, ServiceGroups serviceGroup, ServiceOmissions serviceOmissions, ServiceTaskStudents serviceTaskStudents, ServiceGroups serviceGroups, RepositorySubject repositorySubject, ServiceStudents serviceStudents, RepositoryEvaluations repositoryEvaluations, PasswordEncoder passwordEncoder) {
         this.repositoryTeacher = repositoryTeacher;
         this.serviceUser = serviceUser;
         this.serviceGroup = serviceGroup;
@@ -55,6 +58,7 @@ public class ServiceTeachers {
         this.repositorySubject = repositorySubject;
         this.serviceStudents = serviceStudents;
         this.repositoryEvaluations = repositoryEvaluations;
+        this.passwordEncoder = passwordEncoder;
     }
 
     //Получение учителя
@@ -271,7 +275,7 @@ public class ServiceTeachers {
         if (user != null) {
             return new ResponseEntity("Такой логи занят", HttpStatus.CONFLICT);
         }
-        Long idUser = serviceUser.save(teacher.getLogin(), teacher.getPassword(), "teacher");
+        Long idUser = serviceUser.save(teacher.getLogin(), passwordEncoder.encode(teacher.getPassword()), "teacher");
         if (StringUtils.isBlank(teacher.getMiddleName())) {
             save(new Teachers(idUser, teacher.getFirstName(), teacher.getSecondName(), teacher.getBornDate(), teacher.getStartWork()));
         } else {

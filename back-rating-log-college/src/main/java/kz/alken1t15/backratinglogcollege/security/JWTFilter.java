@@ -42,7 +42,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
     @Autowired
     private JWTUtil jwtUtil;
-    private Logger logger = LoggerFactory.getLogger(ControllerMain.class);
+    private Logger logger = LoggerFactory.getLogger(JWTFilter.class);
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired

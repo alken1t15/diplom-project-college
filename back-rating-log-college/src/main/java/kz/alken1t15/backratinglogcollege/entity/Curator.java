@@ -1,19 +1,23 @@
 package kz.alken1t15.backratinglogcollege.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @Table(name = "curator")
 @NoArgsConstructor
+@Getter
+@Setter
 public class Curator {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "id_teacher")
     private Teachers teacher;
 

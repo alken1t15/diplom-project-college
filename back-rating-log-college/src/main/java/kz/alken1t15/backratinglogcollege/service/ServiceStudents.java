@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -31,6 +32,7 @@ public class ServiceStudents {
     private final RepositoryGroups repositoryGroups;
     private final ServiceUsers serviceUser;
     private final RepositoryStudentCourse repositoryStudentCourse;
+    private final PasswordEncoder passwordEncoder;
 
 
     public ResponseEntity<Students> findById(Long id) {
@@ -66,7 +68,7 @@ public class ServiceStudents {
         if (group==null){
             return new ResponseEntity("Такой группы нету",HttpStatus.BAD_REQUEST);
         }
-        Long id = serviceUser.save(student.getLogin(),student.getPassword(),"student");
+        Long id = serviceUser.save(student.getLogin(),passwordEncoder.encode(student.getPassword()),"student");
        Students students = repositoryStudents.save(new Students(id,group,student.getFirstName(),student.getSecondName(),student.getMiddleName(),student.getBornDate(),student.getSubgroupName()));
        repositoryStudentCourse.save(new StudentsCourse(students,1));
         return  new ResponseEntity(HttpStatus.OK);

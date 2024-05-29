@@ -1,6 +1,8 @@
 package kz.alken1t15.backratinglogcollege.service;
 
 import kz.alken1t15.backratinglogcollege.dto.CuratorAddDTO;
+import kz.alken1t15.backratinglogcollege.dto.CuratorDTO;
+import kz.alken1t15.backratinglogcollege.dto.TeacherCuratorDTO;
 import kz.alken1t15.backratinglogcollege.entity.Curator;
 import kz.alken1t15.backratinglogcollege.entity.Teachers;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryCurator;
@@ -26,5 +28,15 @@ public class ServiceCurator {
     public ResponseEntity saveNewCurator(Teachers teacher) {
         repositoryCurator.save(new Curator(teacher));
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    public ResponseEntity findAll() {
+        List<Curator> curators = repositoryCurator.findAll();
+        List<CuratorDTO> curatorDTOs = new ArrayList<>();
+        for (Curator curator : curators){
+            Teachers teachers = curator.getTeacher();
+            curatorDTOs.add(new CuratorDTO(curator.getId(),new TeacherCuratorDTO(teachers.getId(),teachers.getFirstName(),teachers.getSecondName(),teachers.getMiddleName())));
+        }
+        return new ResponseEntity(curatorDTOs,HttpStatus.OK);
     }
 }

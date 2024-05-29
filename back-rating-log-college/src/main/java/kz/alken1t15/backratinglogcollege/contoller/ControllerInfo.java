@@ -9,10 +9,7 @@ import kz.alken1t15.backratinglogcollege.entity.study.Week;
 import kz.alken1t15.backratinglogcollege.repository.RepositorySpecialization;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryTimeStudy;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryWeek;
-import kz.alken1t15.backratinglogcollege.service.ServiceAuditorium;
-import kz.alken1t15.backratinglogcollege.service.ServiceGroups;
-import kz.alken1t15.backratinglogcollege.service.ServiceSubject;
-import kz.alken1t15.backratinglogcollege.service.ServiceTeachers;
+import kz.alken1t15.backratinglogcollege.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +31,7 @@ public class ControllerInfo {
     private final RepositoryWeek repositoryWeek;
     private final ServiceSubject serviceSubject;
     private final RepositorySpecialization repositorySpecialization;
+    private final ServiceCurator serviceCurator;
 
     @GetMapping("/group")
     public ResponseEntity getAllGroup() {
@@ -85,4 +83,8 @@ public class ControllerInfo {
         return new ResponseEntity(specializationDTOS, HttpStatus.OK);
     }
 
+    @GetMapping("/curator")
+    public ResponseEntity getAllCurator() {
+        return serviceCurator.findAll();
+    }
 }
