@@ -372,7 +372,7 @@ const GradePageStudent: React.FC = () => {
             <div className={'block-right block-right-grade'}>
                 <p className={'block-right__text'}>
                 <img src={teachImg} alt="Info img"/>
-                    Список учителей
+                    Список преподавателей
                 </p>
                 {teachers.length > 0 ? teachers.map((el, index)=>(
                     <TeachersBlock item={el} key={index}/>
