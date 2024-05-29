@@ -49,8 +49,8 @@ const MainPageTeacher: React.FC = () => {
         },
     ])
     let[curSlider, setCurSlider] = useState(1);
-    let[activeGroup, setActiveGroup] = useState(0)
-    let[activeGroupId, setActiveGroupId] = useState(0)
+    let[activeGroup, setActiveGroup] = useState(0);
+    let[activeGroupId, setActiveGroupId] = useState(0);
 
     useEffect(()=>{
     },[curSlider])
@@ -129,9 +129,9 @@ const MainPageTeacher: React.FC = () => {
 
     function setCurrentStudent(){
 
+        console.log(activeGroup)
         mainPageTeacherUpdateData(activeGroup, curSlider !== 1)
             .then(response=>{
-
 
                 let newArr = response.data.currentOmissionStudents.map((el: any)=>{
                     let newObj={
@@ -162,10 +162,8 @@ const MainPageTeacher: React.FC = () => {
 
                 const activeGroup = getActiveGroup(response.data.graphGroupsForStudy);
                 setActiveGroup(activeGroup)
-                // console.log(response.data.graphGroupsForStudy[activeGroup])
                 setHomeWorks(newCompleteArr)
                 setStudents(newArr)
-                console.log(response.data)
 
 
             })
@@ -209,7 +207,7 @@ const MainPageTeacher: React.FC = () => {
 
         const timeStudentInterval = setInterval(() => {
             setCurrentStudent()
-        }, 600000);
+        }, 10000);
 
         const timeInterval = setInterval(() => {
             getTime()
@@ -240,7 +238,7 @@ const MainPageTeacher: React.FC = () => {
             return el;
         })
         setStudents(newArr)
-        // mainPageTeacherUpdateOmission()
+        // mainPageTeacherUpdateOmission(activeGroup, id, )
 
     }
 

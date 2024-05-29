@@ -482,7 +482,7 @@ const MainPageStudent: React.FC = () => {
                 }>
 
                     <img src={infoImg} alt="Information img"/>
-                    Сообщить об отсутвия занятие
+                    Сообщить об отсутвие на занятие
                 </button>
                 <div className={`image-block ${active ? 'image-block-active' : ''} `}>
                     <div className="image-block-top">

@@ -4,6 +4,8 @@ import {Route, Routes} from "react-router-dom";
 import NotFound from "./Pages/NotFound/NotFound";
 import SignIn from "./Pages/SignIn/SignIn";
 import {
+    ADMIN_MAIN_PAGE_ROUTE,
+    ADMIN_ROUTE,
     COURSES_STUDENT_ROUTE,
     GRADE_STUDENT_ROUTE,
     HW_STUDENT_ROUTE,
@@ -29,6 +31,8 @@ import {useCustomNavigate} from "./hooks/navigator";
 import {getItemFromLocalStorage} from "./Utils/LocalStore";
 import EventPageTeacher from "./Pages/EventPageTeacher/EventPageTeacher";
 import UploadPageTeacher from "./Pages/UploadPageTeacher/UploadPageTeacher";
+import Admin from "./Components/AdminLayout/Admin";
+import MainPageAdmin from "./Pages/MainPageAdmin/MainPageAdmin";
 
 function App() {
 
@@ -61,6 +65,9 @@ function App() {
                         setNavigate(SIGN_IN_ROUTE)
                     })
             }
+            else if(parsedUser.role === 'admin'){
+                setNavigate(TEACHER_MAIN_PAGE_ROUTE)
+            }
 
         }
         else{
@@ -86,6 +93,13 @@ function App() {
                           <Route path={TEACHER_HOMEWORKS_PAGE_ROUTE} element={<HomeWorksPageTeacher/>}/>
                           <Route path={TEACHER_GRADES_PAGE_ROUTE} element={<EventPageTeacher/>}/>
                           <Route path={TEACHER_UPLOAD_PAGE_ROUTE} element={<UploadPageTeacher/>}/>
+                      </Route>
+
+                      <Route path={ADMIN_ROUTE} element={<Admin/>}>
+                          <Route path={ADMIN_MAIN_PAGE_ROUTE} element={<MainPageAdmin/>}/>
+                          {/*<Route path={TEACHER_HOMEWORKS_PAGE_ROUTE} element={<HomeWorksPageTeacher/>}/>*/}
+                          {/*<Route path={TEACHER_GRADES_PAGE_ROUTE} element={<EventPageTeacher/>}/>*/}
+                          {/*<Route path={TEACHER_UPLOAD_PAGE_ROUTE} element={<UploadPageTeacher/>}/>*/}
                       </Route>
 
 
