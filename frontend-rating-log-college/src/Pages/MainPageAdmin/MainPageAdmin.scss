@@ -2,3 +2,26 @@
   padding-top: 48px;
   flex-grow: 1;
 }
+
+.info-container{
+  background: var(--light-black);
+  padding: 25px;
+  display: inline-block;
+  min-width: 100%;
+  border-radius: 10px;
+  border: none;
+  margin-top: 10px;
+  margin-left: 0;
+  &__name{
+    margin-left: 10px;
+  }
+}
+
+.admin-upload-container-u{
+  background: transparent;
+  & > input{
+    background: transparent;
+    width: 100%;
+    display: block;
+  }
+}

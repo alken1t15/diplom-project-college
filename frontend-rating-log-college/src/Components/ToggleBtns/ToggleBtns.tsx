@@ -4,12 +4,12 @@ import button from "../../UI/Button/Button";
 
 export interface IToggleBtnsItems{
     name: string;
-    active: boolean;
+    active?: boolean;
     id: number;
 }
 export interface IToggleBtns{
     items: IToggleBtnsItems[];
-    onClick: (id: number) => void;
+    onClick?: (id: number) => void;
     style?: CSSProperties;
 }
 const ToggleBtns: React.FC<IToggleBtns> = (props) => {
@@ -23,7 +23,12 @@ const ToggleBtns: React.FC<IToggleBtns> = (props) => {
         <div className={`toggleBtns-box`} style={props.style}>
             {items.length > 0 ? items.map((el: any, index: any)=>(
                 <button className={`toggleBtns-button ${el.active ? 'toggleBtns-button-a' : ''}`}
-                onClick={(e)=>{props.onClick(el.id)}}
+                onClick={(e)=>{
+                    if(props.onClick) {
+                        props.onClick(el.id)
+                    }
+
+                }}
                         key={index}
                 >{el.name}</button>
             )) : ''}

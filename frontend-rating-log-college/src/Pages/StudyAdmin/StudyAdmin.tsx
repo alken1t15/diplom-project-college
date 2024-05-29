@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import './MainPageAdmin.scss';
+import './StudyAdmin.scss';
 import {addNewSpec, addNewSubject, setCurator} from "../../Http/Admin";
 import {Simulate} from "react-dom/test-utils";
 import error = Simulate.error;
 import {getAllSpec, getAllSubjects, getAllTeachers} from "../../Http/AdditionalHttp";
 import ToggleBtns, {IToggleBtnsItems} from "../../Components/ToggleBtns/ToggleBtns";
 
-const MainPageAdmin: React.FC = () => {
+const StudyAdmin: React.FC = () => {
     let[specialName, setSpecialName] = useState('')
     let[subjectName, setSubjectName] = useState('')
     let[curSpec, setCurSpec] = useState<IToggleBtnsItems[]>([])
@@ -164,4 +164,4 @@ const MainPageAdmin: React.FC = () => {
     );
 };
 
-export default MainPageAdmin;
+export default StudyAdmin;

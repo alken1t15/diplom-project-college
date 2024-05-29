@@ -1,21 +1,15 @@
-import {ReactComponent as fImage} from "../../assets/images/TeacherMainPage.svg";
-import {ReactComponent as sImage} from "../../assets/images/NavbarS.svg";
-import {ReactComponent as tImage} from "../../assets/images/uploadSVG.svg";
-import {ReactComponent as foImage} from "../../assets/images/NavbarFo.svg";
+import {ReactComponent as fImage} from "../../assets/images/icons Q2.svg";
+import {ReactComponent as sImage} from "../../assets/images/user.svg";
+import {ReactComponent as foImage} from "../../assets/images/study.svg";
 import React, {useEffect, useState} from 'react';
 import {Link, Outlet, useNavigate, useParams} from "react-router-dom";
 import {
-    ADMIN_MAIN_PAGE_ROUTE, ADMIN_STUDENT_PAGE_ROUTE, ADMIN_TEACHER_PAGE_ROUTE,
+    ADMIN_MAIN_PAGE_ROUTE, ADMIN_STUDY_PAGE_ROUTE, ADMIN_USERS_PAGE_ROUTE,
     SIGN_IN_ROUTE,
-    TEACHER_GRADES_PAGE_ROUTE,
-    TEACHER_HOMEWORKS_PAGE_ROUTE,
-    TEACHER_MAIN_PAGE_ROUTE, TEACHER_UPLOAD_PAGE_ROUTE
 } from "../../Utils/Routes";
 import './Admin.scss';
-import InitialsImage from "../InitialsImage/InitialsImage";
 import button from "../../UI/Button/Button";
 import {logOut} from "../../Http/User";
-import {mainPageData, mainPageTeacherData} from "../../Http/MainPage";
 
 const Logo = require('../../assets/images/Logo.png');
 const LogOut = require('../../assets/images/ExitPng.png');
@@ -34,14 +28,14 @@ const Admin: React.FC = () => {
         {
             id: 2,
             name: 'Homework page icon',
-            link: ADMIN_STUDENT_PAGE_ROUTE,
+            link: ADMIN_STUDY_PAGE_ROUTE,
             active: false,
             img: foImage
         },
         {
             id: 3,
-            name: 'Grades page icon',
-            link: ADMIN_TEACHER_PAGE_ROUTE,
+            name: 'Users page icon',
+            link: ADMIN_USERS_PAGE_ROUTE,
             active: false,
             img: sImage
         },
@@ -149,7 +143,7 @@ const Admin: React.FC = () => {
                             <img className={'link-logo'} src={Logo} alt="logo img"/>
                         </Link>
                     </div>
-                    <nav className={"nav"}>
+                    <nav className={"nav nav-admin"}>
                         <div className={'nav-list nav-list-t'}>
                         {linkButtons.map((el, index)=>(
                             <button key={el.id} onClick={(e)=>{
@@ -158,13 +152,15 @@ const Admin: React.FC = () => {
                                 {React.createElement(el.img, {
                                     className: `link-img
                                     ${el.active && el.id != 2 ? 'link-img-active' : ''}
-                                    ${el.active && el.id == 2 ? 'link-img-active-4' : '' }`
+                                    ${el.active && el.id == 2 ? 'link-img-active-4-admin' : '' }
+                                    ${index === 2 ? 'link-button-active-user' : ''}
+                                    `
                                 })}
 
                             </button>
                         ))}
                         </div>
-                        <div className="nav-other">
+                        <div className="nav-other nav-other-admin">
                             <button className="nav-other-logout" onClick={exit}><img src={LogOut} alt="logout"/></button>
                         </div>
                     </nav>
