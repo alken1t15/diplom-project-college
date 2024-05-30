@@ -3,10 +3,13 @@ import './UserPageAdmin.scss';
 import DatePicker, {registerLocale} from "react-datepicker";
 import { format } from "date-fns";
 import { ru } from 'date-fns/locale'
-import {addNewStudent, addNewTeacher} from "../../Http/Admin";
+import {addNewStudent, addNewStudentFromFile, addNewTeacher} from "../../Http/Admin";
 import userEvent from "@testing-library/user-event";
 import {getAllGroups} from "../../Http/AdditionalHttp";
 import Dropdown from "../../UI/Dropdown/Dropdown";
+import FileUploader from "../../Components/FileUploader/FileUploader";
+import {addNewCertificate, mainPageData} from "../../Http/MainPage";
+import {IDataArrayItem} from "../../Components/Pagination/Pagination";
 
 registerLocale('ru', ru);
 
@@ -76,6 +79,25 @@ const UserPageAdmin: React.FC = () => {
             setGroups(newGroups);
         }).catch((error) => {});
     },[])
+
+    const sendNewStud = async (files: File[]) => {
+        const formData = new FormData();
+
+        files.forEach((file) => {
+            formData.append('files', file, file.name);
+            formData.append('id', String(curGroup));
+
+        });
+        try {
+            const response = await addNewStudentFromFile(formData).then((response)=>{
+
+            }).catch((error)=>{
+
+            })
+
+        } catch (error) {
+        }
+    };
 
     return (
         <div className={'main-page'}>
@@ -254,9 +276,30 @@ const UserPageAdmin: React.FC = () => {
 
                                 }).catch((error)=>{})
                             }
-                        }}>Создать нового учителя</button>
+                        }}>Создать нового студента</button>
                     </div>
                 </div>
+
+
+                <p className={'block-middle__text'} style={{marginTop: 50}}>
+                    Добавление студента с помощью файла
+                </p>
+                <div className="info-cont">
+                    <div className="drop-block" style={{marginLeft: 10, marginTop: 10, width: '100%'}}>
+                        <p className="drop-block__text">Все группы</p>
+                        <Dropdown
+                            items={groups}
+                            selectedId={curGroup}
+                            placeholder="Выберите группу"
+                            onSelect={handleSelectGroup}
+                        />
+                    </div>
+                    <div className="upl-cont" style={{width: 450, marginTop: 15}}>
+                        <FileUploader onClick={sendNewStud} multipart={false}/>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     );

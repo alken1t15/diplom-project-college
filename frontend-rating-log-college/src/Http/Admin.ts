@@ -10,6 +10,11 @@ export const addNewStudent = async (firstName: string, secondName: string, middl
         return res;
 };
 
+export const addNewStudentFromFile = async (formData: FormData) => {
+                let res = await $api.post(`create/student/add/excel`, formData);
+                return res;
+};
+
 export const addNewSpec = async (name: string) => {
         let res = await $api.post(`create/specialization/add`, {name: name});
         return res;

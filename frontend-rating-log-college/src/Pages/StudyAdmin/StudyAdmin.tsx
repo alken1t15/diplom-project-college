@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './StudyAdmin.scss';
-import {addGroup, addSemestr, createAuditorium, setCurator} from "../../Http/Admin";
+import {addGroup, addSemestr, createAuditorium} from "../../Http/Admin";
 import {
     getAllSpec,
     getAllSubjects,
@@ -17,8 +17,6 @@ import DatePicker from "react-datepicker";
 import {format} from "date-fns";
 
 const StudyAdmin: React.FC = () => {
-    const [specialName, setSpecialName] = useState('');
-    const [subjectName, setSubjectName] = useState('');
     const [teachers, setTeachers] = useState<{ id: number, name: string }[]>([]);
     const [groups, setGroups] = useState<{ id: number, name: string }[]>([]);
     const [subjects, setSubjects] = useState<{ id: number, name: string }[]>([]);
@@ -35,14 +33,18 @@ const StudyAdmin: React.FC = () => {
     const [curAuditorium, setCurAuditorium] = useState<number | null>(null);
     const [specializations, setSpecializations] = useState<{ id: number, name: string }[]>([]);
     const [curSpecialization, setCurSpecialization] = useState<number | null>(null);
-    const[groupValue, setGroupValue] = useState('');
-    const[block, setBlock] = useState('');
-    const[floor, setFloor] = useState('');
-    const[audit, setAudit] = useState('');
-    const[semNum, setSemNum] = useState('');
-    const[courNum, setCourNum] = useState('');
-    let [formattedDate, setFormattedDate] = useState(format(new Date(), 'yyyy-MM-dd'));
-    let [formattedDate2, setFormattedDate2] = useState(format(new Date(), 'yyyy-MM-dd'));
+    const [groupValue, setGroupValue] = useState('');
+    const [block, setBlock] = useState('');
+    const [floor, setFloor] = useState('');
+    const [audit, setAudit] = useState('');
+    const [semNum, setSemNum] = useState('');
+    const [courNum, setCourNum] = useState('');
+    const [formattedDate, setFormattedDate] = useState(format(new Date(), 'yyyy-MM-dd'));
+    const [formattedDate2, setFormattedDate2] = useState(format(new Date(), 'yyyy-MM-dd'));
+    const [studyInfo, setStudyInfo] = useState<{ id: number, name: string }[]>([])
+    const [curStudyInfo, setCurStudyInfo] = useState<number | null>(null);
+    const [typeStudy, setTypeStudy] = useState<{ id: number, name: string }[]>([])
+    const [curTypeStudy, setCurTypeStudy] = useState<number | null>(null);
 
     useEffect(() => {
         getAllTeachers().then((response: any) => {
@@ -108,17 +110,35 @@ const StudyAdmin: React.FC = () => {
             }));
             setSpecializations(newSpecializations);
         }).catch((error) => {});
-
-        getInfoAboutGroup().then((response: any) => {
-            console.log(response.data)
-            // const newSpecializations = response.data.map((el: any) => ({
-            //     id: el.id,
-            //     name: el.name
-            // }));
-            // setSpecializations(newSpecializations);
-        }).catch((error) => {});
-
     }, []);
+
+    useEffect(()=>{
+        if(curGroup){
+            getInfoAboutGroup().then((response: any) => {
+
+                const newStud: {id: number, name: string}[] = [];
+                response.data.forEach((elem: any) => {
+                    if(elem.id === curGroup){
+                        elem.semestersInfo.forEach((el: any)=>{
+
+                             let newObj = {
+                                 id: el.id,
+                                 name: `${el.course} курс, ${el.semester} семестр, ${el.dateStart} - ${el.dateEnd}`
+                             }
+                            newStud.push(newObj)
+
+                        })
+
+                    }
+                });
+                setStudyInfo(newStud);
+            }).catch((error) => {});
+        }
+    }, [curGroup])
+
+    useEffect(()=>{
+
+    }, [curStudyInfo])
 
     const handleSelectTeacher = (id: number) => setCurTeacher(id);
     const handleSelectGroup = (id: number) => setCurGroup(id);
@@ -127,8 +147,9 @@ const StudyAdmin: React.FC = () => {
     const handleSelectDay = (id: number) => setCurDay(id);
     const handleSelectCurator = (id: number) => setCurCurator(id);
     const handleSelectAuditorium = (id: number) => setCurAuditorium(id);
-
     const handleSelectSpecialization = (id: number) => setCurSpecialization(id);
+    const handleSelectStudyInfo = (id: number) => setCurStudyInfo(id);
+    const handleSelectTypeStudyInfo = (id: number) => setCurStudyInfo(id);
 
     const handleDateChange = (date: Date | null) => {
         if (date) {
@@ -163,17 +184,6 @@ const StudyAdmin: React.FC = () => {
                           onSelect={handleSelectTeacher}
                       />
                   </div>
-
-                  <div className="drop-block">
-                      <p className="drop-block__text">Все группы</p>
-                      <Dropdown
-                          items={groups}
-                          selectedId={curGroup}
-                          placeholder="Выберите группу"
-                          onSelect={handleSelectGroup}
-                      />
-                  </div>
-
                   <div className="drop-block">
                       <p className="drop-block__text">Все предметы</p>
                       <Dropdown
@@ -183,7 +193,6 @@ const StudyAdmin: React.FC = () => {
                           onSelect={handleSelectSubject}
                       />
                   </div>
-
                   <div className="drop-block">
                       <p className="drop-block__text">Все временные слоты</p>
                       <Dropdown
@@ -193,7 +202,6 @@ const StudyAdmin: React.FC = () => {
                           onSelect={handleSelectTimeSlot}
                       />
                   </div>
-
                   <div className="drop-block">
                       <p className="drop-block__text">Все дни недели</p>
                       <Dropdown
@@ -203,7 +211,6 @@ const StudyAdmin: React.FC = () => {
                           onSelect={handleSelectDay}
                       />
                   </div>
-
                   <div className="drop-block">
                       <p className="drop-block__text">Все кураторы</p>
                       <Dropdown
@@ -213,7 +220,6 @@ const StudyAdmin: React.FC = () => {
                           onSelect={handleSelectCurator}
                       />
                   </div>
-
                   <div className="drop-block">
                       <p className="drop-block__text">Все аудитории</p>
                       <Dropdown
@@ -223,7 +229,6 @@ const StudyAdmin: React.FC = () => {
                           onSelect={handleSelectAuditorium}
                       />
                   </div>
-
                   <div className="drop-block">
                       <p className="drop-block__text">Все специализации</p>
                       <Dropdown
@@ -233,16 +238,40 @@ const StudyAdmin: React.FC = () => {
                           onSelect={handleSelectSpecialization}
                       />
                   </div>
-
                   <div className="drop-block">
-                      <p className="drop-block__text">Все данные о группе</p>
-                      {/*<Dropdown*/}
-                      {/*    items={specializations}*/}
-                      {/*    selectedId={curSpecialization}*/}
-                      {/*    placeholder="Выберите специализацию"*/}
-                      {/*    onSelect={handleSelectSpecialization}*/}
-                      {/*/>*/}
+                      <p className="drop-block__text">Все группы</p>
+                      <Dropdown
+                          items={groups}
+                          selectedId={curGroup}
+                          placeholder="Выберите группу"
+                          onSelect={handleSelectGroup}
+                      />
                   </div>
+                  {studyInfo?.length > 0 ?
+                      <div className="drop-block">
+                          <p className="drop-block__text">Все данные о группе</p>
+                          <Dropdown
+                              items={studyInfo}
+                              selectedId={curStudyInfo}
+                              placeholder="Выберите семестр"
+                              onSelect={handleSelectStudyInfo}
+                          />
+                      </div>
+                      : ""
+                  }
+                  {typeStudy?.length > 0 ?
+                      <div className="drop-block">
+                          <p className="drop-block__text">Все данные о группе</p>
+                          <Dropdown
+                              items={typeStudy}
+                              selectedId={curTypeStudy}
+                              placeholder="Выберите тип учебы"
+                              onSelect={handleSelectTypeStudyInfo}
+                          />
+                      </div>
+                      : ""
+                  }
+
 
               </div>
 
