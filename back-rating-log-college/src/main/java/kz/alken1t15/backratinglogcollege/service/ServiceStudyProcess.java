@@ -1,6 +1,5 @@
 package kz.alken1t15.backratinglogcollege.service;
 
-import kz.alken1t15.backratinglogcollege.dto.MonthDTO;
 import kz.alken1t15.backratinglogcollege.dto.StudyProcessDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.MonthReturnDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.PlanStudyFindDTO;
@@ -8,22 +7,16 @@ import kz.alken1t15.backratinglogcollege.dto.work.ProcessDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.ProcessReturnDTO;
 import kz.alken1t15.backratinglogcollege.entity.*;
 import kz.alken1t15.backratinglogcollege.entity.study.process.StudyProcess;
-import kz.alken1t15.backratinglogcollege.entity.study.process.TypeStudy;
 import kz.alken1t15.backratinglogcollege.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.core.context.SecurityContext;
-//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-
-import java.security.Security;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,6 +1,5 @@
 package kz.alken1t15.backratinglogcollege.security;
 
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -11,9 +10,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import kz.alken1t15.backratinglogcollege.dto.LoginAuth;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 

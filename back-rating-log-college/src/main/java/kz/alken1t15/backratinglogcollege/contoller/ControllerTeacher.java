@@ -60,8 +60,8 @@ public class ControllerTeacher {
     }
 
     @PostMapping(path = "/courses/add")
-    public ResponseEntity addNewFile(@Validated @RequestParam List<MultipartFile> files, @NonNull @RequestParam("id") Long id) {
-        return serviceFilesGroup.addNewFile(files,id);
+    public ResponseEntity addNewFile(@Validated @RequestParam List<MultipartFile> files, @NonNull @RequestParam("id") Long id,@NonNull @RequestParam("subjectName") String subjectName,@NonNull @RequestParam("description") String description) {
+        return serviceFilesGroup.addNewFile(files,id,subjectName,description);
     }
     @PostMapping(path = "/main")
     private TeacherMainPageDTO getMainPageTeacher(@RequestBody FindGroup findGroup){

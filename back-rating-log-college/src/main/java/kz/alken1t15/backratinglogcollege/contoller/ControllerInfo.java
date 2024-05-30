@@ -87,4 +87,9 @@ public class ControllerInfo {
     public ResponseEntity getAllCurator() {
         return serviceCurator.findAll();
     }
+
+    @GetMapping("/group/about")
+    public ResponseEntity getAllInfoGroup() {
+        return serviceGroups.findAllInfo();
+    }
 }

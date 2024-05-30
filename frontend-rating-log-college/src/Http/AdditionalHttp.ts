@@ -39,3 +39,8 @@ export const getAllAudit = async () => {
     let res = await $api.get(`info/auditorium`, {});
     return res;
 };
+
+export const getInfoAboutGroup = async () => {
+    let res = await $api.get(`info/group/about`, {});
+    return res;
+};

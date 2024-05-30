@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import './StudyAdmin.scss';
 import {addGroup, addSemestr, createAuditorium, setCurator} from "../../Http/Admin";
-import { getAllSpec, getAllSubjects, getAllTeachers, getAllGroups, getAllTime, getAllDays, getAllCur, getAllAudit } from "../../Http/AdditionalHttp";
+import {
+    getAllSpec,
+    getAllSubjects,
+    getAllTeachers,
+    getAllGroups,
+    getAllTime,
+    getAllDays,
+    getAllCur,
+    getAllAudit,
+    getInfoAboutGroup
+} from "../../Http/AdditionalHttp";
 import Dropdown from "../../UI/Dropdown/Dropdown";
 import DatePicker from "react-datepicker";
 import {format} from "date-fns";
@@ -98,6 +108,16 @@ const StudyAdmin: React.FC = () => {
             }));
             setSpecializations(newSpecializations);
         }).catch((error) => {});
+
+        getInfoAboutGroup().then((response: any) => {
+            console.log(response.data)
+            // const newSpecializations = response.data.map((el: any) => ({
+            //     id: el.id,
+            //     name: el.name
+            // }));
+            // setSpecializations(newSpecializations);
+        }).catch((error) => {});
+
     }, []);
 
     const handleSelectTeacher = (id: number) => setCurTeacher(id);
@@ -213,6 +233,17 @@ const StudyAdmin: React.FC = () => {
                           onSelect={handleSelectSpecialization}
                       />
                   </div>
+
+                  <div className="drop-block">
+                      <p className="drop-block__text">Все данные о группе</p>
+                      {/*<Dropdown*/}
+                      {/*    items={specializations}*/}
+                      {/*    selectedId={curSpecialization}*/}
+                      {/*    placeholder="Выберите специализацию"*/}
+                      {/*    onSelect={handleSelectSpecialization}*/}
+                      {/*/>*/}
+                  </div>
+
               </div>
 
                <div className="infos-block">

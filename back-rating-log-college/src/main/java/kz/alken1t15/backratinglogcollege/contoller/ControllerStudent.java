@@ -1,19 +1,13 @@
 package kz.alken1t15.backratinglogcollege.contoller;
 
 import kz.alken1t15.backratinglogcollege.dto.*;
-import kz.alken1t15.backratinglogcollege.dto.file.FileListRequestHomeWorkDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.*;
 import kz.alken1t15.backratinglogcollege.entity.*;
-import kz.alken1t15.backratinglogcollege.entity.study.PlanStudy;
-import kz.alken1t15.backratinglogcollege.entity.study.process.StudyProcess;
 import kz.alken1t15.backratinglogcollege.service.*;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
