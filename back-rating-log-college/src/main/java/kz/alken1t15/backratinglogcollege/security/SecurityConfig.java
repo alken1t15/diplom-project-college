@@ -1,7 +1,5 @@
 package kz.alken1t15.backratinglogcollege.security;
 
-import jakarta.servlet.http.HttpServletResponse;
-import kz.alken1t15.backratinglogcollege.repository.RepositoryUser;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

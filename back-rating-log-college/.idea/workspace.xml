@@ -8,17 +8,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1bccd24e-30c0-4aec-9f57-1d7d68595d13" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Http/Admin.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/assets/images/user.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerMain.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerMain.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/security/JWTFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/security/JWTFilter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/security/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kz/alken1t15/backratinglogcollege/security/SecurityConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Components/AdminLayout/Admin.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Components/AdminLayout/Admin.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/UserPageAdmin/UserPageAdmin.scss" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/UserPageAdmin/UserPageAdmin.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/UserPageAdmin/UserPageAdmin.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Pages/UserPageAdmin/UserPageAdmin.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/BackRatingLogCollegeApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/BackRatingLogCollegeApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/contoller/ControllerStudent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/contoller/ControllerStudent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/entity/Students.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/entity/Students.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/security/JWTFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/security/JWTFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/security/JWTUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/security/JWTUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/security/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/service/ServiceStudyProcess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/service/ServiceStudyProcess.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

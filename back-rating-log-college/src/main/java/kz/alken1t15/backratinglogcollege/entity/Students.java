@@ -1,12 +1,9 @@
 package kz.alken1t15.backratinglogcollege.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -34,10 +31,6 @@ public class Students {
 
     @Column(name = "born_date")
     private LocalDate bornDate;
-
-//    @OneToMany(mappedBy = "student")
-//    @JsonIgnore
-//    private List<Evaluations> evaluations;
 
     @OneToMany(mappedBy = "student")
     private List<StudentsCourse> studentsCourses;
