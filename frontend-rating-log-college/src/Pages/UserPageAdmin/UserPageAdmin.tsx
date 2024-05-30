@@ -1,23 +1,33 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './UserPageAdmin.scss';
 import DatePicker, {registerLocale} from "react-datepicker";
 import { format } from "date-fns";
 import { ru } from 'date-fns/locale'
-import {addNewTeacher} from "../../Http/Admin";
+import {addNewStudent, addNewTeacher} from "../../Http/Admin";
+import userEvent from "@testing-library/user-event";
+import {getAllGroups} from "../../Http/AdditionalHttp";
+import Dropdown from "../../UI/Dropdown/Dropdown";
 
 registerLocale('ru', ru);
 
 const UserPageAdmin: React.FC = () => {
-    let [teacherName, setTeacherName] = useState('')
-    let [teacherMiddleName, setMiddleName] = useState('')
-    let [teacherLastName, setLastName] = useState('')
-    let [teacherLogin, setTeacherLogin] = useState('')
-    let [teacherPassword, setTeacherPassword] = useState('')
+    let [teacherName, setTeacherName] = useState('');
+    let [teacherMiddleName, setMiddleName] = useState('');
+    let [teacherLastName, setLastName] = useState('');
+    let [teacherLogin, setTeacherLogin] = useState('');
+    let [teacherPassword, setTeacherPassword] = useState('');
     let [formattedDate, setFormattedDate] = useState(format(new Date(), 'yyyy-MM-dd'));
     let [formattedDate2, setFormattedDate2] = useState(format(new Date(), 'yyyy-MM-dd'));
 
 
-
+    let [studBorn, setStudBorn] = useState(format(new Date(), 'yyyy-MM-dd'));
+    let [studFName, setStudFName] = useState('');
+    let [studScName, setStudScName] = useState('');
+    let [studMidName, setStudMidName] = useState('');
+    let [studLogin, setStudLogin] = useState('');
+    let [studPass, setStudPass] = useState('');
+    const [groups, setGroups] = useState<{ id: number, name: string }[]>([]);
+    const [curGroup, setCurGroup] = useState<number | null>(null);
 
 
     const handleDateChange = (date: Date | null) => {
@@ -38,12 +48,34 @@ const UserPageAdmin: React.FC = () => {
         }
     };
 
+    const handleSelectGroup = (id: number) => setCurGroup(id);
+
+    const handleBornDateChange = (date: Date | null) => {
+        if (date) {
+            const newFormattedDate = format(date, 'yyyy-MM-dd');
+            setStudBorn(newFormattedDate);
+        } else {
+            setStudBorn('');
+        }
+    };
+
     function addStudent(){
         addNewTeacher(teacherName, teacherLastName, teacherMiddleName, teacherLogin, teacherPassword, formattedDate, formattedDate2).then((response)=>{
 
         }).catch((error)=>{})
+
     }
 
+
+    useEffect(()=>{
+        getAllGroups().then((response: any) => {
+            const newGroups = response.data.map((el: any) => ({
+                id: el.id,
+                name: el.name
+            }));
+            setGroups(newGroups);
+        }).catch((error) => {});
+    },[])
 
     return (
         <div className={'main-page'}>
@@ -144,36 +176,36 @@ const UserPageAdmin: React.FC = () => {
                         <label
                             className={`upload-placeholder-admin`}
                         >
-                            Имя учителя
+                            Имя студента
                         </label>
                         <input
                             type="text"
-                            value={teacherName}
-                            onChange={(e) => setTeacherName(e.target.value)}/>
+                            value={studFName}
+                            onChange={(e) => setStudFName(e.target.value)}/>
 
                     </div>
                     <div className="admin-upload-container">
                         <label
                             className={`upload-placeholder-admin`}
                         >
-                            Фамилия учителя
+                            Фамилия студента
                         </label>
                         <input
                             type="text"
-                            value={teacherMiddleName}
-                            onChange={(e) => setMiddleName(e.target.value)}/>
+                            value={studScName}
+                            onChange={(e) => setStudScName(e.target.value)}/>
 
                     </div>
                     <div className="admin-upload-container">
                         <label
                             className={`upload-placeholder-admin`}
                         >
-                            Отчество учителя
+                            Отчество студента
                         </label>
                         <input
                             type="text"
-                            value={teacherLastName}
-                            onChange={(e) => setLastName(e.target.value)}/>
+                            value={studMidName}
+                            onChange={(e) => setStudMidName(e.target.value)}/>
 
                     </div>
                     <div className="admin-upload-container">
@@ -184,42 +216,43 @@ const UserPageAdmin: React.FC = () => {
                         </label>
                         <input
                             type="text"
-                            value={teacherLogin}
-                            onChange={(e) => setTeacherLogin(e.target.value)}/>
+                            value={studLogin}
+                            onChange={(e) => setStudLogin(e.target.value)}/>
 
                     </div>
                     <div className="admin-upload-container">
                         <label className={`upload-placeholder-admin`}>Пароль</label>
                         <input
                             type="text"
-                            value={teacherPassword}
-                            onChange={(e) => setTeacherPassword(e.target.value)}/>
+                            value={studPass}
+                            onChange={(e) => setStudPass(e.target.value)}/>
 
                     </div>
                     <div className="custom-datepicker-wrapper custom-datepicker-wrapper-admin">
                         <label className={`upload-placeholder-admin`}>Дата рождения</label>
                         <DatePicker
-                            selected={formattedDate ? new Date(formattedDate) : null}
-                            onChange={handleDateChange}
+                            selected={studBorn ? new Date(studBorn) : null}
+                            onChange={handleBornDateChange}
                             dateFormat="yyyy-MM-dd"
                             className="custom-datepicker"
                             locale="ru"
                         />
                     </div>
-                    <div className="custom-datepicker-wrapper custom-datepicker-wrapper-admin">
-                        <label className={`upload-placeholder-admin`}>Дата начала работы</label>
-                        <DatePicker
-                            selected={formattedDate2 ? new Date(formattedDate2) : null}
-                            onChange={handleDateChangeSec}
-                            dateFormat="yyyy-MM-dd"
-                            className="custom-datepicker"
-                            locale="ru"
+                    <div className="drop-block" style={{marginLeft: 10, marginTop: 10}}>
+                        <p className="drop-block__text">Все группы</p>
+                        <Dropdown
+                            items={groups}
+                            selectedId={curGroup}
+                            placeholder="Выберите группу"
+                            onSelect={handleSelectGroup}
                         />
                     </div>
                     <div className="btn-cont">
                         <button className={`admin-add-btn`} onClick={(e)=>{
-                            if(teacherName && teacherPassword && teacherLogin && teacherMiddleName && teacherLastName) {
-                                addStudent()
+                            if(studFName && studScName && studMidName && studLogin && studPass && studBorn && curGroup) {
+                                addNewStudent(studFName, studScName, studMidName, studLogin, studPass, studBorn, curGroup).then((response)=>{
+
+                                }).catch((error)=>{})
                             }
                         }}>Создать нового учителя</button>
                     </div>
