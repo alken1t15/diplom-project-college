@@ -137,7 +137,7 @@ create table students
     second_name   varchar(255)              not null,
     middle_name   varchar(255),
     born_date     date                      not null,
-    subgroup_name varchar(255)              not null
+    subgroup_name varchar(255)
 );
 
 insert into students (id, id_group, first_name, second_name, middle_name, born_date, subgroup_name)
