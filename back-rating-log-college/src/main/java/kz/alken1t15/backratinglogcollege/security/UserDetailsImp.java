@@ -14,7 +14,7 @@ public class UserDetailsImp implements UserDetails {
     private User user;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        GrantedAuthorityImpl grantedAuthority = new GrantedAuthorityImpl("rolell", true);
+        GrantedAuthorityImpl grantedAuthority = new GrantedAuthorityImpl(user.getRole(), true);
         return List.of(grantedAuthority);
     }
 

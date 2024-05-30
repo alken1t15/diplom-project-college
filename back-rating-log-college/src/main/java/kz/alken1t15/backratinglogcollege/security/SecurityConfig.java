@@ -18,7 +18,11 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable()).addFilterBefore(filter, AuthorizationFilter.class)
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/login/jwt")
-                        .permitAll().anyRequest().authenticated())
+                        .permitAll()
+                        .requestMatchers("/teacher/**").hasRole("teacher")
+                        .requestMatchers("/student/**").hasRole("student")
+                        .requestMatchers("/create/**").hasRole("admin")
+                        .anyRequest().authenticated())
                 .build();
     }
 }

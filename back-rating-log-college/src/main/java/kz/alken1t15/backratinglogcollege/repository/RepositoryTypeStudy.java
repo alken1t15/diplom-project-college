@@ -9,4 +9,6 @@ import java.util.List;
 public interface RepositoryTypeStudy extends JpaRepository<TypeStudy,Long> {
     @Query ("select t.id from TypeStudy  t where t.studyProcess.id = ?1")
     List<Long> findByIdStudyProcess(Long id);
+    @Query ("select t from TypeStudy t where t.studyProcess.id = ?1")
+    List<TypeStudy> findByIdSemester(Long id);
 }

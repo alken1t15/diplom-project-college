@@ -5,12 +5,10 @@ import kz.alken1t15.backratinglogcollege.dto.teacher.CurrentGraphStudyGroup;
 import kz.alken1t15.backratinglogcollege.entity.Curator;
 import kz.alken1t15.backratinglogcollege.entity.Groups;
 import kz.alken1t15.backratinglogcollege.entity.Specialization;
-import kz.alken1t15.backratinglogcollege.entity.Teachers;
 import kz.alken1t15.backratinglogcollege.entity.study.process.StudyProcess;
 import kz.alken1t15.backratinglogcollege.entity.study.process.TypeStudy;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryGroups;
-import kz.alken1t15.backratinglogcollege.repository.RepositoryStudents;
-import kz.alken1t15.backratinglogcollege.repository.RepositoryTeachers;
+import kz.alken1t15.backratinglogcollege.repository.RepositoryTypeStudy;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +27,7 @@ public class ServiceGroups {
     private final ServiceCurator serviceCurator;
     private final ServiceSpecialization serviceSpecialization;
     private final ServiceCourses serviceCourses;
+    private final RepositoryTypeStudy repositoryTypeStudy;
 
     public List<CurrentGraphStudyGroup> findByAllGroupForTeacher(Long idTeacher, LocalDate date, Long idWeek) {
         return repositoryGroups.findByAllGroupForTeacher(idTeacher, date, idWeek);
@@ -102,5 +101,14 @@ public class ServiceGroups {
             groupsDTOS.add(new GroupsInfoDTO(g.getId(), g.getName(),semestersInfo));
         }
         return new ResponseEntity(groupsDTOS, HttpStatus.OK);
+    }
+
+    public ResponseEntity getAllTypeStudy(Long id) {
+        List<TypeStudy> typeStudies = repositoryTypeStudy.findByIdSemester(id);
+        List<TypeStudyInfoDTO> typeStudyInfo = new ArrayList<>();
+        for (TypeStudy typeStudy: typeStudies){
+            typeStudyInfo.add(new TypeStudyInfoDTO(typeStudy.getId(),typeStudy.getName(),typeStudy.getDateStart(),typeStudy.getDateEnd()));
+        }
+        return new ResponseEntity(typeStudyInfo,HttpStatus.OK);
     }
 }

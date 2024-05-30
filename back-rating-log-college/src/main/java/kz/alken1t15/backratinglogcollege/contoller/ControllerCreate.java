@@ -9,15 +9,14 @@ import kz.alken1t15.backratinglogcollege.entity.Teachers;
 import kz.alken1t15.backratinglogcollege.repository.RepositorySpecialization;
 import kz.alken1t15.backratinglogcollege.service.*;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +67,11 @@ public class ControllerCreate {
     @PostMapping(path = "/student/add")
     public ResponseEntity addStudent(@RequestBody @Validated StudentAddDTO student, BindingResult bindingResult) {
         return serviceStudents.saveNewStudent(student, bindingResult);
+    }
+
+    @PostMapping(path = "/student/add/excel")
+    public ResponseEntity addStudentExcel(@RequestParam List<MultipartFile> files, @Validated @NonNull @RequestParam("id") Long id) {
+        return serviceStudents.saveNewStudentExcel(files,id);
     }
 
     @PostMapping(path = "/subject/add")
