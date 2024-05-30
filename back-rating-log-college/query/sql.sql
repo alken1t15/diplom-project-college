@@ -120,7 +120,9 @@ create table files_group
     id          serial primary key,
     id_courses  int references courses (id),
     name        varchar(255) not null,
-    date_create date         not null
+    date_create date         not null,
+    subject_name varchar(255) not null,
+    description varchar(255) not null
 );
 
 -- insert into files_group (id_courses, name,  date_create)

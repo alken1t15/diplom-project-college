@@ -13,10 +13,7 @@ import kz.alken1t15.backratinglogcollege.repository.RepositoryFilesGroup;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,9 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ServiceFilesGroup {
@@ -39,11 +34,14 @@ public class ServiceFilesGroup {
     private final ServiceStudents serviceStudents;
     @Autowired
     private final RepositoryCourses repositoryCourses;
+    @Autowired
+    private final ServiceGroups serviceGroups;
 
-    public ServiceFilesGroup(RepositoryFilesGroup repositoryFilesGroup, ServiceStudents serviceStudents, RepositoryCourses repositoryCourses) {
+    public ServiceFilesGroup(RepositoryFilesGroup repositoryFilesGroup, ServiceStudents serviceStudents, RepositoryCourses repositoryCourses, ServiceGroups serviceGroups) {
         this.repositoryFilesGroup = repositoryFilesGroup;
         this.serviceStudents = serviceStudents;
         this.repositoryCourses = repositoryCourses;
+        this.serviceGroups = serviceGroups;
     }
 
     @Value("${path.save.file}")
@@ -91,7 +89,7 @@ public class ServiceFilesGroup {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            files.add(new FileDTO(f.getId(), f.getName(), str, fileContent));
+            files.add(new FileDTO(f.getCourse().getCourse(), f.getName(), str, fileContent,f.getSubjectName(),f.getDescription()));
         }
         filesReturnDTO.setFiles(files);
         return filesReturnDTO;
@@ -103,15 +101,16 @@ public class ServiceFilesGroup {
         return arrMonth[idMonth];
     }
 
-    public ResponseEntity addNewFile(List<MultipartFile> files, @NonNull Long id) {
+    public ResponseEntity addNewFile(List<MultipartFile> files, @NonNull Long id, @NonNull String subjectName, @NonNull String description) {
         if (!files.isEmpty()) {
             for (MultipartFile file : files) {
                 String uniqueFileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
                 Path filePath = Paths.get(pathSaveFile, uniqueFileName);
                 try {
                     file.transferTo(filePath);
-                    Courses courses = repositoryCourses.findById(id).orElseThrow();
-                    repositoryFilesGroup.save(new FilesGroup(uniqueFileName, LocalDate.now(), courses));
+                    Groups group = serviceGroups.findById(id);
+                    Courses courses = repositoryCourses.findByCourseGroup(group.getCurrentCourse(),group.getId());
+                    repositoryFilesGroup.save(new FilesGroup(uniqueFileName, LocalDate.now(), courses,subjectName,description));
                     return new ResponseEntity(HttpStatus.OK);
                 } catch (IOException e) {
                     throw new RuntimeException(e);

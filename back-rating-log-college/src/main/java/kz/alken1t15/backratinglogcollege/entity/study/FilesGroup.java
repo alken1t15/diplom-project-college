@@ -24,10 +24,15 @@ public class FilesGroup {
     @ManyToOne
     @JoinColumn(name = "id_courses")
     private Courses course;
+    @Column(name = "subject_name")
+    private String subjectName;
+    private String description;
 
-    public FilesGroup(String name, LocalDate dateCreate, Courses course) {
+    public FilesGroup(String name, LocalDate dateCreate, Courses course, String subjectName, String description) {
         this.name = name;
         this.dateCreate = dateCreate;
         this.course = course;
+        this.subjectName = subjectName;
+        this.description = description;
     }
 }

@@ -11,8 +11,10 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 public class FileDTO {
-    private Long id;
+    private Integer id;
     private String name;
     private String date;
     private byte[] file;
+    private String subjectName;
+    private String description;
 }

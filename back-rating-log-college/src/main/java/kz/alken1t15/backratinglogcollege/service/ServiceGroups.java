@@ -1,13 +1,13 @@
 package kz.alken1t15.backratinglogcollege.service;
 
-import kz.alken1t15.backratinglogcollege.dto.GroupAddDTO;
-import kz.alken1t15.backratinglogcollege.dto.GroupsDTO;
-import kz.alken1t15.backratinglogcollege.dto.StudentAddDTO;
+import kz.alken1t15.backratinglogcollege.dto.*;
 import kz.alken1t15.backratinglogcollege.dto.teacher.CurrentGraphStudyGroup;
 import kz.alken1t15.backratinglogcollege.entity.Curator;
 import kz.alken1t15.backratinglogcollege.entity.Groups;
 import kz.alken1t15.backratinglogcollege.entity.Specialization;
 import kz.alken1t15.backratinglogcollege.entity.Teachers;
+import kz.alken1t15.backratinglogcollege.entity.study.process.StudyProcess;
+import kz.alken1t15.backratinglogcollege.entity.study.process.TypeStudy;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryGroups;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryStudents;
 import kz.alken1t15.backratinglogcollege.repository.RepositoryTeachers;
@@ -81,6 +81,25 @@ public class ServiceGroups {
         List<GroupsDTO> groupsDTOS = new ArrayList<>();
         for (Groups g : groups) {
             groupsDTOS.add(new GroupsDTO(g.getId(), g.getName()));
+        }
+        return new ResponseEntity(groupsDTOS, HttpStatus.OK);
+    }
+
+    public ResponseEntity findAllInfo() {
+        List<Groups> groups = repositoryGroups.findAll();
+        List<GroupsInfoDTO> groupsDTOS = new ArrayList<>();
+        for (Groups g : groups) {
+            List<StudyProcessInfoDTO> semestersInfo = new ArrayList<>();
+            List<StudyProcess> semesters = g.getStudyProcesses();
+            for (StudyProcess studyProcess: semesters){
+                List<TypeStudy> typeStudies = studyProcess.getTypeStudies();
+                List<TypeStudyInfoDTO> typeStudyInfo = new ArrayList<>();
+                for (TypeStudy typeStudy: typeStudies){
+                    typeStudyInfo.add(new TypeStudyInfoDTO(typeStudy.getId(),typeStudy.getName(),typeStudy.getDateStart(),typeStudy.getDateEnd()));
+                }
+                semestersInfo.add(new StudyProcessInfoDTO(studyProcess.getId(),studyProcess.getSemester(),studyProcess.getCourse(),studyProcess.getDateStart(),studyProcess.getDateEnd(),typeStudyInfo));
+            }
+            groupsDTOS.add(new GroupsInfoDTO(g.getId(), g.getName(),semestersInfo));
         }
         return new ResponseEntity(groupsDTOS, HttpStatus.OK);
     }
