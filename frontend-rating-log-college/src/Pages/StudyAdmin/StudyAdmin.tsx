@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './StudyAdmin.scss';
-import {addGroup, addSemestr, createAuditorium} from "../../Http/Admin";
+import {addGroup, addSemestr, addSubjectForStud, addTypeStudy, createAuditorium} from "../../Http/Admin";
 import {
     getAllSpec,
     getAllSubjects,
@@ -10,7 +10,7 @@ import {
     getAllDays,
     getAllCur,
     getAllAudit,
-    getInfoAboutGroup
+    getInfoAboutGroup, getInfoAboutTypeStudyGroup
 } from "../../Http/AdditionalHttp";
 import Dropdown from "../../UI/Dropdown/Dropdown";
 import DatePicker from "react-datepicker";
@@ -41,10 +41,15 @@ const StudyAdmin: React.FC = () => {
     const [courNum, setCourNum] = useState('');
     const [formattedDate, setFormattedDate] = useState(format(new Date(), 'yyyy-MM-dd'));
     const [formattedDate2, setFormattedDate2] = useState(format(new Date(), 'yyyy-MM-dd'));
-    const [studyInfo, setStudyInfo] = useState<{ id: number, name: string }[]>([])
+    const [studyInfo, setStudyInfo] = useState<{ id: number, name: string }[]>([]);
     const [curStudyInfo, setCurStudyInfo] = useState<number | null>(null);
-    const [typeStudy, setTypeStudy] = useState<{ id: number, name: string }[]>([])
+    const [typeStudy, setTypeStudy] = useState<{ id: number, name: string }[]>([]);
     const [curTypeStudy, setCurTypeStudy] = useState<number | null>(null);
+    const [curGroupSemestr, setCurGroupSemestr] = useState<number>();
+    const [typeStart, setTypeStart] = useState(format(new Date(), 'yyyy-MM-dd'));
+    const [typeEnd, setTypeEnd] = useState(format(new Date(), 'yyyy-MM-dd'));
+    const [typeName, setTypeName] = useState('');
+    const [numbCouple, setNumbCouple] = useState('');
 
     useEffect(() => {
         getAllTeachers().then((response: any) => {
@@ -119,12 +124,13 @@ const StudyAdmin: React.FC = () => {
                 const newStud: {id: number, name: string}[] = [];
                 response.data.forEach((elem: any) => {
                     if(elem.id === curGroup){
-                        elem.semestersInfo.forEach((el: any)=>{
 
+                        elem.semestersInfo.forEach((el: any)=>{
                              let newObj = {
                                  id: el.id,
                                  name: `${el.course} курс, ${el.semester} семестр, ${el.dateStart} - ${el.dateEnd}`
                              }
+
                             newStud.push(newObj)
 
                         })
@@ -137,8 +143,22 @@ const StudyAdmin: React.FC = () => {
     }, [curGroup])
 
     useEffect(()=>{
+        if(curGroupSemestr){
+            getInfoAboutTypeStudyGroup(curGroupSemestr).then((response)=>{
+                console.log(response.data)
+                let newArr = response.data.map((el: any)=>{
+                    let newOjb = {
+                        id: el.id,
+                        name: `${el.name}, ${el.dateStart} - ${el.dateEnd}`
+                    }
+                    return newOjb;
+                })
+                setTypeStudy(newArr)
+            }).catch((error)=>{})
+        }
 
-    }, [curStudyInfo])
+
+    }, [curGroupSemestr])
 
     const handleSelectTeacher = (id: number) => setCurTeacher(id);
     const handleSelectGroup = (id: number) => setCurGroup(id);
@@ -148,8 +168,11 @@ const StudyAdmin: React.FC = () => {
     const handleSelectCurator = (id: number) => setCurCurator(id);
     const handleSelectAuditorium = (id: number) => setCurAuditorium(id);
     const handleSelectSpecialization = (id: number) => setCurSpecialization(id);
-    const handleSelectStudyInfo = (id: number) => setCurStudyInfo(id);
-    const handleSelectTypeStudyInfo = (id: number) => setCurStudyInfo(id);
+    const handleSelectStudyInfo = (id: number) => {
+        setCurStudyInfo(id)
+        setCurGroupSemestr(id)
+    }
+    const handleSelectTypeStudyInfo = (id: number) => setCurTypeStudy(id);
 
     const handleDateChange = (date: Date | null) => {
         if (date) {
@@ -166,6 +189,24 @@ const StudyAdmin: React.FC = () => {
             setFormattedDate2(newFormattedDate);
         } else {
             setFormattedDate2('');
+        }
+    };
+
+    const handleDateTypeStart = (date: Date | null) => {
+        if (date) {
+            const newFormattedDate = format(date, 'yyyy-MM-dd');
+            setTypeStart(newFormattedDate);
+        } else {
+            setTypeStart('');
+        }
+    };
+
+    const handleDateTypeEnd = (date: Date | null) => {
+        if (date) {
+            const newFormattedDate = format(date, 'yyyy-MM-dd');
+            setTypeEnd(newFormattedDate);
+        } else {
+            setTypeEnd('');
         }
     };
 
@@ -283,10 +324,7 @@ const StudyAdmin: React.FC = () => {
                        <div className="admin-upload-container admin-upload-container-u admin-upload-container-u-e">
                            <label className={`upload-placeholder-admin`}>Выберите куратора и специализацию выше</label>
                            <label className={`upload-placeholder-admin`}>Напишите название группы ниже</label>
-                           <input
-                               type="text"
-                               value={groupValue}
-                               onChange={(e) => setGroupValue(e.target.value)}/>
+                           <input type="text" value={groupValue} onChange={(e) => setGroupValue(e.target.value)}/>
 
 
                        </div>
@@ -308,7 +346,7 @@ const StudyAdmin: React.FC = () => {
                        </div>
                    </div>
 
-                   <div className="info-container info-container-st" style={{width: 571}} >
+                   <div className="info-container info-container-st" style={{width: 446}} >
                        <p className="info-container__name">Создание аудитории</p>
                        <label className={`upload-placeholder-admin`}>&nbsp;</label>
                        <div className="inner-container" >
@@ -343,7 +381,7 @@ const StudyAdmin: React.FC = () => {
                        </div>
                    </div>
 
-                   <div className="info-container info-container-st">
+                   <div className="info-container info-container-st" style={{width: 774}}>
                        <p className="info-container__name">Добавить семестр</p>
                        <label className={`upload-placeholder-admin`} style={{marginLeft: 10}}>Выберите группу выше</label>
                        <div className="inner-container" >
@@ -387,6 +425,65 @@ const StudyAdmin: React.FC = () => {
                        </div>
                    </div>
 
+                   <div className="info-container info-container-st">
+                       <p className="info-container__name">Добавить тип учебы</p>
+                       <label className={`upload-placeholder-admin`} style={{marginLeft: 10}}>Выберите данный семестр</label>
+                       <div className="inner-container" >
+                           <div className="admin-upload-container admin-upload-container-u admin-upload-container-u-e" style={{width: 259}} >
+                               <label className={`upload-placeholder-admin`}>Текст типа учебы</label>
+                               <input  type="text"  value={typeName}  onChange={(e) => setTypeName(e.target.value)}/>
+                           </div>
+                           <div className="custom-datepicker-wrapper custom-datepicker-wrapper-admin custom-datepicker-wrapper-admin-stud">
+                               <label className={`upload-placeholder-admin`}>Дата начала</label>
+                               <DatePicker
+                                   selected={typeStart ? new Date(typeStart) : null}
+                                   onChange={handleDateTypeStart}
+                                   dateFormat="yyyy-MM-dd"
+                                   className="custom-datepicker"
+                                   locale="ru"
+                               />
+                           </div>
+                           <div className="custom-datepicker-wrapper custom-datepicker-wrapper-admin custom-datepicker-wrapper-admin-stud">
+                               <label className={`upload-placeholder-admin`}>Дата конца</label>
+                               <DatePicker
+                                   selected={typeEnd ? new Date(typeEnd) : null}
+                                   onChange={handleDateTypeEnd}
+                                   dateFormat="yyyy-MM-dd"
+                                   className="custom-datepicker"
+                                   locale="ru"
+                               />
+                           </div>
+                       </div>
+                       <div className="btn-cont">
+                           <button className={`admin-add-btn`} onClick={(e)=>{
+                               if(curStudyInfo) {
+                                   addTypeStudy(curStudyInfo, typeName, typeStart, typeEnd).then((response)=>{
+                                   }).catch((error)=>{})
+                               }
+
+                           }}>Добавить тип учебы</button>
+                       </div>
+                   </div>
+
+                   <div className="info-container info-container-st" style={{width: 450}}>
+                       <p className="info-container__name">Добавить предмет для учебы</p>
+                       <label className={`upload-placeholder-admin`} style={{marginLeft: 10}}>Выберите тип учебы, время учебы, предмет, преподавателя, аудиторию, день недели выше</label>
+                       <div className="inner-container" >
+                           <div className="admin-upload-container admin-upload-container-u admin-upload-container-u-e" style={{width: 259}} >
+                               <label className={`upload-placeholder-admin`}>Номер пары</label>
+                               <input  type="text"  value={numbCouple}  onChange={(e) => setNumbCouple(e.target.value)}/>
+                           </div>
+                       </div>
+                       <div className="btn-cont">
+                           <button className={`admin-add-btn`} onClick={(e)=>{
+                               if(numbCouple && curTypeStudy && curTimeSlot && curSubject && curTeacher && curAuditorium && curDay) {
+                                   addSubjectForStud(curTypeStudy, curTimeSlot, curSubject, curTeacher, curAuditorium, curDay, Number(numbCouple)).then((response)=>{
+                                   }).catch((error)=>{})
+                               }
+
+                           }}>Добавить тип учебы</button>
+                       </div>
+                   </div>
 
                </div>
 

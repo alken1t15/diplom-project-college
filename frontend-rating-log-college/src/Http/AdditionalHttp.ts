@@ -44,3 +44,9 @@ export const getInfoAboutGroup = async () => {
     let res = await $api.get(`info/group/about`, {});
     return res;
 };
+
+export const getInfoAboutTypeStudyGroup = async (id:number) => {
+    let res = await $api.get(`info/type?id=${id}`, {});
+    return res;
+};
+

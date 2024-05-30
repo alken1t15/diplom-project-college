@@ -47,7 +47,7 @@ export const addSemestr = async (idGroup: number, semester: string, course: stri
 };
 
 export const addTypeStudy = async (idStudyProcess: number, name: string, start: string, end: string) => {
-        let res = await $api.post(`create/study/process/add`, {idStudyProcess: idStudyProcess, name: name, start: start, end: end });
+        let res = await $api.post(`create/type/study/add`, {idStudyProcess: idStudyProcess, name: name, start: start, end: end });
         return res;
 };
 
