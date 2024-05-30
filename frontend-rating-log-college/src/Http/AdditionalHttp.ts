@@ -29,3 +29,24 @@ export const getAllSpec = async () => {
     let res = await $api.get(`info/specialization`);
     return res;
 };
+
+export const getAllCur = async () => {
+    let res = await $api.get(`info/curator`);
+    return res;
+};
+
+export const getAllAudit = async () => {
+    let res = await $api.get(`info/auditorium`, {});
+    return res;
+};
+
+export const getInfoAboutGroup = async () => {
+    let res = await $api.get(`info/group/about`, {});
+    return res;
+};
+
+export const getInfoAboutTypeStudyGroup = async (id:number) => {
+    let res = await $api.get(`info/type?id=${id}`, {});
+    return res;
+};
+

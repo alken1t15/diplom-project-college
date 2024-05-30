@@ -186,14 +186,14 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
                  onDrop={onDrop}>
                 {
                     isDragging ? (
-                        <span className="select">Перетащите файлы</span>
+                        <span className="select">Перетащите {props.multipart ? 'файлы' : 'файл'}</span>
                     ) : (
                         <span className="select">
                           <span className="select-top">
                                 <img src={uploadImg} alt=""/>
-                                <span>Перетащите файлы или нажмите для загрузки</span>
+                                <span>Перетащите {props.multipart ? 'файлы' : 'файл'} или нажмите для загрузки</span>
                           </span>
-                          <p className={`select-light`}>Загружайте файлы не больше 100 мб</p>
+                          <p className={`select-light`}>Загружайте {props.multipart ? 'файлы' : 'файл'} не больше 100 мб</p>
                         </span>
                     )
                 }
@@ -227,7 +227,7 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
             </button>
             {parentImgs.length > 0 && (
                 <div className="preview">
-                    <h3>Ваши прикрепленные файлы:</h3>
+                    <h3>Ваши прикрепленные {props.multipart ? 'файлы' : 'файл'}:</h3>
                     {parentImgs.map((img, index) => (
                         <a key={index} href={img.url} download={img.name} target="_blank" rel="noopener noreferrer" style={{display: "inline"}}>
                             <img src={img.url} alt={img.name} onError={handleImageError} />

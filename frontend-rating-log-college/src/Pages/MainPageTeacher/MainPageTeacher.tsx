@@ -29,13 +29,13 @@ export interface ISchedule{
 
 const MainPageTeacher: React.FC = () => {
 
-    let[homeWorks, setHomeWorks] = useState<HomeworkItem[]>([])
-    let[schedule, setSchedule] = useState<ISchedule[]>([])
-    let[time, setTime] = useState("")
-    let[presence, setPresence] = useState('')
-    let[userName, setUserName] = useState('')
-    let[userYEar, setUserYear] = useState('')
-    let[students, setStudents] = useState<IStudentWithoutCertificateItem[]>([])
+    let[homeWorks, setHomeWorks] = useState<HomeworkItem[]>([]);
+    let[schedule, setSchedule] = useState<ISchedule[]>([]);
+    let[time, setTime] = useState("");
+    let[presence, setPresence] = useState('');
+    let[userName, setUserName] = useState('');
+    let[userYEar, setUserYear] = useState('');
+    let[students, setStudents] = useState<IStudentWithoutCertificateItem[]>([]);
     let[slider, setSlider] =useState([
         {
           id: 1,
@@ -47,10 +47,11 @@ const MainPageTeacher: React.FC = () => {
             name: 'Со справкой',
             active: false,
         },
-    ])
+    ]);
     let[curSlider, setCurSlider] = useState(1);
     let[activeGroup, setActiveGroup] = useState(0);
-    let[activeGroupId, setActiveGroupId] = useState(0);
+    let[curSubject, setCurSubject] = useState<string>('');
+    let[curCouple, setCurCouple] = useState<number>(0);
 
     useEffect(()=>{
     },[curSlider])
@@ -105,7 +106,10 @@ const MainPageTeacher: React.FC = () => {
     }
 
     useEffect(()=>{
-        setCurrentStudent()
+        if(curCouple){
+            setCurrentStudent()
+        }
+
     },[curSlider, activeGroup])
 
     function getActiveGroup(graphGroupsForStudy: any[]) {
@@ -129,7 +133,6 @@ const MainPageTeacher: React.FC = () => {
 
     function setCurrentStudent(){
 
-        console.log(activeGroup)
         mainPageTeacherUpdateData(activeGroup, curSlider !== 1)
             .then(response=>{
 
@@ -166,6 +169,7 @@ const MainPageTeacher: React.FC = () => {
                 setStudents(newArr)
 
 
+
             })
             .catch(error=>{
 
@@ -174,13 +178,15 @@ const MainPageTeacher: React.FC = () => {
 
     }
 
+
+
     useEffect(() => {
 
         mainPageTeacherData()
             .then(response=>{
                 setUserName(response.data.teacher.name)
                 setUserYear(response.data.teacher.yearWork)
-                let newSchedule = response.data.graphGroupsForStudy.map((el: any)=>{
+                let newSchedule = response.data.graphGroupsForStudy.map((el: any, index: any)=>{
                     let newObj = {
                         groupName: el.name,
                         time: el.timeStart.slice(0, 5),
@@ -189,9 +195,17 @@ const MainPageTeacher: React.FC = () => {
                     let time = parse(el.timeStart.slice(0, 5), 'HH:mm', new Date());
                     let currentTime = new Date();
                     let endTime = addMinutes(time, 90);
+                    console.log(el)
                     if(isWithinInterval(currentTime, { start: time, end: endTime })){
+                        setActiveGroup(el.idGroup)
                         setPresence(el.name)
+                        setCurSubject(el.nameSubject)
+                        setCurCouple(index)
+                        setCurrentStudent()
                     }
+
+
+
                     return newObj;
                 })
                 setSchedule(newSchedule)
@@ -202,11 +216,13 @@ const MainPageTeacher: React.FC = () => {
             .catch(error=>{
 
             })
-        setCurrentStudent()
+
         getTime()
 
         const timeStudentInterval = setInterval(() => {
-            setCurrentStudent()
+            if(curCouple){
+                setCurrentStudent()
+            }
         }, 10000);
 
         const timeInterval = setInterval(() => {
@@ -238,7 +254,51 @@ const MainPageTeacher: React.FC = () => {
             return el;
         })
         setStudents(newArr)
-        // mainPageTeacherUpdateOmission(activeGroup, id, )
+        mainPageTeacherUpdateOmission(activeGroup, id, curSubject, value, curCouple).then((response)=>{
+            mainPageTeacherUpdateData(activeGroup, curSlider !== 1)
+                .then(response=>{
+
+                    let newArr = response.data.currentOmissionStudents.map((el: any)=>{
+                        let newObj={
+                            name: el.name,
+                            count: el.count,
+                            status: false,
+                            idCertificate: el.idCertificate
+                        }
+                        return newObj
+
+                    })
+
+                    let newCompleteArr = response.data.completeTask.map((el: any, index: any)=>{
+                        let newObj = {
+                            id: index,
+                            active: false,
+                            name: el.nameWork,
+                            date: el.deadlineWork,
+                            expiresAt: '9 сен - 15 сен',
+                            teacher: 'Денис Валентинович Попов',
+                            subject: 'Веб-программирования',
+                            scholar: el.nameStudent,
+                            dueDate: '10 сентября',
+                        }
+                        return newObj;
+
+                    })
+
+                    const activeGroup = getActiveGroup(response.data.graphGroupsForStudy);
+                    setActiveGroup(activeGroup)
+                    setHomeWorks(newCompleteArr)
+                    setStudents(newArr)
+
+
+
+                })
+                .catch(error=>{
+
+                })
+        }).catch((error)=>{
+
+        })
 
     }
 

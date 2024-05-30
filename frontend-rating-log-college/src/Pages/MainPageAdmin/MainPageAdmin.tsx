@@ -76,10 +76,6 @@ const MainPageAdmin: React.FC = () => {
                 <div className="info-container">
                     <p className="info-container__name">Добавление специальности</p>
 
-                    <div className="toble-btn-box">
-                        <ToggleBtns items={curSpec} />
-                    </div>
-
                     <div className="admin-upload-container admin-upload-container-u">
                         <label
                             className={`upload-placeholder-admin`}
