@@ -5,14 +5,17 @@ import {Simulate} from "react-dom/test-utils";
 import error = Simulate.error;
 import {getAllSpec, getAllSubjects, getAllTeachers} from "../../Http/AdditionalHttp";
 import ToggleBtns, {IToggleBtnsItems} from "../../Components/ToggleBtns/ToggleBtns";
+import Spinner from "../../Components/Spinner/Spinner";
+import {notify, Toasty} from "../../Components/Toasty/Toasty";
 
 const MainPageAdmin: React.FC = () => {
-    let[specialName, setSpecialName] = useState('')
-    let[subjectName, setSubjectName] = useState('')
-    let[curSpec, setCurSpec] = useState<IToggleBtnsItems[]>([])
-    let[curSubject, setCurSubject] = useState<IToggleBtnsItems[]>([])
+    let[specialName, setSpecialName] = useState('');
+    let[subjectName, setSubjectName] = useState('');
+    let[curSpec, setCurSpec] = useState<IToggleBtnsItems[]>([]);
+    let[curSubject, setCurSubject] = useState<IToggleBtnsItems[]>([]);
     let[teachers, setTeachers] = useState<IToggleBtnsItems[]>([]);
-    let[curTeacher, setCurTeacher] = useState<number>()
+    let[curTeacher, setCurTeacher] = useState<number>();
+    let[loading, setLoading] = useState(true);
 
     function updateSpec(data: object[]){
         let newArr = data.map((el: any)=>{
@@ -67,6 +70,7 @@ const MainPageAdmin: React.FC = () => {
             })
             setTeachers(newArr)
         }).catch((error)=>{})
+        setTimeout(() => setLoading(false), 700);
     },[])
 
     return (
@@ -95,7 +99,13 @@ const MainPageAdmin: React.FC = () => {
                                     getAllSpec().then((response: any)=>{
                                         updateSpec(response.data)
                                     }).catch((error)=>{})
-                                }).catch((error)=>{})
+                                    notify('Специальность успешно добавлена','success')
+                                }).catch((error)=>{
+                                    notify('Не удалось добавить специальность','error')
+                                })
+                            }
+                            else{
+                                notify('Не удалось добавить специальность','error')
                             }
                         }}>Добавить специальность</button>
                     </div>
@@ -124,7 +134,13 @@ const MainPageAdmin: React.FC = () => {
                                     getAllSubjects().then((response: any)=>{
                                         updateSubject(response.data)
                                     }).catch((error)=>{})
-                                }).catch((error)=>{})
+                                    notify('Специальность успешно добавлена','success')
+                                }).catch((error)=>{
+                                    notify('Не удалось добавить название предмета','error')
+                                })
+                            }
+                            else {
+                                notify('Не удалось добавить название предмета','error')
                             }
                         }}>Добавить предмет</button>
                     </div>
@@ -150,12 +166,17 @@ const MainPageAdmin: React.FC = () => {
                                     getAllSubjects().then((response: any)=>{
                                         updateSubject(response.data)
                                     }).catch((error)=>{})
-                                }).catch((error)=>{})
+                                notify('Куратор успешно добавлен','success')
+                                }).catch((error)=>{
+                                notify('Не удалось добавить куратора','error')
+                            })
 
                         }}>Закрепить</button>
                     </div>
                 </div>
             </div>
+            <Spinner loading={loading} />
+            <Toasty/>
         </div>
     );
 };

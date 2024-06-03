@@ -35,7 +35,11 @@
       width: 100%;
       word-wrap: break-word;
       &__title{
-
+        &-text{
+          font-size: 14px !important;
+          color: #b4b7bc;
+          margin-top: 3px;
+        }
       }
       &__text{
         margin-top: 4px;

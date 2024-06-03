@@ -5,9 +5,8 @@ import TeachersBlock from "../../Components/TeachersBlock/TeachersBlock";
 import FileItem, {IFileItem} from "../../Components/FileItem/FileItem";
 import FileUploader from "../../Components/FileUploader/FileUploader";
 import {getCoursesItems, sendHomeWorkFiles, setHomeWOrkStatus} from "../../Http/HomeWorks";
-import {addNewCertificate} from "../../Http/MainPage";
-import {addNewFiles} from "../../Http/Courses";
-import axios from "axios";
+import { Toasty, notify } from '../../Components/Toasty/Toasty';
+import Spinner from "../../Components/Spinner/Spinner";
 
 const fileImg = require('../../assets/images/PDF.png');
 
@@ -57,6 +56,8 @@ const HomeworkPageStudent: React.FC = () => {
     let[homeWorkFiles, setHomeWorkFiles] = useState<IFileItem[]>([]);
     let[taskFiles, setTaskFiles] = useState<any[]>([]);
     let[teacherItem, setTeacherItem] = useState<ITeacher>()
+
+    const [loading, setLoading] = useState<boolean>(true);
 
     function setActiveHomeWork(id: number){
         let curArr = [...homeWork];
@@ -134,6 +135,7 @@ const HomeworkPageStudent: React.FC = () => {
             setHomeWork(newHwk)
             updateCurrentHomeWork(response.data.homeWork)
         }).catch((error)=>{})
+        setTimeout(() => setLoading(false), 500);
     },[])
 
 
@@ -166,21 +168,24 @@ const HomeworkPageStudent: React.FC = () => {
                          setHomeWork(newHwk)
                          updateCurrentHomeWork(response.data.homeWork)
                      }).catch((error)=>{})
-                 }).catch((error: any)=>{})
+                     notify('Работа сдана', 'success');
+
+                 }).catch((error: any)=>{
+                     notify('Не удалось отправить работу', 'error');
+                 })
 
             }).catch((error) => {
 
             });
 
         } catch (error) {
-            // ваш код
         }
     };
 
 
 
     return (
-        <div className={'main-page main-page-courses'}>
+        <div className={'main-page main-page-courses'} style={{position: "relative"}}>
             <div className={'block-left block-left-courses block-left-homework'}>
                 <div className="block-left-header block-left-header-p">
                     <div className="block-left-main block-left-header-homework">
@@ -226,12 +231,13 @@ const HomeworkPageStudent: React.FC = () => {
                     </div>
 
                     <div className="block-middle-info__files-block">
-                        <p className="block-middle-info__files-block__text">Приклепленные файлы</p>
-                        <div className="file-box block-middle-info__files-file-box">
-                            {homeWorkFiles && homeWorkFiles.length > 0 ? homeWorkFiles.map((el, index) => (
-                                <FileItem item={el} key={index}/>
-                            )) : ''}
-                        </div>
+                        {homeWorkFiles.length > 0 ? <> <p className="block-middle-info__files-block__text">Приклепленные файлы</p>
+                            <div className="file-box block-middle-info__files-file-box">
+                                {homeWorkFiles && homeWorkFiles.length > 0 ? homeWorkFiles.map((el, index) => (
+                                    <FileItem item={el} key={index}/>
+                                )) : ''}
+                            </div></> : '' }
+
                     </div>
                 </> : ''}
 
@@ -257,6 +263,8 @@ const HomeworkPageStudent: React.FC = () => {
                     </div>
                 </div>
             </div>
+            <Spinner loading={loading} />
+            <Toasty/>
         </div>
     );
 };
