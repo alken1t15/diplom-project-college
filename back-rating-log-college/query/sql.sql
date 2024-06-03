@@ -1,5 +1,5 @@
 -- # Рефакторинг №2
--- create database rating_log_college;
+# CREATE DATABASE rating_log_college WITH ENCODING='UTF8' LC_CTYPE='en_US.UTF-8' LC_COLLATE='en_US.UTF-8' OWNER=postgres TEMPLATE=template0;
 create table users
 (
     id       serial primary key,
@@ -308,12 +308,12 @@ create table study_process
     date_end   date not null
 );
 insert into study_process (id_group, semester, course, date_start, date_end)
-VALUES (1, 1, 1, '02.09.2023', '10.10.2023'),
-       (1, 2, 1, '02.11.2023', '30.06.2024');
+VALUES (1, 1, 1, '2023-09-02', '2023-10-10'),
+       (1, 2, 1, '2023-11-02', '2024-06-30');
 
 insert into study_process (id_group, semester, course, date_start, date_end)
-VALUES (2, 1, 1, '02.09.2023', '10.10.2023'),
-       (2, 2, 1, '02.11.2023', '30.06.2024');
+VALUES (2, 1, 1, '2023-09-02', '2023-10-10'),
+       (2, 2, 1, '2023-11-02', '2024-06-30');
 
 create table type_study
 (
@@ -325,13 +325,13 @@ create table type_study
 );
 
 insert into type_study (id_study_process, name, date_start, date_end)
-VALUES (1, 'учеба', '02.11.2023', '10.02.2024'),
-       (2, 'учеба', '02.11.2023', '10.02.2024'),
-       (2, 'практика', '11.02.2024', '10.06.2024'),
-       (2, 'учебная практика', '11.06.2024', '10.10.2024');
+VALUES (1, 'учеба', '2023-11-02', '2024-02-10'),
+       (2, 'учеба', '2023-11-02', '2024-02-10'),
+       (2, 'практика', '2024-02-11', '2024-06-10'),
+       (2, 'учебная практика', '2024-06-11', '2024-10-10');
 
 insert into type_study (id_study_process, name, date_start, date_end)
-VALUES (3, 'учеба', '02.11.2023', '10.02.2024');
+VALUES (3, 'учеба', '2023-11-02', '2024-02-10');
 
 create table time_study
 (

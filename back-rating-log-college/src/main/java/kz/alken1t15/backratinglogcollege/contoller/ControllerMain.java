@@ -60,7 +60,12 @@ public class ControllerMain {
         }
         logger.info(String.format("Авторизация пользваоетяля: логин: %s пароль: %s", loginAuth.getLogin(), loginAuth.getPassword()));
         Authentication token = UsernamePasswordAuthenticationToken.unauthenticated(loginAuth.getLogin(), loginAuth.getPassword());
-        Authentication authenticationResponse = this.authenticationManager.authenticate(token);
+        Authentication authenticationResponse;
+        try {
+            authenticationResponse = this.authenticationManager.authenticate(token);
+        }catch (NullPointerException e){
+            return null;
+        }
         User user = repositoryUser.findByLogin(loginAuth.getLogin()).orElseThrow();
         logger.info(String.format("Пользователь который хочет получить jwt токен: %s", authenticationResponse));
         String jwt = jwtUtil.generateToken(loginAuth.getLogin(), loginAuth.getPassword());

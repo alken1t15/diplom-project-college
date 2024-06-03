@@ -110,7 +110,7 @@ public class ServiceStudents {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            String excelFilePath = "C:\\fileDiplomProject\\" + uniqueFileName;
+            String excelFilePath = pathSaveFile + uniqueFileName;
 
             try (FileInputStream fis = new FileInputStream(new File(excelFilePath));
                  Workbook workbook = new XSSFWorkbook(fis)) {
