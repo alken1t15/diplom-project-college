@@ -7,6 +7,8 @@ export interface IFileItem {
     date?: string;
     img: string;
     size?: string;
+    desk?: string;
+    subject?: string;
 }
 
 interface IFileBlock {
@@ -100,6 +102,8 @@ const FileItem: React.FC<IFileBlock> = ({ item, isMini }) => {
             <img src={imageSrc} alt={item.text} />
             <div className={`file-item-block ${isMini ? 'file-item-block-m' : ''}`}>
                 <p className={`courses-block__title courses-block__title-l file-item-block__title ${isMini ? 'file-item-block__title-m' : ''}`}>{item.text}</p>
+                <p className={`courses-block__title courses-block__title-l file-item-block__title file-item-block__title-text ${isMini ? 'file-item-block__title-m' : ''}`}>{item.desk}</p>
+                <p className={`courses-block__title courses-block__title-l file-item-block__title file-item-block__title-text ${isMini ? 'file-item-block__title-m' : ''}`}>{item.subject}</p>
                 {item.size ?
                     <p className={`courses-block__text file-item-block__text ${isMini ? 'file-item-block__text-m' : ''}`}>{item.size}</p> :
                     <p className={`courses-block__text file-item-block__text ${isMini ? 'file-item-block__text-m' : ''}`}>{item.date}</p>

@@ -3,9 +3,8 @@ import './CoursesPageStudent.scss';
 import CoursesItem, {CourseItem} from "../../Components/CoursesItem/CoursesItem";
 import FileItem, {IFileItem} from "../../Components/FileItem/FileItem";
 import {getCoursesItems} from "../../Http/Courses";
-
-const fileImg = require('../../assets/images/PDF.png');
-
+import Spinner from "../../Components/Spinner/Spinner";
+import {Toasty} from "../../Components/Toasty/Toasty";
 
 const CoursesPageStudent: React.FC = () => {
 
@@ -14,6 +13,7 @@ const CoursesPageStudent: React.FC = () => {
     let[fileItems, setFileItems] = useState<IFileItem[]>([]);
     let[currentCourseName, setCurrentCourseName] = useState('');
     let[currentCourseYear, setCurrentCourseYear] = useState('');
+    let[loading, setLoading] = useState(true)
 
     function setActiveCourse(id: number){
 
@@ -91,7 +91,9 @@ const CoursesPageStudent: React.FC = () => {
                 id: index,
                 text: el.name,
                 date: el.date,
-                img: el.file
+                img: el.file,
+                desk: el.description,
+                subject: el.subjectName
             }
             return newObj
         })
@@ -133,7 +135,7 @@ const CoursesPageStudent: React.FC = () => {
             })
             setCourses(newCourses)
             setCurCourse(1)
-
+            setTimeout(() => setLoading(false), 700);
 
         }).catch((error)=>{
 
@@ -173,6 +175,8 @@ const CoursesPageStudent: React.FC = () => {
                 </div>
 
             </div>
+            <Spinner loading={loading} />
+            <Toasty/>
         </div>
     );
 };

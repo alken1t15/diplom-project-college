@@ -4,12 +4,10 @@ import Pagination, {IDataArrayItem} from "../../Components/Pagination/Pagination
 import TextCarousel from "../../Components/TextCarousel/TextCarousel";
 import TeachersBlock, {ITeachersItem} from "../../Components/TeachersBlock/TeachersBlock";
 import {getTotalGrades, gradePageData} from "../../Http/GradePage";
+import Spinner from "../../Components/Spinner/Spinner";
+import {Toasty} from "../../Components/Toasty/Toasty";
 
-const infoImg = require('../../assets/images/InformationImgg.png');
-const gradeImg = require('../../assets/images/GradesImg.png');
-const houseImg = require('../../assets/images/School.png');
 const teachImg = require('../../assets/images/TeacherImg.png');
-const backImg = require('../../assets/images/backImg.png');
 
 interface ICourses {
     id: number;
@@ -55,6 +53,7 @@ const GradePageStudent: React.FC = () => {
     let[currentBody, setCurrentBody] = useState<string[]>([]);
     let[teachers, setTeacher] = useState<ITeachersItem[]>([])
     let[thead, setThead] = useState<string[]>([])
+    let[loading, setLoading] = useState(true)
 
     function updateCurrentMonth(value: any){
         setCurrentMonth(value)
@@ -95,8 +94,8 @@ const GradePageStudent: React.FC = () => {
     }
 
     useEffect(() => {
-        if(currentTable.length > 0){
-            let newCurBody = [...currentTable].slice(1).map((el: any)=>{
+        if(currentTable && currentTable.length > 0){
+            let newCurBody = [...currentTable].slice(2).map((el: any)=>{
                 if(el === null){
                     return '\u00A0'
                 }
@@ -111,6 +110,7 @@ const GradePageStudent: React.FC = () => {
     }, [currentTable]);
 
     useEffect(()=>{
+        setLoading(true)
         if(currentQuarter === 3){
             getTotalGrades().then((response: any)=>{
                 setCurrentTable(response.data.resultArray)
@@ -131,13 +131,13 @@ const GradePageStudent: React.FC = () => {
                     newTeacher.push(newObj)
                 })
                 setTeacher(newTeacher)
+                setTimeout(() => setLoading(false), 700);
             }).catch((error: any)=>{
 
             })
         }
         else{
             gradePageData(currentCourse,currentQuarter,currentMonth).then((response)=>{
-
                 let dataArr: IDataArrayItem[]  = [];
                 response.data.months.forEach((el: any, index: any)=>{
                     let obj: IDataArrayItem = {
@@ -164,13 +164,13 @@ const GradePageStudent: React.FC = () => {
                 setCourses(arrCourses)
                 setCurrentTable(response.data.evaluations)
                 setNewTeacher(response.data.teachers)
-
+                setTimeout(() => setLoading(false), 700);
             })
                 .catch((error)=>{
 
                 })
         }
-
+        setTimeout(() => setLoading(false), 700);
 
 
 
@@ -212,6 +212,7 @@ const GradePageStudent: React.FC = () => {
 
             setCurrentTable(response.data.evaluations)
             setNewTeacher(response.data.teachers)
+            setTimeout(() => setLoading(false), 700);
         })
             .catch((error)=>{
 
@@ -219,10 +220,6 @@ const GradePageStudent: React.FC = () => {
 
 
     },[])
-
-
-
-
 
     return (
         <div className={'main-page'}>
@@ -326,16 +323,30 @@ const GradePageStudent: React.FC = () => {
                         <table className={`my-table ${currentQuarter === 3 ? 'my-table-itog' : ''}`}>
                             <thead>
                             <tr>
+                                {/*{String(el).length === 3*/}
+                                {/*    ? `${el[0]} ${el.slice(1)}`*/}
+                                {/*    : el.length === 4*/}
+                                {/*        ? `${el.slice(0, 2)} ${el.slice(2)}`*/}
+                                {/*        : el}*/}
+
+                                {currentTable && Array.isArray(currentTable) && currentTable.length > 0 && Array.isArray(currentTable[0]) && currentTable[0].length > 0 ?
+                                    currentTable[0].map((el: any, index: any) => (
+                                        <th
+                                            key={index}
+                                            className={`${index === 0 ? 'first-column ' : 'column-text'} ${index === 1 ? 'break-item' : ''}`}>
+                                            {el && el.length === 3 ?
+                                                (el.slice(0, 1) + `\u00A0` + el.slice(1, 3))
+                                                : el === 'Итог' ?
+                                                    el
+                                                    : el && el.length === 4 ?
+                                                        (el.slice(0, 2) + `\u00A0` + el.slice(2, 4))
+                                                        : el}
+                                        </th>
+                                    ))
+                                    : ''
+                                }
 
 
-                                {currentTable && currentTable[0] ?  currentTable[0].map((el:any, index: any)=>(
-                                    <th key={index} className={`${index === 0 ? 'first-column ' : 'column-text'}
-                                 ${index === 1 ? 'break-item' : ''} `}>{el.length === 3
-                                        ? `${el[0]} ${el.slice(1)}`
-                                        : el.length === 4
-                                            ? `${el.slice(0, 2)} ${el.slice(2)}`
-                                            : el}</th>
-                                )) : ''}
                             </tr>
                             </thead>
                             <tbody>
@@ -368,7 +379,6 @@ const GradePageStudent: React.FC = () => {
 
             </div>
 
-
             <div className={'block-right block-right-grade'}>
                 <p className={'block-right__text'}>
                 <img src={teachImg} alt="Info img"/>
@@ -379,6 +389,9 @@ const GradePageStudent: React.FC = () => {
                 )) : ''}
 
             </div>
+
+            <Spinner loading={loading} />
+            <Toasty/>
         </div>
     );
 };

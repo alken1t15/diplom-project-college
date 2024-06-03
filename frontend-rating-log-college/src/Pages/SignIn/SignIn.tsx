@@ -8,6 +8,7 @@ import {useDispatch} from "react-redux";
 import {useCustomNavigate} from "../../hooks/navigator";
 import {removeItemFromLocalStorage, setItemsInLocalStorage} from "../../Utils/LocalStore";
 import {setUser} from "../../Store/Actions/authActions";
+import {notify, Toasty} from "../../Components/Toasty/Toasty";
 const logoImg = require("../../assets/images/Logo.png");
 const signInImg = require("../../assets/images/SignInImage.png");
 
@@ -44,6 +45,7 @@ const SignIn: React.FC = () => {
 
             })
             .catch((error)=>{
+                notify('Некорректные данные','error')
             })
     }
 
@@ -57,8 +59,8 @@ const SignIn: React.FC = () => {
                 <form className="sign-in-left-block">
                     <img className={"Logo"} src={logoImg} alt="Logo"/>
                     <p className={'title-big'}>Добро пожаловать! <br/> <span>Авторизация</span></p>
-                    <Input type={"text"} onChange={getEmail} placeholder={'Email'}/>
-                    <Input type={"password"} onChange={getPassword} placeholder={'Password'}/>
+                    <Input type={"text"} onChange={getEmail} placeholder={'Логин'}/>
+                    <Input type={"password"} onChange={getPassword} placeholder={'Пароль'}/>
                     <Button style={{marginTop: 40}} name={'Войти'} data={{email, password}} onClick={(e)=>{sendUserData(email, password)}}/>
                 </form>
                 <div className="sign-in-right-block">
@@ -67,6 +69,7 @@ const SignIn: React.FC = () => {
                     </div>
                 </div>
             </div>
+            <Toasty/>
         </div>
     );
 }

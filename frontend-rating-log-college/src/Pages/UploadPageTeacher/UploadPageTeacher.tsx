@@ -16,6 +16,10 @@ import ToggleBtns, { IToggleBtnsItems } from "../../Components/ToggleBtns/Toggle
 import DatePicker, { registerLocale } from "react-datepicker";
 import { format } from "date-fns";
 import { ru } from 'date-fns/locale'
+import {getAllSubjects} from "../../Http/AdditionalHttp";
+import Dropdown from "../../UI/Dropdown/Dropdown";
+import Spinner from "../../Components/Spinner/Spinner";
+import {notify, Toasty} from "../../Components/Toasty/Toasty";
 
 registerLocale('ru', ru);
 
@@ -29,15 +33,22 @@ const UploadPageTeacher: React.FC = () => {
     let [selectedGroup2, setSelectedGroup2] = useState<number>();
     let [subjects, setSubjects] = useState<IToggleBtnsItems[]>([]);
     let [selectedSubjects, setSelectedSubjects] = useState<string>('');
-    const [formattedDate, setFormattedDate] = useState(format(new Date(), 'yyyy-MM-dd'));
-    const [formattedDate2, setFormattedDate2] = useState(format(new Date(), 'yyyy-MM-dd'));
+    let [formattedDate, setFormattedDate] = useState(format(new Date(), 'yyyy-MM-dd'));
+    let [formattedDate2, setFormattedDate2] = useState(format(new Date(), 'yyyy-MM-dd'));
     let [curHwName, setCurHwName] = useState('')
     let[hwName, setHwName] = useState('')
     let[hwDesk, setHwDesk] = useState('')
 
-    const [isFocused, setIsFocused] = useState(false);
-    const [isFocusedDesk, setIsFocusedDesk] = useState(false);
+    let [isFocused, setIsFocused] = useState(false);
+    let [isFocusedDesk, setIsFocusedDesk] = useState(false);
 
+    let[fileDeskr, setDeskrName] = useState('')
+    let[fileDeskrFocused, setFileDeskrFocused] = useState(false)
+
+    let [subjectsFile, setSubjectsFile] = useState<{ id: number, name: string }[]>([]);
+    let [curSubject, setCurSubject] = useState<{ id: number, name: string }>();
+
+    let [loading, setLoading] = useState(true)
     const handleDateChange = (date: Date | null) => {
         if (date) {
             const newFormattedDate = format(date, 'yyyy-MM-dd');
@@ -63,10 +74,14 @@ const UploadPageTeacher: React.FC = () => {
             formData.append('files', file, file.name);
         });
         formData.append('id', String(selectedGroup));
+        formData.append('subjectName', String(curSubject?.name));
+        formData.append('description', String(fileDeskr));
 
         try {
             const response = await addNewFiles(formData);
+            notify('Файл для группы успешно добавлен', 'success')
         } catch (error) {
+            notify('Ошибка при добавлении файла', 'error')
         }
     };
 
@@ -78,8 +93,13 @@ const UploadPageTeacher: React.FC = () => {
         });
 
         try {
-            const response = await addFileToTask(curHomeWorks? curHomeWorks.id : 1,formData);
+            const response = await addFileToTask(curHomeWorks? curHomeWorks.id : 1,formData).then((response)=>{
+                notify('Файл успешно добавлен','success')
+            }).catch((error)=>{
+                notify('Не удалось отправить файл','error')
+            })
         } catch (error) {
+            notify('Не удалось отправить файл','error')
         }
     };
 
@@ -122,7 +142,14 @@ const UploadPageTeacher: React.FC = () => {
             });
             setSubjects(newSubjectArr);
         }).catch((error) => { });
-
+        getAllSubjects().then((response: any) => {
+            const newSubjects = response.data.map((el: any) => ({
+                id: el.id,
+                name: el.name
+            }));
+            setSubjectsFile(newSubjects);
+        }).catch((error) => {});
+        setTimeout(() => setLoading(false), 700);
     }, []);
 
     function updateCurrentGroup(id: number) {
@@ -236,11 +263,27 @@ const UploadPageTeacher: React.FC = () => {
                 });
                 setHoweWorks(newArr);
                 updateCurrentHomeWork(newArr[0].id);
-            }).catch((error) => { });
-        }).catch((error)=>{})
+
+            }).catch((error) => {});
+            notify('Задание добавлено','success')
+        }).catch((error)=>{
+            notify('Не удалось добавить задание','error')
+        })
 
     }
 
+    const handleSelectTeacher = (id: number) => {
+        let curName: {id: number, name: string} = {
+            id: 0,
+            name: ''
+        };
+            subjectsFile.map((el: {id: number, name: string})=>{
+                if(el.id === id){
+                    curName = el
+                }
+            })
+        setCurSubject(curName)
+    };
 
     return (
         <div className={'main-page'}>
@@ -253,7 +296,30 @@ const UploadPageTeacher: React.FC = () => {
                         <div className="toble-btn-box">
                             <ToggleBtns items={groups} onClick={updateCurrentGroup} />
                         </div>
+                        <div className="upload-container" style={{marginTop: 25}}>
+                            <input
+                                type="text"
+                                value={fileDeskr}
+                                onFocus={() => setFileDeskrFocused(true)}
+                                onBlur={() => setFileDeskrFocused(false)}
+                                onChange={(e) => setDeskrName(e.target.value)}
+                            />
+                            <label
+                                className={`upload-placeholder ${fileDeskrFocused || fileDeskr ? "active" : ""}`}
+                            >
+                                Краткое описание файла
+                            </label>
+                        </div>
                         <br />
+                        <div className="drop-block" style={{marginLeft: 0, marginBottom: 5}}>
+                            <p className="drop-block__text">Все предметы</p>
+                            <Dropdown
+                                items={subjectsFile}
+                                selectedId={curSubject ? curSubject?.id : 1}
+                                placeholder="Выберите преподавателя"
+                                onSelect={handleSelectTeacher}
+                            />
+                        </div>
                         <FileUploader onClick={addNewFile} multipart={false} />
                     </div>
 
@@ -334,6 +400,9 @@ const UploadPageTeacher: React.FC = () => {
                    if(hwName.length > 0 && hwDesk.length > 0 && formattedDate && formattedDate2) {
                        sendHw()
                    }
+                   else {
+                       notify('Выберите все данные, заполните все поля','error')
+                   }
                 }}>Добавить задание </button>
 
                 <p className={'block-right__text block-right__text-upl'}>
@@ -346,6 +415,8 @@ const UploadPageTeacher: React.FC = () => {
 
 
             </div>
+            <Spinner loading={loading} />
+            <Toasty/>
         </div>
     );
 };

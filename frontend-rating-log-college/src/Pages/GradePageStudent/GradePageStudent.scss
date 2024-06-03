@@ -52,7 +52,8 @@
       }
     }
     &-grade{
-      width: 75vw;
+      width: auto;
+      max-width: 75vw;
       padding-top: 133px;
       background-color: var(--total-black);
     }
@@ -104,7 +105,7 @@
 .my-table td {
   border-right: 1px solid #B4B7BC;
   border-bottom: 1px solid #B4B7BC;
-  padding: 19px 11px;
+  padding: 19px 10px;
 }
 
 .my-table .first-column {

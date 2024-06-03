@@ -7,194 +7,32 @@ import LatenessItem, {ITardinessItem} from "../../Components/Lateness/LatenessIt
 import ScheduleItem from "../../Components/Schedule/ScheduleItem";
 import FileUploader from "../../Components/FileUploader/FileUploader";
 import {addNewCertificate, mainPageData} from "../../Http/MainPage";
-import {$api} from "../../Http";
+import Spinner from "../../Components/Spinner/Spinner";
+import {Toasty} from "../../Components/Toasty/Toasty";
 
 const infoImg = require('../../assets/images/InformationImgg.png');
 const gradeImg = require('../../assets/images/GradesImg.png');
 const houseImg = require('../../assets/images/School.png');
 const teachImg = require('../../assets/images/TeacherImg.png');
 const backImg = require('../../assets/images/backImg.png');
+
+interface IGradeLIne {
+    teacherName: string;
+    subject: string;
+    date: string;
+    grade: number;
+}
+
 const MainPageStudent: React.FC = () => {
 
     let[currentPage, setCurrentPage] = useState(7);
-    let [dateArray, setDateArray] = useState<IDataArrayItem[]>([
-        {
-            isActive: true,
-            date: 'Янв',
-            number: "01",
-            requestMonth: 1
-        },
-        {
-            isActive: false,
-            date: 'Фев',
-            number: "02",
-            requestMonth: 1
-        },
-        {
-            isActive: false,
-            date: 'Март',
-            number: "03",
-            requestMonth: 1
-        },
-        {
-            isActive: false,
-            date: 'Апр',
-            number: "04",
-            requestMonth: 1
-        },
-        {
-            isActive: false,
-            date: 'Май',
-            number: "05",
-            requestMonth: 1
-        },
-        {
-            isActive: false,
-            date: 'Июн',
-            number: "06",
-            requestMonth: 1
-        },
-        {
-            isActive: false,
-            date: 'Сен',
-            number: "09",
-            requestMonth: 1
-        },
-        {
-            isActive: false,
-            date: 'Окт',
-            number: "10",
-            requestMonth: 1
-        },
-        {
-            isActive: false,
-            date: 'Нояб',
-            number: "11",
-            requestMonth: 1
-        },
-        {
-            isActive: false,
-            date: 'Дек',
-            number: "12",
-            requestMonth: 1
-        },
-    ])
-    let[tardinessItem, setTardinessItem] = useState<ITardinessItem[]>([
-            {
-                date: "2 сентября",
-                nameOfDay: "Вторник",
-                tardiness: [ {
-                    id: 1,
-                    type: 'yellow',
-                    text: 'С опозданием',
-                    subject: 'Веб-программирование'
-                },
-                    {
-                        id: 2,
-                        type: 'green',
-                        text: 'Без опозданий',
-                        subject: 'Основа право'
-                    },
-                    {
-                        id: 3,
-                        type: 'red',
-                        text: 'Отсутвует',
-                        subject: 'Комп сети'
-                    },
-                    {
-                        id: 4,
-                        type: 'cyan',
-                        text: 'С справкой',
-                        subject: 'Комп сети'
-                    }]
-            } ,
-            {
-                date: "2 сентября",
-                nameOfDay: "Среда",
-                tardiness: [ {
-                    id: 1,
-                    type: 'yellow',
-                    text: 'С опозданием',
-                    subject: 'Веб-программирование'
-                },
-                    {
-                        id: 2,
-                        type: 'yellow',
-                        text: 'Без опозданий',
-                        subject: 'Основа право'
-                    },
-                    {
-                        id: 3,
-                        type: 'red',
-                        text: 'Отсутвует',
-                        subject: 'Комп сети'
-                    },
-                    {
-                        id: 4,
-                        type: 'cyan',
-                        text: 'С справкой',
-                        subject: 'Комп сети'
-                    }]
-            },
-            {
-                date: "2 сентября",
-                nameOfDay: "Среда",
-                tardiness: [ {
-                    id: 1,
-                    type: 'yellow',
-                    text: 'С опозданием',
-                    subject: 'Веб-программирование'
-                },
-                    {
-                        id: 2,
-                        type: 'yellow',
-                        text: 'Без опозданий',
-                        subject: 'Основа право'
-                    },
-                    {
-                        id: 3,
-                        type: 'red',
-                        text: 'Отсутвует',
-                        subject: 'Комп сети'
-                    },
-                    {
-                        id: 4,
-                        type: 'cyan',
-                        text: 'С справкой',
-                        subject: 'Комп сети'
-                    }]
-            }
-        ])
+    let[dateArray, setDateArray] = useState<IDataArrayItem[]>([])
+    let[tardinessItem, setTardinessItem] = useState<ITardinessItem[]>([])
     let[schedule, setSchedule] = useState({date: '',
         nameOfDay: '',
         items: []})
     let[active, setIsActive] = useState(false)
-    let[gradeLine, setGradeLine] = useState([
-        {
-            teacherName: 'Денис Валентинович',
-            subject: 'Веб-программирования',
-            date: '3 сентября 2023',
-            grade: 5
-        },
-        {
-            teacherName: 'Денис Валентинович',
-            subject: 'Веб-программирования',
-            date: '3 сентября 2023',
-            grade: 4
-        },
-        {
-            teacherName: 'Денис Валентинович',
-            subject: 'Веб-программирования',
-            date: '3 сентября 2023',
-            grade: 3
-        },
-        {
-            teacherName: 'Денис Валентинович',
-            subject: 'Веб-программирования',
-            date: '3 сентября 2023',
-            grade: 2
-        },
-        ]);
+    let[gradeLine, setGradeLine] = useState<IGradeLIne[]>([]);
     let[user, setUser] = useState({
             name: ' ',
             lastName: ' ',
@@ -202,8 +40,9 @@ const MainPageStudent: React.FC = () => {
             yearGroup: ' ',
     })
     let[file, setFile] = useState<any[]>([])
-
+    let[loading, setLoading] = useState(true)
     function updateCurrentPage(value: any){
+        setLoading(true)
         setCurrentPage(value)
         mainPageData(value)
             .then(response=>{
@@ -247,6 +86,7 @@ const MainPageStudent: React.FC = () => {
         })
 
         setTardinessItem(newTardiness)
+        setTimeout(() => setLoading(false), 700);
     }
 
     function formatDate(dateString: string): string {
@@ -316,6 +156,8 @@ const MainPageStudent: React.FC = () => {
                     }
                 ]
                 setFile(newFile)
+
+
 
             })
             .catch(error=>{
@@ -416,11 +258,9 @@ const MainPageStudent: React.FC = () => {
         }
     };
 
-
-
     return (
         <div className={'main-page'}>
-            <div className={'block-left'}>
+            <div className={'block-left block-left-m-s'}>
                 <div className="block-left-header">
                     <p className={'block-left__text'}>
                         <img src={infoImg} alt="Info img"/>
@@ -469,43 +309,46 @@ const MainPageStudent: React.FC = () => {
                 </div>
 
             </div>
-            <div className={'block-right'}>
+            <div className={'block-right block-right-m-s'}>
                 <p className={'block-right__text'}>
                     <img src={teachImg} alt="Info img"/>
                     Расписание на сегодня
                 </p>
-                <ScheduleItem date={schedule.date} nameOfDay={schedule.nameOfDay} schedules={schedule.items}/>
-                <button className="block-right__button" onClick={
-                    (e) => {
-                        setIsActive(true)
-                    }
-                }>
+                {schedule.items.length > 0 ? <>   <ScheduleItem date={schedule.date} nameOfDay={schedule.nameOfDay} schedules={schedule.items}/>
+                    <button className="block-right__button" onClick={
+                        (e) => {
+                            setIsActive(true)
+                        }
+                    }>
 
-                    <img src={infoImg} alt="Information img"/>
-                    Сообщить об отсутвие на занятие
-                </button>
-                <div className={`image-block ${active ? 'image-block-active' : ''} `}>
-                    <div className="image-block-top">
-                        <p className={'image-block-top__text'}>
-                            <button onClick={(e) => {
-                                setIsActive(false)
-                            }} className="image-block__button-close">
-                                <img src={backImg} alt="Back img" className={`back-img`}/>
-                            </button>
+                        <img src={infoImg} alt="Information img"/>
+                        Сообщить об отсутвие на занятие
+                    </button>
+                    <div className={`image-block ${active ? 'image-block-active' : ''} `}>
+                        <div className="image-block-top">
+                            <p className={'image-block-top__text'}>
+                                <button onClick={(e) => {
+                                    setIsActive(false)
+                                }} className="image-block__button-close">
+                                    <img src={backImg} alt="Back img" className={`back-img`}/>
+                                </button>
 
-                            <img src={infoImg} alt="Info img" className={`image-block-top__img`}/>
-                            Сообщить об отсуствии
-                        </p>
-
-
-
-                    <FileUploader onClick={sendCertif} multipart={false} items={file}/>
+                                <img src={infoImg} alt="Info img" className={`image-block-top__img`}/>
+                                Сообщить об отсуствии
+                            </p>
 
 
 
-                    </div>
-                </div>
+                            <FileUploader onClick={sendCertif} multipart={false} items={file}/>
+
+
+
+                        </div>
+                    </div></> : <p>Сегодня не учебный день</p>}
+
             </div>
+            <Spinner loading={loading} />
+            <Toasty/>
         </div>
     );
 };

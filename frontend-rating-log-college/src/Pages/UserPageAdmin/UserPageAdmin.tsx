@@ -10,6 +10,8 @@ import Dropdown from "../../UI/Dropdown/Dropdown";
 import FileUploader from "../../Components/FileUploader/FileUploader";
 import {addNewCertificate, mainPageData} from "../../Http/MainPage";
 import {IDataArrayItem} from "../../Components/Pagination/Pagination";
+import Spinner from "../../Components/Spinner/Spinner";
+import {notify, Toasty} from "../../Components/Toasty/Toasty";
 
 registerLocale('ru', ru);
 
@@ -32,6 +34,7 @@ const UserPageAdmin: React.FC = () => {
     const [groups, setGroups] = useState<{ id: number, name: string }[]>([]);
     const [curGroup, setCurGroup] = useState<number | null>(null);
 
+    let[loading, setLoading] = useState(true)
 
     const handleDateChange = (date: Date | null) => {
         if (date) {
@@ -64,8 +67,10 @@ const UserPageAdmin: React.FC = () => {
 
     function addStudent(){
         addNewTeacher(teacherName, teacherLastName, teacherMiddleName, teacherLogin, teacherPassword, formattedDate, formattedDate2).then((response)=>{
-
-        }).catch((error)=>{})
+            notify('Преподаватель успешно добавлен','success')
+        }).catch((error)=>{
+            notify('Не удалось добавить преподавателя','error')
+        })
 
     }
 
@@ -78,6 +83,7 @@ const UserPageAdmin: React.FC = () => {
             }));
             setGroups(newGroups);
         }).catch((error) => {});
+        setTimeout(() => setLoading(false), 700);
     },[])
 
     const sendNewStud = async (files: File[]) => {
@@ -90,12 +96,13 @@ const UserPageAdmin: React.FC = () => {
         });
         try {
             const response = await addNewStudentFromFile(formData).then((response)=>{
-
+                notify('Студент успешно добавлен','success')
             }).catch((error)=>{
-
+                notify('Не удалось добавить студента','error')
             })
 
         } catch (error) {
+            notify('Не удалось добавить студента','error')
         }
     };
 
@@ -187,6 +194,10 @@ const UserPageAdmin: React.FC = () => {
                            if(teacherName && teacherPassword && teacherLogin && teacherMiddleName && teacherLastName) {
                                addStudent()
                            }
+                           else{
+                               notify('Заполните все поля','error')
+                           }
+
                        }}>Создать нового учителя</button>
                    </div>
                </div>
@@ -273,8 +284,13 @@ const UserPageAdmin: React.FC = () => {
                         <button className={`admin-add-btn`} onClick={(e)=>{
                             if(studFName && studScName && studMidName && studLogin && studPass && studBorn && curGroup) {
                                 addNewStudent(studFName, studScName, studMidName, studLogin, studPass, studBorn, curGroup).then((response)=>{
-
-                                }).catch((error)=>{})
+                                    notify('Студент успешно добавлен','success')
+                                }).catch((error)=>{
+                                    notify('Не удалось добавить студента','error')
+                                })
+                            }
+                            else{
+                                notify('Заполните все поля','error')
                             }
                         }}>Создать нового студента</button>
                     </div>
@@ -301,6 +317,8 @@ const UserPageAdmin: React.FC = () => {
                 </div>
 
             </div>
+            <Spinner loading={loading} />
+            <Toasty/>
         </div>
     );
 };

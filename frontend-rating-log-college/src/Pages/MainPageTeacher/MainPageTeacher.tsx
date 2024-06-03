@@ -12,6 +12,9 @@ import {login} from "../../Http/User";
 import StudentWithoutCertificate, {
     IStudentWithoutCertificateItem
 } from "../../Components/StudentWithoutCertificate/StudentWithoutCertificate";
+import Spinner from "../../Components/Spinner/Spinner";
+import {notify, Toasty} from "../../Components/Toasty/Toasty";
+import {setLoading} from "../../Store/Actions/authActions";
 
 
 const infoImg = require('../../assets/images/InformationImgg.png');
@@ -52,6 +55,7 @@ const MainPageTeacher: React.FC = () => {
     let[activeGroup, setActiveGroup] = useState(0);
     let[curSubject, setCurSubject] = useState<string>('');
     let[curCouple, setCurCouple] = useState<number>(0);
+    let[loading, setLoading] = useState(true)
 
     useEffect(()=>{
     },[curSlider])
@@ -209,8 +213,7 @@ const MainPageTeacher: React.FC = () => {
                     return newObj;
                 })
                 setSchedule(newSchedule)
-
-
+                setTimeout(() => setLoading(false), 700);
 
             })
             .catch(error=>{
@@ -296,8 +299,9 @@ const MainPageTeacher: React.FC = () => {
                 .catch(error=>{
 
                 })
+            notify('Опоздания успешно обновлены', 'success')
         }).catch((error)=>{
-
+            notify('Ошибка при обновлении опозданий', 'error')
         })
 
     }
@@ -375,6 +379,8 @@ const MainPageTeacher: React.FC = () => {
                 </div>
 
             </div>
+            <Spinner loading={loading} />
+            <Toasty/>
         </div>
     );
 };

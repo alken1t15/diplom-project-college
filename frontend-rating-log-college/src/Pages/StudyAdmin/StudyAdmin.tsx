@@ -15,6 +15,8 @@ import {
 import Dropdown from "../../UI/Dropdown/Dropdown";
 import DatePicker from "react-datepicker";
 import {format} from "date-fns";
+import {notify, Toasty} from "../../Components/Toasty/Toasty";
+import Spinner from "../../Components/Spinner/Spinner";
 
 const StudyAdmin: React.FC = () => {
     const [teachers, setTeachers] = useState<{ id: number, name: string }[]>([]);
@@ -50,6 +52,7 @@ const StudyAdmin: React.FC = () => {
     const [typeEnd, setTypeEnd] = useState(format(new Date(), 'yyyy-MM-dd'));
     const [typeName, setTypeName] = useState('');
     const [numbCouple, setNumbCouple] = useState('');
+    const [loading ,setLoading] = useState(true)
 
     useEffect(() => {
         getAllTeachers().then((response: any) => {
@@ -115,6 +118,7 @@ const StudyAdmin: React.FC = () => {
             }));
             setSpecializations(newSpecializations);
         }).catch((error) => {});
+        setTimeout(() => setLoading(false), 700);
     }, []);
 
     useEffect(()=>{
@@ -332,6 +336,7 @@ const StudyAdmin: React.FC = () => {
                            <button className={`admin-add-btn`} onClick={(e)=>{
                                if(curCurator && groupValue && curSpecialization) {
                                    addGroup(curCurator, groupValue,curSpecialization).then((response)=>{
+                                       notify('Группа успешно добавлена','success')
                                        getAllGroups().then((response: any) => {
                                            const newGroups = response.data.map((el: any) => ({
                                                id: el.id,
@@ -339,7 +344,13 @@ const StudyAdmin: React.FC = () => {
                                            }));
                                            setGroups(newGroups);
                                        }).catch((error) => {});
-                                   }).catch((error)=>{})
+
+                                   }).catch((error)=>{
+                                       notify('Не удалось добавить группу','error')
+                                   })
+                               }
+                               else{
+                                   notify('Заполните все необходимые данные','error')
                                }
 
                            }}>Добавить группу</button>
@@ -373,10 +384,15 @@ const StudyAdmin: React.FC = () => {
                                                name: `${el.block} блок , ${el.floor} этаж, ${el.cabinet} аудитория`
                                            }));
                                            setAuditoriums(newAuditoriums);
+                                           notify('Аудитория успешно добавлена','success')
                                        }).catch((error) => {});
-                                   }).catch((error)=>{})
+                                   }).catch((error)=>{
+                                       notify('Не удалось добавить аудиторию','error')
+                                   })
                                }
-
+                                else{
+                                    notify('Заполните все данные','error')
+                               }
                            }}>Добавить аудиторию</button>
                        </div>
                    </div>
@@ -418,7 +434,13 @@ const StudyAdmin: React.FC = () => {
                            <button className={`admin-add-btn`} onClick={(e)=>{
                                if(curGroup && semNum && courNum) {
                                    addSemestr(curGroup, semNum,courNum, formattedDate2, formattedDate).then((response)=>{
-                                   }).catch((error)=>{})
+                                       notify('Семестр успешно добавлен','success')
+                                   }).catch((error)=>{
+                                       notify('Не удалось добавить семестр','error')
+                                   })
+                               }
+                               else {
+                                   notify('Заполните все данные','error')
                                }
 
                            }}>Добавить семестр</button>
@@ -458,16 +480,21 @@ const StudyAdmin: React.FC = () => {
                            <button className={`admin-add-btn`} onClick={(e)=>{
                                if(curStudyInfo) {
                                    addTypeStudy(curStudyInfo, typeName, typeStart, typeEnd).then((response)=>{
-                                   }).catch((error)=>{})
+                                       notify('Тип учебы успешно добавлен','success')
+                                   }).catch((error)=>{
+                                       notify('Не удалось добавить тип учебы','error')
+                                   })
                                }
-
+                               else{
+                                   notify('Заполните все данные','error')
+                               }
                            }}>Добавить тип учебы</button>
                        </div>
                    </div>
 
                    <div className="info-container info-container-st" style={{width: 450}}>
                        <p className="info-container__name">Добавить предмет для учебы</p>
-                       <label className={`upload-placeholder-admin`} style={{marginLeft: 10}}>Выберите тип учебы, время учебы, предмет, преподавателя, аудиторию, день недели выше</label>
+                       <label className={`upload-placeholder-admin`} style={{marginLeft: 10}}>Выберите группу, семестр, тип учебы, время учебы, предмет, преподавателя, аудиторию, день недели выше</label>
                        <div className="inner-container" >
                            <div className="admin-upload-container admin-upload-container-u admin-upload-container-u-e" style={{width: 259}} >
                                <label className={`upload-placeholder-admin`}>Номер пары</label>
@@ -478,16 +505,24 @@ const StudyAdmin: React.FC = () => {
                            <button className={`admin-add-btn`} onClick={(e)=>{
                                if(numbCouple && curTypeStudy && curTimeSlot && curSubject && curTeacher && curAuditorium && curDay) {
                                    addSubjectForStud(curTypeStudy, curTimeSlot, curSubject, curTeacher, curAuditorium, curDay, Number(numbCouple)).then((response)=>{
-                                   }).catch((error)=>{})
+                                       notify('Предмет успешно добавлен','success')
+                                   }).catch((error)=>{
+                                       notify('Не удалось добавить предмет','error')
+                                   })
                                }
 
-                           }}>Добавить тип учебы</button>
+                               else{
+                                   notify('Заполните все данные','error')
+                               }
+                           }}>Добавить предмет для учебы</button>
                        </div>
                    </div>
 
                </div>
 
             </div>
+            <Spinner loading={loading} />
+            <Toasty/>
         </div>
     );
 };

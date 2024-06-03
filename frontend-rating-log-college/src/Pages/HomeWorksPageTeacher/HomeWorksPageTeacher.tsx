@@ -6,6 +6,8 @@ import HomeWorkTeacherItem from "../../Components/HomeWorkTeacherItem/HomeWorkTe
 import Slider from "../../Components/Slider/Slider";
 import CurrentStudentHomeWork, { IFile } from "../../Components/CurrentStudentHomeWork/CurrentStudentHomeWork";
 import { getStudentHomeWork, getStudentHomeWorks, sendNewGrade, sendRepeatHw } from "../../Http/HomeWorks";
+import Spinner from "../../Components/Spinner/Spinner";
+import {notify, Toasty} from "../../Components/Toasty/Toasty";
 
 export interface ISchedule {
     groupName: string;
@@ -43,7 +45,7 @@ export interface ICurrentHomeWork {
 }
 
 const HomeWorksPageTeacher: React.FC = () => {
-    const [filterItems, setFilterItems] = useState<IFilterItem[]>([
+    let [filterItems, setFilterItems] = useState<IFilterItem[]>([
         {
             id: 1,
             name: 'Предмет',
@@ -72,11 +74,10 @@ const HomeWorksPageTeacher: React.FC = () => {
             ]
         },
     ]);
-
-    const [searchText, setSearchText] = useState('');
-    const [homeWorks, setHomeWorks] = useState<IHomeWorks[]>([]);
-    const [curHomeWorks, setCurHomeWorks] = useState<ICurrentHomeWork>();
-    const [slider, setSlider] = useState([
+    let [searchText, setSearchText] = useState('');
+    let [homeWorks, setHomeWorks] = useState<IHomeWorks[]>([]);
+    let [curHomeWorks, setCurHomeWorks] = useState<ICurrentHomeWork>();
+    let [slider, setSlider] = useState([
         {
             id: 1,
             name: 'Выставление оценок',
@@ -88,15 +89,15 @@ const HomeWorksPageTeacher: React.FC = () => {
             active: false,
         },
     ]);
-    const [curSlider, setCurSlider] = useState(1);
-
-    const [curId, setCurId] = useState<number>();
-    const [curName, setCurName] = useState<string>();
-    const [curSubject, setCurSubject] = useState<string>();
-    const [curGroup, setCurGroup] = useState<string>();
-    const [curCount, setCurCount] = useState<string>();
-    const [curDate, setCurDate] = useState<string>();
-    const [curStudents, setCurStudents] = useState<IStudentHomeWorks[]>([]);
+    let [curSlider, setCurSlider] = useState(1);
+    let [curId, setCurId] = useState<number>();
+    let [curName, setCurName] = useState<string>();
+    let [curSubject, setCurSubject] = useState<string>();
+    let [curGroup, setCurGroup] = useState<string>();
+    let [curCount, setCurCount] = useState<string>();
+    let [curDate, setCurDate] = useState<string>();
+    let [curStudents, setCurStudents] = useState<IStudentHomeWorks[]>([]);
+    let [loading, setLoading] = useState(true)
 
     useEffect(() => {
         getStudentHomeWorks().then((response) => {
@@ -113,8 +114,8 @@ const HomeWorksPageTeacher: React.FC = () => {
             if (newArr.length > 0) {
                 setCurId(newArr[0].id);
             }
+            setTimeout(() => setLoading(false), 700);
         }).catch((error) => {
-            console.error(error);
         });
     }, []);
 
@@ -210,9 +211,11 @@ const HomeWorksPageTeacher: React.FC = () => {
                         }
                     }).catch((error) => {});
 
+                    notify('Студент отправлен на пересдачу', 'success');
+
                 }
             }).catch((error) => {
-                console.error(error);
+                notify('Не удалось отправить студента на пересдачу', 'error');
             });
         } else if (Number(value)) {
             sendNewGrade(curHomeWorks ? curHomeWorks.id : 9999, id, Number(value)).then(() => {
@@ -231,16 +234,21 @@ const HomeWorksPageTeacher: React.FC = () => {
                             return newObj
 
                         });
-                        console.log(newArr)
                         // setHomeWorks(newArr);
+
                         if (newArr.length > 0) {
                             setCurId(curId);
                         }
+
                     }).catch((error) => {});
+
+                    notify('Оценка успешно выставлена', 'success');
                 }
             }).catch((error) => {
+                notify('Не удалось изменить оценку студенту', 'error');
             });
         }
+
     };
 
     return (
@@ -251,8 +259,8 @@ const HomeWorksPageTeacher: React.FC = () => {
                 </p>
 
                 <div className="block-middle-top block-middle-top-hw-t">
-                    <Filter items={filterItems} onClick={setCurrentFilter} />
-                    <Search onChange={updateSearchText} style={{ marginLeft: 30 }} />
+                    {/*<Filter items={filterItems} onClick={setCurrentFilter} />*/}
+                    <Search onChange={updateSearchText} />
                 </div>
 
                 <div className="homeworks-box">
@@ -290,6 +298,8 @@ const HomeWorksPageTeacher: React.FC = () => {
                     )) : ''}
                 </div>
             </div>
+            <Spinner loading={loading} />
+            <Toasty/>
         </div>
     );
 };

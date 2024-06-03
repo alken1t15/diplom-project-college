@@ -3,13 +3,12 @@ import { ru } from 'date-fns/locale';
 import {registerLocale} from "react-datepicker";
 import './EventPageTeacher.scss';
 import Calendar from "../../Components/Calendar/Calendar";
-import EventItem from '../../Components/EventItem/EventItem';
 import ToggleBtns, {IToggleBtnsItems} from "../../Components/ToggleBtns/ToggleBtns";
 import TimeBlock from "../../Components/TimeBlock/TimeBlock";
 import EventStudentItem, {IEventStudentItem} from "../../Components/EventStudentItem/EventStudentItem";
 import {addGrade, getAllAboutGroupAndSubjects, getStudents} from "../../Http/HomeWorks";
-import {useSelector} from "react-redux";
-import {selectUser} from "../../Store/Selectors/authSelectors";
+import Spinner from "../../Components/Spinner/Spinner";
+import {notify, Toasty} from "../../Components/Toasty/Toasty";
 const calendarImg = require('../../assets/images/calendar.png');
 
 
@@ -34,6 +33,7 @@ const EventPageTeacher: React.FC = () => {
     let[currentEvent, setCurrentEvent] = useState('')
     let[curCount, setCurCount] = useState<number>()
     let[students, setStudent] = useState<IEventStudentItem[]>([])
+    let[loading, setLoading] = useState(true)
 
 
     const getTime = () => {
@@ -66,6 +66,7 @@ const EventPageTeacher: React.FC = () => {
                 return newObj;
             });
             setSubject(newSubjectArr);
+            setTimeout(() => setLoading(false), 700);
         }).catch((error) => { });
 
         getTime()
@@ -88,7 +89,6 @@ const EventPageTeacher: React.FC = () => {
 
     const updateDate = (value: Date) => {
         const formattedDate = value.toISOString().split('T')[0];
-        console.log(formattedDate)
         setDate(formattedDate);
     }
 
@@ -184,13 +184,20 @@ const EventPageTeacher: React.FC = () => {
 
                         addGrade(activeSubject, date, newStudent)
                             .then((response) => {
+                                notify('Оценки успешно добавлены', 'success')
                             })
                             .catch((error) => {
+                                notify('Выберите дату, группу, предмет', 'error')
                             });
+                    }
+                    else {
+                        notify('Выберите дату, группу, предмет', 'error')
                     }
 
                 }}>Выставить </button>
             </div>
+            <Spinner loading={loading} />
+            <Toasty/>
         </div>
     );
 };
