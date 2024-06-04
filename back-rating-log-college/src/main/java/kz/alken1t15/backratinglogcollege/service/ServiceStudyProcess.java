@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
@@ -50,7 +51,7 @@ public class ServiceStudyProcess {
             typeStudiesId = repositoryTypeStudy.findByIdStudyProcess(studyProcess.getId());
         }
         List<PlanStudyFindDTO> teachers = new ArrayList<>();
-        for (Long id : typeStudiesId){
+        for (Long id : typeStudiesId) {
             List<PlanStudyFindDTO> temp = repositoryPlanStudy.findByIdTypeStudy(id);
             teachers.addAll(temp);
         }
@@ -82,11 +83,11 @@ public class ServiceStudyProcess {
             nameObjects = repositoryEvaluation.findByDateStudentCourseDistinctName(yearStart, yearEnd, process.getCourse(), student.getId());
             for (String name : nameObjects) {
                 evaluationsObjects = repositoryEvaluation.findByDateStudentCourseNameObject(yearStart, yearEnd, process.getCourse(), student.getId(), name);
-                taskStudents = repositoryTaskStudents.findByIdStudentAndDate(student.getId(),yearStart,yearEnd,name);
+                taskStudents = repositoryTaskStudents.findByIdStudentAndDate(student.getId(), yearStart, yearEnd, name);
                 String[] tempArr = new String[daysInMonth + 1];
                 tempArr[0] = name;
                 long total = 0;
-                int count =0;
+                int count = 0;
                 for (Evaluations e : evaluationsObjects) {
                     total = e.getBall() + total;
                     LocalDate localDate = e.getDateEvaluation();
@@ -100,22 +101,19 @@ public class ServiceStudyProcess {
                     count++;
                 }
                 ArrayList<String> arrayList = new ArrayList<>();
-                int day = 0;
-                int i = 0;
-                for (String str : tempArr){
-                    if (i==0){
-                        arrayList.add(str);
-                        i++;
-                        continue;
-                    }
-                    if (day == 6) {
-                        day = 0;
+                arrayList.add(tempArr[0]);
+                LocalDate day = yearStart;
+                for (int i = 1; i < tempArr.length; i++) {
+                    String str = tempArr[i];
+                    int dayOfWeek = day.getDayOfWeek().getValue();
+                    if (dayOfWeek == 7) {
+                        day = day.plusDays(1);
                         continue;
                     }
                     arrayList.add(str);
-                    day++;
+                    day = day.plusDays(1);
                 }
-                arrayList.add(String.valueOf(total/count));
+                arrayList.add(String.valueOf(total / count));
                 evalStudy.add(arrayList.toArray(new String[0]));
             }
         } else {
@@ -137,10 +135,10 @@ public class ServiceStudyProcess {
             nameObjects = repositoryEvaluation.findByDateStudentCourseDistinctName(yearStart, yearEnd, student.getGroup().getCurrentCourse(), student.getId());
             for (String name : nameObjects) {
                 evaluationsObjects = repositoryEvaluation.findByDateStudentCourseNameObject(yearStart, yearEnd, student.getGroup().getCurrentCourse(), student.getId(), name);
-                taskStudents = repositoryTaskStudents.findByIdStudentAndDate(student.getId(),yearStart,yearEnd,name);
+                taskStudents = repositoryTaskStudents.findByIdStudentAndDate(student.getId(), yearStart, yearEnd, name);
                 String[] tempArr = new String[daysInMonth + 1];
                 tempArr[0] = name;
-                int count =0;
+                int count = 0;
                 long total = 0;
                 for (Evaluations e : evaluationsObjects) {
                     LocalDate localDate = e.getDateEvaluation();
@@ -155,22 +153,19 @@ public class ServiceStudyProcess {
                     count++;
                 }
                 ArrayList<String> arrayList = new ArrayList<>();
-                int day = 0;
-                int i = 0;
-                for (String str : tempArr){
-                    if (i==0){
-                        arrayList.add(str);
-                        i++;
-                        continue;
-                    }
-                    if (day == 6) {
-                        day = 0;
+                arrayList.add(tempArr[0]);
+                LocalDate day = yearStart;
+                for (int i = 1; i < tempArr.length; i++) {
+                    String str = tempArr[i];
+                    int dayOfWeek = day.getDayOfWeek().getValue();
+                    if (dayOfWeek == 7) {
+                        day = day.plusDays(1);
                         continue;
                     }
                     arrayList.add(str);
-                    day++;
+                    day = day.plusDays(1);
                 }
-                arrayList.add(String.valueOf(total/count));
+                arrayList.add(String.valueOf(total / count));
                 evalStudy.add(arrayList.toArray(new String[0]));
             }
         }
@@ -200,7 +195,7 @@ public class ServiceStudyProcess {
     }
 
 
-    public  List<MonthReturnDTO> getAllMonths(LocalDate startDate, LocalDate endDate) {
+    public List<MonthReturnDTO> getAllMonths(LocalDate startDate, LocalDate endDate) {
         String[] arrMonth = new String[]{"01 Янв", "02 Фев", "03 Март", "04 Апр", "05 Май", "06 Июн", "", "", "09 Сен", "10 Окт", "11 Нояб", "12 Дек"};
 
         List<MonthReturnDTO> months = new ArrayList<>();
@@ -213,22 +208,22 @@ public class ServiceStudyProcess {
         return months;
     }
 
-    public StudyProcess getStudyProcessForSemester(Integer course,Integer semester,Long idGroup){
-     return  repositoryStudyProcess.findByCourseSemesterGroup(course, semester, idGroup);
+    public StudyProcess getStudyProcessForSemester(Integer course, Integer semester, Long idGroup) {
+        return repositoryStudyProcess.findByCourseSemesterGroup(course, semester, idGroup);
     }
 
-    public List<MonthReturnDTO> getStudyProcessAll(Integer course,Long idGroup){
-        List<StudyProcess> processes = repositoryStudyProcess.findByCourseGroup(course,  idGroup);
+    public List<MonthReturnDTO> getStudyProcessAll(Integer course, Long idGroup) {
+        List<StudyProcess> processes = repositoryStudyProcess.findByCourseGroup(course, idGroup);
         StudyProcess studyProcess = processes.get(0);
         StudyProcess studyProcess2 = processes.get(1);
-        List<MonthReturnDTO> arr1 = getAllMonths(studyProcess.getDateStart(),studyProcess.getDateEnd());
-        List<MonthReturnDTO> arr2 = getAllMonths(studyProcess2.getDateStart(),studyProcess2.getDateEnd());
+        List<MonthReturnDTO> arr1 = getAllMonths(studyProcess.getDateStart(), studyProcess.getDateEnd());
+        List<MonthReturnDTO> arr2 = getAllMonths(studyProcess2.getDateStart(), studyProcess2.getDateEnd());
         arr1.addAll(arr2);
         List<MonthReturnDTO> monthReturnDTOS = new ArrayList<>();
         Integer dayOfMouth = LocalDate.now().getMonthValue();
-        for (int i = 0; i<arr1.size();i++){
+        for (int i = 0; i < arr1.size(); i++) {
             MonthReturnDTO month = arr1.get(i);
-            if (month.getRequestMonth()==dayOfMouth){
+            if (month.getRequestMonth() == dayOfMouth) {
                 monthReturnDTOS.add(month);
                 break;
             }
@@ -248,15 +243,15 @@ public class ServiceStudyProcess {
             return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
         }
         Groups group = serviceGroups.findById(studyProcess.getIdGroup());
-        if (group==null){
-            return new ResponseEntity("Нету такой группы",HttpStatus.BAD_REQUEST);
+        if (group == null) {
+            return new ResponseEntity("Нету такой группы", HttpStatus.BAD_REQUEST);
         }
-        repositoryStudyProcess.save(new StudyProcess(group,studyProcess.getSemester(),studyProcess.getCourse(),studyProcess.getStart(),studyProcess.getEnd()));
+        repositoryStudyProcess.save(new StudyProcess(group, studyProcess.getSemester(), studyProcess.getCourse(), studyProcess.getStart(), studyProcess.getEnd()));
         return new ResponseEntity(HttpStatus.OK);
     }
 
 
-    public StudyProcess findById(Long id){
+    public StudyProcess findById(Long id) {
         return repositoryStudyProcess.findById(id).orElse(null);
     }
 }
