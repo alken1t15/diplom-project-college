@@ -1,6 +1,7 @@
 package kz.alken1t15.backratinglogcollege.contoller;
 
 
+import io.micrometer.common.util.StringUtils;
 import kz.alken1t15.backratinglogcollege.dto.*;
 import kz.alken1t15.backratinglogcollege.dto.teacher.TeacherAddDTO;
 import kz.alken1t15.backratinglogcollege.entity.AuditoriumAddDTO;
@@ -101,6 +102,13 @@ public class ControllerCreate {
 
     @PostMapping(path = "/specialization/add")
     public ResponseEntity addSpecialization(@RequestBody @Validated SpecializationAddDTO specializationAddDTO) {
+        if (StringUtils.isBlank(specializationAddDTO.getName())){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        Specialization specialization = repositorySpecialization.findByName(specializationAddDTO.getName());
+        if (specialization!=null){
+            return new ResponseEntity("Такая специальность уже есть", HttpStatus.CONFLICT);
+        }
         repositorySpecialization.save(new Specialization(specializationAddDTO.getName()));
         return new ResponseEntity(HttpStatus.OK);
     }

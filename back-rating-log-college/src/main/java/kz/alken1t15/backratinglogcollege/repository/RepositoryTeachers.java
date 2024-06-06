@@ -8,5 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RepositoryTeachers extends JpaRepository<Teachers,Long> {
+    Teachers findByFirstNameAndSecondName(String firstName, String secondName);
 
 }

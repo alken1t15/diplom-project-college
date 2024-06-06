@@ -1,5 +1,6 @@
 package kz.alken1t15.backratinglogcollege.service;
 
+import kz.alken1t15.backratinglogcollege.dto.Semester;
 import kz.alken1t15.backratinglogcollege.dto.StudyProcessDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.MonthReturnDTO;
 import kz.alken1t15.backratinglogcollege.dto.work.PlanStudyFindDTO;
@@ -245,6 +246,10 @@ public class ServiceStudyProcess {
         Groups group = serviceGroups.findById(studyProcess.getIdGroup());
         if (group == null) {
             return new ResponseEntity("Нету такой группы", HttpStatus.BAD_REQUEST);
+        }
+        StudyProcess studyProcess1 = repositoryStudyProcess.findByCourseSemesterGroup(studyProcess.getCourse(),studyProcess.getSemester(), group.getId());
+        if (studyProcess1!=null){
+            return new ResponseEntity("Такой семестер уже есть", HttpStatus.CONFLICT);
         }
         repositoryStudyProcess.save(new StudyProcess(group, studyProcess.getSemester(), studyProcess.getCourse(), studyProcess.getStart(), studyProcess.getEnd()));
         return new ResponseEntity(HttpStatus.OK);

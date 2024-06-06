@@ -26,6 +26,10 @@ public class ServiceCurator {
     }
 
     public ResponseEntity saveNewCurator(Teachers teacher) {
+        Curator curator = repositoryCurator.findByIdTeacher(teacher.getId());
+        if (curator!=null){
+            return new ResponseEntity("Такой куратор уже есть", HttpStatus.CONFLICT);
+        }
         repositoryCurator.save(new Curator(teacher));
         return new ResponseEntity(HttpStatus.OK);
     }

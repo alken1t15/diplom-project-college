@@ -27,4 +27,7 @@ public interface RepositoryEvaluations extends JpaRepository<Evaluations,Long> {
 
     @Query("select e  from Evaluations  e where   e.dateEvaluation between ?1 and ?2 and e.studentsCourse.student.id = ?3 and e.nameObject = ?4")
     List<Evaluations> findByDateStudentCourseSubjectName(LocalDate start, LocalDate end, Long idStudent,String nameSubject);
+
+    @Query("select  e from  Evaluations  e where  e.studentsCourse.id=?1 and e.nameObject= ?2 and e.dateEvaluation = ?3")
+    Evaluations findByCourseNameSubjectAndDate(Long id, String name,LocalDate date);
 }
