@@ -10,4 +10,6 @@ public interface RepositoryStudents extends JpaRepository<Students,Long> {
 
     @Query("select s from  Students s where  s.id = ?1")
     Optional<Students> findByIdCustom(Long id);
+
+    Students findByFirstNameAndSecondName(String firstName, String secondName);
 }

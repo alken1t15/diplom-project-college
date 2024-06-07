@@ -201,7 +201,7 @@ public class ServiceTeachers {
                     List<TeacherFileDTO> files = new ArrayList<>();
                     List<TaskStudentsFiles> taskStudentsFiles = taskStudents.getTaskStudentsFiles();
                     for (TaskStudentsFiles t : taskStudentsFiles) {
-                        files.add(new TeacherFileDTO(t.getFilesStudent().getName(),readFile(t.getFilesStudent().getName())));
+                        files.add(new TeacherFileDTO(t.getFilesStudent().getName(), readFile(t.getFilesStudent().getName())));
                     }
                     homeWorkGetDTOs.add(new StudentHomeWorkDTO(s.getId(), nameStudent, null, files));
                 }
@@ -213,7 +213,7 @@ public class ServiceTeachers {
                     List<TeacherFileDTO> files = new ArrayList<>();
                     List<TaskStudentsFiles> taskStudentsFiles = taskStudents.getTaskStudentsFiles();
                     for (TaskStudentsFiles t : taskStudentsFiles) {
-                        files.add(new TeacherFileDTO(t.getFilesStudent().getName(),readFile(t.getFilesStudent().getName())));
+                        files.add(new TeacherFileDTO(t.getFilesStudent().getName(), readFile(t.getFilesStudent().getName())));
                     }
                     homeWorkGetDTOs.add(new StudentHomeWorkDTO(s.getId(), nameStudent, ball, files));
                 }
@@ -274,6 +274,10 @@ public class ServiceTeachers {
         User user = serviceUser.getUser(teacher.getLogin());
         if (user != null) {
             return new ResponseEntity("Такой логи занят", HttpStatus.CONFLICT);
+        }
+        Teachers teachers = repositoryTeacher.findByFirstNameAndSecondName(teacher.getFirstName(), teacher.getSecondName());
+        if (teachers != null) {
+            return new ResponseEntity("Такой пользователь есть", HttpStatus.CONFLICT);
         }
         Long idUser = serviceUser.save(teacher.getLogin(), passwordEncoder.encode(teacher.getPassword()), "teacher");
         if (StringUtils.isBlank(teacher.getMiddleName())) {
@@ -350,7 +354,13 @@ public class ServiceTeachers {
                     studentsCourse = s;
                 }
                 long bull = b.getBull();
-                repositoryEvaluations.save(new Evaluations(studentsCourse, subjectStudy.getName(), addBullStudentDTO.getDate(), bull, name));
+                Evaluations evaluation = repositoryEvaluations.findByCourseNameSubjectAndDate(studentsCourse.getId(), subjectStudy.getName(), addBullStudentDTO.getDate());
+                if (evaluation != null) {
+                    evaluation.setBall(bull);
+                    repositoryEvaluations.save(evaluation);
+                } else {
+                    repositoryEvaluations.save(new Evaluations(studentsCourse, subjectStudy.getName(), addBullStudentDTO.getDate(), bull, name));
+                }
             }
         }
         return new ResponseEntity(HttpStatus.OK);

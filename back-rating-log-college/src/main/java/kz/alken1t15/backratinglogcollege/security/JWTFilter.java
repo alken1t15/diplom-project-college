@@ -36,6 +36,7 @@ public class JWTFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String headerAuth = request.getHeader("Authorization");
         response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+//        response.addHeader("Access-Control-Allow-Origin", "http://185.104.249.244:3000");
         response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         response.addHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
         response.addHeader("Access-Control-Allow-Credentials", "true");
@@ -68,19 +69,18 @@ public class JWTFilter extends OncePerRequestFilter {
                 Authentication authenticationUser = authenticationManager.authenticate(authentication);
                 if (authenticationUser.isAuthenticated()) {
                     User user = repositoryUser.findByLogin(login).orElseThrow();
-                    if (user.getJwt()==null){
+                    if (user.getJwt() == null) {
                         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                         response.getWriter().write("Не правильный JWT токен");
                         response.setCharacterEncoding("UTF-8");
                         return;
                     }
-                    if (!user.getJwt().equals(token)){
+                    if (!user.getJwt().equals(token)) {
                         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                         response.getWriter().write("Истек срок JWT токен");
                         response.setCharacterEncoding("UTF-8");
                         return;
-                    }
-                   else if (date.isAfter(LocalDate.now())) {
+                    } else if (date.isAfter(LocalDate.now())) {
                         SecurityContext securityContext = SecurityContextHolder.getContext();
                         securityContext.setAuthentication(authenticationUser);
                         SecurityContextHolder.setContext(securityContext);
@@ -103,7 +103,7 @@ public class JWTFilter extends OncePerRequestFilter {
             }
         } else {
             String url = request.getRequestURL().toString();
-            if (url.equals("http://localhost:8080/login/jwt")) {
+            if (url.endsWith("/login/jwt")) {
                 if (request.getMethod().equals("OPTIONS")) {
                     response.setStatus(HttpServletResponse.SC_OK);
                 } else {
@@ -113,10 +113,6 @@ public class JWTFilter extends OncePerRequestFilter {
             }
             if (request.getMethod().equals("OPTIONS")) {
                 response.setStatus(HttpServletResponse.SC_OK);
-            } else {
-                response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                response.getWriter().write("Вы не ввели JWT токен");
-                response.setCharacterEncoding("UTF-8");
             }
         }
     }

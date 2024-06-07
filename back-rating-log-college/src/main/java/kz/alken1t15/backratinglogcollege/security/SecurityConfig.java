@@ -22,7 +22,9 @@ public class SecurityConfig {
                         .requestMatchers("/teacher/**").hasRole("teacher")
                         .requestMatchers("/student/**").hasRole("student")
                         .requestMatchers("/create/**").hasRole("admin")
-                        .anyRequest().authenticated())
+                        .anyRequest()
+                        .authenticated()
+                )
                 .build();
     }
 }

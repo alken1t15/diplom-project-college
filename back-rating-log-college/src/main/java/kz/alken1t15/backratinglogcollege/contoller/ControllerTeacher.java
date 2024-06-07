@@ -30,7 +30,7 @@ public class ControllerTeacher {
     private final ServiceFilesStudent serviceFilesStudent;
     private final ServiceOmissions serviceOmissions;
     private final ServiceTaskStudents serviceTaskStudents;
-
+    private final ServiceEvaluations serviceEvaluations;
     @PostMapping(path = "/home/add")
     public ResponseEntity addNewFileHomeTaskTeacher(@Validated @RequestParam List<MultipartFile> files, @NonNull @RequestParam("id") Long id) {
         return serviceHoweWork.addNewFileHomeTaskTeacher(files,id);
@@ -81,6 +81,16 @@ public class ControllerTeacher {
     @PostMapping(path = "/work/add")
     private ResponseEntity addNewWork(@Validated @RequestBody HomeWorkAddDTO homeWorkAddDTO, BindingResult bindingResult){
         return serviceHoweWork.addNewWork(homeWorkAddDTO,bindingResult);
+    }
+
+    @PostMapping(path = "/group/student")
+    private ResponseEntity getStudentGroup(@Validated @RequestBody StudentGroupDTO studentGroupDTO,BindingResult bindingResult){
+        return serviceEvaluations.getEvaluationStudentGroup(studentGroupDTO,bindingResult);
+    }
+
+    @PostMapping(path = "/group/student/total")
+    private ResponseEntity getStudentGroupTotal(@Validated @RequestBody StudentGroupTotalDTO studentGroupTotalDTO,BindingResult bindingResult){
+        return serviceEvaluations.getEvaluationStudentGroupTotal(studentGroupTotalDTO,bindingResult);
     }
 
     @PostMapping(path = "/study")

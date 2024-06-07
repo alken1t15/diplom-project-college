@@ -89,6 +89,10 @@ public class ServiceStudents {
         if (group == null) {
             return new ResponseEntity("Такой группы нету", HttpStatus.BAD_REQUEST);
         }
+        Students studentFind = repositoryStudents.findByFirstNameAndSecondName(student.getFirstName(),student.getSecondName());
+        if (studentFind !=null){
+            return new ResponseEntity("Такой пользователь уже есть", HttpStatus.CONFLICT);
+        }
         Long id = serviceUser.save(student.getLogin(), passwordEncoder.encode(student.getPassword()), "student");
         Students students = repositoryStudents.save(new Students(id, group, student.getFirstName(), student.getSecondName(), student.getMiddleName(), student.getBornDate(), student.getSubgroupName()));
         repositoryStudentCourse.save(new StudentsCourse(students, 1));
@@ -110,7 +114,7 @@ public class ServiceStudents {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            String excelFilePath = "C:\\fileDiplomProject\\" + uniqueFileName;
+            String excelFilePath = pathSaveFile + uniqueFileName;
 
             try (FileInputStream fis = new FileInputStream(new File(excelFilePath));
                  Workbook workbook = new XSSFWorkbook(fis)) {
@@ -157,6 +161,10 @@ public class ServiceStudents {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+            Students studentFind = repositoryStudents.findByFirstNameAndSecondName(firstName,secondName);
+            if (studentFind !=null){
+                return new ResponseEntity("Такой пользователь уже есть", HttpStatus.CONFLICT);
             }
             saveNewStudent(new StudentAddDTO(id,firstName,secondName,middleName,login,password,born,null));
         }
