@@ -9,9 +9,8 @@
   <component name="ChangeListManager">
     <list default="true" id="1bccd24e-30c0-4aec-9f57-1d7d68595d13" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/query/sql.sql" beforeDir="false" afterPath="$PROJECT_DIR$/query/sql.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/security/JWTFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/security/JWTFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/.env" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -164,6 +163,9 @@
       <workItem from="1717567775444" duration="610000" />
       <workItem from="1717608410827" duration="614000" />
       <workItem from="1717694863992" duration="66000" />
+      <workItem from="1717695018711" duration="953000" />
+      <workItem from="1717780289244" duration="683000" />
+      <workItem from="1717781311377" duration="1474000" />
     </task>
     <servers />
   </component>
