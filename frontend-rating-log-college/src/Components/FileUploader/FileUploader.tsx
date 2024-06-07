@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './FileUploader.scss';
+import {useTranslation} from "react-i18next";
 const uploadImg = require('../../assets/images/UploadImg.png');
 const fileIcon = require('../../assets/images/filesSVg.svg').default;
 
@@ -20,9 +21,11 @@ interface IFileUploader {
     multipart?: boolean;
 }
 
+
 const base64ToBlob = (base64: string, mimeType: string = ''): Blob => {
     const byteCharacters = atob(base64);
     const byteArrays = [];
+
 
     for (let offset = 0; offset < byteCharacters.length; offset += 512) {
         const slice = byteCharacters.slice(offset, offset + 512);
@@ -46,6 +49,7 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [hwId, setHwId] = useState(props.homeWorkId);
     const [active, isActive] = useState<boolean | undefined>(undefined);
+    const { t } = useTranslation();
 
     function selectFiles() {
         if (fileInputRef.current) {
@@ -148,7 +152,7 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
                         isFile: !mimeType.startsWith('image/')
                     };
                 } catch (error) {
-                    console.error("Invalid base64 string:", item.file);
+                    console.error(`${t('errorToBlob')}:`, item.file);
                     return { name: item.name, url: fileIcon, isFile: true };
                 }
             });
@@ -186,14 +190,14 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
                  onDrop={onDrop}>
                 {
                     isDragging ? (
-                        <span className="select">Перетащите {props.multipart ? 'файлы' : 'файл'}</span>
+                        <span className="select">{t('move')} {props.multipart ? `${t('files')}` : `${t('file')}`}</span>
                     ) : (
                         <span className="select">
                           <span className="select-top">
                                 <img src={uploadImg} alt=""/>
-                                <span>Перетащите {props.multipart ? 'файлы' : 'файл'} или нажмите для загрузки</span>
+                                <span>{t('move')} {props.multipart ? t('files') : t('file')} {t('orClickOnDownload')}</span>
                           </span>
-                          <p className={`select-light`}>Загружайте {props.multipart ? 'файлы' : 'файл'} не больше 100 мб</p>
+                          <p className={`select-light`}>{t('move')} {props.multipart ? `${t('files')}` : `${t('file')}`} {t('more100')}</p>
                         </span>
                     )
                 }
@@ -227,7 +231,7 @@ const FileUploader: React.FC<IFileUploader> = (props) => {
             </button>
             {parentImgs.length > 0 && (
                 <div className="preview">
-                    <h3>Ваши прикрепленные {props.multipart ? 'файлы' : 'файл'}:</h3>
+                    <h3>{t('yourFiles')} {props.multipart ? 'файлы' : 'файл'}:</h3>
                     {parentImgs.map((img, index) => (
                         <a key={index} href={img.url} download={img.name} target="_blank" rel="noopener noreferrer" style={{display: "inline"}}>
                             <img src={img.url} alt={img.name} onError={handleImageError} />

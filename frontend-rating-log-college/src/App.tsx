@@ -35,7 +35,7 @@ import Admin from "./Components/AdminLayout/Admin";
 import MainPageAdmin from "./Pages/MainPageAdmin/MainPageAdmin";
 import UserPageAdmin from "./Pages/UserPageAdmin/UserPageAdmin";
 import StudyAdmin from "./Pages/StudyAdmin/StudyAdmin";
-
+import './i18n';
 function App() {
 
     const { setNavigate } = useCustomNavigate();
@@ -105,7 +105,7 @@ function App() {
                       </Route>
 
 
-                    <Route path="*" element={<NotFound />} />
+                    {/*<Route path="*" element={<NotFound />} />*/}
                   </Route>
 
               </Routes>

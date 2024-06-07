@@ -9,6 +9,9 @@ import FileUploader from "../../Components/FileUploader/FileUploader";
 import {addNewCertificate, mainPageData} from "../../Http/MainPage";
 import Spinner from "../../Components/Spinner/Spinner";
 import {Toasty} from "../../Components/Toasty/Toasty";
+import {useSelector} from "react-redux";
+import {selectLanguage} from "../../Store/Selectors/authSelectors";
+import {useTranslation} from "react-i18next";
 
 const infoImg = require('../../assets/images/InformationImgg.png');
 const gradeImg = require('../../assets/images/GradesImg.png');
@@ -41,6 +44,7 @@ const MainPageStudent: React.FC = () => {
     })
     let[file, setFile] = useState<any[]>([])
     let[loading, setLoading] = useState(true)
+    const currentLanguage = useSelector(selectLanguage);
     function updateCurrentPage(value: any){
         setLoading(true)
         setCurrentPage(value)
@@ -90,10 +94,11 @@ const MainPageStudent: React.FC = () => {
     }
 
     function formatDate(dateString: string): string {
-        const monthNames = [
+        const monthNames = currentLanguage === 'ru' ? [
             "января", "февраля", "марта", "апреля", "мая", "июня",
             "июля", "августа", "сентября", "октября", "ноября", "декабря"
-        ];
+        ] : ["қаңтар", "ақпан", "наурыз", "сәуір", "мамыр", "маусым",
+    "шілде", "тамыз", "қыркүйек", "қазан", "қараша", "желтоқсан"];
         const date = new Date(dateString);
         const day = date.getDate();
         const month = monthNames[date.getMonth()];
@@ -144,6 +149,7 @@ const MainPageStudent: React.FC = () => {
                         })
 
                 }
+
                 setSchedule(scheduleObj)
 
                 updateOmissions(response.data.omissions)
@@ -257,14 +263,14 @@ const MainPageStudent: React.FC = () => {
         } catch (error) {
         }
     };
-
+    const { t } = useTranslation();
     return (
         <div className={'main-page'}>
             <div className={'block-left block-left-m-s'}>
                 <div className="block-left-header">
                     <p className={'block-left__text'}>
                         <img src={infoImg} alt="Info img"/>
-                        Личная информация
+                        {t('personInfo')}
                     </p>
                     <div className="block-left-header-personal">
                         <div className="block-left-header-personal-l">
@@ -273,11 +279,11 @@ const MainPageStudent: React.FC = () => {
                         <div className="block-left-header-personal-r">
                             <p className="block-left-header-personal-r__header">{user.lastName} {user.name}</p>
                             <p className="block-left-header-personal-r__column" style={{marginLeft: 0}}>
-                                Год поступления:
+                                {t('yearAdmission')}:
                                 <span className="block-left-header-personal-r__text">{user.yearGroup}</span>
                             </p>
                             <p className="block-left-header-personal-r__column">
-                                Группа:
+                                {t('group')}:
                                 <span className="block-left-header-personal-r__text">{user.groupName}</span>
                             </p>
                         </div>
@@ -285,7 +291,7 @@ const MainPageStudent: React.FC = () => {
                     <div className="block-left-grades" >
                         <p className={'block-left__text'}>
                             <img src={gradeImg} alt="Info img"/>
-                            Оценки полученные сегодня
+                            {t('evaluationsToday')}
                         </p>
                         {gradeLine.map((el, index)=>(
                                 <GradeLine item={el} styles={{marginTop: 0}} teachersBlock={true} key={index}/>
@@ -299,7 +305,7 @@ const MainPageStudent: React.FC = () => {
             <div className={'block-middle'}>
                 <p className={'block-middle__text'}>
                     <img src={houseImg} alt="Info img"/>
-                    Посещяемость
+                    {t('attendance')}
                 </p>
                 <Pagination items={dateArray} onChange={updateCurrentPage} styles={{marginBottom: 15}}/>
                 <div className="lateness-block">
@@ -312,7 +318,7 @@ const MainPageStudent: React.FC = () => {
             <div className={'block-right block-right-m-s'}>
                 <p className={'block-right__text'}>
                     <img src={teachImg} alt="Info img"/>
-                    Расписание на сегодня
+                    {t('todaySchedule')}
                 </p>
                 {schedule.items.length > 0 ? <>   <ScheduleItem date={schedule.date} nameOfDay={schedule.nameOfDay} schedules={schedule.items}/>
                     <button className="block-right__button" onClick={
@@ -322,7 +328,7 @@ const MainPageStudent: React.FC = () => {
                     }>
 
                         <img src={infoImg} alt="Information img"/>
-                        Сообщить об отсутвие на занятие
+                        {t('reportAbsence')}
                     </button>
                     <div className={`image-block ${active ? 'image-block-active' : ''} `}>
                         <div className="image-block-top">
@@ -334,7 +340,7 @@ const MainPageStudent: React.FC = () => {
                                 </button>
 
                                 <img src={infoImg} alt="Info img" className={`image-block-top__img`}/>
-                                Сообщить об отсуствии
+                                {t('reportAbsenceM')}
                             </p>
 
 
@@ -344,7 +350,7 @@ const MainPageStudent: React.FC = () => {
 
 
                         </div>
-                    </div></> : <p>Сегодня не учебный день</p>}
+                    </div></> : <p>{t('todayIsNotaSchoolDay')}</p>}
 
             </div>
             <Spinner loading={loading} />

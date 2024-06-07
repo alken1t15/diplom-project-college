@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import './EventStudentItem.scss';
 import InitialsImage from "../InitialsImage/InitialsImage";
+import {useTranslation} from "react-i18next";
 
 export interface IEventStudentItem{
     id: number;
@@ -32,7 +33,7 @@ const EventStudentItem: React.FC<EventStudent> = (props) => {
         }
     };
 
-
+    const { t } = useTranslation();
     return (
         <div className={`event-student-item`}>
             <div className="event-student-item-l">
@@ -40,7 +41,7 @@ const EventStudentItem: React.FC<EventStudent> = (props) => {
             </div>
             <div className="event-student-item-r">
                 <p className="event-student-item-r__name">{name}</p>
-                <p className="event-student-item-r__ommis">Пропусков:&nbsp;<span>{count}</span></p>
+                <p className="event-student-item-r__ommis">{t('omissionCount')}:&nbsp;<span>{count}</span></p>
             </div>
             <input type="number" value={inputValue} onChange={(e)=>{
                 validateAndSetInput(e.target.value)

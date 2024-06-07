@@ -2,12 +2,14 @@ import React, {CSSProperties} from 'react';
 import './TimeBlock.scss';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
+import {useSelector} from "react-redux";
+import {selectLanguage} from "../../Store/Selectors/authSelectors";
 export interface ITimeBlock{
     time: string;
     style?: CSSProperties;
 }
 const TimeBlock: React.FC<ITimeBlock> = ({ time,style}) => {
-
+    const currentLanguage = useSelector(selectLanguage);
     const today = new Date();
     const day = format(today, 'dd MMM', { locale: ru });
     const weekday = format(today, 'EEEE', { locale: ru });

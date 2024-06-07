@@ -6,25 +6,21 @@ import TeachersBlock, {ITeachersItem} from "../../Components/TeachersBlock/Teach
 import {getTotalGrades, gradePageData} from "../../Http/GradePage";
 import Spinner from "../../Components/Spinner/Spinner";
 import {Toasty} from "../../Components/Toasty/Toasty";
-
+import {useTranslation} from "react-i18next";
 const teachImg = require('../../assets/images/TeacherImg.png');
-
 interface ICourses {
     id: number;
     active: boolean;
     text: string;
 }
-
 interface ISem {
     id: number;
     active: boolean;
     name: string;
 }
-
 interface IGradeTable{
     items: string[]
 }
-
 const GradePageStudent: React.FC = () => {
 
     let[currentMonth, setCurrentMonth] = useState(9);
@@ -32,21 +28,22 @@ const GradePageStudent: React.FC = () => {
     let[currentQuarter , setCurrentQuarter] = useState(1);
     let[dateArray, setDateArray] = useState<IDataArrayItem[]>([])
     let[courses, setCourses] = useState<ICourses[]>([]);
+    const { t } = useTranslation();
     let[quarters , setQuarters] = useState<ISem[]>([
         {
             id: 1,
             active: true,
-            name: `1 семестр`,
+            name: `1 ${t('semestr')}`,
         },
         {
             id: 2,
             active: false,
-            name: `2 семестр`,
+            name: `2 ${t('semestr')}`,
         },
         {
             id: 3,
             active: false,
-            name: `Итоговые оценки`,
+            name: `${t('conclusion')}`,
         },
     ]);
     let[currentTable, setCurrentTable] = useState<any[]>([])
@@ -54,11 +51,9 @@ const GradePageStudent: React.FC = () => {
     let[teachers, setTeacher] = useState<ITeachersItem[]>([])
     let[thead, setThead] = useState<string[]>([])
     let[loading, setLoading] = useState(true)
-
     function updateCurrentMonth(value: any){
         setCurrentMonth(value)
     }
-
     function updateActiveQuarter(id: any){
         let newArr = quarters.map((el, index)=>{
             el.active = el.id === id;
@@ -67,10 +62,8 @@ const GradePageStudent: React.FC = () => {
         setQuarters(newArr)
         setCurrentQuarter(id)
     }
-
     const handleCarouselChange = (index: number) => {
         const newItems = courses.map((item, i) => {
-
                 item.active = i === index
             if(i === index){
                 setCurrentCourse(prevState => {
@@ -81,7 +74,6 @@ const GradePageStudent: React.FC = () => {
         });
         setCourses(newItems);
     };
-
     function setNewTeacher(array: ITeachersItem[]){
         let newTeachArr = array.map((el: any)=>{
             let newObj = {
@@ -92,7 +84,6 @@ const GradePageStudent: React.FC = () => {
         })
         setTeacher(newTeachArr)
     }
-
     useEffect(() => {
         if(currentTable && currentTable.length > 0){
             let newCurBody = [...currentTable].slice(2).map((el: any)=>{
@@ -102,13 +93,8 @@ const GradePageStudent: React.FC = () => {
                 return el
             })
             setCurrentBody(newCurBody);
-
         }
-
-
-
     }, [currentTable]);
-
     useEffect(()=>{
         setLoading(true)
         if(currentQuarter === 3){
@@ -121,7 +107,6 @@ const GradePageStudent: React.FC = () => {
                     }
                 })
                 setThead(newThead)
-
                 let newTeacher: any[] = []
                 response.data.teacher.forEach((el: any)=>{
                     let newObj = {
@@ -133,7 +118,6 @@ const GradePageStudent: React.FC = () => {
                 setTeacher(newTeacher)
                 setTimeout(() => setLoading(false), 700);
             }).catch((error: any)=>{
-
             })
         }
         else{
@@ -147,19 +131,16 @@ const GradePageStudent: React.FC = () => {
                         requestMonth: el.requestMonth,
                     };
                     dataArr.push(obj)
-
                 })
                 setDateArray(dataArr)
-
                 let arrCourses = [];
                 for(let i = 1; i !== response.data.totalCourse+1; i++){
                     let obj = {
                         id: i,
                         active: i === 1,
-                        text: `${i} курс`,
+                        text: `${i} ${t('courseM')}`,
                     }
                     arrCourses.push(obj)
-
                 }
                 setCourses(arrCourses)
                 setCurrentTable(response.data.evaluations)
@@ -167,20 +148,12 @@ const GradePageStudent: React.FC = () => {
                 setTimeout(() => setLoading(false), 700);
             })
                 .catch((error)=>{
-
                 })
         }
         setTimeout(() => setLoading(false), 700);
-
-
-
-
     }, [currentMonth, currentQuarter, currentCourse])
-
-
     useEffect(()=>{
         gradePageData(currentCourse,currentQuarter,currentMonth).then((response)=>{
-
             let dataArr: IDataArrayItem[]  = [];
             response.data.months.forEach((el: any, index: any)=>{
                 let obj: IDataArrayItem = {
@@ -190,42 +163,28 @@ const GradePageStudent: React.FC = () => {
                     requestMonth: el.requestMonth,
                 };
                 dataArr.push(obj)
-
             })
             setDateArray(dataArr)
-
-
             let arrCourses = [];
             for(let i = 1; i !== response.data.totalCourse+1; i++){
                 let obj = {
                     id: i,
                     active: i === 1,
-                    text: `${i} курс`,
+                    text: `${i} ${t('courseM')}`,
                 }
                 arrCourses.push(obj)
-
             }
-
             setCourses(arrCourses)
-
-
-
             setCurrentTable(response.data.evaluations)
             setNewTeacher(response.data.teachers)
             setTimeout(() => setLoading(false), 700);
         })
             .catch((error)=>{
-
             })
-
-
     },[])
-
     return (
         <div className={'main-page'}>
             <div className={'block-middle block-middle-grade'}>
-
-
                 <div className="block-middle-wrapper">
                     {quarters.length > 0 ? <div className="block-middle-tabs">
                         {quarters.map((el, index) => (
@@ -242,17 +201,13 @@ const GradePageStudent: React.FC = () => {
                     </div> : ''}
                     <div className="block-middle-top">
                         {currentQuarter === 3 ? "" :
-
                            <TextCarousel items={courses} onChange={handleCarouselChange}/>
                         }
-
                     </div>
                     {currentQuarter === 3 ? "" :
-
                         <Pagination isGrades={true} items={dateArray} onChange={updateCurrentMonth}
                                     styles={{marginBottom: 15, marginTop: 23}}/>
                     }
-
                     <div className="block-middle-grades">
                         <div className="block-middle-grades-item">
                             <div className="block-middle-grades-item__red"></div>
@@ -271,7 +226,6 @@ const GradePageStudent: React.FC = () => {
                             <p className="block-middle-grades-item__text">90-100</p>
                         </div>
                     </div>
-
                     {currentQuarter === 3 ?
                         <table className={`my-table ${currentQuarter === 3 ? 'my-table-itog' : ''}`}>
                             <thead>
@@ -297,7 +251,6 @@ const GradePageStudent: React.FC = () => {
                             {currentBody && currentBody.length > 0 ? currentBody.map((el: any, index)=> (
                                 <tr key={index}>
                                     {el.map((childEl: any, chileIndex: any)=> (
-
                                         <td key={chileIndex} className={`${chileIndex === 0 ? 'first-column' : 'column-text'}
                                        ${
                                             Number(childEl) >= 90 ? 'table-item-green' :
@@ -305,30 +258,17 @@ const GradePageStudent: React.FC = () => {
                                                     Number(childEl) > 40 && Number(childEl) < 70 ? 'table-item-yellow' :
                                                         Number(childEl) <= 40 && Number(childEl) !== 0 ? 'table-item-red' :
                                                             chileIndex == 1 ? '' : ''
-
-
                                         }
                                     `}>{childEl !== '-' ? childEl : ''}{chileIndex !== 0 && childEl !== '-' ? '%' : ''}</td>
                                     ))}
-
                                 </tr>
                             )) : ''}
-
-
                             </tbody>
                         </table>
-
                     :
-
                         <table className={`my-table ${currentQuarter === 3 ? 'my-table-itog' : ''}`}>
                             <thead>
                             <tr>
-                                {/*{String(el).length === 3*/}
-                                {/*    ? `${el[0]} ${el.slice(1)}`*/}
-                                {/*    : el.length === 4*/}
-                                {/*        ? `${el.slice(0, 2)} ${el.slice(2)}`*/}
-                                {/*        : el}*/}
-
                                 {currentTable && Array.isArray(currentTable) && currentTable.length > 0 && Array.isArray(currentTable[0]) && currentTable[0].length > 0 ?
                                     currentTable[0].map((el: any, index: any) => (
                                         <th
@@ -345,15 +285,12 @@ const GradePageStudent: React.FC = () => {
                                     ))
                                     : ''
                                 }
-
-
                             </tr>
                             </thead>
                             <tbody>
                             {currentBody && currentBody.length > 0 ? currentBody.map((el: any, index)=> (
                                 <tr key={index}>
                                     {el.map((childEl: any, chileIndex: any)=> (
-
                                         <td key={chileIndex} className={`${chileIndex === 0 ? 'first-column' : 'column-text'}
                                        ${
                                             Number(childEl) >= 90 ? 'table-item-green' :
@@ -361,39 +298,28 @@ const GradePageStudent: React.FC = () => {
                                                     Number(childEl) > 40 && Number(childEl) < 70 ? 'table-item-yellow' :
                                                         Number(childEl) <= 40 && Number(childEl) !== 0 ? 'table-item-red' :
                                                             chileIndex == 1 ? '' : ''
-
-
                                         }
                                     `}>{childEl ? childEl : ''}{chileIndex !== 0 && childEl? '%' : ''}</td>
                                     ))}
-
                                 </tr>
                             )) : ''}
-
-
                             </tbody>
                         </table>
                     }
                 </div>
-
-
             </div>
-
             <div className={'block-right block-right-grade'}>
                 <p className={'block-right__text'}>
                 <img src={teachImg} alt="Info img"/>
-                    Список преподавателей
+                    {t('teacherList')}
                 </p>
                 {teachers.length > 0 ? teachers.map((el, index)=>(
                     <TeachersBlock item={el} key={index}/>
                 )) : ''}
-
             </div>
-
             <Spinner loading={loading} />
             <Toasty/>
         </div>
     );
 };
-
 export default GradePageStudent;

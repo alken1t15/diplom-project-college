@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import './StudentWithoutCertificate.scss';
 import InitialsImage from "../InitialsImage/InitialsImage";
 import CheckBox from "../../UI/checkBox/checkBox";
+import {useTranslation} from "react-i18next";
 export interface IStudentWithoutCertificateItem{
     name: string;
     count: number;
@@ -31,7 +32,7 @@ const StudentWithoutCertificate: React.FC<IForStudent> = (props) => {
         props.onChange(id, value)
         setStatus(value)
     }
-
+    const { t } = useTranslation();
     return (
         <div className={`studentWithoutCertificate-block`}>
             <div className={`studentWithoutCertificate-block-l`}>
@@ -40,7 +41,7 @@ const StudentWithoutCertificate: React.FC<IForStudent> = (props) => {
                 </div>
                 <div className="studentWithoutCertificate-block-text">
                     <p className="studentWithoutCertificate-block-text__name">{name}</p>
-                    <p className="studentWithoutCertificate-block-text__count">Пропусков:&nbsp;<span>{count}</span></p>
+                    <p className="studentWithoutCertificate-block-text__count">{t('omissionCount')}:&nbsp;<span>{count}</span></p>
                 </div>
 
             </div>

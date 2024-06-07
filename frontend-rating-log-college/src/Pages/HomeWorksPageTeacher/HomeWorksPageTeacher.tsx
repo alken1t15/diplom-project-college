@@ -8,6 +8,7 @@ import CurrentStudentHomeWork, { IFile } from "../../Components/CurrentStudentHo
 import { getStudentHomeWork, getStudentHomeWorks, sendNewGrade, sendRepeatHw } from "../../Http/HomeWorks";
 import Spinner from "../../Components/Spinner/Spinner";
 import {notify, Toasty} from "../../Components/Toasty/Toasty";
+import {useTranslation} from "react-i18next";
 
 export interface ISchedule {
     groupName: string;
@@ -75,17 +76,18 @@ const HomeWorksPageTeacher: React.FC = () => {
         },
     ]);
     let [searchText, setSearchText] = useState('');
+    const { t } = useTranslation();
     let [homeWorks, setHomeWorks] = useState<IHomeWorks[]>([]);
     let [curHomeWorks, setCurHomeWorks] = useState<ICurrentHomeWork>();
     let [slider, setSlider] = useState([
         {
             id: 1,
-            name: 'Выставление оценок',
+            name: `${t('sliderWithOutGrades')}`,
             active: true,
         },
         {
             id: 2,
-            name: 'С оценками',
+            name: `${t('sliderWithGrades')}`,
             active: false,
         },
     ]);
@@ -211,11 +213,11 @@ const HomeWorksPageTeacher: React.FC = () => {
                         }
                     }).catch((error) => {});
 
-                    notify('Студент отправлен на пересдачу', 'success');
+                    notify(`${t('studentToRepeat')}`, 'success');
 
                 }
             }).catch((error) => {
-                notify('Не удалось отправить студента на пересдачу', 'error');
+                notify(`${t('studentToRepeatError')}`, 'error');
             });
         } else if (Number(value)) {
             sendNewGrade(curHomeWorks ? curHomeWorks.id : 9999, id, Number(value)).then(() => {
@@ -234,7 +236,6 @@ const HomeWorksPageTeacher: React.FC = () => {
                             return newObj
 
                         });
-                        // setHomeWorks(newArr);
 
                         if (newArr.length > 0) {
                             setCurId(curId);
@@ -242,10 +243,10 @@ const HomeWorksPageTeacher: React.FC = () => {
 
                     }).catch((error) => {});
 
-                    notify('Оценка успешно выставлена', 'success');
+                    notify(`${t('studentGrade')}`, 'success');
                 }
             }).catch((error) => {
-                notify('Не удалось изменить оценку студенту', 'error');
+                notify(`${t('studentGradeError')}`, 'error');
             });
         }
 
@@ -260,7 +261,7 @@ const HomeWorksPageTeacher: React.FC = () => {
 
                 <div className="block-middle-top block-middle-top-hw-t">
                     {/*<Filter items={filterItems} onClick={setCurrentFilter} />*/}
-                    <Search onChange={updateSearchText} />
+                    {/*<Search onChange={updateSearchText} />*/}
                 </div>
 
                 <div className="homeworks-box">
@@ -274,19 +275,19 @@ const HomeWorksPageTeacher: React.FC = () => {
                     {curName}
                 </p>
                 <div className="homework-teacher-item-inner-block" style={{ marginTop: 15 }}>
-                    <p className="homework-teacher-item-inner-block__title">Предмет:</p>
+                    <p className="homework-teacher-item-inner-block__title">{t('subject')}:</p>
                     <p className="homework-teacher-item-inner-block__text">{curSubject}</p>
                 </div>
                 <div className="homework-teacher-item-inner-block" style={{ marginTop: 15 }}>
-                    <p className="homework-teacher-item-inner-block__title">Группа:</p>
+                    <p className="homework-teacher-item-inner-block__title">{t('group')}:</p>
                     <p className="homework-teacher-item-inner-block__text">{curGroup}</p>
                 </div>
                 <div className="homework-teacher-item-inner-block" style={{ marginTop: 25 }}>
-                    <p className="homework-teacher-item-inner-block__text homework-teacher-item-inner-block__text-u">Выполнили: {curCount}</p>
+                    <p className="homework-teacher-item-inner-block__text homework-teacher-item-inner-block__text-u">{t('completed')}: {curCount}</p>
                 </div>
                 <div className="homework-teacher-item-inner-block" style={{ marginTop: 10 }}>
                     <p className="homework-teacher-item-inner-block__text homework-teacher-item-inner-block__text-u">
-                        <span className={`expires-block`}>Срок до:</span>
+                        <span className={`expires-block`}>{t('expiresTo')}:</span>
                         <span className={`expires-block__text`}>&nbsp;{curDate}</span></p>
                 </div>
 

@@ -4,6 +4,7 @@ import InitialsImage from "../InitialsImage/InitialsImage";
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import {ReactComponent as sendImg} from "../../assets/images/send.svg";
+import {useTranslation} from "react-i18next";
 const repeatImg = require('../../assets/images/RepeatImg.png');
 const downloadImg = require('../../assets/images/UploadImg.png');
 const editImg = require('../../assets/images/edit.png');
@@ -48,7 +49,7 @@ const CurrentStudentHomeWork: React.FC<ICurrentStudentHomeWork> = (props) => {
             const zipBlob = await zip.generateAsync({ type: 'blob' });
             saveAs(zipBlob, `exotus-${name}.zip`);
         } catch (error) {
-            console.error('Error creating zip:', error);
+            console.error(`${t('errorToZip')}:`, error);
         }
     };
 
@@ -72,6 +73,7 @@ const CurrentStudentHomeWork: React.FC<ICurrentStudentHomeWork> = (props) => {
             setInputValue(String(numberValue));
         }
     };
+    const { t } = useTranslation();
 
     return (
         <div className={`current-student-item`}>
@@ -91,18 +93,18 @@ const CurrentStudentHomeWork: React.FC<ICurrentStudentHomeWork> = (props) => {
                     <div className="current-student-item-middle">
                         <button className="current-student-item-middle-button-download" onClick={downloadAndZipFiles}>
                             <img src={downloadImg} alt="Download image" />
-                            <span>Скачать</span>
+                            <span>{t('download')}</span>
                         </button>
                         <button className="current-student-item-middle-button-repeat" onClick={() => props.onClick(id, 'изменить оценку')}>
                             <img src={editImg} alt="Repeat image" />
                             <span onClick={(e)=>{
                                 setEditGrade(true)
-                            }}>Изменить оценку</span>
+                            }}>{t('editGrade')}</span>
                         </button>
                     </div>
                     <div className="current-student-item-bottom-e">
 
-                        {editGrade ? <>  <input placeholder={`Выставить оценку`} type="number" className={`current-student-item-bottom__input`}
+                        {editGrade ? <>  <input placeholder={t('addGrade')} type="number" className={`current-student-item-bottom__input`}
                                                 value={inputValue}
                                                 onChange={(e) => validateAndSetInput(e.target.value)}
                             />
@@ -114,7 +116,7 @@ const CurrentStudentHomeWork: React.FC<ICurrentStudentHomeWork> = (props) => {
                                         className: `send-img`})}
                                 </button></>
                       :
-                            <><span className={`current-student-item-bottom-e-grade`}>Оценка:</span>
+                            <><span className={`current-student-item-bottom-e-grade`}>{t('grade')}:</span>
                                 <div className={`current-student-item-bottom-e-box`}>
                                     <div className={`
                             current-student-item-bottom-e-box-line
@@ -138,11 +140,11 @@ const CurrentStudentHomeWork: React.FC<ICurrentStudentHomeWork> = (props) => {
                 <div className="current-student-item-middle">
                     <button className="current-student-item-middle-button-download" onClick={downloadAndZipFiles}>
                         <img src={downloadImg} alt="Download image" />
-                        <span>Скачать</span>
+                        <span>{t('download')}</span>
                     </button>
                     <button className="current-student-item-middle-button-repeat" onClick={() => props.onClick(id, 'пересдача')}>
                         <img src={repeatImg} alt="Repeat image" />
-                        <span>Отправить на пересдачу</span>
+                        <span>{t('toRepeat')}</span>
                     </button>
                 </div>
                 <div className="current-student-item-bottom">

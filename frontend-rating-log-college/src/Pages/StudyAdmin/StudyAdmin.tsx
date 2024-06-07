@@ -17,6 +17,9 @@ import DatePicker from "react-datepicker";
 import {format} from "date-fns";
 import {notify, Toasty} from "../../Components/Toasty/Toasty";
 import Spinner from "../../Components/Spinner/Spinner";
+import {useTranslation} from "react-i18next";
+import {useSelector} from "react-redux";
+import {selectLanguage} from "../../Store/Selectors/authSelectors";
 
 const StudyAdmin: React.FC = () => {
     const [teachers, setTeachers] = useState<{ id: number, name: string }[]>([]);
@@ -53,7 +56,7 @@ const StudyAdmin: React.FC = () => {
     const [typeName, setTypeName] = useState('');
     const [numbCouple, setNumbCouple] = useState('');
     const [loading ,setLoading] = useState(true)
-
+    const { t } = useTranslation();
     useEffect(() => {
         getAllTeachers().then((response: any) => {
             const newTeachers = response.data.map((el: any) => ({
@@ -106,7 +109,7 @@ const StudyAdmin: React.FC = () => {
         getAllAudit().then((response: any) => {
             const newAuditoriums = response.data.map((el: any) => ({
                 id: el.id,
-                name: `${el.block} блок , ${el.floor} этаж, ${el.cabinet} аудитория`
+                name: `${el.block} ${t('block')} , ${el.floor} ${t('floor')}, ${el.cabinet} ${t('audit')}`
             }));
             setAuditoriums(newAuditoriums);
         }).catch((error) => {});
@@ -132,7 +135,7 @@ const StudyAdmin: React.FC = () => {
                         elem.semestersInfo.forEach((el: any)=>{
                              let newObj = {
                                  id: el.id,
-                                 name: `${el.course} курс, ${el.semester} семестр, ${el.dateStart} - ${el.dateEnd}`
+                                 name: `${el.course} ${t('courseM')}, ${el.semester} ${t('semestr')}, ${el.dateStart} - ${el.dateEnd}`
                              }
 
                             newStud.push(newObj)
@@ -149,7 +152,6 @@ const StudyAdmin: React.FC = () => {
     useEffect(()=>{
         if(curGroupSemestr){
             getInfoAboutTypeStudyGroup(curGroupSemestr).then((response)=>{
-                console.log(response.data)
                 let newArr = response.data.map((el: any)=>{
                     let newOjb = {
                         id: el.id,
@@ -214,91 +216,92 @@ const StudyAdmin: React.FC = () => {
         }
     };
 
+
     return (
         <div className={'main-page'}>
             <div className={'block-middle block-middle-admin'}>
-                <p className={'block-middle__text'}>Добавление данных</p>
+                <p className={'block-middle__text'}>{t('dataAdd')}</p>
 
               <div className="drop-container">
                   <div className="drop-block">
-                      <p className="drop-block__text">Все преподаватели</p>
+                      <p className="drop-block__text">{t('allTeachers')}</p>
                       <Dropdown
                           items={teachers}
                           selectedId={curTeacher}
-                          placeholder="Выберите преподавателя"
+                          placeholder={t('selectTeachers')}
                           onSelect={handleSelectTeacher}
                       />
                   </div>
                   <div className="drop-block">
-                      <p className="drop-block__text">Все предметы</p>
+                      <p className="drop-block__text">{t('allTeachersSubjects')}</p>
                       <Dropdown
                           items={subjects}
                           selectedId={curSubject}
-                          placeholder="Выберите предмет"
+                          placeholder={t('selectSubjects')}
                           onSelect={handleSelectSubject}
                       />
                   </div>
                   <div className="drop-block">
-                      <p className="drop-block__text">Все временные слоты</p>
+                      <p className="drop-block__text">{t('allTimeSlots')}</p>
                       <Dropdown
                           items={timeSlots}
                           selectedId={curTimeSlot}
-                          placeholder="Выберите временной слот"
+                          placeholder={t('selectTimeSlots')}
                           onSelect={handleSelectTimeSlot}
                       />
                   </div>
                   <div className="drop-block">
-                      <p className="drop-block__text">Все дни недели</p>
+                      <p className="drop-block__text">{t('allDays')}</p>
                       <Dropdown
                           items={days}
                           selectedId={curDay}
-                          placeholder="Выберите день недели"
+                          placeholder={t('selectDays')}
                           onSelect={handleSelectDay}
                       />
                   </div>
                   <div className="drop-block">
-                      <p className="drop-block__text">Все кураторы</p>
+                      <p className="drop-block__text">{t('allCurators')}</p>
                       <Dropdown
                           items={curators}
                           selectedId={curCurator}
-                          placeholder="Выберите куратора"
+                          placeholder={t('selectCurator')}
                           onSelect={handleSelectCurator}
                       />
                   </div>
                   <div className="drop-block">
-                      <p className="drop-block__text">Все аудитории</p>
+                      <p className="drop-block__text">{t('allAudit')}</p>
                       <Dropdown
                           items={auditoriums}
                           selectedId={curAuditorium}
-                          placeholder="Выберите аудиторию"
+                          placeholder={t('selectAudit')}
                           onSelect={handleSelectAuditorium}
                       />
                   </div>
                   <div className="drop-block">
-                      <p className="drop-block__text">Все специализации</p>
+                      <p className="drop-block__text">{t('allSpec')}</p>
                       <Dropdown
                           items={specializations}
                           selectedId={curSpecialization}
-                          placeholder="Выберите специализацию"
+                          placeholder={t('selectSpec')}
                           onSelect={handleSelectSpecialization}
                       />
                   </div>
                   <div className="drop-block">
-                      <p className="drop-block__text">Все группы</p>
+                      <p className="drop-block__text">{t('allGroups')}</p>
                       <Dropdown
                           items={groups}
                           selectedId={curGroup}
-                          placeholder="Выберите группу"
+                          placeholder={t('selectGroup')}
                           onSelect={handleSelectGroup}
                       />
                   </div>
                   {studyInfo?.length > 0 ?
                       <div className="drop-block">
-                          <p className="drop-block__text">Все данные о группе</p>
+                          <p className="drop-block__text">{t('allInfoGroups')}</p>
                           <Dropdown
                               items={studyInfo}
                               selectedId={curStudyInfo}
-                              placeholder="Выберите семестр"
+                              placeholder={t('selectInfoGroup')}
                               onSelect={handleSelectStudyInfo}
                           />
                       </div>
@@ -306,11 +309,11 @@ const StudyAdmin: React.FC = () => {
                   }
                   {typeStudy?.length > 0 ?
                       <div className="drop-block">
-                          <p className="drop-block__text">Все данные о группе</p>
+                          <p className="drop-block__text">{t('allTypeGroups')}</p>
                           <Dropdown
                               items={typeStudy}
                               selectedId={curTypeStudy}
-                              placeholder="Выберите тип учебы"
+                              placeholder={t('selectTypeGroup')}
                               onSelect={handleSelectTypeStudyInfo}
                           />
                       </div>
@@ -323,20 +326,18 @@ const StudyAdmin: React.FC = () => {
                <div className="infos-block">
 
                    <div className="info-container info-container-st" style={{width: 350}}>
-                       <p className="info-container__name">Создание группы</p>
+                       <p className="info-container__name">{t('addGroup')}</p>
 
                        <div className="admin-upload-container admin-upload-container-u admin-upload-container-u-e">
-                           <label className={`upload-placeholder-admin`}>Выберите куратора и специализацию выше</label>
-                           <label className={`upload-placeholder-admin`}>Напишите название группы ниже</label>
+                           <label className={`upload-placeholder-admin`}>{t('selectCurAndSpec')}</label>
+                           <label className={`upload-placeholder-admin`}>{t('groupName')}</label>
                            <input type="text" value={groupValue} onChange={(e) => setGroupValue(e.target.value)}/>
-
-
                        </div>
                        <div className="btn-cont">
                            <button className={`admin-add-btn`} onClick={(e)=>{
                                if(curCurator && groupValue && curSpecialization) {
                                    addGroup(curCurator, groupValue,curSpecialization).then((response)=>{
-                                       notify('Группа успешно добавлена','success')
+                                       notify(`${t('groupSuccess')}`,'success')
                                        getAllGroups().then((response: any) => {
                                            const newGroups = response.data.map((el: any) => ({
                                                id: el.id,
@@ -346,31 +347,31 @@ const StudyAdmin: React.FC = () => {
                                        }).catch((error) => {});
 
                                    }).catch((error)=>{
-                                       notify('Не удалось добавить группу','error')
+                                       notify(`${t('groupError')}`,'error')
                                    })
                                }
                                else{
-                                   notify('Заполните все необходимые данные','error')
+                                   notify(`${t('groupData')}`,'error')
                                }
 
-                           }}>Добавить группу</button>
+                           }}>{t('addGroupBtn')}</button>
                        </div>
                    </div>
 
                    <div className="info-container info-container-st" style={{width: 446}} >
-                       <p className="info-container__name">Создание аудитории</p>
+                       <p className="info-container__name">{t('addAudit')}</p>
                        <label className={`upload-placeholder-admin`}>&nbsp;</label>
                        <div className="inner-container" >
                            <div className="admin-upload-container admin-upload-container-u admin-upload-container-u-e">
-                               <label className={`upload-placeholder-admin`}>Номер блока</label>
+                               <label className={`upload-placeholder-admin`}>{t('numBlock')}</label>
                                <input  type="text"  value={block}  onChange={(e) => setBlock(e.target.value)}/>
                            </div>
                            <div className="admin-upload-container admin-upload-container-u admin-upload-container-u-e">
-                               <label className={`upload-placeholder-admin`}>Номер этажа</label>
+                               <label className={`upload-placeholder-admin`}>{t('numFloor')}</label>
                                <input  type="text"  value={floor}  onChange={(e) => setFloor(e.target.value)}/>
                            </div>
                            <div className="admin-upload-container admin-upload-container-u admin-upload-container-u-e">
-                               <label className={`upload-placeholder-admin`}>Номер аудитории</label>
+                               <label className={`upload-placeholder-admin`}>{t('numAudit')}</label>
                                <input  type="text"  value={audit}  onChange={(e) => setAudit(e.target.value)}/>
                            </div>
                        </div>
@@ -381,36 +382,36 @@ const StudyAdmin: React.FC = () => {
                                        getAllAudit().then((response: any) => {
                                            const newAuditoriums = response.data.map((el: any) => ({
                                                id: el.id,
-                                               name: `${el.block} блок , ${el.floor} этаж, ${el.cabinet} аудитория`
+                                               name: `${el.block} ${t('block')} , ${el.floor} ${t('floor')}, ${el.cabinet} ${t('audit')}`
                                            }));
                                            setAuditoriums(newAuditoriums);
-                                           notify('Аудитория успешно добавлена','success')
+                                           notify(`${t('auditSuccess')}`,'success')
                                        }).catch((error) => {});
                                    }).catch((error)=>{
-                                       notify('Не удалось добавить аудиторию','error')
+                                       notify(`${t('auditError')}`,'error')
                                    })
                                }
                                 else{
-                                    notify('Заполните все данные','error')
+                                    notify(`${t('auditData')}`,'error')
                                }
-                           }}>Добавить аудиторию</button>
+                           }}>{t('addAuditBtn')}</button>
                        </div>
                    </div>
 
                    <div className="info-container info-container-st" style={{width: 774}}>
-                       <p className="info-container__name">Добавить семестр</p>
-                       <label className={`upload-placeholder-admin`} style={{marginLeft: 10}}>Выберите группу выше</label>
+                       <p className="info-container__name">{t('addSemest')}</p>
+                       <label className={`upload-placeholder-admin`} style={{marginLeft: 10}}>{t('selectGroupUpper')}</label>
                        <div className="inner-container" >
                            <div className="admin-upload-container admin-upload-container-u admin-upload-container-u-e" style={{width: 259}} >
-                               <label className={`upload-placeholder-admin`}>Номер семестра</label>
+                               <label className={`upload-placeholder-admin`}>{t('numSemest')}</label>
                                <input  type="text"  value={semNum}  onChange={(e) => setSemNum(e.target.value)}/>
                            </div>
                            <div className="admin-upload-container admin-upload-container-u admin-upload-container-u-e" style={{width: 259}}>
-                               <label className={`upload-placeholder-admin`}>Номер курса</label>
+                               <label className={`upload-placeholder-admin`}>{t('numCourse')}</label>
                                <input  type="text"  value={courNum}  onChange={(e) => setCourNum(e.target.value)}/>
                            </div>
                            <div className="custom-datepicker-wrapper custom-datepicker-wrapper-admin custom-datepicker-wrapper-admin-stud">
-                               <label className={`upload-placeholder-admin`}>Дата начала</label>
+                               <label className={`upload-placeholder-admin`}>{t('dateStart')}</label>
                                <DatePicker
                                    selected={formattedDate2 ? new Date(formattedDate2) : null}
                                    onChange={handleDateChangeSec}
@@ -420,7 +421,7 @@ const StudyAdmin: React.FC = () => {
                                />
                            </div>
                            <div className="custom-datepicker-wrapper custom-datepicker-wrapper-admin custom-datepicker-wrapper-admin-stud">
-                               <label className={`upload-placeholder-admin`}>Дата конца</label>
+                               <label className={`upload-placeholder-admin`}>{t('dateEnd')}</label>
                                <DatePicker
                                    selected={formattedDate ? new Date(formattedDate) : null}
                                    onChange={handleDateChange}
@@ -434,29 +435,29 @@ const StudyAdmin: React.FC = () => {
                            <button className={`admin-add-btn`} onClick={(e)=>{
                                if(curGroup && semNum && courNum) {
                                    addSemestr(curGroup, semNum,courNum, formattedDate2, formattedDate).then((response)=>{
-                                       notify('Семестр успешно добавлен','success')
+                                       notify(`${t('semSuccess')}`,'success')
                                    }).catch((error)=>{
-                                       notify('Не удалось добавить семестр','error')
+                                       notify(`${t('semError')}`,'error')
                                    })
                                }
                                else {
-                                   notify('Заполните все данные','error')
+                                   notify(`${t('auditData')}`,'error')
                                }
 
-                           }}>Добавить семестр</button>
+                           }}>{t('addSemBtn')}</button>
                        </div>
                    </div>
 
                    <div className="info-container info-container-st">
-                       <p className="info-container__name">Добавить тип учебы</p>
-                       <label className={`upload-placeholder-admin`} style={{marginLeft: 10}}>Выберите данный семестр</label>
+                       <p className="info-container__name">{t('addTypeStudy')}</p>
+                       <label className={`upload-placeholder-admin`} style={{marginLeft: 10}}>{t('selectCurSem')}</label>
                        <div className="inner-container" >
                            <div className="admin-upload-container admin-upload-container-u admin-upload-container-u-e" style={{width: 259}} >
-                               <label className={`upload-placeholder-admin`}>Текст типа учебы</label>
+                               <label className={`upload-placeholder-admin`}>{t('typeText')}</label>
                                <input  type="text"  value={typeName}  onChange={(e) => setTypeName(e.target.value)}/>
                            </div>
                            <div className="custom-datepicker-wrapper custom-datepicker-wrapper-admin custom-datepicker-wrapper-admin-stud">
-                               <label className={`upload-placeholder-admin`}>Дата начала</label>
+                               <label className={`upload-placeholder-admin`}>{t('dateStart')}</label>
                                <DatePicker
                                    selected={typeStart ? new Date(typeStart) : null}
                                    onChange={handleDateTypeStart}
@@ -466,7 +467,7 @@ const StudyAdmin: React.FC = () => {
                                />
                            </div>
                            <div className="custom-datepicker-wrapper custom-datepicker-wrapper-admin custom-datepicker-wrapper-admin-stud">
-                               <label className={`upload-placeholder-admin`}>Дата конца</label>
+                               <label className={`upload-placeholder-admin`}>{t('dateEnd')}</label>
                                <DatePicker
                                    selected={typeEnd ? new Date(typeEnd) : null}
                                    onChange={handleDateTypeEnd}
@@ -480,24 +481,24 @@ const StudyAdmin: React.FC = () => {
                            <button className={`admin-add-btn`} onClick={(e)=>{
                                if(curStudyInfo) {
                                    addTypeStudy(curStudyInfo, typeName, typeStart, typeEnd).then((response)=>{
-                                       notify('Тип учебы успешно добавлен','success')
+                                       notify(`${t('studyTypeSuccess')}`,'success')
                                    }).catch((error)=>{
-                                       notify('Не удалось добавить тип учебы','error')
+                                       notify(`${t('studyTypeError')}`,'error')
                                    })
                                }
                                else{
-                                   notify('Заполните все данные','error')
+                                   notify(`${t('auditData')}`,'error')
                                }
-                           }}>Добавить тип учебы</button>
+                           }}>{t('studyTypeBtn')}</button>
                        </div>
                    </div>
 
                    <div className="info-container info-container-st" style={{width: 450}}>
-                       <p className="info-container__name">Добавить предмет для учебы</p>
-                       <label className={`upload-placeholder-admin`} style={{marginLeft: 10}}>Выберите группу, семестр, тип учебы, время учебы, предмет, преподавателя, аудиторию, день недели выше</label>
+                       <p className="info-container__name">{t('addSubjectGroup')}</p>
+                       <label className={`upload-placeholder-admin`} style={{marginLeft: 10}}>{t('selectForSubject')}</label>
                        <div className="inner-container" >
                            <div className="admin-upload-container admin-upload-container-u admin-upload-container-u-e" style={{width: 259}} >
-                               <label className={`upload-placeholder-admin`}>Номер пары</label>
+                               <label className={`upload-placeholder-admin`}>${t('countCouple')}</label>
                                <input  type="text"  value={numbCouple}  onChange={(e) => setNumbCouple(e.target.value)}/>
                            </div>
                        </div>
@@ -505,16 +506,16 @@ const StudyAdmin: React.FC = () => {
                            <button className={`admin-add-btn`} onClick={(e)=>{
                                if(numbCouple && curTypeStudy && curTimeSlot && curSubject && curTeacher && curAuditorium && curDay) {
                                    addSubjectForStud(curTypeStudy, curTimeSlot, curSubject, curTeacher, curAuditorium, curDay, Number(numbCouple)).then((response)=>{
-                                       notify('Предмет успешно добавлен','success')
+                                       notify(`${t('subjGroupSuccess')}`,'success')
                                    }).catch((error)=>{
-                                       notify('Не удалось добавить предмет','error')
+                                       notify(`${t('subjGroupError')}`,'error')
                                    })
                                }
 
                                else{
-                                   notify('Заполните все данные','error')
+                                   notify(`${t('auditData')}`,'error')
                                }
-                           }}>Добавить предмет для учебы</button>
+                           }}>{t('addGroupSubjBtn')}</button>
                        </div>
                    </div>
 

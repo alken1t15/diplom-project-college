@@ -20,6 +20,7 @@ import {getAllSubjects} from "../../Http/AdditionalHttp";
 import Dropdown from "../../UI/Dropdown/Dropdown";
 import Spinner from "../../Components/Spinner/Spinner";
 import {notify, Toasty} from "../../Components/Toasty/Toasty";
+import {useTranslation} from "react-i18next";
 
 registerLocale('ru', ru);
 
@@ -41,7 +42,7 @@ const UploadPageTeacher: React.FC = () => {
 
     let [isFocused, setIsFocused] = useState(false);
     let [isFocusedDesk, setIsFocusedDesk] = useState(false);
-
+    const { t } = useTranslation();
     let[fileDeskr, setDeskrName] = useState('')
     let[fileDeskrFocused, setFileDeskrFocused] = useState(false)
 
@@ -79,9 +80,9 @@ const UploadPageTeacher: React.FC = () => {
 
         try {
             const response = await addNewFiles(formData);
-            notify('Файл для группы успешно добавлен', 'success')
+            notify(`${t('fileForGroupSuccess')}`, 'success')
         } catch (error) {
-            notify('Ошибка при добавлении файла', 'error')
+            notify(`${t('fileForGroupError')}`, 'error')
         }
     };
 
@@ -96,10 +97,10 @@ const UploadPageTeacher: React.FC = () => {
             const response = await addFileToTask(curHomeWorks? curHomeWorks.id : 1,formData).then((response)=>{
                 notify('Файл успешно добавлен','success')
             }).catch((error)=>{
-                notify('Не удалось отправить файл','error')
+                notify(`${t('fileTaskSuccess')}`,'error')
             })
         } catch (error) {
-            notify('Не удалось отправить файл','error')
+            notify(`${t('fileTaskError')}`,'error')
         }
     };
 
@@ -265,9 +266,9 @@ const UploadPageTeacher: React.FC = () => {
                 updateCurrentHomeWork(newArr[0].id);
 
             }).catch((error) => {});
-            notify('Задание добавлено','success')
+            notify(`${t('taskSuccess')}`,'success')
         }).catch((error)=>{
-            notify('Не удалось добавить задание','error')
+            notify(`${t('taskError')}`,'error')
         })
 
     }
@@ -290,7 +291,7 @@ const UploadPageTeacher: React.FC = () => {
             <div className={'block-left block-left-add'}>
                 <div className="block-left-header">
                     <p className={'block-left__text'}>
-                        Добавление файла к группе
+                        {t('addFileToGroup')}
                     </p>
                     <div className="block-left-header-personal block-left-header-personal-upload">
                         <div className="toble-btn-box">
@@ -307,16 +308,16 @@ const UploadPageTeacher: React.FC = () => {
                             <label
                                 className={`upload-placeholder ${fileDeskrFocused || fileDeskr ? "active" : ""}`}
                             >
-                                Краткое описание файла
+                                {t('shortDesk')}
                             </label>
                         </div>
                         <br />
                         <div className="drop-block" style={{marginLeft: 0, marginBottom: 5}}>
-                            <p className="drop-block__text">Все предметы</p>
+                            <p className="drop-block__text">{t('allTeachersSubjects')}</p>
                             <Dropdown
                                 items={subjectsFile}
                                 selectedId={curSubject ? curSubject?.id : 1}
-                                placeholder="Выберите преподавателя"
+                                placeholder={t('selectTeachers')}
                                 onSelect={handleSelectTeacher}
                             />
                         </div>
@@ -329,7 +330,7 @@ const UploadPageTeacher: React.FC = () => {
             </div>
             <div className={'block-middle block-middle-add'}>
                 <p className={'block-middle__text'}>
-                    Текущие задания
+                    ${t('currentTask')}
                 </p>
 
                 <div className="homeworks-box homeworks-box-u">
@@ -341,7 +342,7 @@ const UploadPageTeacher: React.FC = () => {
             </div>
             <div className={'block-right block-right-add'}>
                 <p className={'block-right__text'}>
-                    Добавить домашние задание
+                    {t('addHwTask')}
                 </p>
                 <ToggleBtns items={groups2} onClick={updateCurrentGroupSec} />
                 <ToggleBtns items={subjects} onClick={updateCurrentSubjects} />
@@ -381,12 +382,12 @@ const UploadPageTeacher: React.FC = () => {
                     <label
                         className={`upload-placeholder ${isFocused || hwName ? "active" : ""}`}
                     >
-                        Название работы
+                        {t('workName')}
                     </label>
                 </div>
                 <br/>
                 <div className="textarea-container">
-                    <label className={`textarea-text`}>Описание работы</label>
+                    <label className={`textarea-text`}>{t('workDeskr')}</label>
       <textarea
           value={hwDesk}
           onFocus={() => setIsFocusedDesk(true)}
@@ -401,12 +402,12 @@ const UploadPageTeacher: React.FC = () => {
                        sendHw()
                    }
                    else {
-                       notify('Выберите все данные, заполните все поля','error')
+                       notify(`${t('allSlotsAvail')}`,'error')
                    }
-                }}>Добавить задание </button>
+                }}>{t('addNewTaskBtn')} </button>
 
                 <p className={'block-right__text block-right__text-upl'}>
-                    Добавить файл к заданию
+                    {t('addFileToTask')}
                 </p>
                 <div style={{width: 350}}>
                     <FileUploader onClick={uploadHwFiles} multipart={true} />
