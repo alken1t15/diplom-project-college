@@ -1,5 +1,6 @@
 import React, {CSSProperties, useEffect, useState} from 'react';
 import './ScheduleItem.scss';
+import {useTranslation} from "react-i18next";
 
 export interface ISchedule{
     id: number,
@@ -20,10 +21,12 @@ const ScheduleItem: React.FC<ITardinessItem> = (props) => {
         setItem(props)
     }, [props])
 
+    const { t } = useTranslation();
+
     return (
         <div className="schedule-item" style={item.styles}>
             <p className="schedule-item__date">{item.date}</p>
-            <p className="schedule-item__day">День недели: {item.nameOfDay}</p>
+            <p className="schedule-item__day">{t('nameOfDay')}: {item.nameOfDay}</p>
 
 
             {item.schedules.map((el, index)=>(

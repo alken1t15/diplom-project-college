@@ -9,6 +9,8 @@ import {useCustomNavigate} from "../../hooks/navigator";
 import {removeItemFromLocalStorage, setItemsInLocalStorage} from "../../Utils/LocalStore";
 import {setUser} from "../../Store/Actions/authActions";
 import {notify, Toasty} from "../../Components/Toasty/Toasty";
+import {useTranslation} from "react-i18next";
+import LanguageSwitcher from "../../Components/LanguageSwitcher/LanguageSwitcher";
 const logoImg = require("../../assets/images/Logo.png");
 const signInImg = require("../../assets/images/SignInImage.png");
 
@@ -45,7 +47,7 @@ const SignIn: React.FC = () => {
 
             })
             .catch((error)=>{
-                notify('Некорректные данные','error')
+                notify(`${t('dataErr')}`,'error')
             })
     }
 
@@ -53,15 +55,18 @@ const SignIn: React.FC = () => {
         removeItemFromLocalStorage('user')
     }, [])
 
+    const { t } = useTranslation();
+
     return (
         <div className={'sign-in-block'}>
             <div className="wrapper sign-in-wrapper">
                 <form className="sign-in-left-block">
                     <img className={"Logo"} src={logoImg} alt="Logo"/>
-                    <p className={'title-big'}>Добро пожаловать! <br/> <span>Авторизация</span></p>
-                    <Input type={"text"} onChange={getEmail} placeholder={'Логин'}/>
-                    <Input type={"password"} onChange={getPassword} placeholder={'Пароль'}/>
-                    <Button style={{marginTop: 40}} name={'Войти'} data={{email, password}} onClick={(e)=>{sendUserData(email, password)}}/>
+                    <p className={'title-big'}>{t('welcome')}<br/> <span>{t('authorization')}</span></p>
+                    <Input type={"text"} onChange={getEmail} placeholder={t('login')}/>
+                    <Input type={"password"} onChange={getPassword} placeholder={t('password')}/>
+                    <Button style={{marginTop: 40}} name={t('sign')} data={{email, password}} onClick={(e)=>{sendUserData(email, password)}}/>
+                    <LanguageSwitcher horizontal={false}/>
                 </form>
                 <div className="sign-in-right-block">
                     <div>

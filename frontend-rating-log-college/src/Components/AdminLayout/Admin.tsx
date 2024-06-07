@@ -10,6 +10,7 @@ import {
 import './Admin.scss';
 import button from "../../UI/Button/Button";
 import {logOut} from "../../Http/User";
+import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher";
 
 const Logo = require('../../assets/images/Logo.png');
 const LogOut = require('../../assets/images/ExitPng.png');
@@ -161,6 +162,7 @@ const Admin: React.FC = () => {
                         ))}
                         </div>
                         <div className="nav-other nav-other-admin">
+                            <LanguageSwitcher/>
                             <button className="nav-other-logout" onClick={exit}><img src={LogOut} alt="logout"/></button>
                         </div>
                     </nav>

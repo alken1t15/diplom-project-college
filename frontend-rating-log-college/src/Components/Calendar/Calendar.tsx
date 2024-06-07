@@ -17,7 +17,6 @@ const Calendar: React.FC<ICalendar> = (props) => {
         setSelectedDate(date);
         if (date) {
             props.onChange(date)
-            // alert(`Выбранная дата: ${date.toLocaleDateString()}`);
         }
     };
 

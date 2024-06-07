@@ -4,13 +4,11 @@ import {useSelector} from "react-redux";
 import {selectUser} from "../Store/Selectors/authSelectors";
 
 const $api = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-    withCredentials: true
+    baseURL: process.env.REACT_APP_API_URL
 });
 
 const $host = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-    withCredentials: true
+    baseURL: process.env.REACT_APP_API_URL
 });
 
 export interface IUser {

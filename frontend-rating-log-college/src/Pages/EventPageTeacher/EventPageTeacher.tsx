@@ -9,6 +9,7 @@ import EventStudentItem, {IEventStudentItem} from "../../Components/EventStudent
 import {addGrade, getAllAboutGroupAndSubjects, getStudents} from "../../Http/HomeWorks";
 import Spinner from "../../Components/Spinner/Spinner";
 import {notify, Toasty} from "../../Components/Toasty/Toasty";
+import {useTranslation} from "react-i18next";
 const calendarImg = require('../../assets/images/calendar.png');
 
 
@@ -128,14 +129,14 @@ const EventPageTeacher: React.FC = () => {
         setStudent(newArr)
 
     }
-
+    const { t } = useTranslation();
     return (
         <div className={'main-page main-page-t'}>
             <div className={'block-left block-left-t block-left-t-e'}>
                 <div className="block-left-header">
                     <p className={'block-left__text block-left__text-e'}>
                         <img src={calendarImg} alt="Info img" style={{marginRight: 11, width: 23, height: 26}}/>
-                        Даты выставление оценек
+                        {t('dateToAddGrade')}
                     </p>
                     <div className="block-left-header-personal">
                         <Calendar onChange={updateDate}/>
@@ -154,7 +155,7 @@ const EventPageTeacher: React.FC = () => {
             </div>
             <div className={'block-middle block-middle-t block-middle-t-e'}>
                 <p className={'block-middle__text block-middle__text-t block-middle__text-t-e'}>
-                    Выставление оценок
+                    {t('gradeAdds')}
                 </p>
 
                 {group.length > 0 ?  <ToggleBtns onClick={updateCurrentGroup} items={group}/> : ''}
@@ -162,7 +163,7 @@ const EventPageTeacher: React.FC = () => {
                 <div className={`block-middle-t-e-bottom`}>
                     <TimeBlock time={time} style={{marginTop: 33}}/>
                     {/*<p className="block-middle-t-e-bottom-event-text">События: <span>{currentEvent}</span></p>*/}
-                    <p className="block-middle-t-e-bottom-event-text" style={{marginTop: 17}}>Кол-во учеников: <span>{curCount}</span></p>
+                    <p className="block-middle-t-e-bottom-event-text" style={{marginTop: 17}}>{t('studentCount')}: <span>{curCount}</span></p>
 
                 </div>
                 <div className="event-student-box">
@@ -184,17 +185,17 @@ const EventPageTeacher: React.FC = () => {
 
                         addGrade(activeSubject, date, newStudent)
                             .then((response) => {
-                                notify('Оценки успешно добавлены', 'success')
+                                notify(`${t('successGrade')}`, 'success')
                             })
                             .catch((error) => {
-                                notify('Выберите дату, группу, предмет', 'error')
+                                notify(`${t('takeForGrades')}`, 'error')
                             });
                     }
                     else {
-                        notify('Выберите дату, группу, предмет', 'error')
+                        notify(`${t('takeForGrades')}`, 'error')
                     }
 
-                }}>Выставить </button>
+                }}>{t('add')} </button>
             </div>
             <Spinner loading={loading} />
             <Toasty/>

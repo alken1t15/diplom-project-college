@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './ScheduleTeacherBlock.scss';
 import {ISchedule} from "../../Pages/MainPageTeacher/MainPageTeacher";
+import {useTranslation} from "react-i18next";
 
 export interface IScheduleTeacherBlock{
     groupName: string;
@@ -23,7 +24,7 @@ const ScheduleTeacherBlock:React.FC<IScheduleTeacherBlock> = (props) => {
     let[timeLeft ,setTimeLeft] = useState('');
     let[last ,setLast] = useState(false);
 
-
+    const { t } = useTranslation();
 
     function calculateTimeToNext(curTime: string, nextItem: any): string {
         if(nextItem){
@@ -42,20 +43,20 @@ const ScheduleTeacherBlock:React.FC<IScheduleTeacherBlock> = (props) => {
             }
             if(hoursDifference === 0){
                 if(minutesDifference <= 1){
-                    return `След. пара: Через минуту`;
+                    return `${t('nextSubject')}`;
                 }
-                return `След. пара: Через ${minutesDifference} минут`;
+                return `${t('nextSubjectMini')} ${minutesDifference} ${t('minutes')}`;
             }
             else{
                 const hoursLimit = 24;
 
                 if (hoursDifference >= hoursLimit) {
-                    return `До следующей пары более ${hoursLimit} часов`;
+                    return `${t('toNextPare')} ${hoursLimit} ${t('hours')}`;
                 } else {
-                    const hoursText = hoursDifference === 1 ? "час" : hoursDifference > 1 && hoursDifference < 5 ? "часа" : "часов";
-                    const minutesText = minutesDifference === 1 ? "минута" : "минут";
+                    const hoursText = hoursDifference === 1 ? `${t('hour')}` : hoursDifference > 1 && hoursDifference < 5 ? `${t('hourA')}` : `${t('hours')}`;
+                    const minutesText = minutesDifference === 1 ? `${t('minutesA')}` : `${t('minutes')}`;
 
-                    return `Следующая пара через ${hoursDifference} ${hoursText} и ${minutesDifference} ${minutesText}`;
+                    return `${t('nextSubjectMiniA')} ${hoursDifference} ${hoursText} ${t('and')} ${minutesDifference} ${minutesText}`;
                 }
 
             }
@@ -88,7 +89,7 @@ const ScheduleTeacherBlock:React.FC<IScheduleTeacherBlock> = (props) => {
                    <span className={`schedule-teacher-block-top-right-text`}>{time}</span>
                </div>
                <p className="schedule-teacher-block-subject">
-                   Предмет: {subject}
+                   {t('subject')}: {subject}
                </p>
                <p className="schedule-teacher-block-next">
                    {timeLeft !== '' && active ? timeLeft : '\u00A0'}

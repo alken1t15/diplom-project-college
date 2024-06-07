@@ -19,6 +19,7 @@ import InitialsImage from "../InitialsImage/InitialsImage";
 import button from "../../UI/Button/Button";
 import {logOut} from "../../Http/User";
 import {mainPageData, mainPageTeacherData} from "../../Http/MainPage";
+import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher";
 
 const Logo = require('../../assets/images/Logo.png');
 const LogOut = require('../../assets/images/ExitPng.png');
@@ -185,6 +186,7 @@ const TeacherLayout: React.FC = () => {
                         ))}
                         </div>
                         <div className="nav-other">
+                            <LanguageSwitcher/>
                             <button className="nav-other-user">
                                 <InitialsImage initials={`${userName.split('')[0]}${userLastName.split('')[0]}`} width={50} height={50} fontSize={24} textColor="#fff" backgroundColor="#d9d9d9" />
                             </button>

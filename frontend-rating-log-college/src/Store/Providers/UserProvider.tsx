@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect } from 'react';
 import { Provider, useDispatch } from 'react-redux';
 import { store } from '../index';
-import { setUser, setLoading } from '../Actions/authActions';
+import { setUser, setLanguage } from '../Actions/authActions';
 import { getItemFromLocalStorage } from '../../Utils/LocalStore';
 
 interface UserProviderProps {
@@ -16,8 +16,11 @@ const UserProviderComponent: React.FC<UserProviderProps> = ({ children }) => {
         if (storedUser) {
             dispatch(setUser(storedUser));
         }
-        dispatch(setLoading(false));
     }, [dispatch]);
+
+    const handleLanguageChange = (language: string) => {
+        dispatch(setLanguage(language));
+    };
 
     return <>{children}</>;
 };

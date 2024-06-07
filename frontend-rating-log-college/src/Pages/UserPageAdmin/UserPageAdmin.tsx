@@ -12,6 +12,7 @@ import {addNewCertificate, mainPageData} from "../../Http/MainPage";
 import {IDataArrayItem} from "../../Components/Pagination/Pagination";
 import Spinner from "../../Components/Spinner/Spinner";
 import {notify, Toasty} from "../../Components/Toasty/Toasty";
+import {useTranslation} from "react-i18next";
 
 registerLocale('ru', ru);
 
@@ -64,14 +65,13 @@ const UserPageAdmin: React.FC = () => {
             setStudBorn('');
         }
     };
-
+    const { t } = useTranslation();
     function addStudent(){
         addNewTeacher(teacherName, teacherLastName, teacherMiddleName, teacherLogin, teacherPassword, formattedDate, formattedDate2).then((response)=>{
-            notify('Преподаватель успешно добавлен','success')
+            notify(`${t('teacherSuc')}`,'success')
         }).catch((error)=>{
-            notify('Не удалось добавить преподавателя','error')
+            notify(`${t('teacherErr')}`,'error')
         })
-
     }
 
 
@@ -98,11 +98,11 @@ const UserPageAdmin: React.FC = () => {
             const response = await addNewStudentFromFile(formData).then((response)=>{
                 notify('Студент успешно добавлен','success')
             }).catch((error)=>{
-                notify('Не удалось добавить студента','error')
+                notify(`${t('studSuc')}`,'error')
             })
 
         } catch (error) {
-            notify('Не удалось добавить студента','error')
+            notify(`${t('studErr')}`,'error')
         }
     };
 
@@ -110,14 +110,14 @@ const UserPageAdmin: React.FC = () => {
         <div className={'main-page'}>
             <div className={'block-middle block-middle-admin'}>
                 <p className={'block-middle__text'}>
-                    Добавление преподавателя
+                    {t('addTeach')}
                 </p>
                <div className="info-cont">
                    <div className="admin-upload-container">
                        <label
                            className={`upload-placeholder-admin`}
                        >
-                           Имя учителя
+                           {t('teachName')}
                        </label>
                        <input
                            type="text"
@@ -129,7 +129,7 @@ const UserPageAdmin: React.FC = () => {
                        <label
                            className={`upload-placeholder-admin`}
                        >
-                           Фамилия учителя
+                           {t('teachLastName')}
                        </label>
                        <input
                            type="text"
@@ -141,7 +141,7 @@ const UserPageAdmin: React.FC = () => {
                        <label
                            className={`upload-placeholder-admin`}
                        >
-                           Отчество учителя
+                           {t('teachMidName')}
                        </label>
                        <input
                            type="text"
@@ -153,7 +153,7 @@ const UserPageAdmin: React.FC = () => {
                        <label
                            className={`upload-placeholder-admin`}
                        >
-                           Логин
+                           {t('login')}
                        </label>
                        <input
                            type="text"
@@ -162,7 +162,9 @@ const UserPageAdmin: React.FC = () => {
 
                    </div>
                    <div className="admin-upload-container">
-                       <label className={`upload-placeholder-admin`}>Пароль</label>
+                       <label className={`upload-placeholder-admin`}>
+                           {t('password')}
+                       </label>
                        <input
                            type="text"
                            value={teacherPassword}
@@ -170,7 +172,7 @@ const UserPageAdmin: React.FC = () => {
 
                    </div>
                    <div className="custom-datepicker-wrapper custom-datepicker-wrapper-admin">
-                       <label className={`upload-placeholder-admin`}>Дата рождения</label>
+                       <label className={`upload-placeholder-admin`}>{t('bornDate')}</label>
                        <DatePicker
                            selected={formattedDate ? new Date(formattedDate) : null}
                            onChange={handleDateChange}
@@ -180,7 +182,7 @@ const UserPageAdmin: React.FC = () => {
                        />
                    </div>
                    <div className="custom-datepicker-wrapper custom-datepicker-wrapper-admin">
-                       <label className={`upload-placeholder-admin`}>Дата начала работы</label>
+                       <label className={`upload-placeholder-admin`}>{t('yearDates')}</label>
                        <DatePicker
                            selected={formattedDate2 ? new Date(formattedDate2) : null}
                            onChange={handleDateChangeSec}
@@ -195,21 +197,21 @@ const UserPageAdmin: React.FC = () => {
                                addStudent()
                            }
                            else{
-                               notify('Заполните все поля','error')
+                               notify(`${t('emptyFields')}`,'error')
                            }
 
-                       }}>Создать нового учителя</button>
+                       }}>{t('addNewTeach')}</button>
                    </div>
                </div>
                 <p className={'block-middle__text'} style={{marginTop: 50}}>
-                    Добавление студента
+                    {t('addStud')}
                 </p>
                 <div className="info-cont">
                     <div className="admin-upload-container">
                         <label
                             className={`upload-placeholder-admin`}
                         >
-                            Имя студента
+                            {t('studFName')}
                         </label>
                         <input
                             type="text"
@@ -221,7 +223,7 @@ const UserPageAdmin: React.FC = () => {
                         <label
                             className={`upload-placeholder-admin`}
                         >
-                            Фамилия студента
+                            {t('studLName')}
                         </label>
                         <input
                             type="text"
@@ -233,7 +235,7 @@ const UserPageAdmin: React.FC = () => {
                         <label
                             className={`upload-placeholder-admin`}
                         >
-                            Отчество студента
+                            {t('studMName')}
                         </label>
                         <input
                             type="text"
@@ -245,7 +247,7 @@ const UserPageAdmin: React.FC = () => {
                         <label
                             className={`upload-placeholder-admin`}
                         >
-                            Логин
+                            {t('login')}
                         </label>
                         <input
                             type="text"
@@ -254,7 +256,7 @@ const UserPageAdmin: React.FC = () => {
 
                     </div>
                     <div className="admin-upload-container">
-                        <label className={`upload-placeholder-admin`}>Пароль</label>
+                        <label className={`upload-placeholder-admin`}> {t('password')}</label>
                         <input
                             type="text"
                             value={studPass}
@@ -262,7 +264,7 @@ const UserPageAdmin: React.FC = () => {
 
                     </div>
                     <div className="custom-datepicker-wrapper custom-datepicker-wrapper-admin">
-                        <label className={`upload-placeholder-admin`}>Дата рождения</label>
+                        <label className={`upload-placeholder-admin`}>{t('bornDate')}</label>
                         <DatePicker
                             selected={studBorn ? new Date(studBorn) : null}
                             onChange={handleBornDateChange}
@@ -272,11 +274,11 @@ const UserPageAdmin: React.FC = () => {
                         />
                     </div>
                     <div className="drop-block" style={{marginLeft: 10, marginTop: 10}}>
-                        <p className="drop-block__text">Все группы</p>
+                        <p className="drop-block__text">{t('allGroups')}</p>
                         <Dropdown
                             items={groups}
                             selectedId={curGroup}
-                            placeholder="Выберите группу"
+                            placeholder={t('selGroupForStud')}
                             onSelect={handleSelectGroup}
                         />
                     </div>
@@ -284,29 +286,29 @@ const UserPageAdmin: React.FC = () => {
                         <button className={`admin-add-btn`} onClick={(e)=>{
                             if(studFName && studScName && studMidName && studLogin && studPass && studBorn && curGroup) {
                                 addNewStudent(studFName, studScName, studMidName, studLogin, studPass, studBorn, curGroup).then((response)=>{
-                                    notify('Студент успешно добавлен','success')
+                                    notify(`${t('studSuccess')}`,'success')
                                 }).catch((error)=>{
-                                    notify('Не удалось добавить студента','error')
+                                    notify(`${t('studError')}`,'error')
                                 })
                             }
                             else{
-                                notify('Заполните все поля','error')
+                                notify(`${t('emptyFields')}`,'error')
                             }
-                        }}>Создать нового студента</button>
+                        }}>{t('createStudBtn')}</button>
                     </div>
                 </div>
 
 
                 <p className={'block-middle__text'} style={{marginTop: 50}}>
-                    Добавление студента с помощью файла
+                    {t('createStudWitchFile')}
                 </p>
                 <div className="info-cont">
                     <div className="drop-block" style={{marginLeft: 10, marginTop: 10, width: '100%'}}>
-                        <p className="drop-block__text">Все группы</p>
+                        <p className="drop-block__text">{t('allGroups')}</p>
                         <Dropdown
                             items={groups}
                             selectedId={curGroup}
-                            placeholder="Выберите группу"
+                            placeholder={t('selGroupForStud')}
                             onSelect={handleSelectGroup}
                         />
                     </div>

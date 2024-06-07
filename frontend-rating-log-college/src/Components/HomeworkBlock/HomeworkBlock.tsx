@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './HomeworkBlock.scss';
+import {useTranslation} from "react-i18next";
 
 export interface HomeworkItem{
     id: number;
@@ -23,6 +24,7 @@ const HomeworkBlock: React.FC<IHomeworkBlock> = (props) => {
     useEffect(() => {
         setCurItem(props.item)
     }, [props.item]);
+    const { t } = useTranslation();
     return (
         <>
             {props.forTeacher ?
@@ -33,10 +35,10 @@ const HomeworkBlock: React.FC<IHomeworkBlock> = (props) => {
                     <div className="homework-item-r">
                         <div className="homework-item-r-top">
                             <p className="homework-item-r-top__title">{curItem.name}</p>
-                            <p className="homework-item__text homework-item__text-t" style={{marginTop: 5}}>Сданно: <span>{curItem.dueDate}</span></p>
+                            <p className="homework-item__text homework-item__text-t" style={{marginTop: 5}}>{t('sdano')}: <span>{curItem.dueDate}</span></p>
                         </div>
                         <div className="homework-item-r-bot">
-                            <p className="homework-item__text homework-item__text-t">Обучающийся: <span>{curItem.scholar}</span></p>
+                            <p className="homework-item__text homework-item__text-t">{t('student')}: <span>{curItem.scholar}</span></p>
                         </div>
                     </div>
                 </div>

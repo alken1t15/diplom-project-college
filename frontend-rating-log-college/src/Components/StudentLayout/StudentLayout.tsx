@@ -15,6 +15,9 @@ import InitialsImage from "../InitialsImage/InitialsImage";
 import button from "../../UI/Button/Button";
 import {logOut} from "../../Http/User";
 import {mainPageData} from "../../Http/MainPage";
+import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher";
+import {useSelector} from "react-redux";
+import {selectLanguage} from "../../Store/Selectors/authSelectors";
 
 const Logo = require('../../assets/images/Logo.png');
 const LogOut = require('../../assets/images/ExitPng.png');
@@ -58,6 +61,7 @@ const StudentLayout: React.FC = () => {
         yearGroup: '',
     });
     let navigator = useNavigate();
+    const currentLanguage = useSelector(selectLanguage);
 
     useEffect(()=>{
         let newArr = linkButtons.map((el, index)=>{
@@ -190,6 +194,7 @@ const StudentLayout: React.FC = () => {
                         ))}
                         </div>
                         <div className="nav-other">
+                            <LanguageSwitcher/>
                             <button className="nav-other-user">
                                 <InitialsImage initials={`${user.name.split('')[0]}${user.lastName.split('')[0]}`} width={50} height={50} fontSize={24} textColor="#fff" backgroundColor="#d9d9d9" />
                             </button>

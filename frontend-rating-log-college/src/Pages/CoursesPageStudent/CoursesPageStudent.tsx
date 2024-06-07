@@ -5,6 +5,7 @@ import FileItem, {IFileItem} from "../../Components/FileItem/FileItem";
 import {getCoursesItems} from "../../Http/Courses";
 import Spinner from "../../Components/Spinner/Spinner";
 import {Toasty} from "../../Components/Toasty/Toasty";
+import {useTranslation} from "react-i18next";
 
 const CoursesPageStudent: React.FC = () => {
 
@@ -108,7 +109,7 @@ const CoursesPageStudent: React.FC = () => {
         getCoursesItems(id).then((response: any)=>{
 
             updateFiles(response.data.files);
-            setCurrentCourseName(`${response.data.currentCourse} Курс`)
+            setCurrentCourseName(`${response.data.currentCourse} ${t('course')}`)
             setCurrentCourseYear(`${response.data.currentYear}`)
 
 
@@ -117,15 +118,15 @@ const CoursesPageStudent: React.FC = () => {
         })
     }
 
-
+    const { t } = useTranslation();
 
     useEffect(()=>{
         getCoursesItems(currentCourse && currentCourse.id ? currentCourse.id : 1).then((response: any)=>{
             let newCourses = response.data.courses.map((el: any)=>{
                 let newObj = {
                     id: el.course,
-                    name: `${el.course} Курс`,
-                    date: `Год: ${el.year}`,
+                    name: `${el.course} ${t('course')}`,
+                    date: `${t('year')}: ${el.year}`,
                     active: response.data.currentCourse === el.course
                 }
                 if(response.data.currentCourse === el.course){
@@ -149,7 +150,7 @@ const CoursesPageStudent: React.FC = () => {
                 <div className="block-left-header">
                     <div className="block-left-main">
                         <p className={'block-left__text block-left__text-c'}>
-                            Курсы
+                            {t('courses')}
                         </p>
                     </div>
                     {courses.length > 0 ? [...courses].map((el, index) => (
@@ -164,7 +165,7 @@ const CoursesPageStudent: React.FC = () => {
                 <div className={'block-middle__text'}>
                     <div className={`courses-block courses-block-l`}>
                         <p className={`courses-block__title courses-block__title-l`}>{currentCourseName}</p>
-                        <p className={`courses-block__text`}>Год: {currentCourseYear}</p>
+                        <p className={`courses-block__text`}>{t('year')}: {currentCourseYear}</p>
                     </div>
                 </div>
 

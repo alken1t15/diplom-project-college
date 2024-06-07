@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import './GradePageStudent.scss';
+import './GradePageTeacher.scss';
 import Pagination, {IDataArrayItem} from "../../Components/Pagination/Pagination";
 import TextCarousel from "../../Components/TextCarousel/TextCarousel";
 import TeachersBlock, {ITeachersItem} from "../../Components/TeachersBlock/TeachersBlock";
@@ -21,7 +21,7 @@ interface ISem {
 interface IGradeTable{
     items: string[]
 }
-const GradePageStudent: React.FC = () => {
+const GradePageTeacher: React.FC = () => {
 
     let[currentMonth, setCurrentMonth] = useState(9);
     let[currentCourse, setCurrentCourse] = useState(1);
@@ -322,4 +322,4 @@ const GradePageStudent: React.FC = () => {
         </div>
     );
 };
-export default GradePageStudent;
+export default GradePageTeacher;

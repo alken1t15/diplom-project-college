@@ -7,6 +7,7 @@ import FileUploader from "../../Components/FileUploader/FileUploader";
 import {getCoursesItems, sendHomeWorkFiles, setHomeWOrkStatus} from "../../Http/HomeWorks";
 import { Toasty, notify } from '../../Components/Toasty/Toasty';
 import Spinner from "../../Components/Spinner/Spinner";
+import {useTranslation} from "react-i18next";
 
 const fileImg = require('../../assets/images/PDF.png');
 
@@ -45,7 +46,7 @@ interface ITeacher{
 const HomeworkPageStudent: React.FC = () => {
 
     let[homeWork, setHomeWork] = useState<HomeworkItem[]>([])
-
+    const { t } = useTranslation();
     let[curId, setCurId] = useState<number>();
     let[curName, setCurName] = useState('');
     let[expires, setExpires] = useState('');
@@ -56,7 +57,6 @@ const HomeworkPageStudent: React.FC = () => {
     let[homeWorkFiles, setHomeWorkFiles] = useState<IFileItem[]>([]);
     let[taskFiles, setTaskFiles] = useState<any[]>([]);
     let[teacherItem, setTeacherItem] = useState<ITeacher>()
-
     const [loading, setLoading] = useState<boolean>(true);
 
     function setActiveHomeWork(id: number){
@@ -168,10 +168,10 @@ const HomeworkPageStudent: React.FC = () => {
                          setHomeWork(newHwk)
                          updateCurrentHomeWork(response.data.homeWork)
                      }).catch((error)=>{})
-                     notify('Работа сдана', 'success');
+                     notify(`${t('wordDone')}`, 'success');
 
                  }).catch((error: any)=>{
-                     notify('Не удалось отправить работу', 'error');
+                     notify(`${t('wordError')}`, 'error');
                  })
 
             }).catch((error) => {
@@ -190,7 +190,7 @@ const HomeworkPageStudent: React.FC = () => {
                 <div className="block-left-header block-left-header-p">
                     <div className="block-left-main block-left-header-homework">
                         <p className={'block-left__text block-left__text-c block-left__text-c-hw'}>
-                            Задания
+                            {t('homeWorks')}
                         </p>
                     </div>
                     <div className="homeworks-block">
@@ -213,7 +213,7 @@ const HomeworkPageStudent: React.FC = () => {
                         </div>
                     </div>
                     <div className="block-middle-info">
-                        <p className="block-middle-info__expires"><span>Срок задания: </span>{expires}</p>
+                        <p className="block-middle-info__expires"><span>{t('homeWorksDate')}: </span>{expires}</p>
                         <TeachersBlock item={teacherItem ? teacherItem : {name: '', subject: ''} } styles={{marginTop: 20}}/>
                         {/*<p className="status">*/}
                             {/*Статус:&nbsp;*/}
@@ -229,37 +229,29 @@ const HomeworkPageStudent: React.FC = () => {
                             {deskr}
                         </p>
                     </div>
-
                     <div className="block-middle-info__files-block">
-                        {homeWorkFiles.length > 0 ? <> <p className="block-middle-info__files-block__text">Приклепленные файлы</p>
+                        {homeWorkFiles.length > 0 ? <> <p className="block-middle-info__files-block__text">{t('homeWorksFiles')}</p>
                             <div className="file-box block-middle-info__files-file-box">
                                 {homeWorkFiles && homeWorkFiles.length > 0 ? homeWorkFiles.map((el, index) => (
                                     <FileItem item={el} key={index}/>
                                 )) : ''}
                             </div></> : '' }
-
                     </div>
                 </> : ''}
-
             </div>
-
             <div className={'block-right block-right-hw'}>
                 <div className={`image-block image-block-active image-block-hw`}>
                     <div className="image-block-top">
                         <p className={'image-block-top__text'}>
-                            Мои задания
+                            {t('myHomeWorks')}
                             <span
                                 className={`status-color ${status == "Сдано" ? "status-color__purple" :
-                                    status == "Назначенно" ? "status-color__green" :
+                                    status == "Не выполнено" ? "status-color__green" :
                                         status == "Просрочено" ? "status-color__red" : ' '
                                 }`}>
                     {status}</span>
                         </p>
-
-
                         <FileUploader items={taskFiles} multipart={true} onClick={sendCertif} homeWorkId={curId} status={status}/>
-
-
                     </div>
                 </div>
             </div>
@@ -268,5 +260,4 @@ const HomeworkPageStudent: React.FC = () => {
         </div>
     );
 };
-
 export default HomeworkPageStudent;

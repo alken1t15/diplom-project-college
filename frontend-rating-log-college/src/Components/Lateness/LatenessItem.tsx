@@ -1,5 +1,6 @@
 import React, {CSSProperties, useEffect, useState} from 'react';
 import './LatenessItem.scss';
+import {useTranslation} from "react-i18next";
 
 interface ILateness{
     id: number,
@@ -20,11 +21,11 @@ const LatenessItem: React.FC<ITardinessItem> = (props) => {
     useEffect(()=>{
         setItem(props)
     }, [props])
-
+    const { t } = useTranslation();
     return (
         <div className="lateness-item" style={item.styles}>
             <p className="lateness-item__date">{item.date}</p>
-            <p className="lateness-item__day">День недели: {item.nameOfDay}</p>
+            <p className="lateness-item__day">{t('nameOfDay')}: {item.nameOfDay}</p>
             {item.tardiness.map((el, index)=>(
                 <div className={`lateness-item__info-block`} key={index}>
                     <span className={`lateness-item__info-block-span-first 

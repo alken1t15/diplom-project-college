@@ -4,24 +4,19 @@ import InitialsImage from "../../Components/InitialsImage/InitialsImage";
 import {mainPageTeacherData, mainPageTeacherUpdateData, mainPageTeacherUpdateOmission} from "../../Http/MainPage";
 import doneImg from '../../assets/images/Check.svg';
 import HomeworkBlock, {HomeworkItem} from "../../Components/HomeworkBlock/HomeworkBlock";
-import TimeBlock, {ITimeBlock} from "../../Components/TimeBlock/TimeBlock";
+import TimeBlock from "../../Components/TimeBlock/TimeBlock";
 import ScheduleTeacherBlock from "../../Components/ScheduleTeacherBlock/ScheduleTeacherBlock";
 import {parse, addMinutes, isWithinInterval} from "date-fns";
-import Slider, {ISliderItem} from "../../Components/Slider/Slider";
-import {login} from "../../Http/User";
+import Slider from "../../Components/Slider/Slider";
 import StudentWithoutCertificate, {
     IStudentWithoutCertificateItem
 } from "../../Components/StudentWithoutCertificate/StudentWithoutCertificate";
 import Spinner from "../../Components/Spinner/Spinner";
 import {notify, Toasty} from "../../Components/Toasty/Toasty";
-import {setLoading} from "../../Store/Actions/authActions";
+import {useTranslation} from "react-i18next";
 
 
 const infoImg = require('../../assets/images/InformationImgg.png');
-const gradeImg = require('../../assets/images/GradesImg.png');
-const houseImg = require('../../assets/images/School.png');
-const teachImg = require('../../assets/images/TeacherImg.png');
-const backImg = require('../../assets/images/backImg.png');
 
 export interface ISchedule{
     groupName: string;
@@ -38,16 +33,17 @@ const MainPageTeacher: React.FC = () => {
     let[presence, setPresence] = useState('');
     let[userName, setUserName] = useState('');
     let[userYEar, setUserYear] = useState('');
+    const { t } = useTranslation();
     let[students, setStudents] = useState<IStudentWithoutCertificateItem[]>([]);
     let[slider, setSlider] =useState([
         {
           id: 1,
-          name: 'Проверка',
+          name: `${t('check')}`,
           active: true,
         },
         {
             id: 2,
-            name: 'Со справкой',
+            name: `${t('enquiry')}`,
             active: false,
         },
     ]);
@@ -151,25 +147,9 @@ const MainPageTeacher: React.FC = () => {
 
                 })
 
-                let newCompleteArr = response.data.completeTask.map((el: any, index: any)=>{
-                    let newObj = {
-                        id: index,
-                        active: false,
-                        name: el.nameWork,
-                        date: el.deadlineWork,
-                        expiresAt: '9 сен - 15 сен',
-                        teacher: 'Денис Валентинович Попов',
-                        subject: 'Веб-программирования',
-                        scholar: el.nameStudent,
-                        dueDate: '10 сентября',
-                    }
-                    return newObj;
-
-                })
 
                 const activeGroup = getActiveGroup(response.data.graphGroupsForStudy);
                 setActiveGroup(activeGroup)
-                setHomeWorks(newCompleteArr)
                 setStudents(newArr)
 
 
@@ -272,25 +252,9 @@ const MainPageTeacher: React.FC = () => {
 
                     })
 
-                    let newCompleteArr = response.data.completeTask.map((el: any, index: any)=>{
-                        let newObj = {
-                            id: index,
-                            active: false,
-                            name: el.nameWork,
-                            date: el.deadlineWork,
-                            expiresAt: '9 сен - 15 сен',
-                            teacher: 'Денис Валентинович Попов',
-                            subject: 'Веб-программирования',
-                            scholar: el.nameStudent,
-                            dueDate: '10 сентября',
-                        }
-                        return newObj;
-
-                    })
 
                     const activeGroup = getActiveGroup(response.data.graphGroupsForStudy);
                     setActiveGroup(activeGroup)
-                    setHomeWorks(newCompleteArr)
                     setStudents(newArr)
 
 
@@ -299,9 +263,9 @@ const MainPageTeacher: React.FC = () => {
                 .catch(error=>{
 
                 })
-            notify('Опоздания успешно обновлены', 'success')
+            notify(`${t('tardinessSuccess')}`, 'success')
         }).catch((error)=>{
-            notify('Ошибка при обновлении опозданий', 'error')
+            notify(`${t('tardinessError')}`, 'error')
         })
 
     }
@@ -312,7 +276,7 @@ const MainPageTeacher: React.FC = () => {
                 <div className="block-left-header">
                     <p className={'block-left__text'}>
                         <img src={infoImg} alt="Info img"/>
-                        Личная информация
+                        {t('personInfo')}
                     </p>
                     <div className="block-left-header-personal">
                         <div className="block-left-header-personal-l">
@@ -321,7 +285,7 @@ const MainPageTeacher: React.FC = () => {
                         <div className="block-left-header-personal-r">
                             <p className="block-left-header-personal-r__header">{userName}</p>
                             <p className="block-left-header-personal-r__column" style={{marginLeft: 0}}>
-                                Год трудоустройства:
+                                {t('yearWork')}:
                                 <span className="block-left-header-personal-r__text">{userYEar}</span>
                             </p>
 
@@ -333,7 +297,7 @@ const MainPageTeacher: React.FC = () => {
                     <div className="block-left-done-task">
                         <div className="block-left-done-task-top">
                             <img className="block-left-done-task-top__img" src={doneImg} alt="Done tasks"/>
-                            <p className="block-left-done-task-top__text">Выполненые задание</p>
+                            <p className="block-left-done-task-top__text">{t('completedTasks')}</p>
                         </div>
                         <div className="block-left-done-task-box">
                             {homeWorks.map((el, index)=>(
@@ -348,7 +312,7 @@ const MainPageTeacher: React.FC = () => {
             </div>
             <div className={'block-middle block-middle-t'}>
                 <p className={'block-middle__text block-middle__text-t'}>
-                    Расписание
+                    {t('schedule')}
                 </p>
                 <TimeBlock time={time}/>
                <div className="schedule-box">
@@ -366,12 +330,12 @@ const MainPageTeacher: React.FC = () => {
             </div>
             <div className={'block-right block-right-t'}>
                 <p className={'block-right__text'}>
-                    {presence ? presence : 'На текущей момент нет активного урока'}
+                    {presence ? presence : `${t('noActiveLesson')}`}
                 </p>
                 <div>
                     <Slider items={slider} onChange={setSliderItems}/>
                     <div style={{marginTop: 25}}>
-                        <p className="total-student">Всего студентов: <span>{students.length}</span></p>
+                        <p className="total-student">{t('totalStudents')}: <span>{students.length}</span></p>
                         {students.length > 0 ? students.map((el: any, index: any)=>(
                             <StudentWithoutCertificate onChange={updateStudentOmissions} items={el} key={index}/>
                         )) : ''}

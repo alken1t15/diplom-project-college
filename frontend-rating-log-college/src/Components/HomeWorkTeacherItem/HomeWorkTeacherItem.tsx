@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 
 import './HomeWorkTeacherItem.scss';
 import {IHomeWorks} from "../../Pages/HomeWorksPageTeacher/HomeWorksPageTeacher";
+import {useTranslation} from "react-i18next";
 
 interface IHomeWorkTeacherItem extends IHomeWorks{
     onClick: (id: number) => void;
@@ -25,6 +26,8 @@ const HomeWorkTeacherItem: React.FC<IHomeWorkTeacherItem> = (props) => {
         setActive(props.active)
     }, [props])
 
+    const { t } = useTranslation();
+
     return (
         <div className={`homework-teacher-item ${active ? 'homework-teacher-item-a' : ''}`}
         onClick={(e)=>{
@@ -33,19 +36,19 @@ const HomeWorkTeacherItem: React.FC<IHomeWorkTeacherItem> = (props) => {
         >
             <p className="homework-teacher-item__name">{name}</p>
             <div className="homework-teacher-item-inner-block">
-                <p className="homework-teacher-item-inner-block__title">Предмет:</p>
+                <p className="homework-teacher-item-inner-block__title">{t('subject')}:</p>
                 <p className="homework-teacher-item-inner-block__text">{subject}</p>
             </div>
             <div className="homework-teacher-item-inner-block">
-                <p className="homework-teacher-item-inner-block__title">Группа:</p>
+                <p className="homework-teacher-item-inner-block__title">{t('group')}:</p>
                 <p className="homework-teacher-item-inner-block__text">{group}</p>
             </div>
             <div className="homework-teacher-item-inner-block">
-                <p className="homework-teacher-item-inner-block__title">Срок до:</p>
+                <p className="homework-teacher-item-inner-block__title">{t('expiresTo')}:</p>
                 <p className="homework-teacher-item-inner-block__text">{date}</p>
             </div>
             <div className="homework-teacher-item-inner-block">
-                <p className="homework-teacher-item-inner-block__text">Выполнили: {count}</p>
+                <p className="homework-teacher-item-inner-block__text">{t('completed')}: {count}</p>
             </div>
         </div>
     );
