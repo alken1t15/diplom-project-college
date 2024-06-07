@@ -4,39 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1443f649-6db3-4b17-9f95-0b15ab46c989" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/dto/StudentGroupDTO.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/dto/StudentGroupTotalDTO.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/dto/TeacherGroupStudent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerCreate.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerCreate.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerMain.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerMain.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerTeacher$CertificateFile.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerTeacher$CertificateFile.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerTeacher$FindGroup.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerTeacher$FindGroup.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerTeacher$StatusOmissionStudent.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerTeacher$StatusOmissionStudent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerTeacher$Teacher.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerTeacher$Teacher.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerTeacher.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/contoller/ControllerTeacher.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/repository/RepositoryCurator.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/repository/RepositoryCurator.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/repository/RepositoryEvaluations.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/repository/RepositoryEvaluations.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/repository/RepositorySpecialization.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/repository/RepositorySpecialization.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/repository/RepositoryStudents.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/repository/RepositoryStudents.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/repository/RepositorySubject.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/repository/RepositorySubject.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/repository/RepositoryTeachers.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/repository/RepositoryTeachers.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/security/JWTFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/security/JWTFilter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/security/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/security/SecurityConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/security/UserDetailsImp.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/security/UserDetailsImp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceCurator.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceCurator.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceEvaluations.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceEvaluations.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceStudents$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceStudents$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceStudents.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceStudents.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceStudyProcess.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceStudyProcess.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceTeachers$CurrentOmissionStudent.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceTeachers$CurrentOmissionStudent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceTeachers$TeacherDTOP.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceTeachers$TeacherDTOP.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceTeachers.class" beforeDir="false" afterPath="$PROJECT_DIR$/back-rating-log-college/target/classes/kz/alken1t15/backratinglogcollege/service/ServiceTeachers.class" afterDir="false" />
-    </list>
+    <list default="true" id="1443f649-6db3-4b17-9f95-0b15ab46c989" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -117,7 +85,7 @@
       <workItem from="1717772901536" duration="493000" />
       <workItem from="1717778110608" duration="3311000" />
       <workItem from="1717782137090" duration="1148000" />
-      <workItem from="1717783566789" duration="587000" />
+      <workItem from="1717783566789" duration="867000" />
     </task>
     <servers />
   </component>
