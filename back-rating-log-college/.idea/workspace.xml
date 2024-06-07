@@ -8,7 +8,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1bccd24e-30c0-4aec-9f57-1d7d68595d13" name="Changes" comment="">
-<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
@@ -238,12 +237,10 @@
       <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/Store/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/Store/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/hooks/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/hooks/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/src/index.tsx" afterDir="false" />
-=======
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/query/sql.sql" beforeDir="false" afterPath="$PROJECT_DIR$/query/sql.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/security/JWTFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kz/alken1t15/backratinglogcollege/security/JWTFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend-rating-log-college/.env" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-rating-log-college/.env" afterDir="false" />
->>>>>>> 63ae1c4da7277386df846125da2b1f20fcf21a5c
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -379,19 +376,16 @@
       <workItem from="1717235066943" duration="20000" />
       <workItem from="1717248946002" duration="603000" />
       <workItem from="1717318787643" duration="937000" />
-<<<<<<< HEAD
       <workItem from="1717485044153" duration="607000" />
       <workItem from="1717590632576" duration="91000" />
       <workItem from="1717685906013" duration="1243000" />
       <workItem from="1717711867451" duration="592000" />
-=======
       <workItem from="1717445710593" duration="23000" />
       <workItem from="1717522287784" duration="604000" />
       <workItem from="1717522941603" duration="2982000" />
       <workItem from="1717567775444" duration="610000" />
       <workItem from="1717608410827" duration="614000" />
       <workItem from="1717694863992" duration="66000" />
->>>>>>> 63ae1c4da7277386df846125da2b1f20fcf21a5c
     </task>
     <servers />
   </component>
