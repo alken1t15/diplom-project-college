@@ -100,20 +100,34 @@ public class ServiceOmissions {
     public ResponseEntity addNewOmission(ControllerTeacher.StatusOmissionStudent statusOmissionStudent, BindingResult bindingResult) {
         User user = repositoryUser.findById(statusOmissionStudent.idStudent()).orElseThrow();
         Groups groups = repositoryGroups.findById(statusOmissionStudent.idGroup()).orElseThrow();
-        Integer currentCourse = groups.getCurrentCourse();
-        String status;
-        if (statusOmissionStudent.status()) {
-            status = "Присутствует";
-        } else {
-            status = "Отсутствует";
+        Omissions omissions = repositoryOmissions.findByDateAndSubjectName(LocalDate.now(),statusOmissionStudent.nameSubject(), user.getId(), groups.getCurrentCourse());
+        if (omissions!=null){
+            String status;
+            if (statusOmissionStudent.status()) {
+                status = "Присутствует";
+            } else {
+                status = "Отсутствует";
+            }
+            omissions.setStatus(status);
+            repositoryOmissions.save(omissions);
+            return new ResponseEntity(HttpStatus.OK);
         }
-        LocalDate dateOmission = LocalDate.now();
-        Integer numberMonth = dateOmission.getMonthValue();
-        StudentsCourse studentsCourse = repositoryStudentCourse.findByUserIdAndCourse(user.getId(), currentCourse).orElseThrow();
+        else {
+            Integer currentCourse = groups.getCurrentCourse();
+            String status;
+            if (statusOmissionStudent.status()) {
+                status = "Присутствует";
+            } else {
+                status = "Отсутствует";
+            }
+            LocalDate dateOmission = LocalDate.now();
+            Integer numberMonth = dateOmission.getMonthValue();
+            StudentsCourse studentsCourse = repositoryStudentCourse.findByUserIdAndCourse(user.getId(), currentCourse).orElseThrow();
 
-        repositoryOmissions.save(new Omissions(studentsCourse, dateOmission, status, statusOmissionStudent.nameSubject(), statusOmissionStudent.numberCouple(), numberMonth));
+            repositoryOmissions.save(new Omissions(studentsCourse, dateOmission, status, statusOmissionStudent.nameSubject(), statusOmissionStudent.numberCouple(), numberMonth));
 
-        return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity(HttpStatus.OK);
+        }
     }
 
     public Integer getOmissionsStudent(Long id) {
