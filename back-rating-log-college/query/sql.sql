@@ -156,7 +156,6 @@ create table courses
 
 insert into courses (id_groups, course, year)
 VALUES (1, 1, 2023),
-       (1, 2, 2024),
        (2, 1, 2023),
        (3, 1, 2023),
        (4, 1, 2023),

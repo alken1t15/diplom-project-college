@@ -108,7 +108,7 @@ public class ServiceOmissions {
             status = "Отсутствует";
         }
         LocalDate dateOmission = LocalDate.now();
-        Integer numberMonth = dateOmission.getDayOfMonth();
+        Integer numberMonth = dateOmission.getMonthValue();
         StudentsCourse studentsCourse = repositoryStudentCourse.findByUserIdAndCourse(user.getId(), currentCourse).orElseThrow();
 
         repositoryOmissions.save(new Omissions(studentsCourse, dateOmission, status, statusOmissionStudent.nameSubject(), statusOmissionStudent.numberCouple(), numberMonth));
