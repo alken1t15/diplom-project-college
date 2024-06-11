@@ -133,6 +133,7 @@ const GradePageTeacher: React.FC = () => {
                     dataArr.push(obj)
                 })
                 setDateArray(dataArr)
+
                 let arrCourses = [];
                 for(let i = 1; i !== response.data.totalCourse+1; i++){
                     let obj = {
@@ -143,6 +144,7 @@ const GradePageTeacher: React.FC = () => {
                     arrCourses.push(obj)
                 }
                 setCourses(arrCourses)
+
                 setCurrentTable(response.data.evaluations)
                 setNewTeacher(response.data.teachers)
                 setTimeout(() => setLoading(false), 700);
@@ -254,7 +256,7 @@ const GradePageTeacher: React.FC = () => {
                                         <td key={chileIndex} className={`${chileIndex === 0 ? 'first-column' : 'column-text'}
                                        ${
                                             Number(childEl) >= 90 ? 'table-item-green' :
-                                                Number(childEl) > 70 && Number(childEl) < 90 ? 'table-item-dark-green' :
+                                                Number(childEl) >= 70 && Number(childEl) < 90 ? 'table-item-dark-green' :
                                                     Number(childEl) > 40 && Number(childEl) < 70 ? 'table-item-yellow' :
                                                         Number(childEl) <= 40 && Number(childEl) !== 0 ? 'table-item-red' :
                                                             chileIndex == 1 ? '' : ''
@@ -294,7 +296,7 @@ const GradePageTeacher: React.FC = () => {
                                         <td key={chileIndex} className={`${chileIndex === 0 ? 'first-column' : 'column-text'}
                                        ${
                                             Number(childEl) >= 90 ? 'table-item-green' :
-                                                Number(childEl) > 70 && Number(childEl) < 90 ? 'table-item-dark-green' :
+                                                Number(childEl) >= 70 && Number(childEl) < 90 ? 'table-item-dark-green' :
                                                     Number(childEl) > 40 && Number(childEl) < 70 ? 'table-item-yellow' :
                                                         Number(childEl) <= 40 && Number(childEl) !== 0 ? 'table-item-red' :
                                                             chileIndex == 1 ? '' : ''

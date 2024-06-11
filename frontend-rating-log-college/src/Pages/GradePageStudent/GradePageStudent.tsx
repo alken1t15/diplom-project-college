@@ -254,7 +254,7 @@ const GradePageStudent: React.FC = () => {
                                         <td key={chileIndex} className={`${chileIndex === 0 ? 'first-column' : 'column-text'}
                                        ${
                                             Number(childEl) >= 90 ? 'table-item-green' :
-                                                Number(childEl) > 70 && Number(childEl) < 90 ? 'table-item-dark-green' :
+                                                Number(childEl) >= 70 && Number(childEl) < 90 ? 'table-item-dark-green' :
                                                     Number(childEl) > 40 && Number(childEl) < 70 ? 'table-item-yellow' :
                                                         Number(childEl) <= 40 && Number(childEl) !== 0 ? 'table-item-red' :
                                                             chileIndex == 1 ? '' : ''
@@ -294,7 +294,7 @@ const GradePageStudent: React.FC = () => {
                                         <td key={chileIndex} className={`${chileIndex === 0 ? 'first-column' : 'column-text'}
                                        ${
                                             Number(childEl) >= 90 ? 'table-item-green' :
-                                                Number(childEl) > 70 && Number(childEl) < 90 ? 'table-item-dark-green' :
+                                                Number(childEl) >= 70 && Number(childEl) < 90 ? 'table-item-dark-green' :
                                                     Number(childEl) > 40 && Number(childEl) < 70 ? 'table-item-yellow' :
                                                         Number(childEl) <= 40 && Number(childEl) !== 0 ? 'table-item-red' :
                                                             chileIndex == 1 ? '' : ''

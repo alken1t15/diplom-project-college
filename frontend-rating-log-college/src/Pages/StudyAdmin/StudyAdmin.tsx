@@ -498,7 +498,7 @@ const StudyAdmin: React.FC = () => {
                        <label className={`upload-placeholder-admin`} style={{marginLeft: 10}}>{t('selectForSubject')}</label>
                        <div className="inner-container" >
                            <div className="admin-upload-container admin-upload-container-u admin-upload-container-u-e" style={{width: 259}} >
-                               <label className={`upload-placeholder-admin`}>${t('countCouple')}</label>
+                               <label className={`upload-placeholder-admin`}>{t('countCouple')}</label>
                                <input  type="text"  value={numbCouple}  onChange={(e) => setNumbCouple(e.target.value)}/>
                            </div>
                        </div>

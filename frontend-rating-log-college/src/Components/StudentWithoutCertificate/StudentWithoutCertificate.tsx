@@ -9,6 +9,7 @@ export interface IStudentWithoutCertificateItem{
     count: number;
     status: boolean;
     id: number;
+    idCertificate?: any;
 }
 
 interface IForStudent{
@@ -21,17 +22,21 @@ const StudentWithoutCertificate: React.FC<IForStudent> = (props) => {
     let[count, setCount] = useState(props.items.count);
     let[status, setStatus] = useState(props.items.status);
     let[id, setId] = useState(props.items.id);
+    let[cert, setCrt] = useState(props.items.idCertificate);
 
     useEffect(()=>{
         setName(props.items.name)
         setCount(props.items.count)
         setId(props.items.id)
+        setCrt(props.items.idCertificate)
+        console.log(props.items.idCertificate)
     }, [props])
 
     function updateStatus(value: boolean){
         props.onChange(id, value)
         setStatus(value)
     }
+
     const { t } = useTranslation();
     return (
         <div className={`studentWithoutCertificate-block`}>
@@ -45,10 +50,12 @@ const StudentWithoutCertificate: React.FC<IForStudent> = (props) => {
                 </div>
 
             </div>
-            <div className={`omis-block`}>
-                <div className={`omis-block__text`}>{status ? 'Присутствует' : 'Отсутствует'}:</div>
-                <CheckBox onChange={updateStatus} isActive={status}/>
-            </div>
+            {cert !== undefined  && cert !== null ? '' :
+                <div className={`omis-block`}>
+                    <div className={`omis-block__text`}>{status ? 'Присутствует' : 'Отсутствует'}:</div>
+                    <CheckBox onChange={updateStatus} isActive={status}/>
+                </div>}
+
         </div>
     );
 };

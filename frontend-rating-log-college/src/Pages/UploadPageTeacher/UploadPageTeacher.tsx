@@ -330,7 +330,7 @@ const UploadPageTeacher: React.FC = () => {
             </div>
             <div className={'block-middle block-middle-add'}>
                 <p className={'block-middle__text'}>
-                    ${t('currentTask')}
+                    {t('currentTask')}
                 </p>
 
                 <div className="homeworks-box homeworks-box-u">

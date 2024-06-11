@@ -10,7 +10,7 @@ export const mainPageTeacherData = async () => {
     return res;
 };
 
-export const mainPageTeacherUpdateData = async (idGroupStep: number, certificateHave: boolean) => {
+export const mainPageTeacherUpdateData = async (idGroupStep: any, certificateHave: boolean) => {
     let res = await $api.post(`teacher/main`, {idGroupStep: idGroupStep, certificateHave: certificateHave });
     return res;
 };
@@ -27,7 +27,7 @@ export const addNewCertificate = async (formData: any) => {
     }
 };
 
-export const mainPageTeacherUpdateOmission = async (idGroup: number, idStudent: number, nameSubject: string, status: boolean, numberCouple: number) => {
-    let res = await $api.post(`teacher/omission`, {idGroup: idGroup, idStudent: idStudent, nameSubject: nameSubject, status: status, numberCouple: numberCouple });
+export const    mainPageTeacherUpdateOmission = async (idGroup: any, idStudent: number, nameSubject: string, status: boolean, numberCouple: number) => {
+    let res = await $api.post(`teacher/omission`, {idGroup: idGroup.idGroup, idStudent: idStudent, nameSubject: nameSubject, status: status, numberCouple: numberCouple });
     return res;
 };
