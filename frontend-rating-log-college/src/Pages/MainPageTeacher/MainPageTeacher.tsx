@@ -54,38 +54,62 @@ const MainPageTeacher: React.FC = () => {
     let[loading, setLoading] = useState(true)
 
     useEffect(()=>{
+        mainPageTeacherUpdateData(curCouple, curSlider !== 1)
+            .then(response=>{
+
+                let newArr = response.data.currentOmissionStudents.map((el: any)=>{
+                    let newObj={
+                        id: el.idStudent,
+                        name: el.name,
+                        count: el.count,
+                        status: el.status !== null,
+                        idCertificate: el.idCertificate
+                    }
+                    return newObj
+
+                })
+                const activeGroup = getActiveGroup(response.data.graphGroupsForStudy);
+                setActiveGroup(activeGroup)
+                setStudents(newArr)
+
+
+
+            })
+            .catch(error=>{
+
+            })
     },[curSlider])
 
     function setActiveOnSchedule(){
         let curTimeSplit = time.split(':').map(Number);
         let curDateTime = new Date(0, 0, 0, curTimeSplit[0], curTimeSplit[1]);
-        let newArr: ISchedule[] = [];
-        let activeIndex = -1;
+            let newArr: ISchedule[] = [];
+            let activeIndex = -1;
 
-        for (let index = 0; index < schedule.length; index++) {
-            let el = schedule[index];
-            let itemTimeSplit = el.time.split(':').map(Number);
-            let itemDateTime = new Date(0, 0, 0, itemTimeSplit[0], itemTimeSplit[1]);
+            for (let index = 0; index < schedule.length; index++) {
+                let el = schedule[index];
+                let itemTimeSplit = el.time.split(':').map(Number);
+                let itemDateTime = new Date(0, 0, 0, itemTimeSplit[0], itemTimeSplit[1]);
 
-            let lastItemTime = schedule[schedule.length - 1].time.split(':').map(Number);
-            let lastItemDateTime = new Date(0, 0, 0, lastItemTime[0], lastItemTime[1]);
-            lastItemDateTime.setHours(lastItemDateTime.getHours() + 1);
-            lastItemDateTime.setMinutes(lastItemDateTime.getMinutes() + 30);
+                let lastItemTime = schedule[schedule.length - 1].time.split(':').map(Number);
+                let lastItemDateTime = new Date(0, 0, 0, lastItemTime[0], lastItemTime[1]);
+                lastItemDateTime.setHours(lastItemDateTime.getHours() + 1);
+                lastItemDateTime.setMinutes(lastItemDateTime.getMinutes() + 30);
 
-            if (index === schedule.length - 1 && curDateTime > lastItemDateTime) {
-                activeIndex = -1;
-                break;
-            } else if (curDateTime >= itemDateTime) {
-                activeIndex = index;
-            } else {
-                break;
+                if (index === schedule.length - 1 && curDateTime > lastItemDateTime) {
+                    activeIndex = -1;
+                    break;
+                } else if (curDateTime >= itemDateTime) {
+                    activeIndex = index;
+                } else {
+                    break;
+                }
             }
-        }
 
-        for (let index = 0; index < schedule.length; index++) {
-            let el = schedule[index];
-            el.active = index === activeIndex;
-            newArr.push(el);
+            for (let index = 0; index < schedule.length; index++) {
+                let el = schedule[index];
+                el.active = index === activeIndex;
+                newArr.push(el);
         }
 
         setSchedule(newArr);
@@ -114,7 +138,6 @@ const MainPageTeacher: React.FC = () => {
 
     function getActiveGroup(graphGroupsForStudy: any[]) {
         const currentTime = new Date();
-
         for (const group of graphGroupsForStudy) {
             const timeStart = new Date();
             const [hours, minutes, seconds] = group.timeStart.split(':').map(Number);
@@ -138,16 +161,15 @@ const MainPageTeacher: React.FC = () => {
 
                 let newArr = response.data.currentOmissionStudents.map((el: any)=>{
                     let newObj={
+                        id: el.idStudent,
                         name: el.name,
                         count: el.count,
-                        status: false,
+                        status: el.status !== null,
                         idCertificate: el.idCertificate
                     }
                     return newObj
 
                 })
-
-
                 const activeGroup = getActiveGroup(response.data.graphGroupsForStudy);
                 setActiveGroup(activeGroup)
                 setStudents(newArr)
@@ -170,16 +192,11 @@ const MainPageTeacher: React.FC = () => {
             .then(response=>{
                 setUserName(response.data.teacher.name)
                 setUserYear(response.data.teacher.yearWork)
+
                 let newSchedule = response.data.graphGroupsForStudy.map((el: any, index: any)=>{
-                    let newObj = {
-                        groupName: el.name,
-                        time: el.timeStart.slice(0, 5),
-                        subject: el.nameSubject,
-                    }
                     let time = parse(el.timeStart.slice(0, 5), 'HH:mm', new Date());
                     let currentTime = new Date();
                     let endTime = addMinutes(time, 90);
-                    console.log(el)
                     if(isWithinInterval(currentTime, { start: time, end: endTime })){
                         setActiveGroup(el.idGroup)
                         setPresence(el.name)
@@ -187,11 +204,32 @@ const MainPageTeacher: React.FC = () => {
                         setCurCouple(index)
                         setCurrentStudent()
                     }
-
+                    let newObj = {
+                        groupName: el.name,
+                        time: el.timeStart.slice(0, 5),
+                        subject: el.nameSubject,
+                        active: isWithinInterval(currentTime, { start: time, end: endTime })
+                    }
 
 
                     return newObj;
                 })
+
+                let neeComp = response.data.completeTask.map((el: any)=>{
+                    let newObj = {
+                        id: el.idWork,
+                        active: false,
+                        name: el.nameWork,
+                        date: el.deadlineWork,
+                        teacher: '',
+                        subject: 'string',
+                        scholar: el.nameStudent,
+                        dueDate: el.completeDate
+                    }
+                    return newObj
+                })
+                console.log(newSchedule)
+                setHomeWorks(neeComp)
                 setSchedule(newSchedule)
                 setTimeout(() => setLoading(false), 700);
 
@@ -206,7 +244,7 @@ const MainPageTeacher: React.FC = () => {
             if(curCouple){
                 setCurrentStudent()
             }
-        }, 10000);
+        }, 3000);
 
         const timeInterval = setInterval(() => {
             getTime()
@@ -233,42 +271,17 @@ const MainPageTeacher: React.FC = () => {
             if(el.id === id){
                 el.active = value;
             }
-
             return el;
         })
         setStudents(newArr)
         mainPageTeacherUpdateOmission(activeGroup, id, curSubject, value, curCouple).then((response)=>{
-            mainPageTeacherUpdateData(activeGroup, curSlider !== 1)
-                .then(response=>{
-
-                    let newArr = response.data.currentOmissionStudents.map((el: any)=>{
-                        let newObj={
-                            name: el.name,
-                            count: el.count,
-                            status: false,
-                            idCertificate: el.idCertificate
-                        }
-                        return newObj
-
-                    })
-
-
-                    const activeGroup = getActiveGroup(response.data.graphGroupsForStudy);
-                    setActiveGroup(activeGroup)
-                    setStudents(newArr)
-
-
-
-                })
-                .catch(error=>{
-
-                })
             notify(`${t('tardinessSuccess')}`, 'success')
         }).catch((error)=>{
             notify(`${t('tardinessError')}`, 'error')
         })
 
     }
+
 
     return (
         <div className={'main-page main-page-t'}>
